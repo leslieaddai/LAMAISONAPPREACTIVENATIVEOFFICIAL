@@ -1,0 +1,79 @@
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  ScrollView,
+} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {
+  RFPercentage as rfp,
+  RFValue as rfv,
+} from 'react-native-responsive-fontsize';
+import fonts from '../../theme/fonts';
+import {
+  IMAGES,
+  ICONS,
+  COLORS,
+  SIZES,
+  screenHeight,
+  screenWidth,
+  wp2,
+  hp2,
+  getFont,
+  FONTS,
+} from '../../theme';
+import BottomComp from '../../components/bottomComp';
+import WardrobeComp from '../../components/wardrobeComp';
+
+export default function WardrobeScreen(props) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.headWrap}>
+        <TouchableOpacity style={{position: 'absolute', left: wp(4)}}>
+          <ICONS.AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.wardrobeText}>WARDROBE</Text>
+      </View>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexDirection:'row',flexWrap:'wrap',paddingTop:hp(4),paddingBottom:hp(12),}}>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      <WardrobeComp/>
+      </ScrollView>
+      <BottomComp />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.appBackground,
+  },
+  headWrap: {
+    flexDirection: 'row',
+    marginTop: hp(5),
+    alignItems: 'center',
+    //backgroundColor:'red',
+    justifyContent: 'center',
+  },
+  wardrobeText: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: rfv(28),
+  },
+});

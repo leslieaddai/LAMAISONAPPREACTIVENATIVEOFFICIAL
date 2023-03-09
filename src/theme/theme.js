@@ -1,6 +1,7 @@
 export const COLORS = {
     // orange: '#ed6663',
     white:'#ffffff',
+    appBackground:'#F6F5F3',
     // lightGreen: '#80b534',
     // green:'#0e5f6b',
     // greenShade08:'rgba(14, 95, 107,0.8)',

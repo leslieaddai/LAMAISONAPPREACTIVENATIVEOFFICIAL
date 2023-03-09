@@ -1,3 +1,16 @@
 export const IMAGES={
     temp: require('../assets/temp-logo-img.png'),
+    logo: require('../assets/logo.png'),
+    randomProfile: require('../assets/profile.jpg'),
+    fts: require('../assets/FTS.png'),
+    logosmall: require('../assets/logosmall.png'),
+    profileicon: require('../assets/profileicon.png'),
+    search: require('../assets/search.png'),
+    bag: require('../assets/bag.png'),
+    editoricon: require('../assets/editoricon.png'),
+    brandicon: require('../assets/brandicon.png'),
+    splashlogo: require('../assets/splashlogo.png'),
+    rightArrow: require('../assets/rightarrow.png'),
+    lookbook: require('../assets/lookbook.jpg'),
+    randomPic: require('../assets/randomPic.jpg'),
 }
