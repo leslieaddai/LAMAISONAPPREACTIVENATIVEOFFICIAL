@@ -40,7 +40,7 @@ export default function OrderComp(props) {
           resizeMode="cover"
         />
       </View>
-      <View style={{marginLeft:wp(3)}}>
+      <View style={{marginLeft:wp2(3)}}>
         <Text style={{color:'#065521',fontWeight:'600',fontSize:rfv(14),}}>Delivered</Text>
         <Text style={{color:'black'}}>Flannel Jacket</Text>
         <Text style={{color:'black'}}>Noongoons</Text>
@@ -51,18 +51,18 @@ export default function OrderComp(props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: wp(92),
-    height: hp(10),
+    width: wp2(92),
+    height: hp2(10),
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'center',
-    marginVertical: hp(0.5),
+    marginVertical: hp2(0.5),
   },
   imgWrap: {
-    width: wp(16),
-    height: wp(18),
+    width: wp2(16),
+    height: wp2(18),
     overflow: 'hidden',
-    borderRadius: wp(4),
+    borderRadius: wp2(4),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

@@ -29,27 +29,29 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CollectionItemsComp(props) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.lookbook}
         style={{width: '100%', height: '80%'}}
         resizeMode="cover"
       />
       <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>Represent Owners Club Hoodie{'\n'}£150</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: wp(44),
-    height: hp(22),
+    width: wp2(45),
+    height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderRadius: wp(4),
+    borderRadius: wp2(4),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -58,6 +60,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin:wp(3),
+    margin:wp2(2),
   },
 });

@@ -42,7 +42,7 @@ export default function NotificationComp(props) {
           resizeMode="cover"
         />
       </View>
-      <View style={{width:wp(followButton?50:60),paddingHorizontal:wp(3),}}>
+      <View style={{width:wp2(followButton?50:60),paddingHorizontal:wp2(3),}}>
         <Text style={{color:'black',marginBottom:4}}>ICEY.B liked your post</Text>
         <Text style={{color:'black'}}>1 hour ago</Text>
       </View>
@@ -65,18 +65,18 @@ export default function NotificationComp(props) {
 
 const styles = StyleSheet.create({
     container:{
-        width:wp(92),
-        height:hp(10),
+        width:wp2(92),
+        height:hp2(10),
         flexDirection:'row',
         alignItems:'center',
         alignSelf:'center',
-        marginVertical:hp(1),
+        marginVertical:hp2(1),
     },
     imgWrap: {
-        width: wp(16),
-        height: wp(18),
+        width: wp2(16),
+        height: wp2(18),
         overflow: 'hidden',
-        borderRadius: wp(4),
+        borderRadius: wp2(4),
         shadowColor: '#000',
         shadowOffset: {
           width: 0,
@@ -87,10 +87,10 @@ const styles = StyleSheet.create({
         elevation: 5,
       },
       followBTN:{
-        width:wp(26),
-        height:hp(5),
+        width:wp2(26),
+        height:hp2(5),
         backgroundColor:'black',
-        borderRadius:wp(10),
+        borderRadius:wp2(10),
         alignItems:'center',
         justifyContent:'center',
       },

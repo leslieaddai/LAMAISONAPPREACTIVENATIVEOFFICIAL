@@ -33,15 +33,15 @@ import {
 export default function SignupScreen(props) {
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom:hp(4)}}>
+      <ScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
         <Text style={styles.signupText}>Create new account</Text>
-        <View style={{flexDirection:'row',width:wp(80),justifyContent:'space-between',alignSelf:'center',}}>
-        <View style={[styles.inputBox,{width:wp(36)}]}>
+        <View style={{flexDirection:'row',width:wp2(80),justifyContent:'space-between',alignSelf:'center',}}>
+        <View style={[styles.inputBox,{width:wp2(36)}]}>
           <TextInput
             style={{
               flex: 1,
               color: 'black',
-              paddingHorizontal: wp(2),
+              paddingHorizontal: wp2(2),
               fontSize: rfv(13),
               fontWeight: '700',
         
@@ -49,12 +49,12 @@ export default function SignupScreen(props) {
             placeholder="first name"
           />
         </View>
-        <View style={[styles.inputBox,{width:wp(36)}]}>
+        <View style={[styles.inputBox,{width:wp2(36)}]}>
           <TextInput
             style={{
               flex: 1,
               color: 'black',
-              paddingHorizontal: wp(2),
+              paddingHorizontal: wp2(2),
               fontSize: rfv(13),
               fontWeight: '700',
               
@@ -69,7 +69,7 @@ export default function SignupScreen(props) {
             style={{
               flex: 1,
               color: 'black',
-              paddingHorizontal: wp(2),
+              paddingHorizontal: wp2(2),
               fontSize: rfv(13),
               fontWeight: '700',
              
@@ -80,19 +80,19 @@ export default function SignupScreen(props) {
         <Text style={styles.text}>This has to be real so we can stay in contact with you</Text>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('signupScreen')}
-          style={[styles.button, {width: wp(48)}]}>
+          style={[styles.button, {width: wp2(48)}]}>
           <Text style={styles.buttonText}>CONTINUE</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => alert('signin with google')}
           style={styles.button2}>
-          <ICONS.AntDesign name="google" size={24} color="black" style={{position:'absolute',left:wp(4)}} />
+          <ICONS.AntDesign name="google" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => alert('signin with fb')}
           style={styles.button2}>
-          <ICONS.AntDesign name="facebook-square" size={24} color="black" style={{position:'absolute',left:wp(4)}} />
+          <ICONS.AntDesign name="facebook-square" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with facebook</Text>
         </TouchableOpacity>
       </ScrollView>
@@ -111,14 +111,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginVertical: hp(5),
-    marginLeft:wp(8),
+    marginVertical: hp2(4),
+    marginLeft:wp2(8),
   },
   inputBox: {
-    width: wp(80),
-    height: hp(6),
+    width: wp2(80),
+    height: hp2(6),
     backgroundColor: 'white',
-    borderRadius: wp(4),
+    borderRadius: wp2(4),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -127,20 +127,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginVertical: hp(2),
+    marginVertical: hp2(2),
     alignSelf:'center',
   },
   text:{
     color:'black',
     fontWeight:'700',
-    marginLeft:wp(11),
-    marginVertical:hp(1),
+    marginLeft:wp2(11),
+    marginVertical:hp2(1),
   },
   button: {
-    width: wp(28),
-    height: hp(7),
+    width: wp2(28),
+    height: hp2(7),
     backgroundColor: 'black',
-    borderRadius: wp(10),
+    borderRadius: wp2(10),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -152,9 +152,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
     //marginVertical:hp(2),
-    marginTop: hp(2),
+    marginTop: hp2(2),
     alignSelf:'center',
-    marginBottom:hp(8),
+    marginBottom:hp2(8),
   },
   buttonText: {
     color: 'white',
@@ -162,10 +162,10 @@ const styles = StyleSheet.create({
     fontSize: rfv(14),
   },
   button2:{
-    width: wp(78),
-    height: hp(6),
+    width: wp2(78),
+    height: hp2(6),
     backgroundColor: 'white',
-    borderRadius: wp(3),
+    borderRadius: wp2(3),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
     //marginVertical:hp(2),
-    marginTop: hp(2),
+    marginTop: hp2(2),
     alignSelf:'center',
     flexDirection:'row',
   },

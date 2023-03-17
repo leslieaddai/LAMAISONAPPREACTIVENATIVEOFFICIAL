@@ -36,13 +36,13 @@ export default function CollectionScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp(4)}}>
+        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.collectionText}>COLLECTION</Text>
       </View>
       <Text style={styles.text}>Spring/Summer ‘23 - The initial</Text>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexDirection:'row',flexWrap:'wrap',paddingTop:hp(2),paddingBottom:hp(12),}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(2),paddingBottom:hp2(12),justifyContent:'space-between'}}>
       <CollectionItemsComp/>
       <CollectionItemsComp/>
       <CollectionItemsComp/>
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp(5),
+    marginTop: hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -80,6 +80,6 @@ const styles = StyleSheet.create({
     fontWeight:'600',
     fontSize:rfv(22),
     alignSelf:'center',
-    marginTop:hp(3),
+    marginTop:hp2(3),
   },
 });

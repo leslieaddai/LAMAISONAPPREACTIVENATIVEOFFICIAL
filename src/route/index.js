@@ -15,7 +15,7 @@ const AppNavigatior = () => {
         translucent
         backgroundColor="transparent"
       />
-      <Stack.Navigator initialRouteName={'galleryScreen'}>
+      <Stack.Navigator initialRouteName={'imageUploadScreen'}>
         {stackRouteList.map((item, index) => {
           return (
             <Stack.Screen

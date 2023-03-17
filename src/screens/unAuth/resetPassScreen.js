@@ -36,7 +36,7 @@ export default function ResetPassScreen(props) {
   const [passMatch, setPassMatch] = useState(false);
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom: hp(4)}}>
+      <ScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           <>
@@ -45,7 +45,7 @@ export default function ResetPassScreen(props) {
                 style={{
                   flex: 1,
                   color: 'black',
-                  paddingHorizontal: wp(2),
+                  paddingHorizontal: wp2(2),
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
@@ -57,7 +57,7 @@ export default function ResetPassScreen(props) {
                 style={{
                   flex: 1,
                   color: 'black',
-                  paddingHorizontal: wp(2),
+                  paddingHorizontal: wp2(2),
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
@@ -80,7 +80,7 @@ export default function ResetPassScreen(props) {
                 style={{
                   flex: 1,
                   color: 'black',
-                  paddingHorizontal: wp(2),
+                  paddingHorizontal: wp2(2),
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
@@ -110,14 +110,14 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginVertical: hp(5),
-    marginLeft: wp(8),
+    marginVertical: hp2(4),
+    marginLeft: wp2(8),
   },
   inputBox: {
-    width: wp(80),
-    height: hp(6),
+    width: wp2(80),
+    height: hp2(6),
     backgroundColor: 'white',
-    borderRadius: wp(4),
+    borderRadius: wp2(4),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -126,14 +126,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginVertical: hp(2),
+    marginVertical: hp2(2),
     alignSelf: 'center',
   },
   button: {
-    width: wp(62),
-    height: hp(7),
+    width: wp2(62),
+    height: hp2(7),
     backgroundColor: 'black',
-    borderRadius: wp(10),
+    borderRadius: wp2(10),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
     //marginVertical:hp(2),
-    marginTop: hp(2),
+    marginTop: hp2(2),
     alignSelf: 'center',
-    marginBottom: hp(8),
+    marginBottom: hp2(8),
   },
   buttonText: {
     color: 'white',

@@ -54,8 +54,8 @@ export default function FeedbackMessageComp(props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: wp(90),
-    height: hp(16),
+    width: wp2(90),
+    height: hp2(16),
     //backgroundColor: 'red',
     alignSelf: 'center',
     flexDirection: 'row',
@@ -63,9 +63,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   imageWrap: {
-    width: wp(18),
-    height: wp(18),
-    borderRadius: wp(4),
+    width: wp2(18),
+    height: wp2(18),
+    borderRadius: wp2(4),
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: {
@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
     fontSize:rfv(14),
   },
   messageBox:{
-    width:wp(70),
-    height:hp(8),
-    borderRadius: wp(2),
+    width:wp2(70),
+    height:hp2(8),
+    borderRadius: wp2(2),
     backgroundColor:'white',
     shadowColor: '#000',
     shadowOffset: {
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    paddingHorizontal:wp(3),
-    paddingVertical:wp(3),
+    paddingHorizontal:wp2(3),
+    paddingVertical:wp2(3),
   },
 });

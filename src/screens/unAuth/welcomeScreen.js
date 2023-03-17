@@ -54,10 +54,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   imgWrap: {
-    width: wp(50),
-    height: wp(60),
+    width: wp2(50),
+    height: wp2(60),
     overflow: 'hidden',
-    borderRadius: wp(8),
+    borderRadius: wp2(8),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

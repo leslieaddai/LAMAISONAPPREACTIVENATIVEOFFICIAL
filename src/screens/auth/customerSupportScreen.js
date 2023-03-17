@@ -44,7 +44,7 @@ export default function CustomerSupportScreen(props) {
     }
   return (
     <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp(12),}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp2(12),}}>
       <Text style={styles.customerText}>Customer Advice</Text>
       <View style={styles.textBox}>
         <TextInput
@@ -63,8 +63,8 @@ export default function CustomerSupportScreen(props) {
           }}
         />
       </View>
-      <View style={{width:wp(88)}}>
-      <Text style={{color:'black',fontWeight:'700',marginBottom:hp(2)}}>How do you feel?</Text>
+      <View style={{width:wp2(88)}}>
+      <Text style={{color:'black',fontWeight:'700',marginBottom:hp2(2)}}>How do you feel?</Text>
       </View>
       {options('ANGRY')}
       {options('WORRIED')}
@@ -92,13 +92,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(26),
-    marginTop: hp(5),
+    marginTop: hp2(4),
   },
   textBox: {
-    width: wp(88),
-    height: hp(30),
+    width: wp2(88),
+    height: hp2(30),
     backgroundColor: 'white',
-    borderRadius: wp(2),
+    borderRadius: wp2(2),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -107,32 +107,32 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginTop: hp(4),
-    marginBottom:hp(2),
-    paddingHorizontal: wp('2%'),
-    paddingVertical: wp('2%'),
+    marginTop: hp2(4),
+    marginBottom:hp2(2),
+    paddingHorizontal: wp2(2),
+    paddingVertical: wp2(2),
   },
   optionWrap:{
-    width:wp(90),
-    height:hp(4),
+    width:wp2(90),
+    height:hp2(4),
     //backgroundColor:'red',
     borderBottomWidth:1,
     justifyContent:'space-between',
     flexDirection:'row',
-    paddingHorizontal:wp(1),
-    marginTop:hp(2),
+    paddingHorizontal:wp2(1),
+    marginTop:hp2(2),
   },
   circle:{
-    width:wp(5),
-    height:wp(5),
+    width:wp2(5),
+    height:wp2(5),
     backgroundColor:'#D9D9D9',
     borderRadius:100,
   },
   button:{
-    width:wp(32),
-    height:wp(8),
+    width:wp2(32),
+    height:wp2(8),
     backgroundColor:'black',
-    borderRadius:wp(4),
+    borderRadius:wp2(4),
     alignItems:'center',
     justifyContent:'center',
     shadowColor: '#000',
@@ -143,6 +143,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginTop:hp(6),
+    marginTop:hp2(6),
   },
 });

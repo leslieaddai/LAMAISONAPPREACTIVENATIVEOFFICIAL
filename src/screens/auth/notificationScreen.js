@@ -37,12 +37,12 @@ export default function NotificationScreen(props) {
   return (
     <View style={styles.container}>
         <View style={styles.headWrap}>
-            <TouchableOpacity style={{marginLeft:wp(3),marginRight:wp(5)}}>
+            <TouchableOpacity style={{marginLeft:wp2(3),marginRight:wp2(5)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.notificationText}>Notifications </Text>
         </View>
-        <ScrollView contentContainerStyle={{paddingBottom:hp(12),}}>
+        <ScrollView contentContainerStyle={{paddingBottom:hp2(12),}}>
         <LineComp/>
         <NotificationComp follow={false}/>
         <NotificationComp follow={true}/>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   headWrap:{
     flexDirection:'row',
-    marginTop:hp(5),
+    marginTop:hp2(4),
     alignItems:'center',
   },
   notificationText:{

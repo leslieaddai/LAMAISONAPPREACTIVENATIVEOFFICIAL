@@ -37,7 +37,7 @@ export default function OrderTrackingScreen(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.orderText}>Order Tracking</Text>
-      <ScrollView contentContainerStyle={{paddingBottom: hp(12)}}>
+      <ScrollView contentContainerStyle={{paddingBottom: hp2(12)}}>
         <LineComp />
         <OrderComp/>
         <OrderComp/>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(28),
-    marginTop:hp(5),
+    marginTop:hp2(4),
     alignSelf:'center',
   },
 });

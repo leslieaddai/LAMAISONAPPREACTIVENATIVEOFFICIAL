@@ -52,8 +52,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iconWrap: {
-    width: wp(80),
-    height: wp(80),
+    width: wp2(80),
+    height: wp2(80),
     overflow: 'hidden',
   },
 });

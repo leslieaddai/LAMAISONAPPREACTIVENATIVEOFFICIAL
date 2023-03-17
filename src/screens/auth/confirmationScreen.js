@@ -36,7 +36,7 @@ export default function ConfirmationScreen(props) {
     <View style={styles.container}>
       <View style={styles.wrap}>
         <View style={styles.circle}>
-            <ICONS.FontAwesome name="check" size={wp(18)} color="white" />
+            <ICONS.FontAwesome name="check" size={wp2(18)} color="white" />
         </View>
       <Text style={styles.text}>Congratulations!</Text>
       <Text style={{color:'black',textTransform:'uppercase'}}>Your order is on it’s way</Text>
@@ -50,13 +50,13 @@ export default function ConfirmationScreen(props) {
       <Text style={{color:'black',textTransform:'uppercase',textAlign:'center'}}>Tell your friends about{'\n'}your great choice</Text>
       <View style={{flexDirection:'row'}}>
         <TouchableOpacity>
-        <ICONS.AntDesign name="twitter" size={wp(12)} color="black" style={{marginHorizontal:wp(1)}} />
+        <ICONS.AntDesign name="twitter" size={wp2(12)} color="black" style={{marginHorizontal:wp2(1)}} />
         </TouchableOpacity>
         <TouchableOpacity>
-        <ICONS.AntDesign name="facebook-square" size={wp(12)} color="black" style={{marginHorizontal:wp(1)}} />
+        <ICONS.AntDesign name="facebook-square" size={wp2(12)} color="black" style={{marginHorizontal:wp2(1)}} />
         </TouchableOpacity>
         <TouchableOpacity>
-        <ICONS.AntDesign name="linkedin-square" size={wp(12)} color="black" style={{marginHorizontal:wp(1)}}  />
+        <ICONS.AntDesign name="linkedin-square" size={wp2(12)} color="black" style={{marginHorizontal:wp2(1)}}  />
         </TouchableOpacity>
         
       </View>
@@ -74,15 +74,15 @@ const styles = StyleSheet.create({
     justifyContent:'center',
   },
   wrap:{
-    width:wp(80),
-    height:hp(60),
+    width:wp2(80),
+    height:hp2(60),
     //backgroundColor:'red',
     alignItems:'center',
     justifyContent:'space-evenly',
   },
   circle:{
-    width:wp(36),
-    height:wp(36),
+    width:wp2(36),
+    height:wp2(36),
     backgroundColor:'#13D755',
     borderRadius:100,
     alignItems:'center',
@@ -95,8 +95,8 @@ const styles = StyleSheet.create({
     textTransform:'uppercase',
   },
   iconWrap:{
-    width: wp(36),
-    height: wp(10),
+    width: wp2(36),
+    height: wp2(10),
     overflow: 'hidden',
   },
 });

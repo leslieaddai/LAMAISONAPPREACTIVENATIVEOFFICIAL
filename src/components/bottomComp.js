@@ -29,12 +29,14 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function BottomComp(props) {
   //console.log(props);
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{alignItems: 'center'}}>
+      <TouchableOpacity   onPress={() => navigation.navigate('FTS100')}  style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
           <Image
             source={IMAGES.fts}
@@ -43,7 +45,7 @@ export default function BottomComp(props) {
           />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={{alignItems: 'center'}}>
+      <TouchableOpacity   onPress={() => navigation.navigate('searchScreen')} style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
           <Image
             source={IMAGES.search}
@@ -53,7 +55,7 @@ export default function BottomComp(props) {
         </View>
         <Text style={styles.iconText}>Discovery</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{alignItems: 'center'}}>
+      <TouchableOpacity onPress={() => navigation.navigate('homeScreen')} style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
           <Image
             source={IMAGES.logosmall}
@@ -63,7 +65,7 @@ export default function BottomComp(props) {
         </View>
         <Text style={styles.iconText}>Home</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{alignItems: 'center'}}>
+      <TouchableOpacity onPress={() => navigation.navigate('basketScreen')} style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
           <Image
             source={IMAGES.bag}
@@ -73,7 +75,7 @@ export default function BottomComp(props) {
         </View>
         <Text style={styles.iconText}>Basket</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{alignItems: 'center'}}>
+      <TouchableOpacity onPress={() => navigation.navigate('editorProfileScreen')} style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
           <Image
             source={IMAGES.profileicon}
@@ -89,8 +91,8 @@ export default function BottomComp(props) {
 
 const styles = StyleSheet.create({
   container: {
-    width: wp(100),
-    height: hp(10),
+    width: wp2(100),
+    height: hp2(10),
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   iconWrap: {
-    width: wp(10),
-    height: wp(10),
+    width: wp2(10),
+    height: wp2(10),
     overflow: 'hidden',
   },
   iconText: {

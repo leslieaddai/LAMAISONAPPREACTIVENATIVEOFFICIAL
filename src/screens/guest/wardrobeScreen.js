@@ -36,12 +36,12 @@ export default function WardrobeScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp(4)}}>
+        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.wardrobeText}>WARDROBE</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexDirection:'row',flexWrap:'wrap',paddingTop:hp(4),paddingBottom:hp(12),}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(4),paddingBottom:hp2(12),justifyContent:'space-between'}}>
       <WardrobeComp/>
       <WardrobeComp/>
       <WardrobeComp/>
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp(5),
+    marginTop: hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',

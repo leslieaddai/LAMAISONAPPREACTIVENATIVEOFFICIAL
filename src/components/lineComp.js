@@ -36,7 +36,7 @@ export default function LineComp(props) {
         <View style={styles.line}></View>
         <Text style={{color: 'black'}}>08/22</Text>
         <View
-          style={[styles.line, {marginLeft: wp(2), marginRight: wp(0)}]}></View>
+          style={[styles.line, {marginLeft: wp2(2), marginRight: wp2(0)}]}></View>
       </View>
   );
 }
@@ -44,16 +44,16 @@ export default function LineComp(props) {
 const styles = StyleSheet.create({
     lineWrap: {
         flexDirection: 'row',
-        width: wp(100),
-        height: hp(4),
+        width: wp2(100),
+        height: hp2(4),
         alignItems: 'center',
-        marginVertical: hp(1),
+        marginVertical: hp2(1),
       },
       line: {
-        width: wp(34),
+        width: wp2(34),
         borderBottomWidth: 1,
-        marginRight: wp(2),
-        marginLeft: wp(11),
+        marginRight: wp2(2),
+        marginLeft: wp2(11),
         borderColor: '#D9D9D9',
       },
 });

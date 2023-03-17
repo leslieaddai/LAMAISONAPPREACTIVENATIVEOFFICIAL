@@ -45,10 +45,10 @@ export default function GalleryComp(props) {
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: wp(30),
-    height: hp(18),
+    width: wp2(30),
+    height: hp2(18),
     overflow: 'hidden',
-    marginHorizontal: wp(1),
-    marginTop:hp(1),
+    marginHorizontal: wp2(1),
+    marginTop:hp2(1),
   },
 });

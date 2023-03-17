@@ -29,27 +29,29 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CollectionComp(props) {
+  const navigation = useNavigation();
   //console.log(props);
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity onPress={() => navigation.navigate('collectionScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.lookbook}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   imageContainer: {
-    width: wp(48),
-    height: hp(34),
+    width: wp2(48),
+    height: hp2(30),
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderRadius: wp(6),
+    borderRadius: wp2(6),
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -58,7 +60,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginHorizontal: wp(2),
-    marginTop:hp(3),
+    marginHorizontal: wp2(2),
+    marginTop:hp2(1),
   },
 });

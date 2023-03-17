@@ -33,7 +33,7 @@ export default function GuestScreen(props) {
         />
       </View>
       <TouchableOpacity
-        onPress={() => alert('create account')}
+        onPress={() => props.navigation.navigate('signupScreen')}
         style={styles.button}>
         <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
       </TouchableOpacity>
@@ -42,7 +42,7 @@ export default function GuestScreen(props) {
         style={styles.button}>
         <Text style={styles.buttonText}>SIGN IN</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=> alert('continue as guest')} style={{marginTop:hp(12)}}>
+      <TouchableOpacity onPress={()=> alert('continue as guest')} style={{marginTop:hp2(12)}}>
         <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
       </TouchableOpacity>
     </View>
@@ -57,16 +57,16 @@ const styles = StyleSheet.create({
     //justifyContent:'center',
   },
   logoWrap: {
-    width: wp(60),
-    height: hp(20),
+    width: wp2(60),
+    height: hp2(20),
     overflow: 'hidden',
-    marginTop:hp(24),
+    marginTop:hp2(24),
   },
   button: {
-    width: wp(70),
-    height: hp(7),
+    width: wp2(70),
+    height: hp2(7),
     backgroundColor: 'black',
-    borderRadius: wp(8),
+    borderRadius: wp2(8),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginVertical:hp(2),
+    marginVertical:hp2(2),
   },
   buttonText: {
     color: 'white',

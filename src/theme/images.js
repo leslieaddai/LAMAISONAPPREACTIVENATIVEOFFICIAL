@@ -13,4 +13,11 @@ export const IMAGES={
     rightArrow: require('../assets/rightarrow.png'),
     lookbook: require('../assets/lookbook.jpg'),
     randomPic: require('../assets/randomPic.jpg'),
+    listView: require('../assets/listView.png'),
+    gridView: require('../assets/gridView.png'),
+    badge: require('../assets/badge.png'),
+    vinDiesel: require('../assets/vinDiesel.jpg'),
+    applePay: require('../assets/applePay.png'),
+    paypal: require('../assets/paypal.png'),
+    gPay: require('../assets/gPay.png'),
 }

@@ -41,14 +41,14 @@ export default function AlertComp(props) {
 
 const styles = StyleSheet.create({
   errorWrap: {
-    width: wp(80),
-    height: hp(10),
+    width: wp2(80),
+    height: hp2(10),
     backgroundColor: '#B00002',
-    borderRadius: wp(3),
+    borderRadius: wp2(3),
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: hp(4),
-    marginBottom: hp(2),
+    marginTop: hp2(4),
+    marginBottom: hp2(2),
     alignSelf: 'center',
   },
   errorText: {

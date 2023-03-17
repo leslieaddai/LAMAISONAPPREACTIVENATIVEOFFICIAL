@@ -35,7 +35,7 @@ export default function DestinationScreen(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.destinationText}>Destination</Text>
-      <TouchableOpacity style={[styles.box,{marginTop:hp(20),marginBottom:hp(6)}]}>
+      <TouchableOpacity style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
         <View style={styles.iconWrap}>
         <Image
             source={IMAGES.editoricon}
@@ -70,13 +70,13 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp(5),
+    marginTop: hp2(4),
   },
   box:{
-    width: wp(38),
-    height: hp(18),
+    width: wp2(38),
+    height: hp2(18),
     backgroundColor: 'white',
-    borderRadius: wp(6),
+    borderRadius: wp2(6),
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -89,8 +89,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   iconWrap:{
-    width: wp(18),
-    height: wp(18),
+    width: wp2(18),
+    height: wp2(18),
     overflow: 'hidden',
   },
 });

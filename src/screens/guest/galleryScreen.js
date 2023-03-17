@@ -36,12 +36,12 @@ export default function GalleryScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp(4)}}>
+        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.galleryText}>Gallery</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp(96),flexDirection:'row',flexWrap:'wrap',paddingTop:hp(1),paddingBottom:hp(12),}}>
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(96),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
         <GalleryComp/>
         <GalleryComp/>
         <GalleryComp/>
@@ -76,11 +76,11 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp(5),
+    marginTop: hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
-    width:wp(100),
+    width:wp2(100),
   },
   galleryText: {
     color: 'black',

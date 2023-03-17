@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp(5),
-    marginLeft: wp(12),
+    marginTop: hp2(4),
+    marginLeft: wp2(12),
   },
 });
