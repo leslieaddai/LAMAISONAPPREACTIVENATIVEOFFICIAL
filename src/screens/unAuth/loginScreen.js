@@ -49,7 +49,7 @@ export default function LoginScreen(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
-            placeholder="username"
+            placeholder="USERNAME"
           />
         </View>
         <View style={styles.inputBox}>
@@ -61,7 +61,7 @@ export default function LoginScreen(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
-            placeholder="password"
+            placeholder="PASSWORD"
           />
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate('resetPassScreen')}>
@@ -80,7 +80,7 @@ export default function LoginScreen(props) {
           <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('guestScreen')}
+          onPress={() => props.navigation.navigate('homeScreen')}
           style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
           <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
         </TouchableOpacity>

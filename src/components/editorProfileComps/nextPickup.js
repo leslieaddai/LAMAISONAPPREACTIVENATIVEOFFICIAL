@@ -81,7 +81,7 @@ export default function NextPickup(props) {
       </View>
 
       <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen')} style={styles.nextpickup}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(28)}}>
+        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
         NEXT PICK UP
         </Text>
       </TouchableOpacity>

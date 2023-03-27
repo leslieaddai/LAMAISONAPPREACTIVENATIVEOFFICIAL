@@ -32,8 +32,13 @@ import {
 import BottomComp from '../../components/bottomComp';
 
 export default function ListViewScreen(props) {
+
   const postComp = () => {
     const [showDelete,setShowDelete]=useState(false);
+
+    const [heart,setHeart]=useState(false);
+    const [share,setShare]=useState(false);
+    const [hanger,setHanger]=useState(false);
     return (
       <View style={{marginVertical:hp2(1)}}>
         <View style={styles.postWrap}>
@@ -56,27 +61,27 @@ export default function ListViewScreen(props) {
           </TouchableOpacity>
         </View>
         
-        <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-        </View>
+        </TouchableOpacity>
 
         <View style={styles.iconWrap}>
-        <TouchableOpacity >
-        <ICONS.AntDesign name="heart" size={34} color={'black'} />
+        <TouchableOpacity onPress={()=>{heart?setHeart(false):setHeart(true)}} >
+        <ICONS.AntDesign name="heart" size={34} color={heart?'#FC0004':'black'} />
         </TouchableOpacity>
         <Text style={{color:'black'}}>1000</Text>
 
-        <TouchableOpacity>
-        <ICONS.MaterialCommunityIcons name="hanger" size={34} color="black" />
+        <TouchableOpacity onPress={()=>{hanger?setHanger(false):setHanger(true)}}>
+        <ICONS.MaterialCommunityIcons name="hanger" size={34} color={hanger?'#162FAC':'black'} />
         </TouchableOpacity>
         <Text style={{color:'black'}}>1500</Text>
 
-        <TouchableOpacity >
-        <ICONS.FontAwesome name="retweet" size={34} color={'black'} />
+        <TouchableOpacity onPress={()=>{share?setShare(false):setShare(true)}}>
+        <ICONS.FontAwesome name="retweet" size={34} color={share?'#13D755':'black'} />
         </TouchableOpacity>
         <Text style={{color:'black'}}>3000</Text>
         </View>
@@ -93,9 +98,24 @@ export default function ListViewScreen(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity   onPress={() => props.navigation.goBack()} style={{marginTop:hp2(4),marginLeft:wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-      </TouchableOpacity>
+
+      <View style={styles.iconContainer}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap2}>
+          <Image
+            source={IMAGES.gridView}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+        <View style={styles.line}></View>
+        <TouchableOpacity onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap2}>
+          <Image
+            source={IMAGES.listView}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -113,6 +133,26 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
+  },
+  iconContainer: {
+    width: wp2(40),
+    height: hp2(8),
+    flexDirection: 'row',
+    //backgroundColor:'red',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
+    marginTop:hp2(4),
+  },
+  iconWrap2: {
+    width: wp2(12),
+    height: hp2(8),
+    overflow: 'hidden',
+  },
+  line: {
+    width: wp2(1),
+    height: hp2(6),
+    backgroundColor: 'black',
   },
   postWrap: {
     width: wp2(94),

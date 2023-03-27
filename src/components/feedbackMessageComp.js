@@ -44,7 +44,7 @@ export default function FeedbackMessageComp(props) {
       <View>
         <Text style={styles.text}>Angry</Text>
         <View style={styles.messageBox}>
-            <Text style={[styles.text,{fontSize:rfv(13)}]}>I ordered an item from represent and I still have not received my items</Text>
+            <Text style={[styles.text,{fontSize:rfv(13)}]}>I ordered an item from represent and I still have not received my items I ordered an item from represent and I still have not received my items</Text>
         </View>
         <Text style={styles.text}>malikjames@yahoo.com</Text>
       </View>
@@ -55,7 +55,7 @@ export default function FeedbackMessageComp(props) {
 const styles = StyleSheet.create({
   container: {
     width: wp2(90),
-    height: hp2(16),
+    minHeight: hp2(16),
     //backgroundColor: 'red',
     alignSelf: 'center',
     flexDirection: 'row',
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   },
   messageBox:{
     width:wp2(70),
-    height:hp2(8),
+    minHeight:hp2(8),
     borderRadius: wp2(2),
     backgroundColor:'white',
     shadowColor: '#000',

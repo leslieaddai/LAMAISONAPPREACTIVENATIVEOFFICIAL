@@ -45,7 +45,15 @@ export default function CustomerSupportScreen(props) {
   return (
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp2(12),}}>
-      <Text style={styles.customerText}>Customer Advice</Text>
+      
+
+      <View style={styles.headWrap}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+          <ICONS.AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.customerText}>Customer Advice</Text>
+      </View>
+
       <View style={styles.textBox}>
         <TextInput
           placeholder={
@@ -88,11 +96,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //justifyContent:'center',
   },
+  headWrap: {
+    flexDirection: 'row',
+    marginTop: hp2(4),
+    alignItems: 'center',
+    //backgroundColor:'red',
+    justifyContent: 'center',
+    width:wp2(100),
+  },
   customerText: {
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(26),
-    marginTop: hp2(4),
   },
   textBox: {
     width: wp2(88),

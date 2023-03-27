@@ -37,7 +37,7 @@ export default function NotificationScreen(props) {
   return (
     <View style={styles.container}>
         <View style={styles.headWrap}>
-            <TouchableOpacity style={{marginLeft:wp2(3),marginRight:wp2(5)}}>
+            <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginLeft:wp2(3),marginRight:wp2(5)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.notificationText}>Notifications </Text>

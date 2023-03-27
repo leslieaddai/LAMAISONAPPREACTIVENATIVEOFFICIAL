@@ -33,15 +33,27 @@ import BottomComp from '../../components/bottomComp';
 
 export default function HomeScreen(props) {
 
-    const brandComp = () => {
+    const brandComp = (nav) => {
         return(
-            <View style={styles.brandImage}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
+           <>
+           {nav?(
+             <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
+             <Image
+               source={IMAGES.randomPic}
+               style={{width: '100%', height: '100%'}}
+               resizeMode="cover"
+             />
+           </TouchableOpacity>
+           ):(
+             <View style={styles.brandImage}>
+             <Image
+               source={IMAGES.randomPic}
+               style={{width: '100%', height: '100%'}}
+               resizeMode="cover"
+             />
+           </View>
+           )}
+           </>
         )
     }
 
@@ -49,13 +61,13 @@ export default function HomeScreen(props) {
     return (
       <View>
         <View style={styles.headWrap}>
-          <View style={styles.imageWrap}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen')} style={styles.imageWrap}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
-          </View>
+          </TouchableOpacity>
           <ICONS.FontAwesome
             name="retweet"
             size={24}
@@ -79,13 +91,13 @@ export default function HomeScreen(props) {
     return(
         <View>
         
-          <View style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
-          </View>
+          </TouchableOpacity>
 
     
         <View style={styles.productContainer}>
@@ -128,13 +140,13 @@ export default function HomeScreen(props) {
     return(
         <View>
         
-          <View style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
-          </View>
+          </TouchableOpacity>
 
     
         <View style={{flexDirection:'row',width:wp2(100),justifyContent:'space-between'}}>
@@ -161,15 +173,15 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity   onPress={() => props.navigation.navigate('homeScreen')} style={styles.logoWrap}>
+      <View style={styles.logoWrap}>
         <Image
           source={IMAGES.logo}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
-      </TouchableOpacity>
+      </View>
       <View style={styles.iconContainer}>
-        <TouchableOpacity   onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap}>
           <Image
             source={IMAGES.gridView}
             style={{width: '100%', height: '100%'}}
@@ -177,7 +189,7 @@ export default function HomeScreen(props) {
           />
         </TouchableOpacity>
         <View style={styles.line}></View>
-        <TouchableOpacity style={styles.iconWrap}>
+        <TouchableOpacity onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap}>
           <Image
             source={IMAGES.listView}
             style={{width: '100%', height: '100%'}}
@@ -194,11 +206,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Brands</Text>
         <ScrollView horizontal >
         
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
+        {brandComp(true)}
+        {brandComp(true)}
+        {brandComp(true)}
+        {brandComp(true)}
+        {brandComp(true)}
 
         </ScrollView>
 
@@ -207,11 +219,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Pieces</Text>
         <ScrollView horizontal >
         
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
 
         </ScrollView>
 
@@ -220,11 +232,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Colour</Text>
         <ScrollView horizontal >
         
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
-        {brandComp()}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
+        {brandComp(false)}
 
         </ScrollView>
 

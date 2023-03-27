@@ -38,14 +38,16 @@ export default function BrandProfileScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.iconWrap}>
-      <View style={styles.badge}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate('FTS100')} style={styles.badge}>
           <Image
             source={IMAGES.badge}
             style={{width: '100%', height: '100%'}}
             resizeMode="contain"
           />
-        </View>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('settingsScreen',{user:'brand'})}>
         <ICONS.Ionicons name="menu-outline" size={44} color="black" />
+        </TouchableOpacity>
         <View style={styles.notificationBadge}>
             <Text style={{color:'white',fontSize:rfv(10)}}>1</Text>
         </View>
@@ -57,11 +59,22 @@ export default function BrandProfileScreen(props) {
             resizeMode="cover"
           />
       </View>
-      <View style={{flexDirection:'row',marginVertical:hp2(2),justifyContent:'space-between',paddingHorizontal:wp2(4)}}>
+      <View style={{flexDirection:'row',marginTop:hp2(2),justifyContent:'space-between',paddingHorizontal:wp2(4)}}>
         <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>Represent clo</Text>
-        <View style={styles.followButton}>
+        <TouchableOpacity style={styles.followButton}>
             <Text style={{fontWeight:'700',color:'white',fontSize:rfv(13)}}>FOLLOW</Text>
-        </View>
+        </TouchableOpacity>
+      </View>
+      
+      <View style={{flexDirection:'row',marginLeft:wp2(4),marginBottom:hp2(2)}}>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following'})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>2000 </Text>
+      <Text style={{color:'black'}}>FOLLOWING </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower'})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>700 </Text>
+      <Text style={{color:'black'}}>FOLLOWERS</Text>
+      </TouchableOpacity>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
@@ -74,7 +87,7 @@ export default function BrandProfileScreen(props) {
         <Lookbook />
 
         <TouchableOpacity  onPress={() => props.navigation.navigate('galleryScreen')} style={styles.gallery}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(28)}}>
+        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
           GALLERY
         </Text>
         </TouchableOpacity>

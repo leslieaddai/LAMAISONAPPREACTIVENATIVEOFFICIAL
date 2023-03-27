@@ -35,13 +35,17 @@ export default function CollectionComp(props) {
   const navigation = useNavigation();
   //console.log(props);
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('collectionScreen')} style={styles.imageContainer}>
+    <View>
+    <Text style={{color:'black',alignSelf:'center',fontSize:rfv(11)}}>Winter/Fall ‘22 - The Last Dance</Text>
+     <TouchableOpacity onPress={() => navigation.navigate('collectionScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.lookbook}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
     </TouchableOpacity>
+    </View>
+   
   );
 }
 
@@ -60,7 +64,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    marginHorizontal: wp2(2),
+    marginHorizontal: wp2(3),
     marginTop:hp2(1),
   },
 });

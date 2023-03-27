@@ -60,7 +60,7 @@ export default function Wardrobe(props) {
       </View>
 
       <TouchableOpacity  onPress={() => navigation.navigate('wardrobeScreen')} style={styles.wardrobe}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(28)}}>
+        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
         WARDROBE
         </Text>
       </TouchableOpacity>

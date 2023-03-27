@@ -29,8 +29,10 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function BasketComp(props) {
+  const navigation = useNavigation();
   return (
     <View
       style={{
@@ -38,13 +40,13 @@ export default function BasketComp(props) {
         alignSelf: 'center',
         marginTop: hp2(4),
       }}>
-      <View style={styles.imageWrap}>
+      <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
         <Image
           source={IMAGES.randomPic}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
-      </View>
+      </TouchableOpacity>
       <View style={styles.detailsContainer}>
         <Text style={{color: 'black', textTransform: 'uppercase'}}>
           wild chestnut X white penny loather

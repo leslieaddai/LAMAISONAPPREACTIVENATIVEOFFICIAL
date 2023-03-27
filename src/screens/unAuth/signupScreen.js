@@ -31,6 +31,23 @@ import {
 } from '../../theme';
 
 export default function SignupScreen(props) {
+  const [firstName,setFirstName]=useState('')
+  const [lastName,setLastName]=useState('')
+  const [email,setEmail]=useState('')
+
+  const onContinue = () => {
+    if (firstName != "" && lastName != "" && email != "") {
+        let data = {
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+        };
+        props.navigation.navigate("accountTypeScreen", { data: data });
+    } else {
+      alert("Please fill all details");
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
@@ -46,7 +63,8 @@ export default function SignupScreen(props) {
               fontWeight: '700',
         
             }}
-            placeholder="first name"
+            placeholder="FIRST NAME"
+            onChangeText={(val) => setFirstName(val.replace(/\s+/g, " ").trim())}
           />
         </View>
         <View style={[styles.inputBox,{width:wp2(36)}]}>
@@ -59,7 +77,8 @@ export default function SignupScreen(props) {
               fontWeight: '700',
               
             }}
-            placeholder="last name"
+            placeholder="LAST NAME"
+            onChangeText={(val) => setLastName(val.replace(/\s+/g, " ").trim())}
           />
         </View>
         </View>
@@ -74,12 +93,12 @@ export default function SignupScreen(props) {
               fontWeight: '700',
              
             }}
-            placeholder="email"
+            placeholder="EMAIL"
+            onChangeText={(val) => setEmail(val)}
           />
         </View>
         <Text style={styles.text}>This has to be real so we can stay in contact with you</Text>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('signupScreen')}
+        <TouchableOpacity onPress={onContinue}
           style={[styles.button, {width: wp2(48)}]}>
           <Text style={styles.buttonText}>CONTINUE</Text>
         </TouchableOpacity>

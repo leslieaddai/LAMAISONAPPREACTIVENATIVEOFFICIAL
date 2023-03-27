@@ -29,17 +29,19 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function NextPickupComp(props) {
   //console.log(props);
+  const navigation = useNavigation();
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.randomPic}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 

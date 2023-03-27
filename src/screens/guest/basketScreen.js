@@ -43,13 +43,13 @@ export default function BasketScreen(props) {
           paddingBottom: hp2(12),
         }}>
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <View style={styles.imageWrap}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
             <Image
               source={IMAGES.randomPic}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"
             />
-          </View>
+          </TouchableOpacity>
           <View style={styles.detailsContainer}>
             <Text style={{color: 'black', textTransform: 'uppercase'}}>
               wild chestnut X white penny loather
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(26),
     fontWeight: '700',
     marginTop: hp2(4),
-    marginLeft: wp2(8),
+    marginLeft: wp2(4),
   },
   imageWrap: {
     width: wp2(52),

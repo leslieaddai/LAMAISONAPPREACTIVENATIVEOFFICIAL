@@ -45,12 +45,12 @@ export default function EditorProfileScreen(props) {
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           >
-             <View style={styles.iconWrap}>
+             <TouchableOpacity onPress={()=>props.navigation.navigate('settingsScreen',{user:'editor'})} style={styles.iconWrap}>
         <ICONS.Ionicons name="menu-outline" size={44} color="black" />
         <View style={styles.notificationBadge}>
             <Text style={{color:'white',fontSize:rfv(10)}}>1</Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.nameContainer}>
         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>ICEY.B</Text>
         <TouchableOpacity onPress={()=>{follow?setFollow(false):setFollow(true)}} style={[styles.followButton,{backgroundColor:follow?'white':'black'}]}>
@@ -59,6 +59,18 @@ export default function EditorProfileScreen(props) {
       </View>
           </ImageBackground>
       </View>
+
+      <View style={{flexDirection:'row',marginLeft:wp2(4),marginVertical:hp2(1)}}>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following'})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>2000 </Text>
+      <Text style={{color:'black'}}>FOLLOWING </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower'})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>700 </Text>
+      <Text style={{color:'black'}}>FOLLOWERS</Text>
+      </TouchableOpacity>
+      </View>
+
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
 
       <Text style={{fontWeight:'600',fontSize:rfv(18),color:'black',marginVertical:hp2(2),marginLeft:wp2(2)}}>FAVOURITE BRANDS</Text>

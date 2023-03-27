@@ -36,7 +36,7 @@ export default function WardrobeScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.wardrobeText}>WARDROBE</Text>

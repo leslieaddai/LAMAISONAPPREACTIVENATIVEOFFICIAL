@@ -36,11 +36,12 @@ import BottomComp from '../../components/bottomComp';
 export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(false);
   const [share, setShare] = useState(false);
+  const [hanger,setHanger]=useState(false);
   const scrollX = new Animated.Value(0);
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.dressingText}>DRESSING ROOM</Text>
@@ -67,11 +68,11 @@ export default function DressingRoomScreen(props) {
             />
           </TouchableOpacity>
           <Text style={{color: 'black'}}>1000</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>{hanger?setHanger(false):setHanger(true)}}>
             <ICONS.MaterialCommunityIcons
               name="hanger"
               size={34}
-              color="black"
+              color={hanger?'#162FAC':'black'}
             />
           </TouchableOpacity>
           <Text style={{color: 'black'}}>1500</Text>
@@ -194,7 +195,7 @@ export default function DressingRoomScreen(props) {
                 resizeMode="cover"
               />
             </View>
-            <View
+            <TouchableOpacity onPress={()=>props.navigation.navigate('colourClothing')}
               style={[
                 styles.brandImage,
                 {
@@ -203,7 +204,7 @@ export default function DressingRoomScreen(props) {
                   borderRadius: wp2(2),
                   backgroundColor: '#168B16',
                 },
-              ]}></View>
+              ]}></TouchableOpacity>
           </View>
         </View>
 
@@ -213,18 +214,18 @@ export default function DressingRoomScreen(props) {
             style={{color: 'black', fontSize: rfv(22), marginLeft: wp2(66)}}>
             9
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('sizeClothing')}>
             <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
           </TouchableOpacity>
         </View>
         <View style={styles.filters}>
           <Text style={{color: 'black'}}>REVIEWS</Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('feedbackScreen')}>
             <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity
+        <TouchableOpacity onPress={()=>props.navigation.navigate('checkoutScreen')}
           style={[
             styles.button,
             {alignSelf: 'center', marginVertical: hp2(4)},
@@ -233,7 +234,7 @@ export default function DressingRoomScreen(props) {
         </TouchableOpacity>
 
         <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <TouchableOpacity
+          <TouchableOpacity onPress={()=>props.navigation.navigate('basketScreen')}
             style={[styles.button, {width: wp2(36), marginHorizontal: wp2(2)}]}>
             <Text style={styles.buttonText}>ADD TO BASKET</Text>
           </TouchableOpacity>

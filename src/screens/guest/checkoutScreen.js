@@ -38,10 +38,10 @@ export default function CheckoutScreen(props) {
 
   const scrollX = new Animated.Value(0);
 
-  const textBox = () => {
+  const textBox = (place) => {
     return (
       <View style={styles.inputBox}>
-        <TextInput style={styles.textInput} placeholder="address line 1" />
+        <TextInput style={styles.textInput} placeholder={place} keyboardType={place=='CARD NUMBER' ? 'number-pad' : 'default'} />
       </View>
     );
   };
@@ -49,9 +49,9 @@ export default function CheckoutScreen(props) {
   const textBox2 = () => {
     return (
       <>
-        {textBox()}
-        {textBox()}
-        {textBox()}
+        {textBox('EMAIL')}
+        {textBox('NAME ON CARD')}
+        {textBox('CARD NUMBER')}
         <View
           style={{
             flexDirection: 'row',
@@ -60,10 +60,10 @@ export default function CheckoutScreen(props) {
             width: wp2(80),
           }}>
           <View style={[styles.inputBox, {width: wp2(48)}]}>
-            <TextInput style={styles.textInput} placeholder="address line 1" />
+            <TextInput style={styles.textInput} placeholder="EXPIRY DATE MM/YY" />
           </View>
           <View style={[styles.inputBox, {width: wp2(28)}]}>
-            <TextInput style={styles.textInput} placeholder="address line 1" />
+            <TextInput style={styles.textInput} placeholder="CVV" keyboardType='number-pad' />
           </View>
         </View>
       </>
@@ -73,7 +73,7 @@ export default function CheckoutScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.checkout}>Check Out</Text>
@@ -156,20 +156,20 @@ export default function CheckoutScreen(props) {
           <View style={styles.detailInputArea}>{textBox2()}</View>
         ) : continueButton == 'continue' ? (
           <View style={[styles.detailInputArea, {height: hp2(38)}]}>
-            {textBox()}
-            {textBox()}
-            {textBox()}
-            {textBox()}
-            {textBox()}
+            {textBox('ADDRESS LINE 1')}
+            {textBox('ADDRESS LINE 2')}
+            {textBox('CITY')}
+            {textBox('COUNTRY')}
+            {textBox('POSTCODE')}
           </View>
         ) : (
           <>
             <View style={[styles.detailInputArea, {height: hp2(38)}]}>
-              {textBox()}
-              {textBox()}
-              {textBox()}
-              {textBox()}
-              {textBox()}
+            {textBox('ADDRESS LINE 1')}
+            {textBox('ADDRESS LINE 2')}
+            {textBox('CITY')}
+            {textBox('COUNTRY')}
+            {textBox('POSTCODE')}
             </View>
             <View style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
               {textBox2()}
@@ -319,7 +319,7 @@ const styles = StyleSheet.create({
   },
   button: {
     width: wp2(66),
-    height: hp2(4),
+    height: hp2(5),
     backgroundColor: 'black',
     borderRadius: wp2(10),
     alignItems: 'center',

@@ -37,7 +37,7 @@ export default function ImageViewScreen(props) {
   const scrollX = new Animated.Value(0);
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <TouchableOpacity onPress={()=>props.navigation.goBack()}
         style={{
           marginLeft: wp2(3),
           marginTop: hp2(4),

@@ -32,7 +32,7 @@ import {
 import AlertComp from '../../components/alertComp';
 
 export default function ResetPassScreen(props) {
-  const [showReset, setShowReset] = useState(true);
+  const [showReset, setShowReset] = useState(false);
   const [passMatch, setPassMatch] = useState(false);
   return (
     <View style={styles.container}>
@@ -49,7 +49,7 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
-                placeholder="enter password"
+                placeholder="ENTER PASSWORD"
               />
             </View>
             <View style={styles.inputBox}>
@@ -61,11 +61,11 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
-                placeholder="re-enter password"
+                placeholder="RE-ENTER PASSWORD"
               />
             </View>
             <TouchableOpacity
-              onPress={() => alert('reset btn clicked')}
+              onPress={() => props.navigation.navigate('loginScreen')}
               style={styles.button}>
               <Text style={styles.buttonText}>Reset Password</Text>
             </TouchableOpacity>
@@ -84,11 +84,11 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
-                placeholder="email address"
+                placeholder="EMAIL ADDRESS"
               />
             </View>
             <TouchableOpacity
-              onPress={() => alert('send link btn clicked')}
+              onPress={() => setShowReset(true)}
               style={styles.button}>
               <Text style={styles.buttonText}>Send link to email address</Text>
             </TouchableOpacity>
@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '400',
-    fontSize: rfv(14),
+    fontSize: rfv(13),
     textTransform: 'uppercase',
   },
 });

@@ -36,7 +36,7 @@ export default function LookbookScreen(props) {
   return (
     <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.lookbookText}>Lookbook</Text>
@@ -53,14 +53,20 @@ export default function LookbookScreen(props) {
           />
       </TouchableOpacity>
       <Text style={styles.collectionText}>All Collections</Text>
-      <Text style={{color:'black',textAlign:'center'}}>Winter/Fall ‘22 - The Last Dance</Text>
-      <ScrollView contentContainerStyle={{paddingHorizontal:wp2(4),}} horizontal>
+     <View>
+     <ScrollView contentContainerStyle={{paddingHorizontal:wp2(4),paddingVertical:hp2(1)}} horizontal showsHorizontalScrollIndicator={false}>
         <CollectionComp/>
         <CollectionComp/>
         <CollectionComp/>
         <CollectionComp/>
         <CollectionComp/>
       </ScrollView>
+     </View>
+
+      <TouchableOpacity onPress={()=>props.navigation.navigate('selectCoverPhoto')} style={styles.button}>
+          <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
+        </TouchableOpacity>
+
       <BottomComp />
     </View>
   );
@@ -107,5 +113,25 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignSelf:'center',
     marginVertical:hp2(1),
+  },
+  button: {
+    width: wp2(48),
+    height: hp2(5),
+    borderRadius: wp2(8),
+    backgroundColor: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop:hp2(2),
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
 });

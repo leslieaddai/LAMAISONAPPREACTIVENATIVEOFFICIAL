@@ -91,6 +91,16 @@ def reactNativeArchitectures() {
 }
 
 android {
+
+      signingConfigs {
+    release {
+     storeFile file('la_maison.keystore')
+      storePassword 'admin123'
+      keyAlias 'la_maison_app'
+      keyPassword 'admin123'
+    }
+  }
+
     ndkVersion rootProject.ext.ndkVersion
 
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -125,6 +135,7 @@ android {
             signingConfig signingConfigs.debug
         }
         release {
+             signingConfig signingConfigs.release
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug

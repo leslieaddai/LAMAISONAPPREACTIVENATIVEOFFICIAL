@@ -20,4 +20,6 @@ export const IMAGES={
     applePay: require('../assets/applePay.png'),
     paypal: require('../assets/paypal.png'),
     gPay: require('../assets/gPay.png'),
+    shirt: require('../assets/shirt.png'),
+    foot: require('../assets/foot.png'),
 }

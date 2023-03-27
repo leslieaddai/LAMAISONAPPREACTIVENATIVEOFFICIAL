@@ -36,7 +36,7 @@ export default function Lookbook(props) {
   return (
     <>
       <TouchableOpacity  onPress={() => navigation.navigate('lookbookScreen')} style={styles.lookbook}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(28)}}>
+        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
           LOOKBOOK
         </Text>
       </TouchableOpacity>

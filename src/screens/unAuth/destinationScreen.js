@@ -35,7 +35,7 @@ export default function DestinationScreen(props) {
   return (
     <View style={styles.container}>
       <Text style={styles.destinationText}>Destination</Text>
-      <TouchableOpacity style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadScreen')} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
         <View style={styles.iconWrap}>
         <Image
             source={IMAGES.editoricon}
@@ -45,7 +45,7 @@ export default function DestinationScreen(props) {
         </View>
         <Text style={{color:'black'}}>Gallery</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate('productType')} style={styles.box}>
         <View style={styles.iconWrap}>
         <Image
             source={IMAGES.brandicon}

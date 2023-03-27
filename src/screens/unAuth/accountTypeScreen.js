@@ -32,10 +32,11 @@ import {
 import BottomComp from '../../components/bottomComp';
 
 export default function AccountTypeScreen(props) {
+  console.log(props.route.params.data);
   return (
     <View style={styles.container}>
       <Text style={styles.accTypeText}>Account Type</Text>
-      <TouchableOpacity style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate('createAccountScreen',{user:'editor',data:props.route.params.data})} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
         <View style={styles.iconWrap}>
         <Image
             source={IMAGES.editoricon}
@@ -45,7 +46,7 @@ export default function AccountTypeScreen(props) {
         </View>
         <Text style={{color:'black'}}>Editor</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.box}>
+      <TouchableOpacity onPress={()=>props.navigation.navigate('createAccountScreen',{user:'brand',data:props.route.params.data})} style={styles.box}>
         <View style={styles.iconWrap}>
         <Image
             source={IMAGES.brandicon}
@@ -55,7 +56,7 @@ export default function AccountTypeScreen(props) {
         </View>
         <Text style={{color:'black'}}>Brand</Text>
       </TouchableOpacity>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
   );
 }

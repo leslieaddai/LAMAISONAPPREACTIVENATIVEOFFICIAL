@@ -42,7 +42,7 @@ export default function GuestScreen(props) {
         style={styles.button}>
         <Text style={styles.buttonText}>SIGN IN</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=> alert('continue as guest')} style={{marginTop:hp2(12)}}>
+      <TouchableOpacity onPress={()=> props.navigation.navigate('homeScreen')} style={{marginTop:hp2(12)}}>
         <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
       </TouchableOpacity>
     </View>

@@ -29,13 +29,15 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function WardrobeComp(props) {
+  const navigation = useNavigation();
   //console.log(props);
   const [heart,setHeart]=useState(false);
   const [share,setShare]=useState(false);
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.lookbook}
         style={{width: '100%', height: '80%'}}
@@ -49,7 +51,7 @@ export default function WardrobeComp(props) {
         <ICONS.FontAwesome name="retweet" size={24} color={share?'#13D755':'black'} />
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

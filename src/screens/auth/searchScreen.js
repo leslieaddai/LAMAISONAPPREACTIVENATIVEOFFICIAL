@@ -48,7 +48,7 @@ export default function SearchScreen(props) {
             placeholder="what do you want to wear?"
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('filterScreen')}>
           <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />
         </TouchableOpacity>
       </View>

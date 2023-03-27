@@ -36,7 +36,15 @@ import LineComp from '../../components/lineComp';
 export default function FeedbackScreen(props) {
   return (
     <View style={styles.container}>
-      <Text style={styles.supportText}>Customer Support</Text>
+       <View style={styles.headWrap}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+          <ICONS.AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.supportText}>Customer Support</Text>
+        <TouchableOpacity  onPress={()=>props.navigation.navigate('customerSupportScreen')}  style={{position: 'absolute', right: wp2(4)}}>
+        <ICONS.AntDesign name="pluscircle" size={30} color="#162FAC" />
+        </TouchableOpacity>
+      </View>
       <LineComp/>
       <FeedbackMessageComp />
       <BottomComp />
@@ -51,11 +59,18 @@ const styles = StyleSheet.create({
     //alignItems: 'center',
     //justifyContent: 'center',
   },
+  headWrap: {
+    flexDirection: 'row',
+    marginTop: hp2(4),
+    alignItems: 'center',
+    //backgroundColor:'red',
+    //justifyContent: 'center',
+    width:wp2(100),
+  },
   supportText: {
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp2(4),
     marginLeft: wp2(12),
   },
 });
