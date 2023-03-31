@@ -1,12 +1,11 @@
 import { httpRequest } from "../../config";
-import { setToast } from "./toastAction";
 import { store } from "../index";
 
 export const postData=async (dispatch, url,data, header ,types,successMsg, callback,successNotifyStatus='success')=> {
     try {
     
         if(typeof url !== 'string') return alert (url.toString())
-        dispatch({type:types.start})
+        dispatch({type:types})
        console.log("cccccccccccccccccccccccccc",data, header)
         const response= await httpRequest.post(url,data,header)
         const result= response.data
@@ -21,18 +20,13 @@ export const postData=async (dispatch, url,data, header ,types,successMsg, callb
             
             // let data = url==='login'?{...result,username:temp.username }:result
             // alert(result.message)
-            dispatch({type: types.success, payload: result.data })
-            callback && callback(result.data)
-            dispatch(setToast(successNotifyStatus, result.message||successMsg))   
-            
+            dispatch({type: types, payload: result.data })
+            callback && callback(result.data)  
         }
       
         
     } catch (error) {
         console.log("Error from action postData from  url",url, types, error, error.message, typeof error ==='string')
-        dispatch({type:types.failed})
-        // error.message|| error && 
-        dispatch(setToast('error',typeof error ==='string'? error: error.message))
     }   
 
 }

@@ -128,11 +128,7 @@ const manageActionType = type => {
 // };
 
 export const types = {
-  SHOW_TOAST :manageActionType('SHOW_TOAST'),
-  HIDE_TOAST: manageActionType('HIDE_TOAST'),
-  UPLOAD_MEDIA: manageActionType('UPLOAD_MEDIA'),
-
-  LOGIN: manageActionType('LOGIN'),
-  SIGNUP: manageActionType('SIGNUP'), 
-  LOGOUT:manageActionType('LOGOUT'),
+  LOGIN: 'LOGIN',
+  SIGNUP: 'SIGNUP', 
+  LOGOUT: 'LOGOUT',
 };

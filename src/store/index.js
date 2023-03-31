@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistStore, persistCombineReducers } from 'redux-persist';
 // import { authReducer, workoutReducer, timeslotReducer, trainerReducer, cartReducer, catgAndPrdtReducer, favouriteReducer, homeReducer, orderReducer, packageReducer, userReducer, mediaReducer } from './reducer'
 import { authReducer } from './reducer/authReducer'
-import toastReducer from './reducer/toastReducer'
 
 const persistConfig = {
     key: 'root',
@@ -29,7 +28,6 @@ const persistConfig = {
   // }   
   const rootReducer = {
     auth:  authReducer,
-    toast: toastReducer,
 }   
   const persistCombinedReducers = persistCombineReducers(persistConfig, rootReducer);
 
