@@ -8,6 +8,8 @@ import {
   TextInput,
   ScrollView,
   Animated,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -39,7 +41,8 @@ export default function DressingRoomScreen(props) {
   const [hanger,setHanger]=useState(false);
   const scrollX = new Animated.Value(0);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -246,6 +249,7 @@ export default function DressingRoomScreen(props) {
       </ScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -256,13 +260,13 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
   },
   dressingText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
   },
   iconWraper: {
     flexDirection: 'row',
@@ -295,7 +299,7 @@ const styles = StyleSheet.create({
   },
   textBox: {width: wp2(54), height: hp2(28)},
   headingText: {
-    fontSize: rfv(16),
+    fontSize: rfv(12),
     fontWeight: '600',
     color: 'black',
     textTransform: 'uppercase',
@@ -306,7 +310,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: 'black',
     textAlign: 'justify',
-    fontSize: rfv(11),
+    fontSize: rfv(10),
     paddingHorizontal: wp2(1),
   },
   filters: {
@@ -339,6 +343,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: rfv(13),
+    fontSize: rfv(11),
   },
 });

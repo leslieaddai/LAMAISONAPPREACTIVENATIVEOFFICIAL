@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +36,8 @@ import BasketComp from '../../components/basketComp';
 
 export default function BasketScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <Text style={styles.basket}>Basket</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -95,6 +98,7 @@ export default function BasketScreen(props) {
       </ScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginLeft: wp2(4),
   },
   imageWrap: {

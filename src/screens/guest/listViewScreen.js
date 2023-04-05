@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -97,35 +99,37 @@ export default function ListViewScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
 
-      <View style={styles.iconContainer}>
-        <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap2}>
-          <Image
-            source={IMAGES.gridView}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <View style={styles.line}></View>
-        <TouchableOpacity onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap2}>
-          <Image
-            source={IMAGES.listView}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
+<View style={styles.iconContainer}>
+  <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap2}>
+    <Image
+      source={IMAGES.gridView}
+      style={{width: '100%', height: '100%'}}
+      resizeMode="contain"
+    />
+  </TouchableOpacity>
+  <View style={styles.line}></View>
+  <TouchableOpacity onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap2}>
+    <Image
+      source={IMAGES.listView}
+      style={{width: '100%', height: '100%'}}
+      resizeMode="contain"
+    />
+  </TouchableOpacity>
+</View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp2(12),paddingTop:hp2(1)}}>
-        {postComp()}
-        {postComp()}
-      </ScrollView>
+<ScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={{paddingBottom: hp2(12),paddingTop:hp2(1)}}>
+  {postComp()}
+  {postComp()}
+</ScrollView>
 
-      <BottomComp />
-    </View>
+<BottomComp />
+</View>
+    </SafeAreaView>
   );
 }
 
@@ -135,14 +139,14 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   iconContainer: {
-    width: wp2(40),
+    width: wp2(44),
     height: hp2(8),
     flexDirection: 'row',
     //backgroundColor:'red',
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop:hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
   },
   iconWrap2: {
     width: wp2(12),

@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,7 +35,8 @@ import BottomComp from '../../components/bottomComp';
 
 export default function ConfirmationScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <View style={styles.wrap}>
         <View style={styles.circle}>
             <ICONS.FontAwesome name="check" size={wp2(18)} color="white" />
@@ -63,6 +66,7 @@ export default function ConfirmationScreen(props) {
       </View>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 

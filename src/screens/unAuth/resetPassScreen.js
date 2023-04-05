@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -30,13 +32,14 @@ import {
   FONTS,
 } from '../../theme';
 import AlertComp from '../../components/alertComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ResetPassScreen(props) {
   const [showReset, setShowReset] = useState(false);
   const [passMatch, setPassMatch] = useState(false);
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           <>
@@ -94,8 +97,8 @@ export default function ResetPassScreen(props) {
             </TouchableOpacity>
           </>
         )}
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -111,6 +114,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(26),
     fontWeight: '700',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginLeft: wp2(8),
   },
   inputBox: {
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '400',
-    fontSize: rfv(13),
+    fontSize: rfv(11),
     textTransform: 'uppercase',
   },
 });

@@ -10,6 +10,7 @@ import {
   PermissionsAndroid, 
   Platform,
   Animated,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -37,6 +38,7 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 //import SelectDropdown from 'react-native-select-dropdown';
 import ColorBox from '../../components/colorBox';
 import QuantityComp from '../../components/quantityComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ImageUploadLookbook(props) {
 
@@ -61,6 +63,9 @@ export default function ImageUploadLookbook(props) {
   useEffect(()=>{
     async function runThis () {
       if (Platform.OS === "android" && (await hasAndroidPermission())) {
+        showPhotos();
+      }
+      if(Platform.OS==='ios'){
         showPhotos();
       }
     }
@@ -107,7 +112,7 @@ export default function ImageUploadLookbook(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
      
       {selectedImage.length!==0 && !nextButton?(
         <View style={styles.headWrap}>
@@ -175,7 +180,7 @@ export default function ImageUploadLookbook(props) {
       )}
 
      {nextButton && !colorBox && !showQuantity && !confirmButton ?(
-      <ScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
       <View style={styles.inputBox}>
           <TextInput
             style={{
@@ -259,7 +264,7 @@ export default function ImageUploadLookbook(props) {
         <TouchableOpacity onPress={()=>setShowQuantity(true)} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10),marginTop:hp2(1)}]}>
           <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>NEXT</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
      ):nextButton && colorBox ? (
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
             <Text style={{color:'black',textTransform:'uppercase',fontWeight:'700',fontSize:rfv(16),alignSelf:'center'}}>Select all colours for this piece</Text>
@@ -279,7 +284,7 @@ export default function ImageUploadLookbook(props) {
       </View>
         </ScrollView>
      ):nextButton && showQuantity && !confirmButton ? (
-       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
+       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
        {addQuantity.map((item,index)=>(
         <QuantityComp key={index} />
        ))}
@@ -289,7 +294,7 @@ export default function ImageUploadLookbook(props) {
         <TouchableOpacity onPress={()=>setConfirmButton(true)} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10),marginTop:hp2(1)}]}>
           <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>NEXT</Text>
         </TouchableOpacity>
-       </ScrollView>
+       </KeyboardAwareScrollView>
      ):nextButton && confirmButton ? (
         <ScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
 
@@ -338,7 +343,7 @@ export default function ImageUploadLookbook(props) {
      })}
      </ScrollView>
      )}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -351,13 +356,14 @@ const styles = StyleSheet.create({
     width:wp2(92),
     flexDirection: 'row',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf:'center',
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
   },
   button: {

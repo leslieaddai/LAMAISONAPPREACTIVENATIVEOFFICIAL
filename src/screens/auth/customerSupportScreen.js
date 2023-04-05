@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -30,6 +32,7 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function CustomerSupportScreen(props) {
     const options = (text) => {
@@ -43,8 +46,9 @@ export default function CustomerSupportScreen(props) {
         )
     }
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp2(12),}}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp2(12),}}>
       
 
       <View style={styles.headWrap}>
@@ -83,9 +87,10 @@ export default function CustomerSupportScreen(props) {
       <TouchableOpacity style={styles.button}>
         <Text style={{color:'white'}}>SEND</Text>
       </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -107,7 +112,7 @@ const styles = StyleSheet.create({
   customerText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(26),
+    fontSize: rfv(20),
   },
   textBox: {
     width: wp2(88),

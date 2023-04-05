@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,8 @@ import OrderComp from '../../components/orderComp';
 
 export default function OrderTrackingScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
       <Text style={styles.orderText}>Order Tracking</Text>
       <ScrollView contentContainerStyle={{paddingBottom: hp2(12)}}>
         <LineComp />
@@ -54,6 +57,7 @@ export default function OrderTrackingScreen(props) {
       </ScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -65,8 +69,8 @@ const styles = StyleSheet.create({
   orderText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
-    marginTop:hp2(4),
+    fontSize: rfv(24),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignSelf:'center',
   },
 });

@@ -36,7 +36,11 @@ export default function CollectionComp(props) {
   //console.log(props);
   return (
     <View>
-    <Text style={{color:'black',alignSelf:'center',fontSize:rfv(11)}}>Winter/Fall ‘22 - The Last Dance</Text>
+    
+    <View style={{width:wp2(54),alignItems:'center'}}>
+    <Text style={{color:'black',fontSize:rfv(10)}}>Winter/Fall ‘22 - The Last Dance</Text>
+    </View>
+    
      <TouchableOpacity onPress={() => navigation.navigate('collectionScreen')} style={styles.imageContainer}>
       <Image
         source={IMAGES.lookbook}

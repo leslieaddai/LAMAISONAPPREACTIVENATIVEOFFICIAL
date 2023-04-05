@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -32,7 +34,7 @@ import {
 
 export default function PrivacyScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Privacy & Security</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -64,7 +66,7 @@ export default function PrivacyScreen(props) {
           hesitate to contact us.
         </Text>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -75,9 +77,9 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginBottom: hp2(2),
     marginLeft: wp2(8),
   },

@@ -9,6 +9,7 @@ import {
   ScrollView,
   PermissionsAndroid, 
   Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -41,6 +42,9 @@ export default function SelectCoverPhoto(props) {
   useEffect(()=>{
     async function runThis () {
       if (Platform.OS === "android" && (await hasAndroidPermission())) {
+        showPhotos();
+      }
+      if (Platform.OS === 'ios') {
         showPhotos();
       }
     }
@@ -78,7 +82,7 @@ export default function SelectCoverPhoto(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
     <View style={styles.headWrap}>
         <Text style={styles.heading}>SELECT COVER PHOTO</Text>
@@ -115,7 +119,7 @@ export default function SelectCoverPhoto(props) {
      })}
      </ScrollView>
      
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -128,13 +132,14 @@ const styles = StyleSheet.create({
     width:wp2(94),
     flexDirection: 'row',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'space-between',
     alignSelf:'center',
   },
   heading: {
     color: 'black',
-    fontSize: rfv(20),
+    fontSize: rfv(18),
     fontWeight: '700',
   },
   button: {

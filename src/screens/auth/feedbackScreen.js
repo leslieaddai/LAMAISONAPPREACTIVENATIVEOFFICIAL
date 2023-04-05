@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,8 @@ import LineComp from '../../components/lineComp';
 
 export default function FeedbackScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+        <View style={styles.container}>
        <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -49,6 +52,7 @@ export default function FeedbackScreen(props) {
       <FeedbackMessageComp />
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     //justifyContent: 'center',
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
   },
   supportText: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(20),
     fontWeight: '700',
     marginLeft: wp2(12),
   },

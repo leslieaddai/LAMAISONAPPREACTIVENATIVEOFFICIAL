@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,13 +36,17 @@ import CollectionComp from '../../components/collectionComp';
 
 export default function LookbookScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+         <View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.lookbookText}>Lookbook</Text>
       </View>
+
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
+
       <Text style={styles.collectionText}>Latest Collection</Text>
       <Text style={{fontWeight: '600', color: 'black',marginLeft:wp2(6),}}>
         Spring/Summer ‘23 - The Initial
@@ -67,8 +73,11 @@ export default function LookbookScreen(props) {
           <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
         </TouchableOpacity>
 
+      </ScrollView>
+
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -79,7 +88,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
   lookbookText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
   },
   collectionText: {
     color: 'black',

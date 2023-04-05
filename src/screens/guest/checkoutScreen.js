@@ -8,6 +8,8 @@ import {
   TextInput,
   ScrollView,
   Animated,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -32,6 +34,7 @@ import {
 } from '../../theme';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 import BottomComp from '../../components/bottomComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function CheckoutScreen(props) {
   const [continueButton, setContinueButton] = useState('continue');
@@ -71,7 +74,8 @@ export default function CheckoutScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -79,11 +83,11 @@ export default function CheckoutScreen(props) {
         <Text style={styles.checkout}>Check Out</Text>
         <ICONS.Entypo name="lock" size={30} color="black" />
       </View>
-      <ScrollView
+      <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingTop: hp2(2), paddingBottom: hp2(12)}}>
         <View style={styles.checkoutWrap}>
-          <View style={styles.scrollViewWrap}>
+        <View style={styles.scrollViewWrap}>
             <Animated.ScrollView
               horizontal
               pagingEnabled
@@ -217,9 +221,10 @@ export default function CheckoutScreen(props) {
               : 'PURCHASE'}
           </Text>
         </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -230,7 +235,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -238,7 +243,7 @@ const styles = StyleSheet.create({
   checkout: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
     marginRight: wp2(2),
   },
   productImage: {

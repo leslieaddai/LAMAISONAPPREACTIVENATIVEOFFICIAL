@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,8 @@ import InventoryComp from '../../components/inventoryComp';
 export default function Inventory(props) {
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+        <View style={styles.container}>
       <Text style={styles.heading}>Inventory</Text>
 
       <ScrollView
@@ -61,6 +64,7 @@ export default function Inventory(props) {
       </ScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -73,7 +77,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(19),
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignSelf: 'center',
     textTransform: 'uppercase',
   },

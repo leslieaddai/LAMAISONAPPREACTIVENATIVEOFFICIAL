@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -172,7 +174,8 @@ export default function HomeScreen(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <View style={styles.logoWrap}>
         <Image
           source={IMAGES.logo}
@@ -246,6 +249,7 @@ export default function HomeScreen(props) {
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -255,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   logoWrap: {
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'center',
     width: wp2(100),
@@ -263,7 +267,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   iconContainer: {
-    width: wp2(40),
+    width: wp2(44),
     height: hp2(8),
     flexDirection: 'row',
     //backgroundColor:'red',

@@ -36,7 +36,7 @@ export default function QuantityComp(props) {
         <TouchableOpacity style={styles.colorBox}></TouchableOpacity>
 
         <TouchableOpacity style={[styles.inputBox,{alignItems:'center',justifyContent:'center'}]}>
-         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13),textTransform:'uppercase'}}>Sizes Available</Text>
+         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(11),textTransform:'uppercase'}}>Sizes Available</Text>
         </TouchableOpacity>
 
         <View style={styles.inputBox}>

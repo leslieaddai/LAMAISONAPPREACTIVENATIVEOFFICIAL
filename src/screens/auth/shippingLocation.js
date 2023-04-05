@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -29,6 +31,7 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ShippingLocation(props) {
     const options = (text) => {
@@ -42,8 +45,9 @@ export default function ShippingLocation(props) {
         )
     }
   return (
-    <View style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(2),}}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(2),}}>
 
         <Text style={styles.heading}>Shipping Information</Text>
 
@@ -72,8 +76,9 @@ export default function ShippingLocation(props) {
       <TouchableOpacity style={styles.button}>
         <Text style={{color:'white'}}>CONFIRM</Text>
       </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -85,9 +90,9 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(26),
+    fontSize: rfv(20),
     textTransform:'uppercase',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignSelf:'center',
   },
   textBox: {

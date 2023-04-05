@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,7 @@ export default function AnalyticsScreen(props) {
   const boxComp = badge => {
     return (
       <View style={styles.box2}>
-        <Text style={[styles.textOne, {fontSize: rfv(28)}]}>20,000</Text>
+        <Text style={[styles.textOne, {fontSize: rfv(24)}]}>20,000</Text>
         {badge ? (
           <View style={styles.badge}>
             <Image
@@ -52,7 +54,8 @@ export default function AnalyticsScreen(props) {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+         <View style={styles.container}>
       <Text style={styles.heading}>Hello Represent!</Text>
 
       <View style={styles.box}>
@@ -71,6 +74,7 @@ export default function AnalyticsScreen(props) {
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -81,9 +85,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginLeft: wp2(8),
   },
   box: {
@@ -114,8 +119,8 @@ const styles = StyleSheet.create({
     marginTop: hp2(2),
   },
   box2: {
-    width: wp2(42),
-    height: hp2(14),
+    width: wp(40),
+    height: hp(12),
     backgroundColor: 'white',
     borderRadius: wp2(4),
     alignItems: 'center',
@@ -131,7 +136,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
-  textOne: {color: '#076426', fontSize: rfv(38)},
+  textOne: {color: '#076426', fontSize: rfv(30)},
   textTwo: {color: 'black', fontSize: rfv(18), fontWeight: '600'},
   badge: {
     width: wp2(10),

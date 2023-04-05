@@ -35,13 +35,17 @@ export default function InventoryComp(props) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={()=>navigation.navigate('reuploadScreen')} style={styles.imageContainer}>
+
+      <View style={{height:hp2(22),overflow:'hidden'}}>
       <Image
         source={IMAGES.lookbook}
-        style={{width: '100%', height: '80%'}}
+        style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-      <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>Represent Owners Club Hoodie</Text>
-      <Text style={{color:props.value<50?"#EC3030":"black",textAlign:'center',fontSize:rfv(11),fontWeight:'bold'}}>{props.value==0?"Out of Stock!!":props.value+" Remaining"}</Text>
+      </View>
+
+      <Text style={{color:'black',textAlign:'center',fontSize:rfv(9)}}>Represent Owners Club Hoodie</Text>
+      <Text style={{color:props.value<50?"#EC3030":"black",textAlign:'center',fontSize:rfv(9),fontWeight:'bold'}}>{props.value==0?"Out of Stock!!":props.value+" Remaining"}</Text>
     </TouchableOpacity>
   );
 }
@@ -49,7 +53,7 @@ export default function InventoryComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(47),
-    height: hp2(22),
+    //height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

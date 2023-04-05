@@ -36,11 +36,13 @@ export default function AddCollectionComp(props) {
   const [selected, setSelected]=useState(false);
   return (
     <TouchableOpacity  onPress={()=> selected?setSelected(false):setSelected(true)} style={styles.imageContainer}>
+      <View style={{height:hp2(18),overflow:'hidden'}}>
       <Image
         source={IMAGES.lookbook}
-        style={{width: '100%', height: '80%'}}
+        style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
+      </View>
       <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>Represent Owners Club Hoodie{'\n'}£150</Text>
       {selected && (<ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
     </TouchableOpacity>
@@ -50,7 +52,7 @@ export default function AddCollectionComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(45),
-    height: hp2(22),
+    //height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

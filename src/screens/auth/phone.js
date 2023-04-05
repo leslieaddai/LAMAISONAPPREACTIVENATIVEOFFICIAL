@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -48,7 +50,7 @@ export default function Phone(props) {
         )
     }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -64,7 +66,7 @@ export default function Phone(props) {
           <Text style={styles.buttonText}>CONFIRM</Text>
         </TouchableOpacity>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -75,7 +77,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -83,7 +85,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
   },
   inputBox: {
     width: wp2(80),

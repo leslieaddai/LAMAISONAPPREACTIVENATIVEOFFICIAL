@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,44 +36,46 @@ import SearchComp from '../../components/searchComp';
 
 export default function FollowerList(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
 
-    <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>{props.route.params.list=='following'?"FOLLOWING":"FOLLOWERS"}</Text>
-      </View>
+<View style={styles.headWrap}>
+    <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+      <ICONS.AntDesign name="left" size={24} color="black" />
+    </TouchableOpacity>
+    <Text style={styles.heading}>{props.route.params.list=='following'?"FOLLOWING":"FOLLOWERS"}</Text>
+  </View>
 
-      <View style={styles.iconContainer}>
-        <Text style={styles.text}>BRANDS</Text>
-        <View style={styles.line}></View>
-        <Text style={styles.text}>EDITORS</Text>
-      </View>
+  <View style={styles.iconContainer}>
+    <Text style={styles.text}>BRANDS</Text>
+    <View style={styles.line}></View>
+    <Text style={styles.text}>EDITORS</Text>
+  </View>
 
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: hp2(12),
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          width: wp2(96),
-          alignSelf: 'center',
-        }}>
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-      </ScrollView>
+  <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{
+      paddingBottom: hp2(12),
+      flexDirection: 'row',
+      flexWrap: 'wrap',
+      width: wp2(96),
+      alignSelf: 'center',
+    }}>
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+    <SearchComp />
+  </ScrollView>
 
-      <BottomComp />
-    </View>
+  <BottomComp />
+</View>
+    </SafeAreaView>
   );
 }
 
@@ -98,7 +102,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'center',
     width:wp2(100),
@@ -106,7 +110,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(22),
   },
   iconContainer: {
     width: wp2(48),
@@ -125,7 +129,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '700',
-    fontSize: rfv(18),
+    fontSize: rfv(14),
     color: 'black',
   },
 });

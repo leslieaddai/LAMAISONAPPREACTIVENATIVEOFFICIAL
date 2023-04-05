@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -43,7 +45,8 @@ export default function FilterScreen(props) {
     );
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <Text style={styles.heading}>FILTERS</Text>
 
       {settingOptions('PRICE', 'priceList')}
@@ -54,13 +57,14 @@ export default function FilterScreen(props) {
       {settingOptions('CONTINENTS', 'continents')}
 
       <TouchableOpacity style={styles.button}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
+        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(20)}}>
           APPLY FILTER(S)
         </Text>
       </TouchableOpacity>
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -71,9 +75,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     //marginLeft: wp2(8),
     alignSelf: 'center',
   },

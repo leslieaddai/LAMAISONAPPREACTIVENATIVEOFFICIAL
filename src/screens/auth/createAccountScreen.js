@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,6 +35,8 @@ import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import { setToast,signup } from '../../store/actions/authAction';
 import { message } from '../../store/message';
+
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const CreateAccountScreen = (props) => {
   const [checkBox, setCheckBox] = useState(false);
@@ -81,9 +85,9 @@ const CreateAccountScreen = (props) => {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginTop: hp2(4), marginLeft: wp2(8)}}>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginTop:Platform.OS === "ios"? hp2(0) : hp2(4), marginLeft: wp2(8)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>{props.route.params.user=='editor'?'Create Editor Account':'Create Brand Account'}</Text>
@@ -101,7 +105,7 @@ const CreateAccountScreen = (props) => {
           <TextInput style={styles.textBox} secureTextEntry={true} onChangeText={(val) => setConfirmPass(val)} placeholder="CONFIRM PASSWORD" />
         </View>
         <Text style={styles.text}>Type it again, but its not a test.</Text>
-        <View style={{alignSelf: 'center', marginTop: hp2(2)}}>
+        <View style={{alignSelf: 'center', marginTop: hp2(2),width:wp2(80)}}>
           <Text style={styles.textTwo}>Must be at least 8 characters</Text>
           <Text style={styles.textTwo}>
             Must include at least 1 Numerical character
@@ -122,13 +126,16 @@ const CreateAccountScreen = (props) => {
             alignItems: 'center',
             marginVertical: hp2(3),
           }}>
-          <CheckBox value={checkBox} onValueChange={setCheckBox} tintColors={{true: 'black',false:'black'}} />
+            
+            <CheckBox onTintColor='black' tintColor='black' onFillColor='black' onCheckColor='white' boxType='square' value={checkBox} onValueChange={setCheckBox} tintColors={{true: 'black',false:'black'}} />
+           
           <TouchableOpacity onPress={()=>props.navigation.navigate('termsScreen')}>
           <Text
             style={{
               color: 'black',
               fontWeight: '700',
               textDecorationLine: 'underline',
+              marginLeft:wp2(2),
             }}>
             Terms and Conditions
           </Text>
@@ -138,8 +145,8 @@ const CreateAccountScreen = (props) => {
         <TouchableOpacity onPress={onCreate} style={styles.button}>
           <Text style={{color: 'white'}}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -152,10 +159,10 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(20),
     fontWeight: '700',
     marginLeft: wp2(8),
-    marginBottom: hp2(4),
+    marginBottom: hp2(2),
   },
   inputBox: {
     width: wp2(80),
@@ -205,5 +212,5 @@ const styles = StyleSheet.create({
     fontSize: rfv(13),
     fontWeight: '700',
   },
-  textTwo: {color: 'black', fontWeight: '800', fontSize: rfv(10)},
+  textTwo: {color: 'black', fontWeight: '700', fontSize: rfv(10)},
 });

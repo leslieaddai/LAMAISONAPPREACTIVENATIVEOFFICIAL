@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,8 @@ import NotificationComp from '../../components/notificationComp';
 
 export default function NotificationScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
         <View style={styles.headWrap}>
             <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginLeft:wp2(3),marginRight:wp2(5)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
@@ -56,6 +59,7 @@ export default function NotificationScreen(props) {
         </ScrollView>
       <BottomComp/>
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -66,13 +70,13 @@ const styles = StyleSheet.create({
   },
   headWrap:{
     flexDirection:'row',
-    marginTop:hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems:'center',
   },
   notificationText:{
     color:'black',
     fontWeight:'700',
-    fontSize:rfv(28),
+    fontSize:rfv(24),
   },
 
 });

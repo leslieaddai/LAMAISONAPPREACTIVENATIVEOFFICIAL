@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +36,7 @@ import BottomComp from '../../components/bottomComp';
 export default function AccountTypeScreen(props) {
   console.log(props.route.params.data);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.accTypeText}>Account Type</Text>
       <TouchableOpacity onPress={()=>props.navigation.navigate('createAccountScreen',{user:'editor',data:props.route.params.data})} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
         <View style={styles.iconWrap}>
@@ -57,7 +59,7 @@ export default function AccountTypeScreen(props) {
         <Text style={{color:'black'}}>Brand</Text>
       </TouchableOpacity>
       {/* <BottomComp /> */}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
   },
   box:{
     width: wp2(38),

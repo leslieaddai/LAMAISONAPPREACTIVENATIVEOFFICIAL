@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -29,11 +31,12 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function About(props) {
    
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -41,7 +44,7 @@ export default function About(props) {
         <Text style={styles.heading}>ABOUT</Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
       <View style={styles.textBox}>
         <TextInput
           placeholder="MAXIMUM OF 300 CHARACTERS"
@@ -59,8 +62,8 @@ export default function About(props) {
           style={styles.button}>
           <Text style={styles.buttonText}>CONFIRM</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -71,7 +74,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -79,7 +82,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(26),
   },
   textBox: {
     width: wp2(88),

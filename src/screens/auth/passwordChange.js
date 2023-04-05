@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -29,6 +31,7 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function PasswordChange(props) {
     const textBox = (placeText) => {
@@ -48,7 +51,7 @@ export default function PasswordChange(props) {
         )
     }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -56,7 +59,7 @@ export default function PasswordChange(props) {
         <Text style={styles.heading}>PASSWORD</Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
      {textBox('ENTER CURRENT PASSWORD')}
      {textBox('ENTER NEW PASSWORD')}
      {textBox('RE-ENTER NEW PASSWORD')}
@@ -65,7 +68,7 @@ export default function PasswordChange(props) {
           <Text style={styles.buttonText}>RESET PASSWORD</Text>
         </TouchableOpacity>
 
-        <View style={{alignSelf: 'center', marginTop: hp2(10)}}>
+        <View style={{alignSelf: 'center', marginTop: hp2(10),width:wp2(80)}}>
           <Text style={styles.text}>Must be at least 8 characters</Text>
           <Text style={styles.text}>
             Must include at least 1 Numerical character
@@ -74,8 +77,8 @@ export default function PasswordChange(props) {
             Must include at least 1 special character ( Examples !”£$)
           </Text>
         </View>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -94,7 +97,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
   },
   inputBox: {
     width: wp2(80),
@@ -135,5 +138,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: rfv(14),
   },
-  text: {color: 'black', fontWeight: '800', fontSize: rfv(11)},
+  text: {color: 'black', fontWeight: '800', fontSize: rfv(10)},
 });

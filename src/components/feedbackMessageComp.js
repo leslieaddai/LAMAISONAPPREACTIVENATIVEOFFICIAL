@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   text:{
     color:'black',
     fontWeight:'600',
-    fontSize:rfv(14),
+    fontSize:rfv(12),
   },
   messageBox:{
     width:wp2(70),

@@ -10,6 +10,7 @@ import {
   PermissionsAndroid, 
   Platform,
   Animated,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,6 +36,7 @@ import {
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 import ColorBox from '../../components/colorBox';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ReuploadScreen(props) {
 
@@ -60,7 +62,7 @@ export default function ReuploadScreen(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
 
         <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -119,7 +121,7 @@ export default function ReuploadScreen(props) {
         />
       </View>
      ):confirmButton && !colorBox ?(
-        <ScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
+        <KeyboardAwareScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
         <View style={styles.inputBox}>
             <TextInput
               style={{
@@ -193,7 +195,7 @@ export default function ReuploadScreen(props) {
           <TouchableOpacity onPress={()=>setUploadButton(true)} style={[styles.button,{width:wp2(36),alignSelf:'center',marginTop:hp2(1)}]}>
             <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>REUPLOAD</Text>
           </TouchableOpacity>
-        </ScrollView>
+        </KeyboardAwareScrollView>
      ):colorBox?(
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
         <Text style={{color:'black',textTransform:'uppercase',fontWeight:'700',fontSize:rfv(16),alignSelf:'center'}}>Select all colours for this piece</Text>
@@ -226,7 +228,7 @@ export default function ReuploadScreen(props) {
        
       </ScrollView>
    
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -239,6 +241,7 @@ const styles = StyleSheet.create({
     width:wp2(100),
     flexDirection: 'row',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'center',
   },

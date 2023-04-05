@@ -35,11 +35,13 @@ export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
+      <View style={{height:hp2(18),overflow:'hidden'}}>
       <Image
         source={IMAGES.lookbook}
-        style={{width: '100%', height: '80%'}}
+        style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
+      </View>
       <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>Represent Owners Club Hoodie{'\n'}£150</Text>
     </TouchableOpacity>
   );
@@ -48,7 +50,7 @@ export default function CollectionItemsComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(45),
-    height: hp2(22),
+    //height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,7 +37,8 @@ import BrandComp from '../../components/FTS100Comps/brands';
 
 export default function FTS100(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+        <View style={styles.container}>
       <Text style={styles.ftsText}>FTS 100</Text>
 
       <View style={{height:hp2(7)}}>
@@ -65,6 +68,7 @@ export default function FTS100(props) {
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -77,7 +81,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(28),
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignSelf: 'center',
   },
 });

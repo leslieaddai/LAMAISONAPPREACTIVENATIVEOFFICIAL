@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -54,7 +56,7 @@ export default function EditProfile(props) {
     );
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -72,7 +74,7 @@ export default function EditProfile(props) {
       {settingOptions('EMAIL', 'email')}
       {settingOptions('PHONE', 'phone')}
       {settingOptions('PASSWORD', 'passwordChange')}
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -84,6 +86,7 @@ const styles = StyleSheet.create({
   headWrap: {
     flexDirection: 'row',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -91,7 +94,7 @@ const styles = StyleSheet.create({
   },
   heading: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(24),
     fontWeight: '700',
   },
   filters: {

@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -29,6 +31,7 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function SignupScreen(props) {
   const [firstName,setFirstName]=useState('')
@@ -49,9 +52,9 @@ export default function SignupScreen(props) {
   }
 
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
-        <Text style={styles.signupText}>Create new account</Text>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
+        <Text style={[styles.signupText]}>Create new account</Text>
         <View style={{flexDirection:'row',width:wp2(80),justifyContent:'space-between',alignSelf:'center',}}>
         <View style={[styles.inputBox,{width:wp2(36)}]}>
           <TextInput
@@ -114,8 +117,8 @@ export default function SignupScreen(props) {
           <ICONS.AntDesign name="facebook-square" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with facebook</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -128,9 +131,10 @@ const styles = StyleSheet.create({
   },
   signupText: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginLeft:wp2(8),
   },
   inputBox: {
@@ -152,7 +156,7 @@ const styles = StyleSheet.create({
   text:{
     color:'black',
     fontWeight:'700',
-    marginLeft:wp2(11),
+    marginHorizontal:wp2(11),
     marginVertical:hp2(1),
   },
   button: {
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
   button2Text: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(14),
+    fontSize: rfv(11),
     textTransform:'uppercase',
   },
 });

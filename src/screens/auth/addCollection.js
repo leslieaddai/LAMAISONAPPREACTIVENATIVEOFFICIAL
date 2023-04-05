@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -46,7 +48,7 @@ export default function AddCollection(props) {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Select all pieces in collection</Text>
       {showButton && (
         <TouchableOpacity onPress={()=>setUploadButton(true)} style={styles.button}>
@@ -73,7 +75,7 @@ export default function AddCollection(props) {
         <AddCollectionComp setBtn={setShowButton} />
         <AddCollectionComp setBtn={setShowButton} />
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -85,8 +87,8 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(19),
-    marginTop: hp2(4),
+    fontSize: rfv(16),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignSelf: 'center',
     textTransform: 'uppercase',
   },

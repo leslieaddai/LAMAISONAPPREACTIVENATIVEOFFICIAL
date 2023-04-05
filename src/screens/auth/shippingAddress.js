@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -29,6 +31,7 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function ShippingAddress(props) {
     const textBox = (place) => {
@@ -48,7 +51,7 @@ export default function ShippingAddress(props) {
         )
     }
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -56,7 +59,7 @@ export default function ShippingAddress(props) {
         <Text style={styles.heading}>SHIPPING ADDRESS</Text>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
+      <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
      {textBox('ADDRESS LINE 1')}
      {textBox('ADDRESS LINE 2')}
      {textBox('CITY')}
@@ -66,8 +69,8 @@ export default function ShippingAddress(props) {
           style={styles.button}>
           <Text style={styles.buttonText}>CONFIRM</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -78,7 +81,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(20),
   },
   inputBox: {
     width: wp2(80),

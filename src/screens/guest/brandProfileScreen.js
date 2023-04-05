@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -36,7 +38,8 @@ import About from '../../components/brandProfileComps/about';
 
 export default function BrandProfileScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <View style={styles.iconWrap}>
       <TouchableOpacity onPress={()=>props.navigation.navigate('FTS100')} style={styles.badge}>
           <Image
@@ -98,6 +101,7 @@ export default function BrandProfileScreen(props) {
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   iconWrap:{
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     flexDirection:'row',
     paddingHorizontal:wp2(4),
     justifyContent:'space-between',

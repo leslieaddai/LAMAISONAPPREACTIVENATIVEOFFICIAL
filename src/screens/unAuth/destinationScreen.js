@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,7 +35,8 @@ import BottomComp from '../../components/bottomComp';
 
 export default function DestinationScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
       <Text style={styles.destinationText}>Destination</Text>
       <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadScreen')} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
         <View style={styles.iconWrap}>
@@ -57,6 +60,7 @@ export default function DestinationScreen(props) {
       </TouchableOpacity>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -70,7 +74,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
   },
   box:{
     width: wp2(38),

@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -30,13 +32,14 @@ import {
   FONTS,
 } from '../../theme';
 import AlertComp from '../../components/alertComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
   return (
-    <View style={styles.container}>
-      <ScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
-        <Text style={styles.signinText}>Sign in - Welcome Back</Text>
+    <SafeAreaView style={styles.container}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
+        <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
         {showError && (
           <AlertComp text="Username or Password is incorrect"/>
         )}
@@ -84,8 +87,8 @@ export default function LoginScreen(props) {
           style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
           <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
         </TouchableOpacity>
-      </ScrollView>
-    </View>
+      </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -98,9 +101,10 @@ const styles = StyleSheet.create({
   },
   signinText: {
     color: 'black',
-    fontSize: rfv(26),
+    fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginLeft:wp2(8),
   },
   inputBox: {

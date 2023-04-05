@@ -9,6 +9,8 @@ import {
   ScrollView,
   Animated,
   ImageBackground,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -36,7 +38,8 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 export default function ImageViewScreen(props) {
   const scrollX = new Animated.Value(0);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
       <TouchableOpacity onPress={()=>props.navigation.goBack()}
         style={{
           marginLeft: wp2(3),
@@ -102,6 +105,7 @@ export default function ImageViewScreen(props) {
         />
       </View>
     </View>
+    </SafeAreaView>
   );
 }
 

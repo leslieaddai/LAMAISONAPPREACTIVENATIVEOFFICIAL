@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +36,8 @@ import CollectionItemsComp from '../../components/collectionItemsComp';
 
 export default function CollectionScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+<View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -55,6 +58,7 @@ export default function CollectionScreen(props) {
       </ScrollView>
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -65,7 +69,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
@@ -73,12 +77,12 @@ const styles = StyleSheet.create({
   collectionText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(28),
+    fontSize: rfv(24),
   },
   text:{
     color:'black',
     fontWeight:'600',
-    fontSize:rfv(22),
+    fontSize:rfv(18),
     alignSelf:'center',
     marginTop:hp2(3),
   },

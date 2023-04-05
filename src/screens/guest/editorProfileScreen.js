@@ -8,6 +8,8 @@ import {
   TextInput,
   ScrollView,
   ImageBackground,
+  Platform,
+  SafeAreaView
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -38,7 +40,8 @@ import NextPickup from '../../components/editorProfileComps/nextPickup';
 export default function EditorProfileScreen(props) {
     const [follow,setFollow]=useState(true);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
         <View style={styles.editorProfile}>
       <ImageBackground
             source={IMAGES.randomProfile}
@@ -92,6 +95,7 @@ export default function EditorProfileScreen(props) {
       
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -103,7 +107,7 @@ const styles = StyleSheet.create({
   editorProfile:{
     width:wp2(100),
     height:hp(32),
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     borderBottomLeftRadius:wp2(4),
     borderBottomRightRadius:wp2(4),
     overflow:'hidden',

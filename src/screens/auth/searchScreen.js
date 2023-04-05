@@ -7,6 +7,8 @@ import {
   Text,
   TextInput,
   ScrollView,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +36,8 @@ import SearchComp from '../../components/searchComp';
 
 export default function SearchScreen(props) {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+       <View style={styles.container}>
       <View style={styles.headWrap}>
         <View style={styles.inputBox}>
           <TextInput
@@ -82,6 +85,7 @@ export default function SearchScreen(props) {
 
       <BottomComp />
     </View>
+    </SafeAreaView>
   );
 }
 
@@ -108,12 +112,12 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: hp2(4),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'space-around',
   },
   iconContainer: {
-    width: wp2(48),
+    width: wp2(50),
     height: hp2(8),
     flexDirection: 'row',
     //backgroundColor:'red',
@@ -129,7 +133,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: '700',
-    fontSize: rfv(18),
+    fontSize: rfv(14),
     color: 'black',
   },
 });
