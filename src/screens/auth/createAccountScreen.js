@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Platform,
+  Button,
   SafeAreaView,
 } from 'react-native';
 import {
@@ -35,30 +36,44 @@ import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
 import { setToast,signup } from '../../store/actions/authAction';
 import { message } from '../../store/message';
+import DatePicker from 'react-native-date-picker'
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const CreateAccountScreen = (props) => {
+  const special =/[!@#\$%\^\&*\)\(+=._-]/g
+    const numeric = /[0-9]/
+
+    const [stateChange, setStateChange] = useState({
+      UserName:'',
+      Newpassword:'',
+      ConfirmPass:'',
+      Birthday:new Date()
+    })
+    const updateState = data => setStateChange(prev => ({...prev, ...data}));
+    const {
+      UserName,
+      Newpassword,
+      ConfirmPass,
+      Birthday
+    } = stateChange;
   const [checkBox, setCheckBox] = useState(false);
-  const [userName,setUserName]=useState('');
-  const [pass,setPass]=useState('');
-  const [confirmPass,setConfirmPass]=useState('');
-  const [birthday, setBirthday]=useState('');
+  const [open, setOpen] = useState(false)
 
   const onCreate = () => {
-    if(userName != '' && pass != '' && confirmPass != '' && birthday != '' ){
-      if(userName.length >= 6){
-        if(pass.length >=8){
-          if(confirmPass === pass){
+    if(UserName != '' && Newpassword != '' && ConfirmPass != '' && Birthday != '' ){
+      if(UserName.length >= 6){
+        if(Newpassword.length >=8){
+          if(ConfirmPass === Newpassword){
 
             let obj = {
               first_name: props.route.params.data.firstName,
               last_name: props.route.params.data.lastName,
-              username: userName,
-              dob:birthday,
+              username: UserName,
+              dob:Birthday,
               email: props.route.params.data.email,
-              password: pass,
-              password_confirmation: confirmPass,
+              password: Newpassword,
+              password_confirmation: ConfirmPass,
               acc_type: props.route.params.user == 'editor' ? 1 : 2
           }
 
@@ -92,31 +107,46 @@ const CreateAccountScreen = (props) => {
         </TouchableOpacity>
         <Text style={styles.heading}>{props.route.params.user=='editor'?'Create Editor Account':'Create Brand Account'}</Text>
         <View style={styles.inputBox}>
-          <TextInput style={styles.textBox}  onChangeText={(val) => setUserName(val)} placeholder={props.route.params.user=='editor'?'USERNAME':'BRAND NAME'} />
+          <TextInput style={styles.textBox}  onChangeText={(val) => updateState({UserName:val})} placeholder={props.route.params.user=='editor'?'USERNAME':'BRAND NAME'} placeholderTextColor={'grey'} />
         </View>
         <Text style={styles.text}>What do you want to be known for?</Text>
         <View style={styles.inputBox}>
-          <TextInput style={styles.textBox} secureTextEntry={true} onChangeText={(val) => setPass(val)} placeholder="PASSWORD" />
+          <TextInput style={styles.textBox} secureTextEntry={true} onChangeText={(val) => updateState({Newpassword:val})} placeholder="PASSWORD" placeholderTextColor={'grey'} />
         </View>
         <Text style={styles.text}>
           Something you will remember but is hard to guess
         </Text>
         <View style={styles.inputBox}>
-          <TextInput style={styles.textBox} secureTextEntry={true} onChangeText={(val) => setConfirmPass(val)} placeholder="CONFIRM PASSWORD" />
+          <TextInput style={styles.textBox} secureTextEntry={true} onChangeText={(val) => updateState({ConfirmPass:val})} placeholder="CONFIRM PASSWORD" placeholderTextColor={'grey'}/>
         </View>
         <Text style={styles.text}>Type it again, but its not a test.</Text>
         <View style={{alignSelf: 'center', marginTop: hp2(2),width:wp2(80)}}>
-          <Text style={styles.textTwo}>Must be at least 8 characters</Text>
-          <Text style={styles.textTwo}>
+          <Text style={[styles.textTwo,{color:Newpassword.length>=8?COLORS.green:COLORS.red}]}>Must be at least 8 characters</Text>
+          <Text style={[styles.textTwo,{color:numeric.test(Newpassword)?COLORS.green:COLORS.red}]}>
             Must include at least 1 Numerical character
           </Text>
-          <Text style={styles.textTwo}>
+          <Text style={[styles.textTwo,{color:special.test(Newpassword)?COLORS.green:COLORS.red}]}>
             Must include at least 1 special character ( Examples !”£$)
           </Text>
         </View>
-        <View style={styles.inputBox}>
-          <TextInput style={styles.textBox} placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => setBirthday(val)}/>
-        </View>
+        <TouchableOpacity style={styles.BDaystyle} onPress={() => setOpen(true)}>
+          {/* <TextInput  placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => updateState({Birthday:val})} placeholderTextColor={'grey'}/> */}
+          {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
+          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday. getDate()} - ${ Birthday.getMonth()} - ${Birthday.getFullYear()}`}</Text>
+        </TouchableOpacity>
+        <DatePicker
+        modal
+        mode='date'
+        open={open}
+        date={Birthday}
+        onConfirm={(date) => {
+          setOpen(false)
+          updateState({Birthday:date})
+        }}
+        onCancel={() => {
+          setOpen(false)
+        }}
+      />
         <Text style={styles.text}>So we can wish you a Happy Birthday</Text>
 
         <View
@@ -180,6 +210,24 @@ const styles = StyleSheet.create({
     marginVertical: hp2(2),
     alignSelf: 'center',
   },
+  BDaystyle:{
+    width: wp2(80),
+    height: hp2(6),
+    backgroundColor: 'white',
+    borderRadius: wp2(4),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    flexDirection:'row',
+    alignItems:'center',
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    marginVertical: hp2(2),
+    alignSelf: 'center',
+    },
   text: {
     color: 'black',
     fontWeight: '700',
@@ -212,5 +260,5 @@ const styles = StyleSheet.create({
     fontSize: rfv(13),
     fontWeight: '700',
   },
-  textTwo: {color: 'black', fontWeight: '700', fontSize: rfv(10)},
+  textTwo: { fontWeight: '700', fontSize: rfv(10)},
 });

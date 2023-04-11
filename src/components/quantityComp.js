@@ -48,6 +48,7 @@ export default function QuantityComp(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
+            placeholderTextColor={'grey'}
             placeholder="QUANTITY"
           />
         </View>

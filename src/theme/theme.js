@@ -40,6 +40,8 @@ export const COLORS = {
     bgLight:'#f7f7f6',
     
     danger: '#F32013',
+    green:'#13D755',
+    red:'#B2181A',
 
     primary:'#f40404',
     light:'#d9d7d4',

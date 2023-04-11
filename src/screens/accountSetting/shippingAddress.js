@@ -45,6 +45,7 @@ export default function ShippingAddress(props) {
                 fontSize: rfv(13),
                 fontWeight: '700',
               }}
+              placeholderTextColor={'grey'}
               placeholder={place}
             />
           </View>

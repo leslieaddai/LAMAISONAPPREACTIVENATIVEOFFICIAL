@@ -34,22 +34,25 @@ import {
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function PasswordChange(props) {
-    const textBox = (placeText) => {
-        return(
-            <View style={styles.inputBox}>
-            <TextInput
-              style={{
-                flex: 1,
-                color: 'black',
-                paddingHorizontal: wp2(2),
-                fontSize: rfv(13),
-                fontWeight: '700',
-              }}
-              placeholder={placeText}
-            />
-          </View>
-        )
-    }
+    // const textBox = (placeText,onChangeText) => {
+    //     return(
+            
+    //     )
+    // }
+    const special =/[!@#\$%\^\&*\)\(+=._-]/g
+    const numeric = /[0-9]/
+
+    const [stateChange, setStateChange] = useState({
+      currentPassword:'',
+      Newpassword:'',
+      ReEnterpassword:'',
+    })
+    const updateState = data => setStateChange(prev => ({...prev, ...data}));
+    const {
+      currentPassword,
+      Newpassword,
+      ReEnterpassword,
+    } = stateChange;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
@@ -60,20 +63,62 @@ export default function PasswordChange(props) {
       </View>
 
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
-     {textBox('ENTER CURRENT PASSWORD')}
-     {textBox('ENTER NEW PASSWORD')}
-     {textBox('RE-ENTER NEW PASSWORD')}
+      <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              placeholder={'ENTER CURRENT PASSWORD'}
+              placeholderTextColor={'grey'}
+              onChangeText={(e)=>{updateState({currentPassword:e})}}
+            />
+            
+          </View>
+      <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              placeholder={'ENTER NEW PASSWORD'}
+              placeholderTextColor={'grey'}
+              onChangeText={(e)=>{updateState({Newpassword:e})}}
+            />
+            
+          </View>
+      <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              placeholder={'RE-ENTER NEW PASSWORD'}
+              placeholderTextColor={'grey'}
+              onChangeText={(e)=>{updateState({ReEnterpassword:e})}}
+            />
+            
+          </View>
         <TouchableOpacity
           style={styles.button}>
           <Text style={styles.buttonText}>RESET PASSWORD</Text>
         </TouchableOpacity>
 
         <View style={{alignSelf: 'center', marginTop: hp2(10),width:wp2(80)}}>
-          <Text style={styles.text}>Must be at least 8 characters</Text>
-          <Text style={styles.text}>
+          <Text style={[styles.text,{color:Newpassword.length>=8?COLORS.green:COLORS.red}]}>Must be at least 8 characters</Text>
+          <Text style={[styles.text,{color:numeric.test(Newpassword)?COLORS.green:COLORS.red}]}>
             Must include at least 1 Numerical character
           </Text>
-          <Text style={styles.text}>
+          <Text style={[styles.text,{color:special.test(Newpassword)?COLORS.green:COLORS.red}]}>
             Must include at least 1 special character ( Examples !”£$)
           </Text>
         </View>
@@ -138,5 +183,5 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     fontSize: rfv(14),
   },
-  text: {color: 'black', fontWeight: '800', fontSize: rfv(10)},
+  text: { fontWeight: '800', fontSize: rfv(10)},
 });

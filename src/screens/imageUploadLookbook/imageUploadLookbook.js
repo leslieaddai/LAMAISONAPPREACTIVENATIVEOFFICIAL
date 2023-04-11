@@ -191,6 +191,7 @@ export default function ImageUploadLookbook(props) {
               fontWeight: '700',
             }}
             placeholder="product name"
+            placeholderTextColor={'grey'}
           />
         </View>
         <View style={styles.inputBox}>
@@ -206,6 +207,7 @@ export default function ImageUploadLookbook(props) {
               fontWeight: '700',
             }}
             placeholder="description"
+            placeholderTextColor={'grey'}
           />
         </View>
         <View style={styles.inputBox}>
@@ -218,6 +220,7 @@ export default function ImageUploadLookbook(props) {
               fontWeight: '700',
             }}
             placeholder="price"
+            placeholderTextColor={'grey'}
           />
         </View>
         <TouchableOpacity onPress={()=>setColorBox(true)} style={styles.inputBox}>

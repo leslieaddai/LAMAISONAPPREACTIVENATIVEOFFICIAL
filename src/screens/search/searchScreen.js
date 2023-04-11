@@ -48,6 +48,7 @@ export default function SearchScreen(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
+            placeholderTextColor={'grey'}
             placeholder="what do you want to wear?"
           />
         </View>

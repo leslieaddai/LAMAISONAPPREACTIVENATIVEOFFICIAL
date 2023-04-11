@@ -118,6 +118,7 @@ export default function ReuploadScreen(props) {
             fontWeight: '700',
           }}
           placeholder="QUANTITY"
+          placeholderTextColor={'grey'}
         />
       </View>
      ):confirmButton && !colorBox ?(
@@ -131,6 +132,7 @@ export default function ReuploadScreen(props) {
                 fontSize: rfv(13),
                 fontWeight: '700',
               }}
+              placeholderTextColor={'grey'}
               placeholder="PRODUCT NAME"
             />
           </View>
@@ -143,6 +145,7 @@ export default function ReuploadScreen(props) {
                 fontSize: rfv(13),
                 fontWeight: '700',
               }}
+              placeholderTextColor={'grey'}
               placeholder="DESCRIPTION"
             />
           </View>
@@ -155,6 +158,7 @@ export default function ReuploadScreen(props) {
                 fontSize: rfv(13),
                 fontWeight: '700',
               }}
+              placeholderTextColor={'grey'}
               placeholder="FREE SHIPPING TO ALL REGIONS"
             />
           </View>
@@ -167,6 +171,7 @@ export default function ReuploadScreen(props) {
                 fontSize: rfv(13),
                 fontWeight: '700',
               }}
+              placeholderTextColor={'grey'}
               placeholder="PRICE"
             />
           </View>

@@ -48,6 +48,7 @@ export default function About(props) {
       <View style={styles.textBox}>
         <TextInput
           placeholder="MAXIMUM OF 300 CHARACTERS"
+          placeholderTextColor={'grey'}
           multiline={true}
           style={{
             flex: 1,

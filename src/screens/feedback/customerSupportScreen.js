@@ -65,6 +65,7 @@ export default function CustomerSupportScreen(props) {
             '\n' +
             '(Please can you keep short and to the point)'
           }
+          placeholderTextColor={'grey'}
           multiline={true}
           style={{
             flex: 1,

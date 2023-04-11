@@ -45,6 +45,7 @@ export default function Email(props) {
                 fontWeight: '700',
               }}
               placeholder={placeText}
+              placeholderTextColor={'grey'}
             />
           </View>
         )

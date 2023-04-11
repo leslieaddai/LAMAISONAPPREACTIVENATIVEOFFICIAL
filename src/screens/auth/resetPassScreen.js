@@ -52,6 +52,7 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
+                placeholderTextColor={'grey'}
                 placeholder="ENTER PASSWORD"
               />
             </View>
@@ -64,6 +65,7 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
+                placeholderTextColor={'grey'}
                 placeholder="RE-ENTER PASSWORD"
               />
             </View>
@@ -87,6 +89,7 @@ export default function ResetPassScreen(props) {
                   fontSize: rfv(13),
                   fontWeight: '700',
                 }}
+                placeholderTextColor={'grey'}
                 placeholder="EMAIL ADDRESS"
               />
             </View>

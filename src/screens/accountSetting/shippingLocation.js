@@ -54,6 +54,7 @@ export default function ShippingLocation(props) {
       <View style={styles.textBox}>
         <TextInput
           placeholder={'PLEASE INPUT YOUR BRANDS GENERAL SHIPPING INFORMATION'}
+          placeholderTextColor={'grey'}
           multiline={true}
           style={{
             flex: 1,

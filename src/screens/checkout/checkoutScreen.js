@@ -44,7 +44,7 @@ export default function CheckoutScreen(props) {
   const textBox = (place) => {
     return (
       <View style={styles.inputBox}>
-        <TextInput style={styles.textInput} placeholder={place} keyboardType={place=='CARD NUMBER' ? 'number-pad' : 'default'} />
+        <TextInput style={styles.textInput} placeholder={place}  placeholderTextColor={'grey'} keyboardType={place=='CARD NUMBER' ? 'number-pad' : 'default'} />
       </View>
     );
   };
@@ -63,10 +63,10 @@ export default function CheckoutScreen(props) {
             width: wp2(80),
           }}>
           <View style={[styles.inputBox, {width: wp2(48)}]}>
-            <TextInput style={styles.textInput} placeholder="EXPIRY DATE MM/YY" />
+            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" />
           </View>
           <View style={[styles.inputBox, {width: wp2(28)}]}>
-            <TextInput style={styles.textInput} placeholder="CVV" keyboardType='number-pad' />
+            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' />
           </View>
         </View>
       </>

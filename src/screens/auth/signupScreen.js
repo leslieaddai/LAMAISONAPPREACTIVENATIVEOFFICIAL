@@ -67,6 +67,7 @@ export default function SignupScreen(props) {
         
             }}
             placeholder="FIRST NAME"
+            placeholderTextColor={'grey'}
             onChangeText={(val) => setFirstName(val.replace(/\s+/g, " ").trim())}
           />
         </View>
@@ -81,6 +82,7 @@ export default function SignupScreen(props) {
               
             }}
             placeholder="LAST NAME"
+            placeholderTextColor={'grey'}
             onChangeText={(val) => setLastName(val.replace(/\s+/g, " ").trim())}
           />
         </View>
@@ -97,6 +99,7 @@ export default function SignupScreen(props) {
              
             }}
             placeholder="EMAIL"
+            placeholderTextColor={'grey'}
             onChangeText={(val) => setEmail(val)}
           />
         </View>

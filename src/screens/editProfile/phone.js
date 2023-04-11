@@ -45,6 +45,7 @@ export default function Phone(props) {
                 fontWeight: '700',
               }}
               placeholder={placeText}
+              placeholderTextColor={'grey'}
             />
           </View>
         )

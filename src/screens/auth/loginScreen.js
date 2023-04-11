@@ -53,6 +53,7 @@ export default function LoginScreen(props) {
               fontWeight: '700',
             }}
             placeholder="USERNAME"
+            placeholderTextColor={'grey'}
           />
         </View>
         <View style={styles.inputBox}>
@@ -65,6 +66,7 @@ export default function LoginScreen(props) {
               fontWeight: '700',
             }}
             placeholder="PASSWORD"
+            placeholderTextColor={'grey'}
           />
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate('resetPassScreen')}>

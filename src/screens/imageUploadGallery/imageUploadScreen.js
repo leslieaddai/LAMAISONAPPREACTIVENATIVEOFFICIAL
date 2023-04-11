@@ -33,14 +33,18 @@ import {
   FONTS,
 } from '../../theme';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function ImageUploadScreen(props) {
 
-  const [photos, setPhotos]=useState();
+  const [photos, setPhotos]=useState([]);
   const [selectedImage, setSelectedImage]=useState();
   const [nextButton, setNextButton]=useState(false);
   const [confirmButton, setConfirmButton]=useState(false);
   const [uploadButton, setUploadButton]=useState(false);
+  const [HasNextPage,setHasNextPage]=useState(true)
+  const [cursor , setcursor] =useState("0")
+  const [newstateArray,setnewstateArray] =([])
 
   useEffect(()=>{
     async function runThis () {
@@ -67,21 +71,32 @@ export default function ImageUploadScreen(props) {
   }
 
   async function showPhotos() {
-    // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-    //   return;
-    // }
-    const result = await CameraRoll.getPhotos({
-      first: 20,
-      assetType: 'Photos',
-    })
-    .then(r => {
-      setPhotos(r.edges);
-    })
-    .catch((err) => {
-       //Error Loading Images
-       console.log(err)
-    });
-    //console.log(result);
+    let first = 80;
+    if(HasNextPage){
+      const result = await CameraRoll.getPhotos({
+        first: first,
+        after: cursor,
+        assetType: 'Photos',
+      })
+      .then(r => {
+        const { edges, page_info } = r;
+        console.log("check if==============>",page_info,edges.length,first)
+        setHasNextPage(page_info.has_next_page)
+        setcursor(page_info.end_cursor)
+        if(page_info.end_cursor=="80"){
+          setPhotos(edges)
+        }else{
+        setnewstateArray(edges);
+        let newData = [...photos,...newstateArray]
+        setPhotos(newData);
+        }
+      })
+      .catch((err) => {
+         //Error Loading Images
+         console.log(err)
+      });
+    }
+    
   };
 
   if (uploadButton){
@@ -138,6 +153,7 @@ export default function ImageUploadScreen(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
+            placeholderTextColor={'grey'}
             placeholder="caption"
           />
         </View>
@@ -146,20 +162,27 @@ export default function ImageUploadScreen(props) {
         </TouchableOpacity>
       </ScrollView>
      ):(
-       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
-       {photos?.map((p, i) => {
-       return (
-         <TouchableOpacity onPress={()=>setSelectedImage(p.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-         <Image
-            key={i}
-            source={{ uri: p.node.image.uri }}
-           style={{width: '100%', height: '100%'}}
-           resizeMode="cover"
-         />
-        {selectedImage===p.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-       </TouchableOpacity>
-       );
-     })}
+       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2)}}>
+       <FlatList
+       data={photos}
+       numColumns={4}
+       onEndReached={HasNextPage === true?showPhotos:null}
+          onEndReachedThreshold={0.5}
+        renderItem={({item,i})=>{
+          return(
+            <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
+            <Image
+               key={i}
+               source={{ uri: item.node.image.uri }}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+           {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
+          </TouchableOpacity>
+          )
+        }}
+
+       />
      </ScrollView>
      )}
     </SafeAreaView>
