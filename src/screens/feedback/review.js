@@ -31,41 +31,25 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import ReviewComp from '../../components/reviewComp';
 import BottomComp from '../../components/bottomComp';
-import GalleryComp from '../../components/galleryComp';
+import LineComp from '../../components/lineComp';
 
-export default function GalleryScreen(props) {
+export default function Review(props) {
   return (
     <SafeAreaView style={{flex:1}}>
-       <View style={styles.container}>
-      <View style={styles.headWrap}>
+        <View style={styles.container}>
+       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.galleryText}>Gallery</Text>
+        <Text style={styles.supportText}>Review</Text>
+        <TouchableOpacity  onPress={()=>props.navigation.navigate('addReview')}  style={{position: 'absolute', right: wp2(4)}}>
+        <ICONS.AntDesign name="pluscircle" size={30} color="#162FAC" />
+        </TouchableOpacity>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-      </ScrollView>
+      <LineComp/>
+      <ReviewComp />
       <BottomComp />
     </View>
     </SafeAreaView>
@@ -76,19 +60,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    alignItems:'center',
+    //alignItems: 'center',
+    //justifyContent: 'center',
   },
   headWrap: {
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
-    justifyContent: 'center',
+    //justifyContent: 'center',
     width:wp2(100),
   },
-  galleryText: {
+  supportText: {
     color: 'black',
+    fontSize: rfv(20),
     fontWeight: '700',
-    fontSize: rfv(26),
+    marginLeft: wp2(12),
   },
 });

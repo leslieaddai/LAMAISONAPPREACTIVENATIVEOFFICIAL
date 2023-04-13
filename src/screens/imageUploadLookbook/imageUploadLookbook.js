@@ -190,7 +190,7 @@ export default function ImageUploadLookbook(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
-            placeholder="product name"
+            placeholder="PRODUCT NAME"
             placeholderTextColor={'grey'}
           />
         </View>
@@ -206,7 +206,7 @@ export default function ImageUploadLookbook(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
-            placeholder="description"
+            placeholder="DESCRIPTION"
             placeholderTextColor={'grey'}
           />
         </View>
@@ -219,7 +219,7 @@ export default function ImageUploadLookbook(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
-            placeholder="price"
+            placeholder="PRICE"
             placeholderTextColor={'grey'}
           />
         </View>

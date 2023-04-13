@@ -154,7 +154,7 @@ export default function ImageUploadScreen(props) {
               fontWeight: '700',
             }}
             placeholderTextColor={'grey'}
-            placeholder="caption"
+            placeholder="CAPTION"
           />
         </View>
         <TouchableOpacity onPress={()=>confirmButton?setUploadButton(true):setConfirmButton(true)} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10)}]}>

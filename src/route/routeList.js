@@ -54,6 +54,8 @@ import Phone from "../screens/editProfile/phone";
 import PasswordChange from "../screens/editProfile/passwordChange";
 import About from "../screens/editProfile/about";
 import FollowerList from "../screens/followers/followerList";
+import Review from "../screens/feedback/review";
+import AddReview from "../screens/feedback/addReview";
 
 export const stackRouteList = [
     {name:"guestScreen", component:GuestScreen},//
@@ -112,5 +114,6 @@ export const stackRouteList = [
     {name:'passwordChange',component:PasswordChange},//
     {name:'about',component:About},//
     {name:'followerList',component:FollowerList},//
-    
+    {name:'review',component:Review},//
+    {name:'addReview',component:AddReview},//
 ]

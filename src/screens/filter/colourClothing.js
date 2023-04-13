@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(24),
   },
   colorsWrap:{
-    width:wp2(96),
+    width:wp2(97),
     flexDirection:'row',
     flexWrap:'wrap',
     alignSelf:'center',

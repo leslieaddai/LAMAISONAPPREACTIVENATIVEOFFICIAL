@@ -34,7 +34,7 @@ import {
 } from '../../theme';
 import CheckBox from '@react-native-community/checkbox';
 import { connect } from 'react-redux';
-import { setToast,signup } from '../../store/actions/authAction';
+import { signup } from '../../store/actions/authAction';
 import { message } from '../../store/message';
 import DatePicker from 'react-native-date-picker'
 
@@ -79,10 +79,10 @@ const CreateAccountScreen = (props) => {
 
           console.log(obj);
 
-          props.signup(obj, (res) => console.log(res))
+          //props.signup(obj, (res) => console.log(res))
 
 
-            //props.navigation.navigate('loginScreen')
+            props.navigation.navigate('loginScreen')
 
 
           }else{
@@ -180,7 +180,7 @@ const CreateAccountScreen = (props) => {
   );
 }
 
-export default connect(null, { setToast, signup })(CreateAccountScreen)
+export default connect(null, { signup })(CreateAccountScreen)
 
 const styles = StyleSheet.create({
   container: {

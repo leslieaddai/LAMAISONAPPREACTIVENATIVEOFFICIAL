@@ -53,13 +53,13 @@ export default function DressingRoomScreen(props) {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(2)}}>
         <View style={styles.iconWraper}>
-          <View style={styles.brandImage}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
             <Image
               source={IMAGES.randomPic}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"
             />
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
               heart ? setHeart(false) : setHeart(true);
@@ -223,7 +223,7 @@ export default function DressingRoomScreen(props) {
         </View>
         <View style={styles.filters}>
           <Text style={{color: 'black'}}>REVIEWS</Text>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('feedbackScreen')}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('review')}>
             <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
           </TouchableOpacity>
         </View>

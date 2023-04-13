@@ -36,12 +36,10 @@ import BottomComp from '../../components/bottomComp';
 export default function FilterScreen(props) {
   const settingOptions = (name, navScreen) => {
     return (
-      <View style={styles.filters}>
+      <TouchableOpacity onPress={() => props.navigation.navigate(navScreen)} style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
-        <TouchableOpacity onPress={() => props.navigation.navigate(navScreen)}>
-          <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-        </TouchableOpacity>
-      </View>
+         <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
+      </TouchableOpacity>
     );
   };
   return (

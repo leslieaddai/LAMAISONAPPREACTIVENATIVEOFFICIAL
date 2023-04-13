@@ -36,7 +36,7 @@ import BottomComp from '../../components/bottomComp';
 export default function SettingsScreen(props) {
     const settingOptions = (name,badge,navScreen) => {
         return(
-            <View style={styles.filters}>
+            <TouchableOpacity onPress={()=>props.navigation.navigate(navScreen,{user:props.route.params.user})} style={styles.filters}>
             <Text style={{color: name=='LOGOUT'?"#EB1414":'black',fontWeight:name=='LOGOUT'?"700":'normal'}}>{name}</Text>
            {badge=='blue' && (
              <View style={styles.circle}>
@@ -47,11 +47,11 @@ export default function SettingsScreen(props) {
              <View style={[styles.circle,{backgroundColor:'#B00002'}]}></View>
            )}
            {name!='LOGOUT' && (
-             <TouchableOpacity onPress={()=>props.navigation.navigate(navScreen,{user:props.route.params.user})}>
+             
              <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-             </TouchableOpacity>
+            
            )}
-          </View>
+          </TouchableOpacity>
         )
     }
   return (

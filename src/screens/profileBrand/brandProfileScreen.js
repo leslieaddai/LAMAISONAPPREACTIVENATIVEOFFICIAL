@@ -62,7 +62,7 @@ export default function BrandProfileScreen(props) {
             resizeMode="cover"
           />
       </View>
-      <View style={{flexDirection:'row',marginTop:hp2(2),justifyContent:'space-between',paddingHorizontal:wp2(4)}}>
+      <View style={{flexDirection:'row',marginVertical:hp2(2),justifyContent:'space-between',paddingHorizontal:wp2(4),alignItems:'center'}}>
         <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>Represent clo</Text>
         <TouchableOpacity style={styles.followButton}>
             <Text style={{fontWeight:'700',color:'white',fontSize:rfv(13)}}>FOLLOW</Text>
@@ -82,10 +82,11 @@ export default function BrandProfileScreen(props) {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
         <Text style={{color:'black',fontWeight:'600',fontSize:rfv(18),marginLeft:wp2(3)}}>POPULAR</Text>
-        <Popular />
-        <Popular />
-        <Popular />
-        <Popular />
+        <Popular no={'1.'} />
+        <Popular no={'2.'} />
+        <Popular no={'3.'} />
+        <Popular no={'4.'} />
+        <Popular no={'5.'} />
 
         <Lookbook />
 

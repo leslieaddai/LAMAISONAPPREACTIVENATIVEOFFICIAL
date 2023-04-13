@@ -29,18 +29,20 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Popular(props) {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-        <Text style={{color:'black',marginLeft:wp2(3)}}>1.</Text>
-        <View style={styles.productImage}>
+        <Text style={{color:'black',marginLeft:wp2(3)}}>{props.no}</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.productImage}>
       <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-      </View>
+      </TouchableOpacity>
       <Text style={{color:'black'}}>Souvenir Shorts - Black/Concrete</Text>
     </View>
   );
