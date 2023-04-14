@@ -35,13 +35,12 @@ import BottomComp from '../../components/bottomComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function CustomerSupportScreen(props) {
+  const [selected,setSelected]=useState('');
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity style={styles.circle}>
-
-                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
     }
@@ -146,7 +145,7 @@ const styles = StyleSheet.create({
   circle:{
     width:wp2(5),
     height:wp2(5),
-    backgroundColor:'#D9D9D9',
+    //backgroundColor:'#D9D9D9',
     borderRadius:100,
   },
   button:{

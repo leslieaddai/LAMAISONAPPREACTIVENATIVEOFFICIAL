@@ -37,7 +37,7 @@ export default function HomeScreen(props) {
 
     const brandComp = (nav) => {
         return(
-           <>
+           <View style={{marginVertical:hp2(2)}}>
            {nav?(
              <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
              <Image
@@ -55,13 +55,13 @@ export default function HomeScreen(props) {
              />
            </View>
            )}
-           </>
+           </View>
         )
     }
 
   const postComp = () => {
     return (
-      <View>
+      <View style={{marginVertical:hp2(2)}}>
         <View style={styles.headWrap}>
           <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen')} style={styles.imageWrap}>
             <Image
@@ -91,9 +91,9 @@ export default function HomeScreen(props) {
 
   const productComp = () => {
     return(
-        <View>
+        <View style={{marginVertical:hp2(2)}}>
         
-          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginVertical:hp2(1)}]}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
@@ -140,9 +140,9 @@ export default function HomeScreen(props) {
 
   const productComp2 = () => {
     return(
-        <View>
+        <View style={{marginVertical:hp2(2)}}>
         
-          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginTop:hp2(1)}]}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={[styles.imageWrap,{marginLeft:wp2(3),marginVertical:hp2(1)}]}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
@@ -207,7 +207,7 @@ export default function HomeScreen(props) {
         {postComp()}
 
         <Text style={styles.text}>Popular Brands</Text>
-        <ScrollView horizontal >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
         {brandComp(true)}
         {brandComp(true)}
@@ -220,7 +220,7 @@ export default function HomeScreen(props) {
         {productComp()}
 
         <Text style={styles.text}>Popular Pieces</Text>
-        <ScrollView horizontal >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
         {brandComp(false)}
         {brandComp(false)}
@@ -233,7 +233,7 @@ export default function HomeScreen(props) {
         {productComp2()}
 
         <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal >
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
         {brandComp(false)}
         {brandComp(false)}
@@ -333,7 +333,7 @@ const styles = StyleSheet.create({
     height: hp2(18),
     overflow: 'hidden',
     marginHorizontal: wp2(1),
-    marginTop:hp2(1),
+    marginTop:hp2(2),
   },
   productImageContainer2:{
     width: wp2(48),

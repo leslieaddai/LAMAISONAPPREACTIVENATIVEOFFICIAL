@@ -36,6 +36,7 @@ import Category from '../../components/FTS100Comps/category';
 import BrandComp from '../../components/FTS100Comps/brands';
 
 export default function FTS100(props) {
+  const [selected,setSelected]=useState('');
   return (
     <SafeAreaView style={{flex:1}}>
         <View style={styles.container}>
@@ -43,11 +44,22 @@ export default function FTS100(props) {
 
       <View style={{height:hp2(7)}}>
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
-        <Category text="top 100" />
-        <Category text="streetwear" />
-        <Category text="sportswear" />
-        <Category text="Nightlife" />
-        <Category text="partywear" />
+        {/* <Category text="top 100" state={{selected,setSelected}} />
+        <Category text="streetwear" state={{selected,setSelected}} />
+        <Category text="sportswear" state={{selected,setSelected}} />
+        <Category text="nightlife" state={{selected,setSelected}} />
+        <Category text="formalwear" state={{selected,setSelected}} />
+        <Category text="outdoorswear" state={{selected,setSelected}} />
+        <Category text="beachwear" state={{selected,setSelected}} /> */}
+
+        <Category text="activewear" state={{selected,setSelected}} />
+        <Category text="beachwear" state={{selected,setSelected}} />
+        <Category text="casualwear" state={{selected,setSelected}} />
+        <Category text="formalwear" state={{selected,setSelected}} />
+        <Category text="nightlife" state={{selected,setSelected}} />
+        <Category text="outdoor" state={{selected,setSelected}} />
+        <Category text="streetwear" state={{selected,setSelected}} />
+        
       </ScrollView>
       </View>
 

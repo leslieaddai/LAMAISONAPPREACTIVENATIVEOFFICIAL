@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     marginVertical: hp2(2),
   },
   galaryContainer: {
-    width: wp2(90),
+    width: wp2(91),
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignSelf: 'center',

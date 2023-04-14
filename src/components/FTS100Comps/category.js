@@ -31,17 +31,17 @@ import {
 } from '../../theme';
 
 export default function Category(props) {
-  const [select, setSelect] = useState(false);
+  //const [select, setSelect] = useState(false);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        select ? setSelect(false) : setSelect(true);
+        props.state.setSelected(props.text)
       }}
-      style={[styles.button, {backgroundColor: select ? 'black' : 'white'}]}>
+      style={[styles.button, {backgroundColor: props.state.selected == props.text ? 'black' : 'white'}]}>
       <Text
         style={{
-          color: select ? 'white' : 'black',
+          color: props.state.selected == props.text ? 'white' : 'black',
           fontWeight: '700',
           textTransform: 'uppercase',
         }}>
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   button: {
     width: wp2(30),
     height: hp2(5),
-    backgroundColor: 'black',
+    //backgroundColor: 'black',
     borderRadius: wp2(6),
     alignItems: 'center',
     justifyContent: 'center',

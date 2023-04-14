@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     fontWeight:'700',
     marginHorizontal:wp2(11),
     marginVertical:hp2(1),
+    fontSize:rfv(8.5),
   },
   button: {
     width: wp2(28),

@@ -35,7 +35,12 @@ import {
 export default function TermsScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Terms and Conditions</Text>
+      <View style={styles.headWrap}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+          <ICONS.AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.heading}>Terms and Conditions</Text>
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingHorizontal:wp2(8),paddingBottom:hp2(2)}}
@@ -80,12 +85,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
   },
-  heading: {
-    color: 'black',
-    fontSize: rfv(22),
-    fontWeight: '700',
+  headWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    //backgroundColor:'red',
+    //justifyContent: 'center',
+    width:wp2(100),
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     marginBottom:hp2(2),
-    marginLeft: wp2(8),
+  },
+  heading: {
+    color: 'black',
+    fontSize: rfv(18),
+    fontWeight: '700',
+    marginLeft: wp2(14),
+    //marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    //marginBottom:hp2(2),
+    //marginLeft: wp2(8),
   },
 });

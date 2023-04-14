@@ -35,7 +35,12 @@ import {
 export default function PrivacyScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.heading}>Privacy & Security</Text>
+      <View style={styles.headWrap}>
+        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+          <ICONS.AntDesign name="left" size={24} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.heading}>Privacy & Security</Text>
+      </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
@@ -75,12 +80,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
   },
+  headWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    //backgroundColor:'red',
+    //justifyContent: 'center',
+    width:wp2(100),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginBottom:hp2(2),
+  },
   heading: {
     color: 'black',
-    fontSize: rfv(22),
+    fontSize: rfv(18),
     fontWeight: '700',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
-    marginBottom: hp2(2),
-    marginLeft: wp2(8),
+    marginLeft: wp2(14),
+    //marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    //marginBottom: hp2(2),
+    //marginLeft: wp2(8),
   },
 });
