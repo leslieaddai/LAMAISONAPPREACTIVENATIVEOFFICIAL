@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  ImageBackground,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -40,7 +41,13 @@ export default function BrandProfileScreen(props) {
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
-      <View style={styles.iconWrap}>
+      <View style={styles.brandLogo}>
+          <ImageBackground
+            source={IMAGES.temp}
+            style={{width: '100%', height: '100%',justifyContent:'space-between'}}
+            resizeMode="cover"
+          >
+                  <View style={styles.iconWrap}>
       <TouchableOpacity onPress={()=>props.navigation.navigate('FTS100')} style={styles.badge}>
           <Image
             source={IMAGES.badge}
@@ -55,18 +62,15 @@ export default function BrandProfileScreen(props) {
             <Text style={{color:'white',fontSize:rfv(10)}}>1</Text>
         </View>
       </View>
-      <View style={styles.brandLogo}>
-      <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-      </View>
-      <View style={{flexDirection:'row',marginVertical:hp2(2),justifyContent:'space-between',paddingHorizontal:wp2(4),alignItems:'center'}}>
+
+      <View style={{marginBottom:hp2(1),flexDirection:'row',justifyContent:'space-between',paddingHorizontal:wp2(4),alignItems:'center'}}>
         <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>Represent clo</Text>
         <TouchableOpacity style={styles.followButton}>
             <Text style={{fontWeight:'700',color:'white',fontSize:rfv(13)}}>FOLLOW</Text>
         </TouchableOpacity>
+      </View>
+
+          </ImageBackground>
       </View>
       
       <View style={{flexDirection:'row',marginLeft:wp2(4),marginBottom:hp2(2)}}>
@@ -112,10 +116,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   iconWrap:{
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     flexDirection:'row',
     paddingHorizontal:wp2(4),
     justifyContent:'space-between',
+    marginTop:hp2(1),
   },
   badge: {
     width: wp2(10),
@@ -134,7 +138,9 @@ const styles = StyleSheet.create({
   },
   brandLogo:{
     width:wp2(100),
-    height:hp2(20),
+    height:hp2(32),
+    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    overflow:'hidden',
   },
   followButton:{
     width:wp2(30),

@@ -94,6 +94,7 @@ export default function DressingRoomScreen(props) {
 
         <View style={{flexDirection: 'row', marginVertical: hp2(1)}}>
           <View style={styles.imagesWrap}>
+            <View style={styles.shadow}>
             <TouchableOpacity  onPress={() => props.navigation.navigate('imageViewScreen')}
               style={[
                 styles.brandImage,
@@ -105,6 +106,9 @@ export default function DressingRoomScreen(props) {
                 resizeMode="cover"
               />
             </TouchableOpacity>
+            </View>
+            <View style={styles.shadow}>
+
             <View
               style={[
                 styles.brandImage,
@@ -163,8 +167,10 @@ export default function DressingRoomScreen(props) {
                 />
               </View>
             </View>
+            </View>
           </View>
           <View style={[styles.imagesWrap, {width: wp2(40)}]}>
+            <View style={styles.shadow}>
             <View
               style={[
                 styles.brandImage,
@@ -176,6 +182,8 @@ export default function DressingRoomScreen(props) {
                 resizeMode="cover"
               />
             </View>
+            </View>
+            <View style={styles.shadow}>
             <View
               style={[
                 styles.brandImage,
@@ -187,6 +195,8 @@ export default function DressingRoomScreen(props) {
                 resizeMode="cover"
               />
             </View>
+            </View>
+            <View style={styles.shadow}>
             <View
               style={[
                 styles.brandImage,
@@ -197,6 +207,7 @@ export default function DressingRoomScreen(props) {
                 style={{width: '100%', height: '100%'}}
                 resizeMode="cover"
               />
+            </View>
             </View>
             <TouchableOpacity onPress={()=>props.navigation.navigate('colourClothing')}
               style={[
@@ -290,6 +301,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  shadow:{
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    //elevation: 5,
   },
   imagesWrap: {
     height: hp2(60),

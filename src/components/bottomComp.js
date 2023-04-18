@@ -92,7 +92,7 @@ export default function BottomComp(props) {
 const styles = StyleSheet.create({
   container: {
     width: wp2(100),
-    height: hp2(10),
+    height: hp2(8),
     backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
@@ -101,8 +101,8 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   iconWrap: {
-    width: wp2(10),
-    height: wp2(10),
+    width: wp2(7),
+    height: wp2(7),
     overflow: 'hidden',
   },
   iconText: {

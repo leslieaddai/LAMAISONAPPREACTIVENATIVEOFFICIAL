@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useCallback,memo} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,6 +11,8 @@ import {
   Platform,
   Animated,
   SafeAreaView,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -39,12 +41,15 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 import ColorBox from '../../components/colorBox';
 import QuantityComp from '../../components/quantityComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ImageCard from './ImageCard';
+
+const PAGE_SIZE = 40;
 
 export default function ImageUploadLookbook(props) {
 
     const scrollX = new Animated.Value(0);
 
-  const [photos, setPhotos]=useState();
+  //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage]=useState([]);
   const [nextButton, setNextButton]=useState(false);
   const [showQuantity, setShowQuantity]=useState(false);
@@ -58,49 +63,109 @@ export default function ImageUploadLookbook(props) {
   const [colorBox, setColorBox]=useState(false);
   const [addQuantity, setAddQuantity]=useState([1]);
 
+  const [photos, setPhotos] = useState([]);
+  const [after, setAfter] = useState(null);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [perm,setPerm]=useState(false);
+
   console.log(selectedImage);
 
-  useEffect(()=>{
+  const loadMorePhotos = useCallback(async () => {
+    if (!hasNextPage || isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { edges, page_info } = await CameraRoll.getPhotos({
+        first: PAGE_SIZE,
+        after: after,
+      });
+
+      setAfter(page_info.end_cursor);
+      setHasNextPage(page_info.has_next_page);
+      setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+    } catch (error) {
+      console.error('Failed to load more photos:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [after, hasNextPage, isLoading]);
+
+  useEffect(() => {
     async function runThis () {
       if (Platform.OS === "android" && (await hasAndroidPermission())) {
-        showPhotos();
+        loadMorePhotos();
       }
-      if(Platform.OS==='ios'){
-        showPhotos();
+      if (Platform.OS === 'ios') {
+        loadMorePhotos();
       }
     }
     runThis();
-  },[])
+  }, []);
+
+  const checkCondition = async () => {
+     if(Platform.OS==='android' && perm===true){
+      if(!isLoading){
+        loadMorePhotos();
+      }
+     }
+     if(Platform.OS==='ios'){
+      if(!isLoading){
+        loadMorePhotos();
+      }
+     }
+  }
+
+  // useEffect(()=>{
+  //   async function runThis () {
+  //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
+  //       showPhotos();
+  //     }
+  //     if(Platform.OS==='ios'){
+  //       showPhotos();
+  //     }
+  //   }
+  //   runThis();
+  // },[])
 
   async function hasAndroidPermission() {
     const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
   
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
+      setPerm(true);
+      //console.log(hasPermission)
       return true;
     }
   
     const status = await PermissionsAndroid.request(permission);
+    if (status === 'granted') {
+      setPerm(true);
+    }
+    //console.log(status);
     return status === 'granted';
   }
 
-  async function showPhotos() {
-    // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-    //   return;
-    // }
-    const result = await CameraRoll.getPhotos({
-      first: 20,
-      assetType: 'Photos',
-    })
-    .then(r => {
-      setPhotos(r.edges);
-    })
-    .catch((err) => {
-       //Error Loading Images
-       console.log(err)
-    });
-    //console.log(result);
-  };
+  // async function showPhotos() {
+  //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+  //   //   return;
+  //   // }
+  //   const result = await CameraRoll.getPhotos({
+  //     first: 20,
+  //     assetType: 'Photos',
+  //   })
+  //   .then(r => {
+  //     setPhotos(r.edges);
+  //   })
+  //   .catch((err) => {
+  //      //Error Loading Images
+  //      console.log(err)
+  //   });
+  //   //console.log(result);
+  // };
 
   if (uploadButton){
     return(
@@ -330,7 +395,36 @@ export default function ImageUploadLookbook(props) {
           
         </ScrollView>
      ):(
-       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
+      <>
+       <FlatList 
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingVertical: hp2(2),paddingHorizontal:wp2(2),}}
+      numColumns={4}
+       data={photos}
+       onEndReached={checkCondition}
+       onEndReachedThreshold={0.1}
+        renderItem={({item,i})=>{
+          return(
+      //       <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
+      //    <Image
+      //       key={i}
+      //       source={{ uri: item.node.image.uri }}
+      //      style={{width: '100%', height: '100%'}}
+      //      resizeMode="cover"
+      //    />
+      //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
+      //  </TouchableOpacity>
+      <ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
+          )
+        }}
+
+       />
+       
+       {isLoading && <View style={{alignItems:'center',justifyContent:'center'}}>
+       <ActivityIndicator color='black' size='large' /> 
+       </View>}
+
+       {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
        {photos?.map((p, i) => {
        return (
          <TouchableOpacity onPress={()=>selectedImage.includes(p.node.image.uri)?(setSelectedImage(selectedImage.filter(e => e !== p.node.image.uri))):(setSelectedImage([...selectedImage,p.node.image.uri]))} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
@@ -344,7 +438,9 @@ export default function ImageUploadLookbook(props) {
        </TouchableOpacity>
        );
      })}
-     </ScrollView>
+     </ScrollView> */}
+     
+      </>
      )}
     </SafeAreaView>
   );

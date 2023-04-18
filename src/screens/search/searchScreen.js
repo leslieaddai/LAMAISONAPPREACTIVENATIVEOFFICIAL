@@ -37,7 +37,9 @@ import SearchComp from '../../components/searchComp';
 export default function SearchScreen(props) {
   const [selected, setSelected]=useState('brands');
   return (
-    <SafeAreaView style={{flex:1}}>
+    <>
+    <SafeAreaView style={{ flex: 0, backgroundColor: COLORS.appBackground }}></SafeAreaView>
+    <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
        <View style={styles.container}>
       <View style={styles.headWrap}>
         <View style={styles.inputBox}>
@@ -92,6 +94,7 @@ export default function SearchScreen(props) {
       <BottomComp />
     </View>
     </SafeAreaView>
+    </>
   );
 }
 
