@@ -34,8 +34,8 @@ import { useNavigation } from '@react-navigation/native';
 export default function BrandComp(props) {
   const navigation = useNavigation();
   return (
-    <View style={{flexDirection:'row',alignItems:'center'}}>
-        <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen')} style={[styles.button, {backgroundColor: props.rank===1 ? '#ECC90B' : props.rank===2 ? '#C0C0C0' : props.rank===3 ? '#CD7F32' : 'white'}]}>
+    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen')} style={{flexDirection:'row',alignItems:'center'}}>
+        <View style={[styles.button, {backgroundColor: props.rank===1 ? '#ECC90B' : props.rank===2 ? '#C0C0C0' : props.rank===3 ? '#CD7F32' : 'white'}]}>
         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props.rank}</Text>
         <View style={styles.brandLogo}>
           <Image
@@ -44,9 +44,9 @@ export default function BrandComp(props) {
             resizeMode="cover"
           />
         </View>
-    </TouchableOpacity>
-    <Text style={{color:'black',fontSize:rfv(18)}}>Cole Buxton</Text>
     </View>
+    <Text style={{color:'black',fontSize:rfv(18)}}>Cole Buxton</Text>
+    </TouchableOpacity>
     
   );
 }
