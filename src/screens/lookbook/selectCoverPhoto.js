@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -10,6 +10,8 @@ import {
   PermissionsAndroid, 
   Platform,
   SafeAreaView,
+  FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,53 +35,116 @@ import {
   FONTS,
 } from '../../theme';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import ImageCard from './ImageCard';
+
+const PAGE_SIZE = 40;
 
 export default function SelectCoverPhoto(props) {
 
-  const [photos, setPhotos]=useState();
+  //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage]=useState();
 
-  useEffect(()=>{
+  const [photos, setPhotos] = useState([]);
+  const [after, setAfter] = useState(null);
+  const [hasNextPage, setHasNextPage] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [perm,setPerm]=useState(false);
+
+  const loadMorePhotos = useCallback(async () => {
+    if (!hasNextPage || isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const { edges, page_info } = await CameraRoll.getPhotos({
+        first: PAGE_SIZE,
+        after: after,
+      });
+
+      setAfter(page_info.end_cursor);
+      setHasNextPage(page_info.has_next_page);
+      setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+    } catch (error) {
+      console.error('Failed to load more photos:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [after, hasNextPage, isLoading]);
+
+  useEffect(() => {
     async function runThis () {
       if (Platform.OS === "android" && (await hasAndroidPermission())) {
-        showPhotos();
+        loadMorePhotos();
       }
       if (Platform.OS === 'ios') {
-        showPhotos();
+        loadMorePhotos();
       }
     }
     runThis();
-  },[])
+  }, []);
+
+  const checkCondition = async () => {
+     if(Platform.OS==='android' && perm===true){
+      if(!isLoading){
+        loadMorePhotos();
+      }
+     }
+     if(Platform.OS==='ios'){
+      if(!isLoading){
+        loadMorePhotos();
+      }
+     }
+  }
+
+  // useEffect(()=>{
+  //   async function runThis () {
+  //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
+  //       showPhotos();
+  //     }
+  //     if (Platform.OS === 'ios') {
+  //       showPhotos();
+  //     }
+  //   }
+  //   runThis();
+  // },[])
 
   async function hasAndroidPermission() {
     const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
   
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
+      setPerm(true);
+      //console.log(hasPermission)
       return true;
     }
   
     const status = await PermissionsAndroid.request(permission);
+    if (status === 'granted') {
+      setPerm(true);
+    }
+    //console.log(status);
     return status === 'granted';
   }
 
-  async function showPhotos() {
-    // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-    //   return;
-    // }
-    const result = await CameraRoll.getPhotos({
-      first: 20,
-      assetType: 'Photos',
-    })
-    .then(r => {
-      setPhotos(r.edges);
-    })
-    .catch((err) => {
-       //Error Loading Images
-       console.log(err)
-    });
-    //console.log(result);
-  };
+  // async function showPhotos() {
+  //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+  //   //   return;
+  //   // }
+  //   const result = await CameraRoll.getPhotos({
+  //     first: 20,
+  //     assetType: 'Photos',
+  //   })
+  //   .then(r => {
+  //     setPhotos(r.edges);
+  //   })
+  //   .catch((err) => {
+  //      //Error Loading Images
+  //      console.log(err)
+  //   });
+  //   //console.log(result);
+  // };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -102,8 +167,29 @@ export default function SelectCoverPhoto(props) {
       />):(<Text>Select Image</Text>)}
     </View>
 
+    <>
+      <FlatList 
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingVertical: hp2(2),paddingHorizontal:wp2(2),}}
+      numColumns={4}
+       data={photos}
+       onEndReached={checkCondition}
+       onEndReachedThreshold={0.1}
+        renderItem={({item,i})=>{
+          return(
+      <ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
+          )
+        }}
+
+       />
+       
+       {isLoading && <View style={{alignItems:'center',justifyContent:'center'}}>
+       <ActivityIndicator color='black' size='large' /> 
+       </View>}
+
+      </>
      
-       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
+       {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
        {photos?.map((p, i) => {
        return (
          <TouchableOpacity onPress={()=>setSelectedImage(p.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
@@ -117,7 +203,7 @@ export default function SelectCoverPhoto(props) {
        </TouchableOpacity>
        );
      })}
-     </ScrollView>
+     </ScrollView> */}
      
     </SafeAreaView>
   );

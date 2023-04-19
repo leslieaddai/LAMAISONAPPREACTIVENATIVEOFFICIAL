@@ -38,228 +38,256 @@ import BottomComp from '../../components/bottomComp';
 export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(false);
   const [share, setShare] = useState(false);
-  const [hanger,setHanger]=useState(false);
+  const [hanger, setHanger] = useState(false);
   const scrollX = new Animated.Value(0);
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-      <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.dressingText}>DRESSING ROOM</Text>
-      </View>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(2)}}>
-        <View style={styles.iconWraper}>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
-            <Image
-              source={IMAGES.randomPic}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
+        <View style={styles.headWrap}>
           <TouchableOpacity
-            onPress={() => {
-              heart ? setHeart(false) : setHeart(true);
-            }}>
-            <ICONS.AntDesign
-              name="heart"
-              size={24}
-              color={heart ? '#FC0004' : 'black'}
-            />
+            onPress={() => props.navigation.goBack()}
+            style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
+            <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
-          <Text style={{color: 'black'}}>1000</Text>
-          <TouchableOpacity onPress={()=>{hanger?setHanger(false):setHanger(true)}}>
-            <ICONS.MaterialCommunityIcons
-              name="hanger"
-              size={34}
-              color={hanger?'#162FAC':'black'}
-            />
-          </TouchableOpacity>
-          <Text style={{color: 'black'}}>1500</Text>
-          <TouchableOpacity
-            onPress={() => {
-              share ? setShare(false) : setShare(true);
-            }}>
-            <ICONS.FontAwesome
-              name="retweet"
-              size={24}
-              color={share ? '#13D755' : 'black'}
-            />
-          </TouchableOpacity>
-          <Text style={{color: 'black'}}>3000</Text>
+          <Text style={styles.dressingText}>DRESSING ROOM</Text>
         </View>
-
-        <View style={{flexDirection: 'row', marginVertical: hp2(1)}}>
-          <View style={styles.imagesWrap}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(2)}}>
+          <View style={styles.iconWraper}>
             <View style={styles.shadow}>
-            <TouchableOpacity  onPress={() => props.navigation.navigate('imageViewScreen')}
-              style={[
-                styles.brandImage,
-                {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
-              ]}>
-              <Image
-                source={IMAGES.randomPic}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
+              <TouchableOpacity
+                onPress={() => props.navigation.navigate('brandProfileScreen')}
+                style={styles.brandImage}>
+                <Image
+                  source={IMAGES.randomPic}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                heart ? setHeart(false) : setHeart(true);
+              }}>
+              <ICONS.AntDesign
+                name="heart"
+                size={24}
+                color={heart ? '#FC0004' : 'black'}
               />
             </TouchableOpacity>
-            </View>
-            <View style={styles.shadow}>
+            <Text style={{color: 'black'}}>1000</Text>
+            <TouchableOpacity
+              onPress={() => {
+                hanger ? setHanger(false) : setHanger(true);
+              }}>
+              <ICONS.MaterialCommunityIcons
+                name="hanger"
+                size={34}
+                color={hanger ? '#162FAC' : 'black'}
+              />
+            </TouchableOpacity>
+            <Text style={{color: 'black'}}>1500</Text>
+            <TouchableOpacity
+              onPress={() => {
+                share ? setShare(false) : setShare(true);
+              }}>
+              <ICONS.FontAwesome
+                name="retweet"
+                size={24}
+                color={share ? '#13D755' : 'black'}
+              />
+            </TouchableOpacity>
+            <Text style={{color: 'black'}}>3000</Text>
+          </View>
 
-            <View
-              style={[
-                styles.brandImage,
-                {
-                  width: wp2(54),
-                  height: hp2(28),
-                  borderRadius: wp2(2),
-                  backgroundColor: '#F0F0F0',
-                },
-              ]}>
-              <Animated.ScrollView
-                //style={{flexGrow:0,}}
-                horizontal
-                pagingEnabled
-                showsHorizontalScrollIndicator={false}
-                onScroll={Animated.event(
-                  [{nativeEvent: {contentOffset: {x: scrollX}}}],
-                  {useNativeDriver: true},
-                )}>
-                <View style={styles.textBox}>
-                  <Text style={styles.headingText}>shipping information</Text>
-                  <Text style={styles.text}>
-                    Free shipping Worldwide, you may be subject to taxes
-                    depending on where the item will be shipped to.
-                  </Text>
-                </View>
+          <View style={{flexDirection: 'row', marginVertical: hp2(1)}}>
+            <View style={styles.imagesWrap}>
+              <View style={styles.shadow}>
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('imageViewScreen')}
+                  style={[
+                    styles.brandImage,
+                    {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
+                  ]}>
+                  <Image
+                    source={IMAGES.randomPic}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.shadow}>
+                <View
+                  style={[
+                    styles.brandImage,
+                    {
+                      width: wp2(54),
+                      height: hp2(28),
+                      borderRadius: wp2(2),
+                      backgroundColor: '#F0F0F0',
+                    },
+                  ]}>
+                  <Animated.ScrollView
+                    //style={{flexGrow:0,}}
+                    horizontal
+                    pagingEnabled
+                    showsHorizontalScrollIndicator={false}
+                    onScroll={Animated.event(
+                      [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                      {useNativeDriver: true},
+                    )}>
+                    <View style={styles.textBox}>
+                      <Text style={styles.headingText}>
+                        shipping information
+                      </Text>
+                      <Text style={styles.text}>
+                        Free shipping Worldwide, you may be subject to taxes
+                        depending on where the item will be shipped to.
+                      </Text>
+                    </View>
 
-                <View style={styles.textBox}>
-                  <Text style={styles.headingText}>La maison App Notice</Text>
-                  <Text style={styles.text}>
-                    the cost of shipping is not decided by LA Maison App. this
-                    is decided by the brands themselves. the country the product
-                    is delivered to may add additional taxes.
-                  </Text>
-                </View>
+                    <View style={styles.textBox}>
+                      <Text style={styles.headingText}>
+                        La maison App Notice
+                      </Text>
+                      <Text style={styles.text}>
+                        the cost of shipping is not decided by LA Maison App.
+                        this is decided by the brands themselves. the country
+                        the product is delivered to may add additional taxes.
+                      </Text>
+                    </View>
 
-                <View style={styles.textBox}>
-                  <Text style={styles.headingText}>shipping information</Text>
-                  <Text style={styles.text}>
-                    Free shipping Worldwide, you may be subject to taxes
-                    depending on where the item will be shipped to.
-                  </Text>
+                    <View style={styles.textBox}>
+                      <Text style={styles.headingText}>
+                        shipping information
+                      </Text>
+                      <Text style={styles.text}>
+                        Free shipping Worldwide, you may be subject to taxes
+                        depending on where the item will be shipped to.
+                      </Text>
+                    </View>
+                  </Animated.ScrollView>
+                  <View
+                    style={{
+                      width: wp2(54),
+                      height: hp2(2),
+                    }}>
+                    <RNAnimatedScrollIndicators
+                      numberOfCards={3}
+                      scrollWidth={wp2(54)}
+                      activeColor={'#707070'}
+                      inActiveColor={'#D9D9D9'}
+                      scrollAnimatedValue={scrollX}
+                    />
+                  </View>
                 </View>
-              </Animated.ScrollView>
-              <View
-                style={{
-                  width: wp2(54),
-                  height: hp2(2),
-                }}>
-                <RNAnimatedScrollIndicators
-                  numberOfCards={3}
-                  scrollWidth={wp2(54)}
-                  activeColor={'#707070'}
-                  inActiveColor={'#D9D9D9'}
-                  scrollAnimatedValue={scrollX}
-                />
               </View>
             </View>
+            <View style={[styles.imagesWrap, {width: wp2(40)}]}>
+              <View style={styles.shadow}>
+                <View
+                  style={[
+                    styles.brandImage,
+                    {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
+                  ]}>
+                  <Image
+                    source={IMAGES.randomPic}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+                </View>
+              </View>
+              <View style={styles.shadow}>
+                <View
+                  style={[
+                    styles.brandImage,
+                    {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
+                  ]}>
+                  <Image
+                    source={IMAGES.vinDiesel}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+                </View>
+              </View>
+              <View style={styles.shadow}>
+                <View
+                  style={[
+                    styles.brandImage,
+                    {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
+                  ]}>
+                  <Image
+                    source={IMAGES.randomPic}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+                </View>
+              </View>
+              <View style={styles.shadow}>
+                <TouchableOpacity
+                  onPress={() => props.navigation.navigate('colourClothing')}
+                  style={[
+                    styles.brandImage,
+                    {
+                      width: wp2(34),
+                      height: hp2(14),
+                      borderRadius: wp2(2),
+                      backgroundColor: '#168B16',
+                    },
+                  ]}></TouchableOpacity>
+              </View>
             </View>
           </View>
-          <View style={[styles.imagesWrap, {width: wp2(40)}]}>
-            <View style={styles.shadow}>
-            <View
-              style={[
-                styles.brandImage,
-                {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
-              ]}>
-              <Image
-                source={IMAGES.randomPic}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
-              />
-            </View>
-            </View>
-            <View style={styles.shadow}>
-            <View
-              style={[
-                styles.brandImage,
-                {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
-              ]}>
-              <Image
-                source={IMAGES.vinDiesel}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
-              />
-            </View>
-            </View>
-            <View style={styles.shadow}>
-            <View
-              style={[
-                styles.brandImage,
-                {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
-              ]}>
-              <Image
-                source={IMAGES.randomPic}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="cover"
-              />
-            </View>
-            </View>
-            <TouchableOpacity onPress={()=>props.navigation.navigate('colourClothing')}
-              style={[
-                styles.brandImage,
-                {
-                  width: wp2(34),
-                  height: hp2(14),
-                  borderRadius: wp2(2),
-                  backgroundColor: '#168B16',
-                },
-              ]}></TouchableOpacity>
+
+          <View style={styles.filters}>
+            <Text style={{color: 'black'}}>SIZE</Text>
+            <Text
+              style={{color: 'black', fontSize: rfv(22), marginLeft: wp2(66)}}>
+              9
+            </Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('sizeClothing')}>
+              <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
+            </TouchableOpacity>
           </View>
-        </View>
+          <View style={styles.filters}>
+            <Text style={{color: 'black'}}>REVIEWS</Text>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('review')}>
+              <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
+            </TouchableOpacity>
+          </View>
 
-        <View style={styles.filters}>
-          <Text style={{color: 'black'}}>SIZE</Text>
-          <Text
-            style={{color: 'black', fontSize: rfv(22), marginLeft: wp2(66)}}>
-            9
-          </Text>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('sizeClothing')}>
-            <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.filters}>
-          <Text style={{color: 'black'}}>REVIEWS</Text>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('review')}>
-            <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity onPress={()=>props.navigation.navigate('checkoutScreen')}
-          style={[
-            styles.button,
-            {alignSelf: 'center', marginVertical: hp2(4)},
-          ]}>
-          <Text style={styles.buttonText}>BUY NOW</Text>
-        </TouchableOpacity>
-
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('basketScreen')}
-            style={[styles.button, {width: wp2(36), marginHorizontal: wp2(2)}]}>
-            <Text style={styles.buttonText}>ADD TO BASKET</Text>
-          </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.button, {width: wp2(36), marginHorizontal: wp2(2)}]}>
-            <Text style={styles.buttonText}>ADD TO WISHLIST</Text>
+            onPress={() => props.navigation.navigate('checkoutScreen')}
+            style={[
+              styles.button,
+              {alignSelf: 'center', marginVertical: hp2(4)},
+            ]}>
+            <Text style={styles.buttonText}>BUY NOW</Text>
           </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <BottomComp />
-    </View>
+
+          <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('basketScreen')}
+              style={[
+                styles.button,
+                {width: wp2(36), marginHorizontal: wp2(2)},
+              ]}>
+              <Text style={styles.buttonText}>ADD TO BASKET</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.button,
+                {width: wp2(36), marginHorizontal: wp2(2)},
+              ]}>
+              <Text style={styles.buttonText}>ADD TO WISHLIST</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <BottomComp />
+      </View>
     </SafeAreaView>
   );
 }
@@ -271,7 +299,7 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
   },
   dressingText: {
@@ -302,7 +330,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  shadow:{
+  shadow: {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

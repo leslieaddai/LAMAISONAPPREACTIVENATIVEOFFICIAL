@@ -34,17 +34,17 @@ import { useNavigation } from '@react-navigation/native';
 export default function Popular(props) {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.container}>
         <Text style={{color:'black',marginLeft:wp2(3)}}>{props.no}</Text>
-        <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.productImage}>
+        <View style={styles.productImage}>
       <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-      </TouchableOpacity>
+      </View>
       <Text style={{color:'black'}}>Souvenir Shorts - Black/Concrete</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

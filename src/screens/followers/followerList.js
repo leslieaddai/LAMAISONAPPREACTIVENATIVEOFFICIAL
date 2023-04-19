@@ -35,6 +35,7 @@ import BottomComp from '../../components/bottomComp';
 import SearchComp from '../../components/searchComp';
 
 export default function FollowerList(props) {
+  const [selected, setSelected]=useState('brands');
   return (
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
@@ -47,9 +48,13 @@ export default function FollowerList(props) {
   </View>
 
   <View style={styles.iconContainer}>
-    <Text style={styles.text}>BRANDS</Text>
+  <TouchableOpacity onPress={()=>setSelected('brands')}>
+        <Text style={[styles.text,{color:selected=='brands'?'black':'gray'}]}>BRANDS</Text>
+        </TouchableOpacity>
     <View style={styles.line}></View>
-    <Text style={styles.text}>EDITORS</Text>
+    <TouchableOpacity onPress={()=>setSelected('editors')}>
+        <Text style={[styles.text,{color:selected=='editors'?'black':'gray'}]}>EDITORS</Text>
+        </TouchableOpacity>
   </View>
 
   <ScrollView
@@ -130,6 +135,6 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '700',
     fontSize: rfv(14),
-    color: 'black',
+    //color: 'black',
   },
 });

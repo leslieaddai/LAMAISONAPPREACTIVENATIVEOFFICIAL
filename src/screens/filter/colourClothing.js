@@ -34,7 +34,17 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 export default function ColourClothing(props) {
+  const [selected,setSelected]=useState();
   const navigation = useNavigation();
+
+  const color = (col) => {
+    return(
+      <TouchableOpacity onPress={()=>setSelected(col)} style={[styles.color,{backgroundColor:col}]}>
+         {selected===col && (<ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
@@ -44,18 +54,18 @@ export default function ColourClothing(props) {
         <Text style={styles.heading}>COLOUR</Text>
       </View>
       <View style={styles.colorsWrap}>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'black'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'white'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#A1A1A1'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#F61616'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#008000E8'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#0000FF'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#5C4033'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#FF69B4'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#FAFA33'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#FFA500'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#800080'}]}></TouchableOpacity>
-      <TouchableOpacity style={[styles.color,{backgroundColor:'#F5F5DC'}]}></TouchableOpacity>
+        {color('black')}
+        {color('white')}
+        {color('#A1A1A1')}
+        {color('#F61616')}
+        {color('#008000E8')}
+        {color('#0000FF')}
+        {color('#5C4033')}
+        {color('#FF69B4')}
+        {color('#FAFA33')}
+        {color('#FFA500')}
+        {color('#800080')}
+        {color('#F5F5DC')}
       </View>
     </SafeAreaView>
   );
