@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -32,8 +32,77 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import WelcomeScreen from '../welcome/welcomeScreen';
+import SplashScreen from '../splash/splashScreen';
 
 export default function HomeScreen(props) {
+
+  const dispatch = useDispatch()
+  const showSplash = useSelector(state => state.Splash.showSplash)
+  const showWelcome = useSelector(state => state.Splash.showWelcome)
+  //const splashState = useSelector(state => state.Splash)
+  //const [splashState,setSplashState]=useState(useSelector(state => state.Splash))
+  console.log(showSplash);
+  console.log(showWelcome);
+  //console.log(splashState);
+
+  // useEffect(()=>{
+  //   setTimeout(()=>{
+  //     dispatch({
+  //       type: types.HideSplash
+  //     });
+  //   },5000)
+  // },[])
+
+  // useEffect(() => {
+  //   const timeout = setTimeout(() => {
+  //     dispatch({
+  //       type: types.HideSplash
+  //     });
+  //   }, 3000);
+
+  //   return () => {
+  //     // clears timeout before running the new effect
+  //     clearTimeout(timeout);
+  //   };
+  //   RunThis();
+  // }, []);
+
+  // const RunThis = () => {
+  //   setTimeout(()=>{
+  //     dispatch({
+  //       type: types.HideSplash
+  //     });
+
+  //     setTimeout(()=>{
+  //       dispatch({
+  //         type: types.HideWelcome
+  //       });
+  //     },3000)
+
+  //   },3000)
+
+  // }
+
+  useEffect(()=>{
+    if(showSplash){
+      setTimeout(()=>{
+        dispatch({
+          type: types.HideSplash
+        });
+      },3000)
+    }
+    
+    if(showWelcome){
+      setTimeout(()=>{
+        dispatch({
+          type: types.HideWelcome
+        });
+      },6000)
+    }
+  },[])
 
     const brandComp = (nav) => {
         return(
@@ -170,6 +239,18 @@ export default function HomeScreen(props) {
         </View>
 
       </View>
+    )
+  }
+
+  if(showSplash){
+    return(
+      <SplashScreen/>
+    )
+  }
+
+  if(showWelcome){
+    return(
+      <WelcomeScreen/>
     )
   }
 

@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -32,8 +33,13 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
 
 export default function SettingsScreen(props) {
+  
+  const dispatch = useDispatch()
+
     const settingOptions = (name,badge,navScreen) => {
         return(
             <TouchableOpacity onPress={()=>props.navigation.navigate(navScreen,{user:props.route.params.user})} style={styles.filters}>
@@ -54,6 +60,36 @@ export default function SettingsScreen(props) {
           </TouchableOpacity>
         )
     }
+
+  const logoutButton = () => {
+
+    const logoutHandle = () => {
+      Alert.alert('Confirmation', 'Do you want to logout?', [
+        {
+          text: 'No',
+          onPress: () => console.log('No Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+          dispatch({
+            type: types.Logout
+          });
+          // props.navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: 'guestScreen' }],
+          // });
+        }
+        },
+      ]);
+    }
+
+    return(
+      <TouchableOpacity onPress={logoutHandle} style={styles.filters}>
+            <Text style={{color: "#EB1414",fontWeight:"700"}}>LOGOUT</Text>
+      </TouchableOpacity>
+    )
+  }
+
   return (
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
@@ -75,7 +111,8 @@ export default function SettingsScreen(props) {
         {settingOptions('TERM OF USE','','termsScreen')}
         {settingOptions('PRIVACY & SECURITY','','privacyScreen')}
         {settingOptions('CUSTOMER ADVICE','','customerSupportScreen')}
-        {settingOptions('LOGOUT','','guestScreen')}
+        {/* {settingOptions('LOGOUT','','guestScreen')} */}
+        {logoutButton()}
         </>
       ):(
         <>
@@ -86,7 +123,8 @@ export default function SettingsScreen(props) {
         {settingOptions('TERM OF USE','','termsScreen')}
         {settingOptions('PRIVACY & SECURITY','','privacyScreen')}
         {settingOptions('CUSTOMER ADVICE','','customerSupportScreen')}
-        {settingOptions('LOGOUT','','guestScreen')}
+        {/* {settingOptions('LOGOUT','','guestScreen')} */}
+        {logoutButton()}
         </>
       )}
 

@@ -10,6 +10,7 @@ import {
   Platform,
   Button,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -38,6 +39,14 @@ import { signup } from '../../store/actions/authAction';
 import { message } from '../../store/message';
 import DatePicker from 'react-native-date-picker'
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { RegisterUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const CreateAccountScreen = (props) => {
@@ -59,47 +68,99 @@ const CreateAccountScreen = (props) => {
     } = stateChange;
   const [checkBox, setCheckBox] = useState(false);
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
+
+  console.log(special.test(Newpassword));
 
   const onCreate = () => {
     if(UserName != '' && Newpassword != '' && ConfirmPass != '' && Birthday != '' ){
       if(UserName.length >= 6){
         if(Newpassword.length >=8){
-          if(ConfirmPass === Newpassword){
+          if(numeric.test(Newpassword)){
+            if(special.test(Newpassword)){
+              if(ConfirmPass === Newpassword){
+                if(checkBox){
+                  let obj = {
+                    first_name: props.route.params.data.firstName,
+                    last_name: props.route.params.data.lastName,
+                    username: UserName,
+                    dob:Birthday.toISOString().split('T')[0],
+                    email: props.route.params.data.email,
+                    password: Newpassword,
+                    password_confirmation: ConfirmPass,
+                    role_id: props.route.params.user == 'editor' ? 2 : 3
+                }
+      
+                console.log(obj);
+                setLoading(true);
 
-            let obj = {
-              first_name: props.route.params.data.firstName,
-              last_name: props.route.params.data.lastName,
-              username: UserName,
-              dob:Birthday,
-              email: props.route.params.data.email,
-              password: Newpassword,
-              password_confirmation: ConfirmPass,
-              acc_type: props.route.params.user == 'editor' ? 1 : 2
-          }
+                axios
+                .post(RegisterUrl, obj)
+                .then(async function (res) {
+                   console.log(res.data);
+                   setLoading(false);
+                   props.navigation.navigate('loginScreen')
+                   //props.navigation.replace('loginScreen')
+                   successMessage('Account Created Please Verify Your Email Before Login')
+                }) 
+                .catch(function (error) {
+                  console.log(error.response.data)
+                  setLoading(false);
+                  errorMessage('Something went wrong')
 
-          console.log(obj);
-
-          //props.signup(obj, (res) => console.log(res))
-
-
-            props.navigation.navigate('loginScreen')
-
-
+                  //errorMessage(errorHandler(error))
+                });
+      
+                //props.signup(obj, (res) => console.log(res))
+      
+      
+                  //props.navigation.navigate('loginScreen')
+      
+      
+                }else{
+                  errorMessage('Please agree terms and conditions')
+                }
+              }else{
+                //alert('Confirm password not matched')
+                errorMessage('Confirm password not matched')
+              }
+            }else{
+              //alert('Password must include at least 1 special character')
+              errorMessage('Password must include at least 1 special character')
+            }
           }else{
-            alert('Confirm password not matched')
+            //alert('Password must include at least 1 Numerical character')
+            errorMessage('Password must include at least 1 Numerical character')
           }
         }else{
-          alert('Password must be at least 8 characters')
+          //alert('Password must be at least 8 characters')
+          errorMessage('Password must be at least 8 characters')
         }
       }else{
-        alert("Username must contain at least 6 characters");
+        //alert("Username must contain at least 6 characters");
+        errorMessage('Username must contain at least 6 characters')
       }
     }else{
-      alert('Please fill all details')
+      //alert('Please fill all details')
+      errorMessage('Please fill all details')
     }
   }
 
+  // if(loading){
+  //   return(
+  //     <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+  //     <SkypeIndicator color={'black'} />
+  //     </View>
+  //   )
+  // }
+
   return (
+    <>
+    {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginTop:Platform.OS === "ios"? hp2(0) : hp2(4), marginLeft: wp2(8)}}>
@@ -132,7 +193,7 @@ const CreateAccountScreen = (props) => {
         <TouchableOpacity style={styles.BDaystyle} onPress={() => setOpen(true)}>
           {/* <TextInput  placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => updateState({Birthday:val})} placeholderTextColor={'grey'}/> */}
           {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
-          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday. getDate()} - ${ Birthday.getMonth()} - ${Birthday.getFullYear()}`}</Text>
+          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday. getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
         </TouchableOpacity>
         <DatePicker
         modal
@@ -177,6 +238,7 @@ const CreateAccountScreen = (props) => {
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

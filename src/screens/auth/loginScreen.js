@@ -34,9 +34,86 @@ import {
 import AlertComp from '../../components/alertComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { LoginUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
+
+  const dispatch = useDispatch()
+  //console.log(useSelector(state => state.userData))
+
+  const [stateChange, setStateChange] = useState({
+    UserName:'',
+    Password:'',
+  })
+  const updateState = data => setStateChange(prev => ({...prev, ...data}));
+  const {
+    UserName,
+    Password,
+  } = stateChange;
+
+  const [loading, setLoading] = useState(false);
+  //console.log(loading)
+
+  const onSignIn = () => {
+    if(UserName != '' && Password != ''){
+      setLoading(true);
+      //props.navigation.navigate('homeScreen')
+      let obj = {
+        email: UserName,
+        password: Password,
+    }
+    axios
+    .post(LoginUrl, obj)
+    .then(async function (res) {
+       console.log(res.data);
+       setLoading(false);
+       if(res.data.user.email_verified===false){
+        errorMessage('Please verify your email')
+       }else{
+         successMessage('Login Success')
+         dispatch({
+          type: types.Login,
+          payload: res.data,
+        });
+       }
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      //errorMessage(errorHandler(error))
+      //errorMessage('Login Failed');
+      setShowError(true);
+      setTimeout(()=>{
+        setShowError(false)
+      },3000);
+    });
+
+    // setShowError(true);
+    //     setLoading(false);
+
+    //     setTimeout(()=>{
+    //       setShowError(false)
+    //     },5000);
+     
+    }else{
+      errorMessage('Please fill all details')
+    }
+  }
+
   return (
+    <>
+    {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
         <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
@@ -54,6 +131,7 @@ export default function LoginScreen(props) {
             }}
             placeholder="USERNAME"
             placeholderTextColor={'grey'}
+            onChangeText={(val) => updateState({UserName:val})}
           />
         </View>
         <View style={styles.inputBox}>
@@ -66,7 +144,9 @@ export default function LoginScreen(props) {
               fontWeight: '700',
             }}
             placeholder="PASSWORD"
+            secureTextEntry={true}
             placeholderTextColor={'grey'}
+            onChangeText={(val) => updateState({Password:val})}
           />
         </View>
         <TouchableOpacity onPress={() => props.navigation.navigate('resetPassScreen')}>
@@ -75,7 +155,7 @@ export default function LoginScreen(props) {
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('homeScreen')}
+          onPress={onSignIn}
           style={styles.button}>
           <Text style={styles.buttonText}>SIGN IN</Text>
         </TouchableOpacity>
@@ -91,6 +171,7 @@ export default function LoginScreen(props) {
         </TouchableOpacity>
       </KeyboardAwareScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

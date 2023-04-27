@@ -32,6 +32,7 @@ import {
   FONTS,
 } from '../../theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { errorMessage } from '../../config/NotificationMessage';
 
 export default function SignupScreen(props) {
   const [firstName,setFirstName]=useState('')
@@ -47,7 +48,8 @@ export default function SignupScreen(props) {
         };
         props.navigation.navigate("accountTypeScreen", { data: data });
     } else {
-      alert("Please fill all details");
+      //alert("Please fill all details");
+      errorMessage('Please fill all details');
     }
   }
 

@@ -29,13 +29,14 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import Animated, { FadeInUp,FadeOutUp } from 'react-native-reanimated';
 
 export default function AlertComp(props) {
     //console.log(props);
   return (
-    <View style={styles.errorWrap}>
+    <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.errorWrap}>
       <Text style={styles.errorText}>{props.text}</Text>
-    </View>
+    </Animated.View>
   );
 }
 

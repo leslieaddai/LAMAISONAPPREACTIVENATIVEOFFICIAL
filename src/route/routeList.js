@@ -58,6 +58,7 @@ import Review from "../screens/feedback/review";
 import AddReview from "../screens/feedback/addReview";
 
 export const stackRouteList = [
+    {name:'homeScreen',component:HomeScreen},//
     {name:"guestScreen", component:GuestScreen},//
     {name:"loginScreen", component:LoginScreen},//
     {name:"signupScreen", component:SignupScreen},//
@@ -75,7 +76,7 @@ export const stackRouteList = [
     {name:'wardrobeScreen',component:WardrobeScreen},//
     {name:'collectionScreen',component:CollectionScreen},//
     {name:'galleryScreen',component:GalleryScreen},//
-    {name:'homeScreen',component:HomeScreen},//
+    
     {name:'listViewScreen',component:ListViewScreen},//
     {name:'FTS100',component:FTS100},//
     {name:'brandProfileScreen',component:BrandProfileScreen},//
@@ -108,6 +109,163 @@ export const stackRouteList = [
     {name:'addCollection',component:AddCollection},//
     {name:'inventory',component:Inventory},//
     {name:'reuploadScreen',component:ReuploadScreen},//
+    {name:'username',component:Username},//
+    {name:'email',component:Email},//
+    {name:'phone',component:Phone},//
+    {name:'passwordChange',component:PasswordChange},//
+    {name:'about',component:About},//
+    {name:'followerList',component:FollowerList},//
+    {name:'review',component:Review},//
+    {name:'addReview',component:AddReview},//
+]
+
+export const guestScreens = [
+    {name:"guestScreen", component:GuestScreen},//
+    {name:"loginScreen", component:LoginScreen},//
+    {name:"signupScreen", component:SignupScreen},//
+    {name:"resetPassScreen", component:ResetPassScreen},//
+   
+    {name:"accountTypeScreen", component:AccountTypeScreen},//
+    {name:"splashScreen", component:SplashScreen},
+    {name:"welcomeScreen", component:WelcomeScreen},
+    
+    {name:"confirmationScreen", component:ConfirmationScreen},//
+    
+    {name:'lookbookScreen',component:LookbookScreen},//
+    {name:'wardrobeScreen',component:WardrobeScreen},//
+    {name:'collectionScreen',component:CollectionScreen},//
+    {name:'galleryScreen',component:GalleryScreen},//
+    {name:'homeScreen',component:HomeScreen},//
+    {name:'listViewScreen',component:ListViewScreen},//
+    {name:'FTS100',component:FTS100},//
+    {name:'brandProfileScreen',component:BrandProfileScreen},//
+    {name:'editorProfileScreen',component:EditorProfileScreen},//
+    {name:'nextPickupScreen',component:NextPickupScreen},//
+    {name:'dressingRoomScreen',component:DressingRoomScreen},////
+    {name:'imageViewScreen',component:ImageViewScreen},//
+    {name:'basketScreen',component:BasketScreen},//
+    {name:'checkoutScreen',component:CheckoutScreen},//
+    {name:'searchScreen',component:SearchScreen},//
+
+
+
+    {name:'termsScreen',component:TermsScreen},//need to confirm
+    {name:'privacyScreen',component:PrivacyScreen},//need to confirm
+    {name:'createAccountScreen',component:CreateAccountScreen},//
+    {name:'sizeClothing',component:SizeClothing},//
+    {name:'colourClothing',component:ColourClothing},//
+    {name:'filterScreen',component:FilterScreen},//
+    {name:'priceList',component:PriceList},//
+    {name:'style',component:Style},//
+    {name:'items',component:Items},//
+    {name:'continents',component:Continents},//
+
+    {name:'followerList',component:FollowerList},//
+    {name:'review',component:Review},//
+    {name:'addReview',component:AddReview},//
+]
+
+export const brandScreens = [
+    {name:'homeScreen',component:HomeScreen},//
+    {name:"feedbackScreen", component:FeedbackScreen},//
+
+    {name:"splashScreen", component:SplashScreen},
+    {name:"welcomeScreen", component:WelcomeScreen},
+    {name:"notificationScreen", component:NotificationScreen},//
+    {name:"orderTrackingScreen", component:OrderTrackingScreen},//
+    {name:"destinationScreen", component:DestinationScreen},//
+    {name:'customerSupportScreen',component:CustomerSupportScreen},//
+    {name:'lookbookScreen',component:LookbookScreen},//
+    {name:'wardrobeScreen',component:WardrobeScreen},//
+    {name:'collectionScreen',component:CollectionScreen},//
+    {name:'galleryScreen',component:GalleryScreen},//
+    
+    {name:'listViewScreen',component:ListViewScreen},//
+    {name:'FTS100',component:FTS100},//
+    {name:'brandProfileScreen',component:BrandProfileScreen},//
+    {name:'editorProfileScreen',component:EditorProfileScreen},//
+    {name:'nextPickupScreen',component:NextPickupScreen},//
+    {name:'dressingRoomScreen',component:DressingRoomScreen},////
+    {name:'imageViewScreen',component:ImageViewScreen},//
+    {name:'searchScreen',component:SearchScreen},//
+    {name:'analyticsScreen',component:AnalyticsScreen},//
+    {name:'imageUploadScreen',component:ImageUploadScreen},//
+    {name:'settingsScreen',component:SettingsScreen},//
+    {name:'termsScreen',component:TermsScreen},//
+    {name:'privacyScreen',component:PrivacyScreen},//
+    {name:'sizeClothing',component:SizeClothing},//
+    {name:'colourClothing',component:ColourClothing},//
+    {name:'filterScreen',component:FilterScreen},//
+    {name:'priceList',component:PriceList},//
+    {name:'style',component:Style},//
+    {name:'items',component:Items},//
+    {name:'continents',component:Continents},//
+
+    {name:'editProfile',component:EditProfile},//
+    {name:'productType',component:ProductType},//
+    {name:'imageUploadLookbook',component:ImageUploadLookbook},//
+    {name:'shippingLocation',component:ShippingLocation},//
+    {name:'selectCoverPhoto',component:SelectCoverPhoto},//
+    {name:'addCollection',component:AddCollection},//
+    {name:'inventory',component:Inventory},//
+    {name:'reuploadScreen',component:ReuploadScreen},//
+    {name:'username',component:Username},//
+    {name:'email',component:Email},//
+    {name:'phone',component:Phone},//
+    {name:'passwordChange',component:PasswordChange},//
+    {name:'about',component:About},//
+    {name:'followerList',component:FollowerList},//
+    
+]
+
+export const editorScreens = [
+    {name:'homeScreen',component:HomeScreen},//
+
+    {name:"feedbackScreen", component:FeedbackScreen},//
+    {name:"splashScreen", component:SplashScreen},
+    {name:"welcomeScreen", component:WelcomeScreen},
+    {name:"notificationScreen", component:NotificationScreen},//
+    {name:"orderTrackingScreen", component:OrderTrackingScreen},//
+    
+    {name:"confirmationScreen", component:ConfirmationScreen},//
+    {name:'customerSupportScreen',component:CustomerSupportScreen},//
+    {name:'lookbookScreen',component:LookbookScreen},//
+    {name:'wardrobeScreen',component:WardrobeScreen},//
+    {name:'collectionScreen',component:CollectionScreen},//
+    {name:'galleryScreen',component:GalleryScreen},//
+    
+    {name:'listViewScreen',component:ListViewScreen},//
+    {name:'FTS100',component:FTS100},//
+    {name:'brandProfileScreen',component:BrandProfileScreen},//
+    {name:'editorProfileScreen',component:EditorProfileScreen},//
+    {name:'nextPickupScreen',component:NextPickupScreen},//
+    {name:'dressingRoomScreen',component:DressingRoomScreen},////
+    {name:'imageViewScreen',component:ImageViewScreen},//
+    {name:'basketScreen',component:BasketScreen},//
+    {name:'checkoutScreen',component:CheckoutScreen},//
+    {name:'searchScreen',component:SearchScreen},//
+
+
+    {name:'settingsScreen',component:SettingsScreen},//
+    {name:'termsScreen',component:TermsScreen},//
+    {name:'privacyScreen',component:PrivacyScreen},//
+
+    {name:'sizeClothing',component:SizeClothing},//
+    {name:'colourClothing',component:ColourClothing},//
+    {name:'filterScreen',component:FilterScreen},//
+    {name:'priceList',component:PriceList},//
+    {name:'style',component:Style},//
+    {name:'items',component:Items},//
+    {name:'continents',component:Continents},//
+    {name:'shippingAddress',component:ShippingAddress},//
+    {name:'editProfile',component:EditProfile},//
+
+
+
+
+
+
+
     {name:'username',component:Username},//
     {name:'email',component:Email},//
     {name:'phone',component:Phone},//
