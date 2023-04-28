@@ -22,4 +22,5 @@ export const IMAGES={
     gPay: require('../assets/gPay.png'),
     shirt: require('../assets/shirt.png'),
     foot: require('../assets/foot.png'),
+    selectIMG: require('../assets/selectIMG.jpeg'),
 }

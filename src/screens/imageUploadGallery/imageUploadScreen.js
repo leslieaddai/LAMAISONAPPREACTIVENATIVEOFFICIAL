@@ -12,6 +12,8 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
+  Alert,
+  Linking,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -36,6 +38,7 @@ import {
 } from '../../theme';
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import ImageCard from './ImageCard';
+import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const PAGE_SIZE = 40;
 
@@ -48,7 +51,7 @@ export default function ImageUploadScreen(props) {
   const [uploadButton, setUploadButton]=useState(false);
 
   const [photos, setPhotos] = useState([]);
-  const [after, setAfter] = useState(null);
+  const [after, setAfter] = useState();
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -81,7 +84,7 @@ export default function ImageUploadScreen(props) {
       if (Platform.OS === "android" && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === 'ios' && (await hasIosPermission())) {
         loadMorePhotos();
       }
     }
@@ -94,7 +97,7 @@ export default function ImageUploadScreen(props) {
         loadMorePhotos();
       }
      }
-     if(Platform.OS==='ios'){
+     if(Platform.OS==='ios' && perm === true){
       if(!isLoading){
         loadMorePhotos();
       }
@@ -129,6 +132,77 @@ export default function ImageUploadScreen(props) {
     }
     //console.log(status);
     return status === 'granted';
+  }
+
+  async function hasIosPermission() {
+
+    const hasPermission = await check(PERMISSIONS.IOS.PHOTO_LIBRARY)
+    .then((result) => {
+      switch (result) {
+        case RESULTS.UNAVAILABLE:
+          console.log('This feature is not available (on this device / in this context)');
+          return false;
+          //break;
+        case RESULTS.DENIED:
+          console.log('The permission has not been requested / is denied but requestable');
+          return false;
+          //break;
+        case RESULTS.LIMITED:
+          console.log('The permission is limited: some actions are possible');
+          //setPerm(true);
+          return true;
+          //break;
+        case RESULTS.GRANTED:
+          console.log('The permission is granted');
+          //setPerm(true);
+          return true;
+          //break;
+        case RESULTS.BLOCKED:
+          console.log('The permission is denied and not requestable anymore');
+          Alert.alert(
+            'Photo Library Permission',
+            'Photo Library permission is blocked in the device ' +
+                'settings. Allow the app to access Photo Library to ' +
+                'see images.',
+            [
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        Linking.openSettings()
+                    },
+
+                },
+                { text: 'CANCEL',  onPress:()=>props.navigation.goBack()}
+            ],
+        )
+          return false;
+          //break;
+      }
+    })
+    .catch((error) => {
+      // …
+    });
+
+    if (hasPermission) {
+      setPerm(true);
+      return true;
+    }
+
+  const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {
+      if (result===RESULTS.GRANTED || result===RESULTS.LIMITED){
+        return true;
+      }
+    })
+    .catch((error)=>{
+
+    });
+
+  if (status) {
+    setPerm(true);
+  }
+
+  return status===true;
+    
   }
 
   // async function showPhotos() {
@@ -189,7 +263,14 @@ export default function ImageUploadScreen(props) {
         source={{uri: selectedImage}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
-      />):(<Text>Select Image</Text>)}
+      />):(
+      // <Text>Select Image</Text>
+      <Image
+      source={IMAGES.selectIMG}
+      style={{width: '100%', height: '100%'}}
+      resizeMode="cover"
+    />
+      )}
     </View>
 
      {nextButton?(
@@ -212,6 +293,8 @@ export default function ImageUploadScreen(props) {
         </TouchableOpacity>
       </ScrollView>
      ):(
+      <>
+      {photos.length>0?
       <>
       <FlatList 
       showsVerticalScrollIndicator={false}
@@ -256,6 +339,12 @@ export default function ImageUploadScreen(props) {
     //    );
     //  })}
     //  </ScrollView> */}
+      </>
+      :
+      <View style={styles.noPhotos}>
+        <Text>No Photos Available</Text>
+      </View>
+      }
       </>
      )}
     </SafeAreaView>
@@ -323,5 +412,10 @@ const styles = StyleSheet.create({
     elevation: 8,
     marginVertical: hp2(2),
     alignSelf:'center',
+  },
+  noPhotos:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
   },
 });

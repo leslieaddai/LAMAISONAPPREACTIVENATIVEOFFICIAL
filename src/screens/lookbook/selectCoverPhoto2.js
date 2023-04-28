@@ -12,8 +12,6 @@ import {
   SafeAreaView,
   FlatList,
   ActivityIndicator,
-  Alert,
-  Linking,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -51,6 +49,7 @@ export default function SelectCoverPhoto(props) {
   const [after, setAfter] = useState();
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [ value,setvalue] = useState(false);
 
   const [perm,setPerm]=useState(false);
 
@@ -76,16 +75,29 @@ export default function SelectCoverPhoto(props) {
     }
   }, [after, hasNextPage, isLoading]);
 
-  useEffect(() => {
-    async function runThis () {
-      if (Platform.OS === "android" && (await hasAndroidPermission())) {
-        loadMorePhotos();
-      }
-      if (Platform.OS === 'ios' && (await hasIosPermission())) {
-        loadMorePhotos();
-      }
+  const runThis = async () => {
+    if (Platform.OS === "android" && (await hasAndroidPermission())) {
+      loadMorePhotos();
     }
+    if (Platform.OS === 'ios' && (await hasIosPermission())) {
+      loadMorePhotos();
+    }
+  }
+
+  useEffect(() => {
     runThis();
+    
+    // props.navigation.addListener('focus', async () => {
+    //   const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {
+    //     console.log(result, '  something...');
+    //       if (result===RESULTS.GRANTED || result===RESULTS.LIMITED){
+    //         return true;
+    //       }
+    //     })
+    //     .catch((error)=>{
+    
+    //     });
+    // });
   }, []);
 
   const checkCondition = async () => {
@@ -100,7 +112,9 @@ export default function SelectCoverPhoto(props) {
       }
      }
   }
-
+useEffect(()=>{
+  if(!value)Limited()
+},[value])
   // useEffect(()=>{
   //   async function runThis () {
   //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
@@ -147,8 +161,12 @@ export default function SelectCoverPhoto(props) {
         case RESULTS.LIMITED:
           console.log('The permission is limited: some actions are possible');
           //setPerm(true);
+          
+          if(Limited){
+            setvalue(true)
           return true;
-          //break;
+        }
+          // break;
         case RESULTS.GRANTED:
           console.log('The permission is granted');
           //setPerm(true);
@@ -156,22 +174,6 @@ export default function SelectCoverPhoto(props) {
           //break;
         case RESULTS.BLOCKED:
           console.log('The permission is denied and not requestable anymore');
-          Alert.alert(
-            'Photo Library Permission',
-            'Photo Library permission is blocked in the device ' +
-                'settings. Allow the app to access Photo Library to ' +
-                'see images.',
-            [
-                {
-                    text: 'OK',
-                    onPress: () => {
-                        Linking.openSettings()
-                    },
-
-                },
-                { text: 'CANCEL',  onPress:()=>props.navigation.goBack()}
-            ],
-        )
           return false;
           //break;
       }
@@ -186,6 +188,7 @@ export default function SelectCoverPhoto(props) {
     }
 
   const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {
+    console.log(result, '  something...');
       if (result===RESULTS.GRANTED || result===RESULTS.LIMITED){
         return true;
       }
@@ -193,7 +196,7 @@ export default function SelectCoverPhoto(props) {
     .catch((error)=>{
 
     });
-
+    
   if (status) {
     setPerm(true);
   }
@@ -201,6 +204,18 @@ export default function SelectCoverPhoto(props) {
   return status===true;
     
   }
+  const Limited = ()=>{
+    request(PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {
+      console.log(result, '  something...limited');
+        if (result===RESULTS.LIMITED){
+          console.log("checkif===>")
+          return true;
+        }
+      })
+      .catch((error)=>{
+  
+      });
+    }
 
   // async function showPhotos() {
   //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
@@ -238,16 +253,9 @@ export default function SelectCoverPhoto(props) {
         source={{uri: selectedImage}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
-      />):(
-      //<Text>Select Image</Text>
-      <Image
-        source={IMAGES.selectIMG}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />
-      )}
+      />):(<Text>Select Image</Text>)}
     </View>
-    {photos.length>0?
+
     <>
       <FlatList 
       showsVerticalScrollIndicator={false}
@@ -269,11 +277,6 @@ export default function SelectCoverPhoto(props) {
        </View>}
 
       </>
-      :
-      <View style={styles.noPhotos}>
-        <Text>No Photos Available</Text>
-      </View>
-      }
      
        {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
        {photos?.map((p, i) => {
@@ -338,11 +341,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: 'white',
     alignSelf:'center',
-    alignItems:'center',
-    justifyContent:'center',
-  },
-  noPhotos:{
-    flex:1,
     alignItems:'center',
     justifyContent:'center',
   },
