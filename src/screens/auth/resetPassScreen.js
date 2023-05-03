@@ -34,49 +34,163 @@ import {
 import AlertComp from '../../components/alertComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { ResetPasswordUrl,VerifyCodeUrl,ForgetPasswordUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function ResetPassScreen(props) {
+
+  const user = useSelector(state => state.userData)
+  const dispatch = useDispatch()
+
   const [showReset, setShowReset] = useState(false);
+  const [verifyCode, setVerifyCode] = useState(false);
   const [passMatch, setPassMatch] = useState(false);
+
+  const [email, setEmail]=useState('');
+  const [code, setCode]=useState();
+
+  const [loading, setLoading] = useState(false);
+
+  const sendEmail = () => {
+    if(email!==''){
+
+      setLoading(true);
+
+      let obj = {
+        email: email,
+    }
+
+      axios
+          .post(ForgetPasswordUrl,obj)
+          .then(async function (res) {
+             console.log(res.data);
+
+             setLoading(false);
+             setVerifyCode(true);
+             successMessage('Verification Code Has Been Sent!')
+          }) 
+          .catch(function (error) {
+            console.log(error.response.data)
+            setLoading(false);
+            errorMessage('Something Went Wrong!')
+            //errorMessage(errorHandler(error))
+          });
+    }else{
+      errorMessage('Please Enter Email Address');
+    }
+  }
+
+  const onVerifyCode = () => {
+    if(code){
+
+      setLoading(true);
+
+      let obj = {
+        email: email,
+        password_reset_code: code
+    }
+
+      axios
+          .post(VerifyCodeUrl,obj)
+          .then(async function (res) {
+             console.log(res.data);
+
+             setLoading(false);
+             setShowReset(true);
+             successMessage('Code Has Been Verified!')
+          }) 
+          .catch(function (error) {
+            console.log(error.response.data)
+            setLoading(false);
+            errorMessage('Something Went Wrong!')
+            //errorMessage(errorHandler(error))
+          });
+    }else{
+      errorMessage('Please Enter Verification Code');
+    }
+  }
+
+  const resetPasswordComp = () => {
+    return(
+      <>
+      <View style={styles.inputBox}>
+          <TextInput
+            style={{
+              flex: 1,
+              color: 'black',
+              paddingHorizontal: wp2(2),
+              fontSize: rfv(13),
+              fontWeight: '700',
+            }}
+            placeholderTextColor={'grey'}
+            placeholder="ENTER PASSWORD"
+          />
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput
+            style={{
+              flex: 1,
+              color: 'black',
+              paddingHorizontal: wp2(2),
+              fontSize: rfv(13),
+              fontWeight: '700',
+            }}
+            placeholderTextColor={'grey'}
+            placeholder="RE-ENTER PASSWORD"
+          />
+        </View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('loginScreen')}
+          style={styles.button}>
+          <Text style={styles.buttonText}>Reset Password</Text>
+        </TouchableOpacity>
+        {!passMatch && (
+            <AlertComp text='Password Does not Match'/>
+        )}
+      </>
+    )
+  }
+
   return (
+    <>
+     {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
+          resetPasswordComp()
+        ) : verifyCode ? (
           <>
           <View style={styles.inputBox}>
-              <TextInput
-                style={{
-                  flex: 1,
-                  color: 'black',
-                  paddingHorizontal: wp2(2),
-                  fontSize: rfv(13),
-                  fontWeight: '700',
-                }}
-                placeholderTextColor={'grey'}
-                placeholder="ENTER PASSWORD"
-              />
-            </View>
-            <View style={styles.inputBox}>
-              <TextInput
-                style={{
-                  flex: 1,
-                  color: 'black',
-                  paddingHorizontal: wp2(2),
-                  fontSize: rfv(13),
-                  fontWeight: '700',
-                }}
-                placeholderTextColor={'grey'}
-                placeholder="RE-ENTER PASSWORD"
-              />
-            </View>
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('loginScreen')}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Reset Password</Text>
-            </TouchableOpacity>
-            {!passMatch && (
-                <AlertComp text='Password Does not Match'/>
-            )}
+          <TextInput
+            style={{
+              flex: 1,
+              color: 'black',
+              paddingHorizontal: wp2(2),
+              fontSize: rfv(13),
+              fontWeight: '700',
+            }}
+            placeholderTextColor={'grey'}
+            placeholder="VERIFY CODE"
+            value={code}
+            onChangeText={(val) => setCode(val)}
+            keyboardType={'number-pad'}
+          />
+        </View>
+        <TouchableOpacity
+          onPress={onVerifyCode}
+          style={styles.button}>
+          <Text style={styles.buttonText}>Verify Code</Text>
+        </TouchableOpacity>
           </>
         ) : (
           <>
@@ -91,10 +205,12 @@ export default function ResetPassScreen(props) {
                 }}
                 placeholderTextColor={'grey'}
                 placeholder="EMAIL ADDRESS"
+                value={email}
+                onChangeText={(val) => setEmail(val)}
               />
             </View>
             <TouchableOpacity
-              onPress={() => setShowReset(true)}
+              onPress={sendEmail}
               style={styles.button}>
               <Text style={styles.buttonText}>Send link to email address</Text>
             </TouchableOpacity>
@@ -102,6 +218,7 @@ export default function ResetPassScreen(props) {
         )}
       </KeyboardAwareScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

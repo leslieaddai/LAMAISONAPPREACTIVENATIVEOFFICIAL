@@ -17,17 +17,20 @@ const Stack = createStackNavigator();
 //const [userState,setUserState] = useState();
 
 const AppNavigatior = () => {
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState('guest');
   const userState = useSelector(state => state.userData);
   //console.log(userState);
 
   useEffect(() => {
-    if (userState.token !== '') {
-      setStatus('loggedIn');
+    if (userState.token === '') {
+      setStatus('guest');
       console.log(userState);
-    } else {
-      setStatus('loggedOut');
-      console.log(userState);
+    } else if (userState.userData.role[0].id===3) {
+      setStatus('brand');
+      console.log(userState.userData.role[0].title);
+    } else if (userState.userData.role[0].id===2) {
+      setStatus('editor');
+      console.log(userState.userData.role[0].title);
     }
   }, [userState]);
 
@@ -102,7 +105,8 @@ const AppNavigatior = () => {
         translucent
         backgroundColor="transparent"
       />
-      {status === 'loggedIn' ? <BrandScreensRoute /> : <GuestScreensRoute />}
+      {/* {status === 'loggedIn' ? <BrandScreensRoute /> : <GuestScreensRoute />} */}
+      {status === 'brand' ? <BrandScreensRoute/> : status === 'editor' ? <EditorScreensRoute/> : <GuestScreensRoute/>}
     </NavigationContainer>
   );
 };

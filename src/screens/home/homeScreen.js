@@ -40,8 +40,11 @@ import SplashScreen from '../splash/splashScreen';
 export default function HomeScreen(props) {
 
   const dispatch = useDispatch()
-  const showSplash = useSelector(state => state.Splash.showSplash)
-  const showWelcome = useSelector(state => state.Splash.showWelcome)
+  //const showSplash = useSelector(state => state.Splash.showSplash)
+  //const showWelcome = useSelector(state => state.Splash.showWelcome)
+  const user = useSelector(state => state.userData)
+  const [showSplash,setShowSplash]=useState(true);
+  const [showWelcome,setShowWelcome]=useState(true);
   //const splashState = useSelector(state => state.Splash)
   //const [splashState,setSplashState]=useState(useSelector(state => state.Splash))
   console.log(showSplash);
@@ -87,19 +90,21 @@ export default function HomeScreen(props) {
   // }
 
   useEffect(()=>{
-    if(showSplash){
+    if(showSplash && user.token){
       setTimeout(()=>{
-        dispatch({
-          type: types.HideSplash
-        });
+        // dispatch({
+        //   type: types.HideSplash
+        // });
+        setShowSplash(false);
       },3000)
     }
     
-    if(showWelcome){
+    if(showWelcome && user.token){
       setTimeout(()=>{
-        dispatch({
-          type: types.HideWelcome
-        });
+        // dispatch({
+        //   type: types.HideWelcome
+        // });
+        setShowWelcome(false);
       },6000)
     }
   },[])
@@ -242,13 +247,13 @@ export default function HomeScreen(props) {
     )
   }
 
-  if(showSplash){
+  if(showSplash && user.token){
     return(
       <SplashScreen/>
     )
   }
 
-  if(showWelcome){
+  if(showWelcome && user.token){
     return(
       <WelcomeScreen/>
     )

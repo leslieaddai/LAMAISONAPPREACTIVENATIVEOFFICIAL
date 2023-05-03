@@ -40,25 +40,36 @@ import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import ImageCard from './ImageCard';
 import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { LoginUrl } from '../../config/Urls';
+import { useDispatch,useSelector,connect } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 const PAGE_SIZE = 40;
 
-export default function ImageUploadScreen(props) {
+//export default function ImageUploadScreen(props) {
+function ImageUploadScreen(props) {
+
+  const dispatch = useDispatch()
   
   //const [photos, setPhotos]=useState();
-  const [selectedImage, setSelectedImage]=useState();
+  //const [selectedImage, setSelectedImage]=useState();
   const [nextButton, setNextButton]=useState(false);
   const [confirmButton, setConfirmButton]=useState(false);
   const [uploadButton, setUploadButton]=useState(false);
 
-  const [photos, setPhotos] = useState([]);
-  const [after, setAfter] = useState();
-  const [hasNextPage, setHasNextPage] = useState(true);
+  //const [photos, setPhotos] = useState([]);
+  //const [after, setAfter] = useState();
+  //const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const [perm,setPerm]=useState(false);
 
   const loadMorePhotos = useCallback(async () => {
-    if (!hasNextPage || isLoading) {
+    if (!props.ImageUpload.hasNextPage || isLoading) {
       return;
     }
 
@@ -66,18 +77,33 @@ export default function ImageUploadScreen(props) {
     try {
       const { edges, page_info } = await CameraRoll.getPhotos({
         first: PAGE_SIZE,
-        after: after,
+        after: props.ImageUpload.after,
       });
 
-      setAfter(page_info.end_cursor);
-      setHasNextPage(page_info.has_next_page);
-      setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+      //setAfter(page_info.end_cursor);
+      //console.log(page_info.end_cursor,'===========> after')
+      dispatch({
+        type: 'setAfter',
+        payload: page_info.end_cursor,
+      });
+      //setHasNextPage(page_info.has_next_page);
+      //console.log(page_info.has_next_page,'===========> next page')
+      dispatch({
+        type: 'setHasNextPage',
+        payload: page_info.has_next_page,
+      });
+      //setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+      //console.log(...edges,'===========> edges')
+      dispatch({
+        type: 'setPhotos',
+        payload: [...props.ImageUpload.photos, ...edges],
+      });
     } catch (error) {
       console.error('Failed to load more photos:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [after, hasNextPage, isLoading]);
+  }, [props.ImageUpload.after, props.ImageUpload.hasNextPage, isLoading]);
 
   useEffect(() => {
     async function runThis () {
@@ -235,7 +261,7 @@ export default function ImageUploadScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
      
-      {selectedImage && !nextButton?(
+      {props.ImageUpload.selectedImage && !nextButton?(
         <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -259,8 +285,8 @@ export default function ImageUploadScreen(props) {
       )}
 
       <View style={styles.imageContainer}>
-      {selectedImage? (<Image
-        source={{uri: selectedImage}}
+      {props.ImageUpload.selectedImage? (<Image
+        source={{uri: props.ImageUpload.selectedImage}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />):(
@@ -294,13 +320,13 @@ export default function ImageUploadScreen(props) {
       </ScrollView>
      ):(
       <>
-      {photos.length>0?
+      {props.ImageUpload.photos.length>0?
       <>
       <FlatList 
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{paddingVertical: hp2(2),paddingHorizontal:wp2(2),}}
       numColumns={4}
-       data={photos}
+       data={props.ImageUpload.photos}
        onEndReached={checkCondition}
        onEndReachedThreshold={0.1}
         renderItem={({item,i})=>{
@@ -314,7 +340,8 @@ export default function ImageUploadScreen(props) {
       //    />
       //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
       //  </TouchableOpacity>
-      <ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
+      //<ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
+      <ImageCard item={item} key={i}  />
           )
         }}
 
@@ -350,6 +377,15 @@ export default function ImageUploadScreen(props) {
     </SafeAreaView>
   );
 }
+
+const mapStateToProps = (state) => {
+  const ImageUpload = state.ImageUpload
+  return {
+    ImageUpload,
+  };
+};
+
+export default connect(mapStateToProps, null)(ImageUploadScreen);
 
 const styles = StyleSheet.create({
   container: {

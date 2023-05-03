@@ -33,10 +33,19 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { LogoutUrl } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
 
 export default function SettingsScreen(props) {
+
+  const [loading, setLoading] = useState(false);
+  const user = useSelector(state => state.userData)
   
   const dispatch = useDispatch()
 
@@ -71,9 +80,57 @@ export default function SettingsScreen(props) {
           style: 'cancel',
         },
         {text: 'Yes', onPress: () => {
-          dispatch({
-            type: types.Logout
+
+          setLoading(true);
+          console.log(user.token)
+
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: LogoutUrl,
+            headers: { 
+              'Authorization': `Bearer ${user.token}`, 
+              'Accept': 'application/json'
+            },
+          };
+          
+          // axios
+          // .post(LogoutUrl,
+          //   {
+          //     headers: {'Authorization': `Bearer ${user.token}`},
+          //   }
+          // )
+          axios.request(config)
+          .then(async function (res) {
+             console.log(res.data);
+
+             props.navigation.reset({
+              index: 0,
+              routes: [{ name: 'settingsScreen',params:{user:props.route.params.user} }],
+            });
+
+             dispatch({
+              type: types.Logout
+            });
+
+             setLoading(false);
+             successMessage('Logout Success')
+          }) 
+          .catch(function (error) {
+            console.log(error.response.data)
+            setLoading(false);
+            errorMessage('Logout Failed')
+            //errorMessage(errorHandler(error))
           });
+
+          // props.navigation.reset({
+          //   index: 0,
+          //   routes: [{ name: 'settingsScreen',params:{user:props.route.params.user} }],
+          // });
+          // dispatch({
+          //   type: types.Logout
+          // });
+          
           // props.navigation.reset({
           //   index: 0,
           //   routes: [{ name: 'guestScreen' }],
@@ -91,7 +148,13 @@ export default function SettingsScreen(props) {
   }
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <>
+     {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
+     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -131,6 +194,7 @@ export default function SettingsScreen(props) {
       <BottomComp />
     </View>
     </SafeAreaView>
+    </>
   );
 }
 

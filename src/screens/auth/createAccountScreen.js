@@ -186,7 +186,7 @@ const CreateAccountScreen = (props) => {
           <Text style={[styles.textTwo,{color:numeric.test(Newpassword)?COLORS.green:COLORS.red}]}>
             Must include at least 1 Numerical character
           </Text>
-          <Text style={[styles.textTwo,{color:special.test(Newpassword)?COLORS.green:COLORS.red}]}>
+          <Text style={[styles.textTwo,{color:Newpassword.match(special)?COLORS.green:COLORS.red}]}>
             Must include at least 1 special character ( Examples !”£$)
           </Text>
         </View>
