@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "74975728118",
+    "project_id": "la-maison-382011",
+    "storage_bucket": "la-maison-382011.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74975728118:android:6509f80c7334f9f1daf7d7",
+        "android_client_info": {
+          "package_name": "com.la_masion_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_R9Uhu63kF5TkEsf_Qc-YzqCPL1uF1MI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
