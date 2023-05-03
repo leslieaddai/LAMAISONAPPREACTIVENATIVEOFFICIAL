@@ -1,43 +1,88 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView,
   Platform,
   SafeAreaView,
 } from 'react-native';
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
-import {
-  IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
-  hp2,
-  getFont,
-  FONTS,
+  hp2
 } from '../../theme';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import {
+  RFValue as rfv,
+  RFPercentage as rfp,
+} from 'react-native-responsive-fontsize';
+import auth from '@react-native-firebase/auth';
 import { errorMessage } from '../../config/NotificationMessage';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 export default function SignupScreen(props) {
   const [firstName,setFirstName]=useState('')
   const [lastName,setLastName]=useState('')
   const [email,setEmail]=useState('')
+
+useEffect( ()=>{
+   GoogleSignin.configure({
+    scopes: ['email'],
+    webClientId: '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
+    offlineAccess: true
+})
+},[])
+  
+async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+  
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+  
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+  
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+
+    console.log("facebookCredential of login", facebookCredential)
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  }
+
+
+  async function onGoogleButtonPress() {
+    try {
+      // Check if your device supports Google Play
+      await GoogleSignin.hasPlayServices();
+  
+      // Get the users ID token
+      const data =  await GoogleSignin.signIn();
+
+      // console.log("data",data)
+
+      // Create a Google credential with the token
+      const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
+  
+      // console.log("googleCredential of login", googleCredential);
+  
+      // Sign-in the user with the credential
+      return auth().signInWithCredential(googleCredential);
+    } catch (error) {
+      console.log("Google sign-in error:", error.code, error.message);
+    }
+  }
 
   const onContinue = () => {
     if (firstName != "" && lastName != "" && email != "") {
@@ -66,7 +111,6 @@ export default function SignupScreen(props) {
               paddingHorizontal: wp2(2),
               fontSize: rfv(13),
               fontWeight: '700',
-        
             }}
             placeholder="FIRST NAME"
             placeholderTextColor={'grey'}
@@ -111,13 +155,13 @@ export default function SignupScreen(props) {
           <Text style={styles.buttonText}>CONTINUE</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => alert('signin with google')}
+           onPress={() => onGoogleButtonPress().then((res) => console.log('Signed in with Google!'))}
           style={styles.button2}>
           <ICONS.AntDesign name="google" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => alert('signin with fb')}
+          // onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
           style={styles.button2}>
           <ICONS.AntDesign name="facebook-square" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with facebook</Text>
