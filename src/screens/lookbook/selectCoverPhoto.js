@@ -39,6 +39,7 @@ import {
 import { CameraRoll } from "@react-native-camera-roll/camera-roll";
 import ImageCard from './ImageCard';
 import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { errorMessage } from '../../config/NotificationMessage';
 
 const PAGE_SIZE = 40;
 
@@ -46,6 +47,8 @@ export default function SelectCoverPhoto(props) {
 
   //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage]=useState();
+  const [swipeLayout,setSwipeLayout] = useState(false);
+  const [name, setName] = useState('')
 
   const [photos, setPhotos] = useState([]);
   const [after, setAfter] = useState();
@@ -225,11 +228,19 @@ export default function SelectCoverPhoto(props) {
 
     <View style={styles.headWrap}>
         <Text style={styles.heading}>SELECT COVER PHOTO</Text>
-        {selectedImage && (
-            <TouchableOpacity onPress={()=>props.navigation.navigate('addCollection')} style={styles.button}>
+        {selectedImage && 
+          !swipeLayout&&
+            (
+            <TouchableOpacity onPress={()=>
+              setSwipeLayout(true)
+            // props.navigation.navigate('addCollection')
+          } 
+            style={styles.button}>
             <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>NEXT</Text>
-          </TouchableOpacity>
-        )}
+          </TouchableOpacity>)
+          
+        
+        }
       </View>
      
 
@@ -247,7 +258,43 @@ export default function SelectCoverPhoto(props) {
       />
       )}
     </View>
-    {photos.length>0?
+    {swipeLayout?(
+    <View style={{ 
+      flex:1,
+      alignItems:'center'}}>
+       <TextInput
+            style={{
+              width:wp2(90),
+              height:hp2(5),
+              borderRadius:10,
+              color: 'black',
+              paddingHorizontal: wp2(2),
+              fontSize: rfv(13),
+              fontWeight: '700',
+              borderColor:'black',
+              borderWidth:2,
+              marginTop:hp2(2),
+            }}
+            placeholderTextColor={'grey'} 
+            placeholder="ADD COLLECTION NAME"
+            value={name}
+            onChangeText={(val) => setName(val)}
+          />
+          <TouchableOpacity onPress={()=>
+          {if(name.length>=1){
+            props.navigation.navigate('addCollection')
+          }
+          else{
+            errorMessage("Please fill the field")
+          }
+        }  
+          } 
+            style={[styles.button,{marginLeft:'auto',marginTop:hp2(2),marginRight:wp2(4)}]}>
+            <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>NEXT</Text>
+          </TouchableOpacity>
+    </View>
+    ):
+    photos.length>0?
     <>
       <FlatList 
       showsVerticalScrollIndicator={false}

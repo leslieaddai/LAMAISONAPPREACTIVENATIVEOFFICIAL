@@ -16,34 +16,26 @@ import {
   RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../theme/fonts';
 import {
-  IMAGES,
-  ICONS,
-  COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
-  hp2,
-  getFont,
-  FONTS,
+  hp2
 } from '../theme';
 import { useNavigation } from '@react-navigation/native';
 
 export default function CollectionComp(props) {
   const navigation = useNavigation();
-  //console.log(props);
   return (
     <View>
     
     <View style={{width:wp2(54),alignItems:'center'}}>
-    <Text style={{color:'black',fontSize:rfv(10)}}>Winter/Fall ‘22 - The Last Dance</Text>
+    <Text style={{color:'black',fontSize:rfv(10)}}>{props?.name}</Text>
     </View>
     
-     <TouchableOpacity onPress={() => navigation.navigate('collectionScreen')} style={styles.imageContainer}>
+     <TouchableOpacity onPress={() => 
+     navigation.navigate('collectionScreen',{collection:props?.itemscollection,collectionname:props?.name})} 
+     style={styles.imageContainer}>
       <Image
-        source={IMAGES.lookbook}
+        source={props?.uri}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />

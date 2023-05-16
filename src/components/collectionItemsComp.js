@@ -37,12 +37,16 @@ export default function CollectionItemsComp(props) {
     <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
       <View style={{height:hp2(18),overflow:'hidden'}}>
       <Image
-        source={IMAGES.lookbook}
+        source={props.uri}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
       </View>
-      <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>Represent Owners Club Hoodie{'\n'}£150</Text>
+      <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>{props?.name}{'\n'}
+      <Text>
+        {props.price}
+      </Text>
+      </Text>
     </TouchableOpacity>
   );
 }

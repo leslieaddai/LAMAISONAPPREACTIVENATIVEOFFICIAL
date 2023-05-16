@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,8 @@ import {
   TextInput,
   ScrollView,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  FlatList
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,10 +34,57 @@ import {
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
 import CollectionComp from '../../components/collectionComp';
+import { getCollection } from '../../config/Urls';
+import { useSelector } from 'react-redux';
+import { SkypeIndicator} from 'react-native-indicators';
+import axios from 'react-native-axios';
 
 export default function LookbookScreen(props) {
+
+  const {token} = useSelector(state => state.userData);
+  const [allStates, setAllStates] = useState([]);
+  const [allLoading, setAllLoading] = useState(false);
+  // const {GetcollectionLoading} = allLoading;
+    
+  // const {Getcollectiontate} = allStates;
+
+  const updateState = data => {
+        setAllStates(prev => ({...prev, ...data}));
+  };
+
+  const updateLoadingState = data => {
+        setAllLoading(prev => ({...prev, ...data}));
+  };
+
+  useEffect(() => {
+    getApiData(getCollection);
+  },[])
+  
+  const getApiData = (url) => {
+    setAllLoading(true)
+    axios
+      .get(url,
+        {
+          headers: {Authorization: `Bearer ${token}`},
+        }
+      )
+      .then(function (response) {
+        setAllLoading(false)
+        setAllStates(response.data.data)
+      })
+      .catch(function (error) {
+        setAllLoading(false)
+        console.log("CollectionScreen error", error);
+      });
+  };
   return (
     <SafeAreaView style={{flex:1}}>
+      {allLoading?
+      <SkypeIndicator
+      color='black'
+      />
+     :
+     <>
          <View style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -48,25 +96,30 @@ export default function LookbookScreen(props) {
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
 
       <Text style={styles.collectionText}>Latest Collection</Text>
-      <Text style={{fontWeight: '600', color: 'black',marginLeft:wp2(6),}}>
-        Spring/Summer ‘23 - The Initial
-      </Text>
-      <TouchableOpacity onPress={() => props.navigation.navigate('collectionScreen')} style={styles.imageContainer}>
+      <Text style={{fontWeight: '600', color: 'black',marginLeft:wp2(6),}}>{allStates[0]?.name}</Text>
+      <TouchableOpacity onPress={() => props.navigation.navigate('collectionScreen',{collection:allStates[0].collection_products,collectionname:allStates[0]?.name})} style={styles.imageContainer}>
       <Image
-            source={IMAGES.lookbook}
+            source={{uri:allStates[0]?.media[0]?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
       </TouchableOpacity>
       <Text style={styles.collectionText}>All Collections</Text>
      <View>
-     <ScrollView contentContainerStyle={{paddingHorizontal:wp2(4),paddingVertical:hp2(1)}} horizontal showsHorizontalScrollIndicator={false}>
-        <CollectionComp/>
-        <CollectionComp/>
-        <CollectionComp/>
-        <CollectionComp/>
-        <CollectionComp/>
-      </ScrollView>
+      <FlatList
+       contentContainerStyle={{paddingHorizontal:wp2(4),paddingVertical:hp2(1)}}
+      horizontal showsHorizontalScrollIndicator={false}
+      data={allStates}
+      renderItem={({item})=>{
+        return(
+          <CollectionComp
+        name={item?.name}
+        itemscollection={item.collection_products}
+        uri={{uri:item?.media[0]?.original_url}}
+        />
+        )
+      }}
+      />
      </View>
 
       <TouchableOpacity onPress={()=>props.navigation.navigate('selectCoverPhoto')} style={styles.button}>
@@ -75,8 +128,10 @@ export default function LookbookScreen(props) {
 
       </ScrollView>
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
+    </>
+  }
     </SafeAreaView>
   );
 }

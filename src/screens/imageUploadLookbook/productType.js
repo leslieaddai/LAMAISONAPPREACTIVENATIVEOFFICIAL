@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,7 +8,8 @@ import {
   TextInput,
   ScrollView,
   Platform,
-  SafeAreaView
+  SafeAreaView,
+  FlatList
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -31,34 +32,79 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+import axios from 'react-native-axios';
 import BottomComp from '../../components/bottomComp';
+import { getCategories } from '../../config/Urls';
+import { useSelector } from 'react-redux';
 
 export default function ProductType(props) {
+  const {token} = useSelector(state => state.userData);
+  const [allStates, setAllStates] = useState({
+    Getcategorytate: [],
+  });
+  const [allLoading, setAllLoading] = useState({
+    GetcategoryLoading: false,
+  });
+  const {GetcategoryLoading} = allLoading;
+    
+  const {GetcategoryState} = allStates;
+
+  const updateState = data => {
+        setAllStates(prev => ({...prev, ...data}));
+  };
+
+  const updateLoadingState = data => {
+        setAllLoading(prev => ({...prev, ...data}));
+  };
+
+  useEffect(() => {
+    getApiData(getCategories,
+      'GetcategoryState',
+      'GetcategoryLoading');
+  },[])
+
+  const getApiData = (url, state, loading) => {
+    updateLoadingState({[loading]: true});
+    axios
+      .get(url,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      )
+      .then(function (response) {
+        updateLoadingState({[loading]: false});
+        updateState({[state]: response.data.data});
+      })
+      .catch(function (error) {
+        console.log("ProductType error", error.response.data);
+      });
+  };
   return (
     <SafeAreaView style={{flex:1}}>
+     
   <View style={styles.container}>
       <Text style={styles.heading}>Product Type</Text>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook')} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
-        <View style={styles.iconWrap}>
-        <Image
-            source={IMAGES.shirt}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={{color:'black'}}>Clothing</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook')} style={[styles.box,{backgroundColor:'black'}]}>
-        <View style={styles.iconWrap}>
-        <Image
-            source={IMAGES.foot}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={{color:'white'}}>Footwear</Text>
-      </TouchableOpacity>
-      <BottomComp />
+      <FlatList
+      data={GetcategoryState}
+      contentContainerStyle={{marginTop:hp2(20)}}
+      renderItem={({item})=>{
+        return(
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook')} style={[styles.box,{marginBottom:hp2(6),
+          backgroundColor:item.category_name == "Footwear"?"black":"white"}]}>
+          <View style={styles.iconWrap}>
+          <Image
+              source={item.icon == null ?item.category_name == "Footwear"?IMAGES.foot:IMAGES.shirt:{uri:item.icon}}
+              style={{width: '100%', height: '100%',tintColor:item.category_name == "Footwear"?"white":"black"}}
+              resizeMode="contain"
+            />
+          </View>
+          <Text style={{color:item.category_name == "Footwear"?"white":"black"}}>{item.category_name}</Text>
+        </TouchableOpacity>
+        )
+      }}      
+      />
+      
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
     
