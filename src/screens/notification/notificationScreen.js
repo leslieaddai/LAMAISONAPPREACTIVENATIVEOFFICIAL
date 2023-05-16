@@ -57,7 +57,7 @@ export default function NotificationScreen(props) {
         <NotificationComp follow={false}/>
         <NotificationComp follow={true}/>
         </ScrollView>
-      <BottomComp/>
+      {/* <BottomComp/> */}
     </View>
     </SafeAreaView>
   );

@@ -50,7 +50,7 @@ export default function FeedbackScreen(props) {
       </View>
       <LineComp/>
       <FeedbackMessageComp />
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

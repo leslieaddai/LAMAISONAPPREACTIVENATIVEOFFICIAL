@@ -57,7 +57,7 @@ export default function WardrobeScreen(props) {
       <WardrobeComp/>
       <WardrobeComp/>
       </ScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

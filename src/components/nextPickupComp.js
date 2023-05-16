@@ -33,14 +33,17 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function NextPickupComp(props) {
   //console.log(props);
+  //console.log(props.item.item.product.product_images[0].image[0].url,'=======>');
   const navigation = useNavigation();
   return (
     <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
+      {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && 
       <Image
-        source={IMAGES.randomPic}
+        //source={IMAGES.randomPic}
+        source={{uri:props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
-      />
+      />}
     </TouchableOpacity>
   );
 }

@@ -96,7 +96,7 @@ export default function BasketScreen(props) {
           <Text style={styles.buttonText}>CHECKOUT</Text>
         </TouchableOpacity>
       </ScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

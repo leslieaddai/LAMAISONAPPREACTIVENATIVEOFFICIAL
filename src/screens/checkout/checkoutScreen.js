@@ -222,7 +222,7 @@ export default function CheckoutScreen(props) {
           </Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

@@ -31,14 +31,17 @@ import {
 } from '../theme';
 
 export default function GalleryComp(props) {
-  //console.log(props);
+  //console.log(props.item.item,'=======>');
   return (
     <View style={styles.imageContainer}>
-      <Image
-        source={IMAGES.randomPic}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />
+      {props?.item?.item?.media?.[0]?.original_url && 
+            <Image
+            //source={IMAGES.randomPic}
+            source={{uri:props?.item?.item?.media?.[0]?.original_url}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          />
+      }
     </View>
   );
 }

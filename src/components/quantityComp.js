@@ -29,14 +29,17 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function QuantityComp(props) {
+  const navigation = useNavigation();
+  //console.log(props)
   return (
     <View style={styles.container}>
-        <TouchableOpacity style={styles.colorBox}></TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('color',{key:props.key2,state:props.state})} style={[styles.colorBox,{backgroundColor:props.state.quantity[props.key2].color!==''?props.state.quantity[props.key2].color:COLORS.appBackground}]}></TouchableOpacity>
 
-        <TouchableOpacity style={[styles.inputBox,{alignItems:'center',justifyContent:'center'}]}>
-         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(11),textTransform:'uppercase'}}>Sizes Available</Text>
+        <TouchableOpacity onPress={()=>navigation.navigate('sizes',{key:props.key2,state:props.state})} style={[styles.inputBox,{alignItems:'center',justifyContent:'center'}]}>
+         <Text style={{color:'black',fontWeight:'700',fontSize:rfv(11),textTransform:'uppercase'}}>{props.state.quantity[props.key2].size!==''?props.state.quantity[props.key2].size:'Sizes Available'}</Text>
         </TouchableOpacity>
 
         <View style={styles.inputBox}>
@@ -50,6 +53,19 @@ export default function QuantityComp(props) {
             }}
             placeholderTextColor={'grey'}
             placeholder="QUANTITY"
+            keyboardType={'number-pad'}
+            value={props.state.quantity[props.key2].quantity}
+            onChangeText={(val) => {
+              const newState = props.state.quantity.map((obj,index) => {
+                // :point_down:️ if id equals 2, update country property
+                if (index === props.key2) {
+                  return {...obj, quantity: val};
+                }
+                // :point_down:️ otherwise return the object as is
+                return obj;
+              });
+              props.state.setQuantity(newState);
+            }}
           />
         </View>
         
@@ -68,7 +84,7 @@ const styles = StyleSheet.create({
     colorBox:{
         width: wp2(8),
         height: wp2(8),
-        backgroundColor: 'white',
+        //backgroundColor: COLORS.appBackground,
         borderRadius: wp2(2),
 
         shadowColor: '#000',

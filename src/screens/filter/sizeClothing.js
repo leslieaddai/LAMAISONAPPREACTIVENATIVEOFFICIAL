@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,14 +33,51 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { SizesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function SizeClothing(props) {
   const [selected,setSelected]=useState('');
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(SizesUrl)
+    .then(async function (res) {
+       console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+      //errorMessage(errorHandler(error))
+      //errorMessage('Login Failed');
+    });
+
+  },[])
+
+
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text>
+                <Text style={{color:'black'}}>{text?.size}</Text>
+                {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
                 <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
@@ -53,11 +90,39 @@ export default function SizeClothing(props) {
         </TouchableOpacity>
         <Text style={styles.heading}>SIZE</Text>
       </View>
-      <Text style={{marginVertical:hp2(1),alignSelf:'center',color:'black',fontWeight:'700',textTransform:'uppercase'}}>Clothing  (U.K)  - select your size</Text>
-      {options('SMALL')}
+      
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<>
+      <Text style={{marginVertical:hp2(1),color:'black',fontWeight:'700',textTransform:'uppercase',marginLeft:wp2(6),}}>APPAREL (U.K)</Text>
+      
+    {data?.map((item)=>{
+        //console.log("item=======>",item);
+    return(
+        <>
+        {item?.category_id===2 && options(item)}
+        </>
+    )})}
+
+    <Text style={{marginTop:hp2(2),marginBottom:hp2(1),color:'black',fontWeight:'700',textTransform:'uppercase',marginLeft:wp2(6),}}>FOOTWEAR (U.K)</Text>    
+
+    {data?.map((item)=>{
+        //console.log("item=======>",item);
+    return(
+        <>
+        {item?.category_id===1 && options(item)}
+        </>
+    )})}
+
+    </>
+    }
+      
+      {/* {options('SMALL')}
       {options('MEDIUM')}
       {options('LARGE')}
-      {options('EXTRA LARGE')}
+      {options('EXTRA LARGE')} */}
     </SafeAreaView>
   );
 }

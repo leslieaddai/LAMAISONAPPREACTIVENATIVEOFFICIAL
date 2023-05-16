@@ -84,7 +84,7 @@ export default function AddReview(props) {
         <Text style={{color:'white'}}>SEND</Text>
       </TouchableOpacity>
       </KeyboardAwareScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

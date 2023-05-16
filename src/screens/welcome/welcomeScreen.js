@@ -30,18 +30,32 @@ import {
   FONTS,
 } from '../../theme';
 
+import { useDispatch,useSelector } from 'react-redux';
+
 export default function WelcomeScreen(props) {
+  const user = useSelector(state => state.userData)
+  console.log(user.userData)
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>Hi ICEY.B</Text>
+        <Text style={styles.text}>{'Hi '+user.userData.username}</Text>
       <View style={styles.imgWrap}>
         <Image
-          source={IMAGES.randomProfile}
+          //source={IMAGES.randomProfile}
+          source={{uri:user.userData.profile_image}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
       </View>
-      <Text style={[styles.text,{fontSize:rfv(32),textAlign:'center'}]}>Welcome to{'\n'}the La Maison App</Text>
+      {/* <Text style={[styles.text,{fontSize:rfv(32),textAlign:'center'}]}>Welcome to{'\n'}the La Maison App</Text> */}
+      <Text style={[styles.text,{fontSize:rfv(28),textAlign:'center'}]}>Welcome Back</Text>
+      <View style={{width:wp2(100),height:hp2(8),position:'absolute',bottom:hp2(2),}}>
+        {/* <Image
+          source={IMAGES.lamaisonname}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="contain"
+        /> */}
+        <Text style={{fontSize:rfv(18),alignSelf:'center',color:'gray'}}>LA MAISON APP</Text>
+      </View>
     </View>
   );
 }
@@ -70,6 +84,6 @@ const styles = StyleSheet.create({
   text:{
     color:'black',
     fontWeight:'700',
-    fontSize:rfv(40),
+    fontSize:rfv(34),
   },
 });

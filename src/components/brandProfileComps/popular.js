@@ -34,7 +34,19 @@ import { useNavigation } from '@react-navigation/native';
 export default function Popular(props) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen')} style={styles.container}>
+    <TouchableOpacity 
+    onPress={()=>navigation.navigate('dressingRoomScreen')} 
+    // onPress={()=>navigation.reset({
+    //   index: 0,
+    //   routes: [{ name: 'dressingRoomScreen' }],
+    // })}
+    // onPress={()=>navigation.navigate('bottomNavigation', {
+    //   screen: 'stackNavComp',
+    //   params: {
+    //     screen: 'dressingRoomScreen',
+    //   },
+    // })}
+    style={styles.container}>
         <Text style={{color:'black',marginLeft:wp2(3)}}>{props.no}</Text>
         <View style={styles.productImage}>
       <Image

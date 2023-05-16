@@ -45,7 +45,8 @@ import { SkypeIndicator } from 'react-native-indicators';
 export default function SettingsScreen(props) {
 
   const [loading, setLoading] = useState(false);
-  const user = useSelector(state => state.userData)
+  //const user = useSelector(state => state.userData)
+  //console.log(props?.route?.params?.user)
   
   const dispatch = useDispatch()
 
@@ -82,14 +83,14 @@ export default function SettingsScreen(props) {
         {text: 'Yes', onPress: () => {
 
           setLoading(true);
-          console.log(user.token)
+          console.log(props?.route?.params?.user?.token)
 
           let config = {
             method: 'post',
             maxBodyLength: Infinity,
             url: LogoutUrl,
             headers: { 
-              'Authorization': `Bearer ${user.token}`, 
+              'Authorization': `Bearer ${props?.route?.params?.user?.token}`, 
               'Accept': 'application/json'
             },
           };
@@ -104,10 +105,10 @@ export default function SettingsScreen(props) {
           .then(async function (res) {
              console.log(res.data);
 
-             props.navigation.reset({
-              index: 0,
-              routes: [{ name: 'settingsScreen',params:{user:props.route.params.user} }],
-            });
+            //  props.navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: 'settingsScreen',params:{user:props?.route?.params?.user} }],
+            // });
 
              dispatch({
               type: types.Logout
@@ -163,7 +164,7 @@ export default function SettingsScreen(props) {
         <Text style={styles.heading}>Settings</Text>
       </View>
 
-      {props.route.params.user == 'brand'?(
+      {props?.route?.params?.user?.userData?.role?.[0]?.id === 3 ?(
         <>
         {settingOptions('PROFILE','','editProfile')}
         {settingOptions('IMAGE/PRODUCT UPLOAD','','destinationScreen')}
@@ -191,7 +192,7 @@ export default function SettingsScreen(props) {
         </>
       )}
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
     </>

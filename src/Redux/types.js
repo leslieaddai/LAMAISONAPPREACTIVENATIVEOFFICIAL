@@ -5,4 +5,6 @@ export default {
   ShowSplash: 'ShowSplash',
   HideWelcome: 'HideWelcome',
   ShowWelcome: 'ShowWelcome',
+  AddToBasket: 'AddToBasket',
+  RemoveFromBasket: 'RemoveFromBasket',
 };

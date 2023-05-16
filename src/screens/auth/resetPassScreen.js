@@ -49,7 +49,10 @@ export default function ResetPassScreen(props) {
 
   const [showReset, setShowReset] = useState(false);
   const [verifyCode, setVerifyCode] = useState(false);
-  const [passMatch, setPassMatch] = useState(false);
+  const [showPassNotMatch, setShowPassNotMatch] = useState(false);
+
+  const [newPassword, setNewPassword]=useState('');
+  const [confirmPassword, setConfirmPassword]=useState('');
 
   const [email, setEmail]=useState('');
   const [code, setCode]=useState();
@@ -115,6 +118,50 @@ export default function ResetPassScreen(props) {
     }
   }
 
+  const onResetPassword = () => {
+    if (newPassword !== '' && confirmPassword !== ''){
+      if (newPassword.length >= 8){
+        if(newPassword === confirmPassword){
+          
+          setLoading(true);
+
+      let obj = {
+        email: email,
+        password: newPassword,
+        password_confirmation: confirmPassword
+    }
+
+      axios
+          .post(ResetPasswordUrl,obj)
+          .then(async function (res) {
+             console.log(res.data);
+
+             setLoading(false);
+             props.navigation.navigate('loginScreen')
+             successMessage('Password Changed Successfully!')
+          }) 
+          .catch(function (error) {
+            console.log(error.response.data)
+            setLoading(false);
+            errorMessage('Something Went Wrong!')
+            //errorMessage(errorHandler(error))
+          });
+
+        }else{
+          //errorMessage('Confirm password not matched')
+          setShowPassNotMatch(true);
+          setTimeout(()=>{
+            setShowPassNotMatch(false);
+          },3000)
+        }
+      }else{
+        errorMessage('Password must be at least 8 characters')
+      }
+    }else{
+      errorMessage('Please fill all fields')
+    }
+  }
+
   const resetPasswordComp = () => {
     return(
       <>
@@ -129,6 +176,9 @@ export default function ResetPassScreen(props) {
             }}
             placeholderTextColor={'grey'}
             placeholder="ENTER PASSWORD"
+            value={newPassword}
+            onChangeText={(val) => setNewPassword(val)}
+            secureTextEntry={true}
           />
         </View>
         <View style={styles.inputBox}>
@@ -142,14 +192,17 @@ export default function ResetPassScreen(props) {
             }}
             placeholderTextColor={'grey'}
             placeholder="RE-ENTER PASSWORD"
+            value={confirmPassword}
+            onChangeText={(val) => setConfirmPassword(val)}
+            secureTextEntry={true}
           />
         </View>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('loginScreen')}
+          onPress={onResetPassword}
           style={styles.button}>
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
-        {!passMatch && (
+        {showPassNotMatch && (
             <AlertComp text='Password Does not Match'/>
         )}
       </>

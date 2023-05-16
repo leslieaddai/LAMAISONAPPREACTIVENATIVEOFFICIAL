@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -31,56 +32,31 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+export function ImgComp  (props)  {
+  return(
+    <View style={styles.imageContainer}>
+    <Image
+      //source={IMAGES.randomPic}
+      source={{uri:props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url}}
+      style={{width: '100%', height: '100%'}}
+      resizeMode="cover"
+    />
+  </View>
+  )
+}
+
 export default function NextPickup(props) {
   const navigation = useNavigation();
+  //console.log(props.data.data)
   return (
     <View>
       <View style={styles.galaryContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
+      {props?.data?.data?.map((item,index)=>{
+          if(index<6) return <ImgComp key={index} path={{item}} />
+        })}
       </View>
 
-      <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen')} style={styles.nextpickup}>
+      <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen',{data:props.data.data})} style={styles.nextpickup}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
         NEXT PICK UP
         </Text>

@@ -43,33 +43,40 @@ import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { LoginUrl } from '../../config/Urls';
+import { CreateGalleryUrl } from '../../config/Urls';
 import { useDispatch,useSelector,connect } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 const PAGE_SIZE = 40;
 
-//export default function ImageUploadScreen(props) {
-function ImageUploadScreen(props) {
+export default function ImageUploadScreen(props) {
+//function ImageUploadScreen(props) {
 
-  const dispatch = useDispatch()
+const dispatch = useDispatch()
+const [loading, setLoading] = useState(false);
+const [data,setData]=useState([]);
+const user = useSelector(state => state.userData)
+
+const [caption,setCaption]=useState('');
+
+  //const dispatch = useDispatch()
   
   //const [photos, setPhotos]=useState();
-  //const [selectedImage, setSelectedImage]=useState();
+  const [selectedImage, setSelectedImage]=useState();
   const [nextButton, setNextButton]=useState(false);
   const [confirmButton, setConfirmButton]=useState(false);
   const [uploadButton, setUploadButton]=useState(false);
 
-  //const [photos, setPhotos] = useState([]);
-  //const [after, setAfter] = useState();
-  //const [hasNextPage, setHasNextPage] = useState(true);
+  const [photos, setPhotos] = useState([]);
+  const [after, setAfter] = useState();
+  const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
   const [perm,setPerm]=useState(false);
 
   const loadMorePhotos = useCallback(async () => {
-    if (!props.ImageUpload.hasNextPage || isLoading) {
+    if (!hasNextPage || isLoading) {
       return;
     }
 
@@ -77,33 +84,34 @@ function ImageUploadScreen(props) {
     try {
       const { edges, page_info } = await CameraRoll.getPhotos({
         first: PAGE_SIZE,
-        after: props.ImageUpload.after,
+        after: after,
+        include:['filename'],
       });
 
-      //setAfter(page_info.end_cursor);
+      setAfter(page_info.end_cursor);
       //console.log(page_info.end_cursor,'===========> after')
-      dispatch({
-        type: 'setAfter',
-        payload: page_info.end_cursor,
-      });
-      //setHasNextPage(page_info.has_next_page);
+      // dispatch({
+      //   type: 'setAfter',
+      //   payload: page_info.end_cursor,
+      // });
+      setHasNextPage(page_info.has_next_page);
       //console.log(page_info.has_next_page,'===========> next page')
-      dispatch({
-        type: 'setHasNextPage',
-        payload: page_info.has_next_page,
-      });
-      //setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+      // dispatch({
+      //   type: 'setHasNextPage',
+      //   payload: page_info.has_next_page,
+      // });
+      setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
       //console.log(...edges,'===========> edges')
-      dispatch({
-        type: 'setPhotos',
-        payload: [...props.ImageUpload.photos, ...edges],
-      });
+      // dispatch({
+      //   type: 'setPhotos',
+      //   payload: [...props.ImageUpload.photos, ...edges],
+      // });
     } catch (error) {
       console.error('Failed to load more photos:', error);
     } finally {
       setIsLoading(false);
     }
-  }, [props.ImageUpload.after, props.ImageUpload.hasNextPage, isLoading]);
+  }, [after, hasNextPage, isLoading]);
 
   useEffect(() => {
     async function runThis () {
@@ -258,10 +266,87 @@ function ImageUploadScreen(props) {
     )
   }
 
+  const goBackFunction = () => {
+    if(nextButton && !confirmButton){
+      setNextButton(false);
+    }
+    if(nextButton  && confirmButton){
+      setConfirmButton(false);
+    }
+  }
+
+  const uploadProduct = () => {
+    if(caption !== '' && !confirmButton){
+      setConfirmButton(true)
+    }
+    else if (caption !=='' && confirmButton){
+
+    //setUploadButton(true)
+    setLoading(true);
+
+var formdata = new FormData();
+formdata.append("user_id", user?.userData?.id);
+formdata.append("caption", caption);
+formdata.append("image", selectedImage);
+
+  //   let obj = {
+  //     user_id: user.userData.id,
+  //     caption: caption,
+  //     image:selectedImage
+  // }
+
+  // console.log(obj)
+
+  //console.log(formdata);
+
+  let config = {
+    method: 'post',
+    maxBodyLength: Infinity,
+    url: CreateGalleryUrl,
+    headers: { 
+      'Authorization': `Bearer ${user.token}`, 
+      'Accept': 'application/json',
+      "Content-Type": "multipart/form-data"
+    },
+    data : formdata
+  };
+
+  axios.request(config)
+  .then(async function (res) {
+
+    console.log(res.data);
+    setLoading(false);
+    successMessage('Upload Success')
+    setUploadButton(true)
+
+   setTimeout(()=>{
+     props.navigation.goBack()
+   },3000);
+
+  }) 
+  .catch(function (error) {
+    console.log(error.response.data)
+    setLoading(false);
+    errorMessage('Upload Failed');
+  });
+
+    }
+    else{
+      errorMessage('Please add caption!')
+    }
+  }
+
   return (
+    <>
+     {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
+  
     <SafeAreaView style={styles.container}>
      
-      {props.ImageUpload.selectedImage && !nextButton?(
+      {selectedImage && !nextButton?(
         <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -273,7 +358,7 @@ function ImageUploadScreen(props) {
       </View>
       ):nextButton?(
         <View style={[styles.headWrap,{justifyContent:'center'}]}>
-         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+         <TouchableOpacity onPress={goBackFunction} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>Gallery</Text>
@@ -285,8 +370,8 @@ function ImageUploadScreen(props) {
       )}
 
       <View style={styles.imageContainer}>
-      {props.ImageUpload.selectedImage? (<Image
-        source={{uri: props.ImageUpload.selectedImage}}
+      {selectedImage? (<Image
+        source={{uri: selectedImage?.uri}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />):(
@@ -312,21 +397,24 @@ function ImageUploadScreen(props) {
             }}
             placeholderTextColor={'grey'}
             placeholder="CAPTION"
+            value={caption}
+            onChangeText={(val) => setCaption(val)}
+            readOnly={confirmButton}
           />
         </View>
-        <TouchableOpacity onPress={()=>confirmButton?setUploadButton(true):setConfirmButton(true)} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10)}]}>
+        <TouchableOpacity onPress={uploadProduct} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10)}]}>
           <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>{confirmButton?'UPLOAD':'CONFIRM'}</Text>
         </TouchableOpacity>
       </ScrollView>
      ):(
       <>
-      {props.ImageUpload.photos.length>0?
+      {photos?.length>0?
       <>
       <FlatList 
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{paddingVertical: hp2(2),paddingHorizontal:wp2(2),}}
       numColumns={4}
-       data={props.ImageUpload.photos}
+       data={photos}
        onEndReached={checkCondition}
        onEndReachedThreshold={0.1}
         renderItem={({item,i})=>{
@@ -340,8 +428,8 @@ function ImageUploadScreen(props) {
       //    />
       //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
       //  </TouchableOpacity>
-      //<ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
-      <ImageCard item={item} key={i}  />
+      <ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
+      //<ImageCard item={item} key={i}  />
           )
         }}
 
@@ -375,17 +463,18 @@ function ImageUploadScreen(props) {
       </>
      )}
     </SafeAreaView>
+  </>
   );
 }
 
-const mapStateToProps = (state) => {
-  const ImageUpload = state.ImageUpload
-  return {
-    ImageUpload,
-  };
-};
+// const mapStateToProps = (state) => {
+//   const ImageUpload = state.ImageUpload
+//   return {
+//     ImageUpload,
+//   };
+// };
 
-export default connect(mapStateToProps, null)(ImageUploadScreen);
+//export default connect(mapStateToProps, null)(ImageUploadScreen);
 
 const styles = StyleSheet.create({
   container: {

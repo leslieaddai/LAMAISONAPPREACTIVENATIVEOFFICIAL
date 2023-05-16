@@ -35,7 +35,7 @@ export default function SplashScreen(props) {
     <View style={styles.container}>
       <View style={styles.iconWrap}>
         <Image
-          source={IMAGES.splashlogo}
+          source={IMAGES.logoblack}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />

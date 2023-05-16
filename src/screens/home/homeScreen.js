@@ -43,12 +43,12 @@ export default function HomeScreen(props) {
   //const showSplash = useSelector(state => state.Splash.showSplash)
   //const showWelcome = useSelector(state => state.Splash.showWelcome)
   const user = useSelector(state => state.userData)
-  const [showSplash,setShowSplash]=useState(true);
-  const [showWelcome,setShowWelcome]=useState(true);
+  //const [showSplash,setShowSplash]=useState(true);
+  //const [showWelcome,setShowWelcome]=useState(true);
   //const splashState = useSelector(state => state.Splash)
   //const [splashState,setSplashState]=useState(useSelector(state => state.Splash))
-  console.log(showSplash);
-  console.log(showWelcome);
+  //console.log(showSplash);
+  //console.log(showWelcome);
   //console.log(splashState);
 
   // useEffect(()=>{
@@ -89,25 +89,25 @@ export default function HomeScreen(props) {
 
   // }
 
-  useEffect(()=>{
-    if(showSplash && user.token){
-      setTimeout(()=>{
-        // dispatch({
-        //   type: types.HideSplash
-        // });
-        setShowSplash(false);
-      },3000)
-    }
+  // useEffect(()=>{
+  //   if(showSplash && user.token){
+  //     setTimeout(()=>{
+  //       // dispatch({
+  //       //   type: types.HideSplash
+  //       // });
+  //       setShowSplash(false);
+  //     },3000)
+  //   }
     
-    if(showWelcome && user.token){
-      setTimeout(()=>{
-        // dispatch({
-        //   type: types.HideWelcome
-        // });
-        setShowWelcome(false);
-      },6000)
-    }
-  },[])
+  //   if(showWelcome && user.token){
+  //     setTimeout(()=>{
+  //       // dispatch({
+  //       //   type: types.HideWelcome
+  //       // });
+  //       setShowWelcome(false);
+  //     },6000)
+  //   }
+  // },[])
 
     const brandComp = (nav) => {
         return(
@@ -247,27 +247,28 @@ export default function HomeScreen(props) {
     )
   }
 
-  if(showSplash && user.token){
-    return(
-      <SplashScreen/>
-    )
-  }
+  // if(showSplash && user.token){
+  //   return(
+  //     <SplashScreen/>
+  //   )
+  // }
 
-  if(showWelcome && user.token){
-    return(
-      <WelcomeScreen/>
-    )
-  }
+  // if(showWelcome && user.token){
+  //   return(
+  //     <WelcomeScreen/>
+  //   )
+  // }
 
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
       <View style={styles.logoWrap}>
-        <Image
+        {/* <Image
           source={IMAGES.logo}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
-        />
+        /> */}
+        <Text style={{fontSize:rfv(18),color:'gray'}}>LA MAISON APP</Text>
       </View>
       <View style={styles.iconContainer}>
         <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap}>
@@ -333,7 +334,7 @@ export default function HomeScreen(props) {
 
       </ScrollView>
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

@@ -1,5 +1,5 @@
 const initial_state = {
-  selectedImage:'',
+  selectedImage:{},
   photos:[],
   after:'',
   hasNextPage:true

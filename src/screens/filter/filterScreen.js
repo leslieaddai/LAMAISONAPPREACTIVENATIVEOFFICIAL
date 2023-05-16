@@ -60,7 +60,7 @@ export default function FilterScreen(props) {
         </Text>
       </TouchableOpacity>
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

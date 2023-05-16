@@ -62,7 +62,7 @@ export default function Inventory(props) {
        <InventoryComp value={18} />
        <InventoryComp value={0} />
       </ScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

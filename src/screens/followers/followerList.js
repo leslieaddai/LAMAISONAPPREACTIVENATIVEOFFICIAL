@@ -78,7 +78,7 @@ export default function FollowerList(props) {
     <SearchComp />
   </ScrollView>
 
-  <BottomComp />
+  {/* <BottomComp /> */}
 </View>
     </SafeAreaView>
   );

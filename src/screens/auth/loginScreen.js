@@ -42,6 +42,10 @@ import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
+import Animated,{Layout} from 'react-native-reanimated';
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
 
@@ -109,17 +113,18 @@ export default function LoginScreen(props) {
 
   return (
     <>
-    {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+    {loading && (
+      <LoaderComp/>
+    )}
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4),flexGrow:1}}>
         <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
         {showError && (
           <AlertComp text="Username or Password is incorrect"/>
         )}
+
+        <Animated.View layout={Layout.duration(1000)} >
+
         <View style={styles.inputBox}>
           <TextInput
             style={{
@@ -165,10 +170,12 @@ export default function LoginScreen(props) {
           <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('homeScreen')}
+          onPress={() => props.navigation.navigate('bottomNavigationGuest')}
           style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
           <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
         </TouchableOpacity>
+        
+        </Animated.View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
     </>

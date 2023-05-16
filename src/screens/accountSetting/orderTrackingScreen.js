@@ -55,7 +55,7 @@ export default function OrderTrackingScreen(props) {
         <OrderComp/>
         <OrderComp/>
       </ScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

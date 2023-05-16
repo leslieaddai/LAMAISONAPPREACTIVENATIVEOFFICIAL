@@ -50,7 +50,7 @@ export default function Review(props) {
       </View>
       <LineComp/>
       <ReviewComp />
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );
