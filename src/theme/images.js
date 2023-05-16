@@ -23,4 +23,12 @@ export const IMAGES={
     shirt: require('../assets/shirt.png'),
     foot: require('../assets/foot.png'),
     selectIMG: require('../assets/selectIMG.jpeg'),
+    fts2: require('../assets/FTS2.png'),
+    home2: require('../assets/home2.png'),
+    profileicon2: require('../assets/profileicon2.png'),
+    search2: require('../assets/search2.png'),
+    bag2: require('../assets/bag2.png'),
+    logoblack: require('../assets/logoblack.png'),
+    logowhite: require('../assets/logowhite.png'),
+    lamaisonname: require('../assets/lamaisonname.png'),
 }

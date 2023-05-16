@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,13 +33,48 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { ColorsUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function ColourClothing(props) {
   const [selected,setSelected]=useState();
   const navigation = useNavigation();
 
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(ColorsUrl)
+    .then(async function (res) {
+       console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+      //errorMessage(errorHandler(error))
+      //errorMessage('Login Failed');
+    });
+
+  },[])
+
+
   const color = (col) => {
     return(
-      <TouchableOpacity onPress={()=>setSelected(col)} style={[styles.color,{backgroundColor:col}]}>
+      <TouchableOpacity onPress={()=>setSelected(col)} style={[styles.color,{backgroundColor:col?.color_code}]}>
          {selected===col && (<ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
       </TouchableOpacity>
     )
@@ -53,7 +88,22 @@ export default function ColourClothing(props) {
         </TouchableOpacity>
         <Text style={styles.heading}>COLOUR</Text>
       </View>
-      <View style={styles.colorsWrap}>
+
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<View style={styles.colorsWrap}>
+    {data?.map((item)=>{
+        //console.log("item=======>",item);
+    return(
+        <>
+        {color(item)}
+        </>
+    )})}  
+    </View>}
+
+      {/* <View style={styles.colorsWrap}>
         {color('black')}
         {color('white')}
         {color('#A1A1A1')}
@@ -66,7 +116,8 @@ export default function ColourClothing(props) {
         {color('#FFA500')}
         {color('#800080')}
         {color('#F5F5DC')}
-      </View>
+      </View> */}
+
     </SafeAreaView>
   );
 }

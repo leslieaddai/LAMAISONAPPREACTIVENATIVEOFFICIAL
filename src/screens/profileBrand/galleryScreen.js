@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +35,45 @@ import {
 import BottomComp from '../../components/bottomComp';
 import GalleryComp from '../../components/galleryComp';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GalleriesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function GalleryScreen(props) {
+  const [loading, setLoading] = useState(false);
+  //const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+  const [data,setData]=useState(props?.route?.params?.data);
+
+  //console.log(props.route.params.data)
+
+  // useEffect(()=>{
+  //   setLoading(true);
+
+  //   axios
+  //   .get(GalleriesUrl, {
+  //       headers:{'Authorization':`Bearer ${user.token}`},
+  //   })
+  //   .then(async function (res) {
+  //      console.log(res.data.data);
+  //      setData(res.data.data);
+  //      setLoading(false);
+       
+  //   }) 
+  //   .catch(function (error) {
+  //     console.log(error.response.data)
+  //     setLoading(false);
+  //     errorMessage('Something went wrong!')
+  //     //errorMessage(errorHandler(error))
+  //     //errorMessage('Login Failed');
+  //   });
+
+  // },[])
+
   return (
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
@@ -44,29 +83,39 @@ export default function GalleryScreen(props) {
         </TouchableOpacity>
         <Text style={styles.galleryText}>Gallery</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
+
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center',marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    : data ?
+    // <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignSelf:'center',width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
+    // {data?.map((item)=>{
+    //     //console.log("item=======>",item);
+    // return(
+    //     <GalleryComp item={{item}} />
+    // )})}  
+    // </ScrollView>
+    <FlatList 
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{paddingTop: hp2(1),paddingBottom:hp2(12),alignSelf:'center',}}
+    numColumns={3}
+     data={data}
+      renderItem={({item,i})=>{
+        return(
+          <GalleryComp key={i} item={{item}} />
+        )
+      }}
+
+     />:null
+    }
+
+      {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
         <GalleryComp/>
         <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-        <GalleryComp/>
-      </ScrollView>
-      <BottomComp />
+      </ScrollView> */}
+
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );
@@ -76,7 +125,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    alignItems:'center',
+    //alignItems:'center',
   },
   headWrap: {
     flexDirection: 'row',

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,7 +35,21 @@ import {
 import BottomComp from '../../components/bottomComp';
 import NextPickupComp from '../../components/nextPickupComp';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GalleriesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function NextPickupScreen(props) {
+
+  const [loading, setLoading] = useState(false);
+  //const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+  const [data,setData]=useState(props?.route?.params?.data);
+
   return (
     <SafeAreaView style={{flex:1}}>
         <View style={styles.container}>
@@ -44,24 +59,32 @@ export default function NextPickupScreen(props) {
         </TouchableOpacity>
         <Text style={styles.pickupText}>NEXT PICKUP</Text>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(100),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),justifyContent:'space-between'}}>
+
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center',marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    : data ?
+    <FlatList 
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{paddingTop: hp2(1),paddingBottom:hp2(12),alignSelf:'center',}}
+    numColumns={2}
+     data={data}
+      renderItem={({item,i})=>{
+        return(
+          <NextPickupComp key={i} item={{item}} />
+        )
+      }}
+
+     />:null
+    }
+
+
+      {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(100),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),justifyContent:'space-between'}}>
         <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-        <NextPickupComp/>
-      </ScrollView>
-      <BottomComp />
+      </ScrollView> */}
+
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );
@@ -71,7 +94,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    alignItems:'center',
+    //alignItems:'center',
   },
   headWrap: {
     flexDirection: 'row',

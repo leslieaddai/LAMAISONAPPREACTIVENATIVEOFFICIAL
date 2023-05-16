@@ -32,10 +32,21 @@ const AppNavigatior = () => {
       setStatus('editor');
       console.log(userState.userData.role[0].title);
     }
+    // switch(userState){
+    //   case userState?.userData?.role?.[0]?.id===3:
+    //     setStatus('brand');
+    //     break;
+    //   case userState?.userData?.role?.[0]?.id===2:
+    //     setStatus('editor');
+    //     break;
+    //   default :
+    //     setStatus('guest');
+    //     break;
+    // }
   }, [userState]);
 
   const GuestScreensRoute = () => (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='guestScreen'>
       {guestScreens.map((item, index) => {
         return (
           <Stack.Screen
@@ -50,7 +61,7 @@ const AppNavigatior = () => {
   );
 
   const BrandScreensRoute = () => (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='bottomNavigation'>
       {brandScreens.map((item, index) => {
         return (
           <Stack.Screen
@@ -65,7 +76,7 @@ const AppNavigatior = () => {
   );
 
   const EditorScreensRoute = () => (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='bottomNavigation'>
       {editorScreens.map((item, index) => {
         return (
           <Stack.Screen

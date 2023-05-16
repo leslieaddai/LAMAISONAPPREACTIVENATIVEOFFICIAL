@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,14 +33,49 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { StylesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function Style(props) {
   const [selected,setSelected]=useState('');
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(StylesUrl)
+    .then(async function (res) {
+       console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+      //errorMessage(errorHandler(error))
+      //errorMessage('Login Failed');
+    });
+
+  },[])
+
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
+                <Text style={{color:'black'}}>{text?.name}</Text>
+                <TouchableOpacity onPress={()=>setSelected(text?.name)} style={[styles.circle,{backgroundColor:selected==text?.name?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
     }
@@ -53,13 +88,28 @@ export default function Style(props) {
         <Text style={styles.heading}>STYLE</Text>
       </View>
 
-      {options('ACTIVEWEAR')}
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<>
+    {data?.map((item)=>{
+        //console.log("item=======>",item);
+    return(
+        <>
+        {options(item)}
+        </>
+    )})}  
+    </>}
+
+
+      {/* {options('ACTIVEWEAR')}
       {options('BEACHWEAR')}
       {options('NIGHTLIFE')}
       {options('OUTDOORWEAR')}
       {options('STREETWEAR')}
       {options('WORKWEAR')}
-      {options('ACCESSORIES')}
+      {options('ACCESSORIES')} */}
     </SafeAreaView>
   );
 }

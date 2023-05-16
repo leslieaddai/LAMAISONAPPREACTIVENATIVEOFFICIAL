@@ -127,7 +127,7 @@ export default function ListViewScreen(props) {
   {postComp()}
 </ScrollView>
 
-<BottomComp />
+{/* <BottomComp /> */}
 </View>
     </SafeAreaView>
   );

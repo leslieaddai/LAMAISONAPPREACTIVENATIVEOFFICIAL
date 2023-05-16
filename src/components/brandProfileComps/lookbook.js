@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -31,59 +32,49 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+  export function ImgComp  (props)  {
+    return(
+      <View style={styles.imageContainer}>
+      <Image
+        //source={IMAGES.randomPic}
+        source={{uri:props?.path?.item?.media?.[0]?.original_url}}
+        style={{width: '100%', height: '100%'}}
+        resizeMode="cover"
+      />
+    </View>
+    )
+  }
+
 export default function Lookbook(props) {
+  //console.log(props.data.data,'=======>')
   const navigation = useNavigation();
+
   return (
     <>
-      <TouchableOpacity  onPress={() => navigation.navigate('lookbookScreen')} style={styles.lookbook}>
+      {/* <TouchableOpacity  onPress={() => navigation.navigate('lookbookScreen')} style={styles.lookbook}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
           LOOKBOOK
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View style={styles.galaryContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
+        {props?.data?.data?.map((item,index)=>{
+          if(index<6) return <ImgComp key={index} path={{item}} />
+        })}
       </View>
+
+      {/* <FlatList 
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{alignSelf:'center',}}
+    numColumns={3}
+     data={props.data.data}
+      renderItem={({item,i})=>{
+        return(
+          imgComp(item.media[0].original_url)
+        )
+      }}
+
+     /> */}
+
     </>
   );
 }

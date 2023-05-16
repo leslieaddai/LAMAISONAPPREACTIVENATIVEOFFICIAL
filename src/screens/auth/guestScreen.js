@@ -27,9 +27,9 @@ export default function GuestScreen(props) {
     <View style={styles.container}>
       <View style={styles.logoWrap}>
         <Image
-          source={IMAGES.logo}
+          source={IMAGES.logowhite}
           style={{width: '100%', height: '100%'}}
-          resizeMode="contain"
+          resizeMode="cover"
         />
       </View>
       <TouchableOpacity
@@ -42,7 +42,16 @@ export default function GuestScreen(props) {
         style={styles.button}>
         <Text style={styles.buttonText}>SIGN IN</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=> props.navigation.navigate('homeScreen')} style={{marginTop:hp2(12)}}>
+      <TouchableOpacity 
+      //onPress={()=> props.navigation.navigate('homeScreen')} 
+      onPress={()=> props.navigation.navigate('bottomNavigationGuest')} 
+    //     onPress={()=>navigation.navigate('bottomNavigation', {
+    //   screen: 'stackNavComp',
+    //   params: {
+    //     screen: 'dressingRoomScreen',
+    //   },
+    // })}
+      style={{marginTop:hp2(12)}}>
         <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
       </TouchableOpacity>
     </View>

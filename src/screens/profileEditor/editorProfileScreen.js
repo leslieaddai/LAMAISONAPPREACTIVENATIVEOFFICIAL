@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -37,28 +37,71 @@ import BrandComp from '../../components/editorProfileComps/brands';
 import Wardrobe from '../../components/editorProfileComps/wardrobe';
 import NextPickup from '../../components/editorProfileComps/nextPickup';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { WishListsUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function EditorProfileScreen(props) {
+
+  //console.log(props.route.params.userData.userData)
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
     const [follow,setFollow]=useState(true);
+
+    useEffect(()=>{
+      setLoading(true);
+  
+      axios
+      .post(WishListsUrl,{user_id:user?.userData?.id})
+      .then(async function (res) {
+         console.log(res.data);
+         setData(res.data.data);
+         setLoading(false);
+         
+      }) 
+      .catch(function (error) {
+        console.log(error.response.data)
+        setLoading(false);
+        errorMessage('Something went wrong!')
+        //errorMessage(errorHandler(error))
+        //errorMessage('Login Failed');
+      });
+  
+    },[])
+
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
         <View style={styles.editorProfile}>
       <ImageBackground
-            source={IMAGES.randomProfile}
+            //source={IMAGES.randomProfile}
+            source={{uri:props?.route?.params?.userData?.userData?.profile_image}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           >
-             <TouchableOpacity onPress={()=>props.navigation.navigate('settingsScreen',{user:'editor'})} style={styles.iconWrap}>
+            {props?.route?.params?.userData?.userData?.id===user?.userData?.id && 
+             <TouchableOpacity onPress={()=>props.navigation.navigate('settingsScreen',{user:user})} style={styles.iconWrap}>
         <ICONS.Ionicons name="menu-outline" size={44} color="black" />
         <View style={styles.notificationBadge}>
             <Text style={{color:'white',fontSize:rfv(10)}}>1</Text>
         </View>
       </TouchableOpacity>
+      }
       <View style={styles.nameContainer}>
-        <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>ICEY.B</Text>
+        <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props?.route?.params?.userData?.userData?.username}</Text>
+        {props?.route?.params?.userData?.userData?.id!==user?.userData?.id && 
         <TouchableOpacity onPress={()=>{follow?setFollow(false):setFollow(true)}} style={[styles.followButton,{backgroundColor:follow?'white':'black'}]}>
             <Text style={{fontWeight:'700',color:follow?'black':'white',fontSize:rfv(13)}}>{follow?'FOLLOWING':'FOLLOW'}</Text>
         </TouchableOpacity>
+        }
       </View>
           </ImageBackground>
       </View>
@@ -89,11 +132,22 @@ export default function EditorProfileScreen(props) {
       </ScrollView>
 
       <Wardrobe/>
-      <NextPickup/>
+
+      {loading ? 
+            <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+            <SkypeIndicator color={'black'} />
+          </View>
+          :
+          <>
+      <NextPickup data={{data}} />
+        </>
+          }
+
+
 
       </ScrollView>
       
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

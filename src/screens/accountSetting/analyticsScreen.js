@@ -72,7 +72,7 @@ export default function AnalyticsScreen(props) {
         {boxComp(true)}
       </View>
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

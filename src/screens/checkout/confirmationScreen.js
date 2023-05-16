@@ -64,7 +64,7 @@ export default function ConfirmationScreen(props) {
         
       </View>
       </View>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

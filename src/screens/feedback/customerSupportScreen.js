@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -34,8 +34,55 @@ import {
 import BottomComp from '../../components/bottomComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { CustomerAdvisesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function CustomerSupportScreen(props) {
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  const onSend = () => {
+    if(selected !== '' && desc !== ''){
+      setLoading(true);
+
+      let obj = {
+        user_id:props?.route?.params?.user?.userData?.id,
+        description:desc,
+        emotion:selected
+      }
+
+      axios
+      .post(CustomerAdvisesUrl, obj , {
+        headers:{'Authorization':`Bearer ${props?.route?.params?.user?.token}`},
+      })
+      .then(async function (res) {
+         console.log(res.data);
+         setLoading(false);
+         successMessage('Done!');
+         props.navigation.goBack();
+      }) 
+      .catch(function (error) {
+        console.log(error.response.data)
+        setLoading(false);
+        errorMessage('Something went wrong!')
+       });
+
+    }else{
+      errorMessage('Please fill all details!')
+    }
+  }
+
   const [selected,setSelected]=useState('');
+  const [desc, setDesc]=useState('');
+
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
@@ -45,6 +92,13 @@ export default function CustomerSupportScreen(props) {
         )
     }
   return (
+    <>
+        {loading && 
+    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    }
+
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center',paddingBottom:hp2(12),}}>
@@ -66,6 +120,8 @@ export default function CustomerSupportScreen(props) {
           }
           placeholderTextColor={'grey'}
           multiline={true}
+          value={desc}
+          onChangeText={(val)=>setDesc(val)}
           style={{
             flex: 1,
             color: 'black',
@@ -84,13 +140,14 @@ export default function CustomerSupportScreen(props) {
       {options('EXCITED')}
       {options('CONFUSED')}
       {options('PANICKED')}
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={onSend} style={styles.button}>
         <Text style={{color:'white'}}>SEND</Text>
       </TouchableOpacity>
       </KeyboardAwareScrollView>
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
+  </>
   );
 }
 

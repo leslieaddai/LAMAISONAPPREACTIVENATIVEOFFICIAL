@@ -54,6 +54,7 @@ const CreateAccountScreen = (props) => {
     const numeric = /[0-9]/
 
     const [stateChange, setStateChange] = useState({
+      BrandName:'',
       UserName:'',
       Newpassword:'',
       ConfirmPass:'',
@@ -61,6 +62,7 @@ const CreateAccountScreen = (props) => {
     })
     const updateState = data => setStateChange(prev => ({...prev, ...data}));
     const {
+      BrandName,
       UserName,
       Newpassword,
       ConfirmPass,
@@ -83,6 +85,7 @@ const CreateAccountScreen = (props) => {
                   let obj = {
                     first_name: props.route.params.data.firstName,
                     last_name: props.route.params.data.lastName,
+                    name: BrandName,
                     username: UserName,
                     dob:Birthday.toISOString().split('T')[0],
                     email: props.route.params.data.email,
@@ -167,8 +170,11 @@ const CreateAccountScreen = (props) => {
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>{props.route.params.user=='editor'?'Create Editor Account':'Create Brand Account'}</Text>
+        {props.route.params.user=='brand' && <View style={styles.inputBox}>
+          <TextInput style={styles.textBox}  onChangeText={(val) => updateState({BrandName:val})} placeholder='BRAND NAME' placeholderTextColor={'grey'} />
+        </View>}
         <View style={styles.inputBox}>
-          <TextInput style={styles.textBox}  onChangeText={(val) => updateState({UserName:val})} placeholder={props.route.params.user=='editor'?'USERNAME':'BRAND NAME'} placeholderTextColor={'grey'} />
+          <TextInput style={styles.textBox}  onChangeText={(val) => updateState({UserName:val})} placeholder='USERNAME' placeholderTextColor={'grey'} />
         </View>
         <Text style={styles.text}>What do you want to be known for?</Text>
         <View style={styles.inputBox}>

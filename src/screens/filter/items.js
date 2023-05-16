@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,14 +33,49 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { PiecesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function Items(props) {
   const [selected,setSelected]=useState('');
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(PiecesUrl)
+    .then(async function (res) {
+       console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+      //errorMessage(errorHandler(error))
+      //errorMessage('Login Failed');
+    });
+
+  },[])
+
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
+                <Text style={{color:'black'}}>{text?.piece_name}</Text>
+                <TouchableOpacity onPress={()=>setSelected(text?.piece_name)} style={[styles.circle,{backgroundColor:selected==text?.piece_name?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
     }
@@ -53,12 +88,27 @@ export default function Items(props) {
         <Text style={styles.heading}>ITEMS</Text>
       </View>
 
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<>
+    {data?.map((item)=>{
+        //console.log("item=======>",item);
+    return(
+        <>
+        {options(item)}
+        </>
+    )})}  
+    </>}
+
+{/* 
       {options('TOPS')}
       {options('BOTTOMS')}
       {options('FOOTWEAR')}
       {options('ACCESSORIES')}
       {options('JACKETS & COATS')}
-      {options('TRACKSUITS')}
+      {options('TRACKSUITS')} */}
     </SafeAreaView>
   );
 }

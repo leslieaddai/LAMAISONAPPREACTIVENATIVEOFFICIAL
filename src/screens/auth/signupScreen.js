@@ -133,7 +133,7 @@ async function onFacebookButtonPress() {
           />
         </View>
         </View>
-        <Text style={styles.text}>I hope you trust us but this is so know we can trust you</Text>
+        <Text style={styles.text}>I hope you trust us but this is so we know we can trust you</Text>
         <View style={styles.inputBox}>
           <TextInput
             style={{

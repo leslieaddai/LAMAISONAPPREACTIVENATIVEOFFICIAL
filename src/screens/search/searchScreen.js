@@ -55,7 +55,10 @@ export default function SearchScreen(props) {
             placeholder="what do you want to wear?"
           />
         </View>
-        <TouchableOpacity onPress={()=>props.navigation.navigate('filterScreen')}>
+        <TouchableOpacity 
+        onPress={()=>props.navigation.navigate('filterScreen')}
+         //onPress={()=>props.navigation.navigate('stackNavComp', {screen: 'filterScreen'})}
+        >
           <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />
         </TouchableOpacity>
       </View>
@@ -91,7 +94,7 @@ export default function SearchScreen(props) {
         <SearchComp />
       </ScrollView>
 
-      <BottomComp />
+      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
     </>
