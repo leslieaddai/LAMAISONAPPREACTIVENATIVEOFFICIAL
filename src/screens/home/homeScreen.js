@@ -109,35 +109,51 @@ export default function HomeScreen(props) {
   //   }
   // },[])
 
+    // const brandComp = (nav) => {
+    //     return(
+    //        <View style={{marginVertical:hp2(2)}}>
+    //        {nav?(
+    //          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:9}}})} style={styles.brandImage}>
+    //          <Image
+    //            source={IMAGES.randomPic}
+    //            style={{width: '100%', height: '100%'}}
+    //            resizeMode="cover"
+    //          />
+    //        </TouchableOpacity>
+    //        ):(
+    //          <View style={styles.brandImage}>
+    //          <Image
+    //            source={IMAGES.randomPic}
+    //            style={{width: '100%', height: '100%'}}
+    //            resizeMode="cover"
+    //          />
+    //        </View>
+    //        )}
+    //        </View>
+    //     )
+    // }
+
     const brandComp = (nav) => {
-        return(
-           <View style={{marginVertical:hp2(2)}}>
-           {nav?(
-             <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:9}}})} style={styles.brandImage}>
-             <Image
-               source={IMAGES.randomPic}
-               style={{width: '100%', height: '100%'}}
-               resizeMode="cover"
-             />
-           </TouchableOpacity>
-           ):(
-             <View style={styles.brandImage}>
-             <Image
-               source={IMAGES.randomPic}
-               style={{width: '100%', height: '100%'}}
-               resizeMode="cover"
-             />
-           </View>
-           )}
-           </View>
-        )
-    }
+      return(
+         <View style={{marginVertical:hp2(2)}}>
+         
+           <TouchableOpacity onPress={()=>props.navigation.navigate(nav)} style={styles.brandImage}>
+           <Image
+             source={IMAGES.randomPic}
+             style={{width: '100%', height: '100%'}}
+             resizeMode="cover"
+           />
+         </TouchableOpacity>
+         
+         </View>
+      )
+  }
 
   const postComp = () => {
     return (
       <View style={{marginVertical:hp2(2)}}>
         <View style={styles.headWrap}>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen',{userData:{userData:{id:11}}})} style={styles.imageWrap}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen')} style={styles.imageWrap}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
@@ -152,13 +168,13 @@ export default function HomeScreen(props) {
           />
           <Text style={{color: 'black'}}>ICEY.B Shared</Text>
         </View>
-        <View style={styles.imageContainer}>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-        </View>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -177,34 +193,34 @@ export default function HomeScreen(props) {
 
     
         <View style={styles.productContainer}>
-          <View style={styles.productImageContainer}>
+        <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
-          <View style={styles.productImageContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
-          <View style={styles.productImageContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
-          <View style={styles.productImageContainer}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
+          </TouchableOpacity>
           
         </View>
 
@@ -226,20 +242,20 @@ export default function HomeScreen(props) {
 
     
         <View style={{flexDirection:'row',width:wp2(100),justifyContent:'space-between'}}>
-          <View style={styles.productImageContainer2}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer2}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
-          <View style={styles.productImageContainer2}>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.productImageContainer2}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
-          </View>
+          </TouchableOpacity>
           
         </View>
 
@@ -296,11 +312,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Brands</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
-        {brandComp(true)}
-        {brandComp(true)}
-        {brandComp(true)}
-        {brandComp(true)}
-        {brandComp(true)}
+        {brandComp('brandProfileScreen')}
+        {brandComp('brandProfileScreen')}
+        {brandComp('brandProfileScreen')}
+        {brandComp('brandProfileScreen')}
+        {brandComp('brandProfileScreen')}
 
         </ScrollView>
 
@@ -309,11 +325,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Pieces</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
 
         </ScrollView>
 
@@ -322,11 +338,11 @@ export default function HomeScreen(props) {
         <Text style={styles.text}>Popular Colour</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} >
         
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
-        {brandComp(false)}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
+        {brandComp('dressingRoomScreen')}
 
         </ScrollView>
 
