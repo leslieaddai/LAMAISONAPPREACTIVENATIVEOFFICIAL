@@ -276,8 +276,9 @@ export default function HomeScreen(props) {
   // }
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    //<SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
+        <SafeAreaView></SafeAreaView>
       <View style={styles.logoWrap}>
         {/* <Image
           source={IMAGES.logo}
@@ -352,7 +353,7 @@ export default function HomeScreen(props) {
 
       {/* <BottomComp /> */}
     </View>
-    </SafeAreaView>
+    //</SafeAreaView>
   );
 }
 

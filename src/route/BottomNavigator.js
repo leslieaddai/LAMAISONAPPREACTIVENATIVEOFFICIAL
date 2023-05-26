@@ -411,7 +411,7 @@ useEffect(()=>{
         tabBarLabel:() => {return null},
         tabBarStyle: {
           width: wp2(100),
-          height: hp2(8),
+          height: Platform.OS==='ios'?hp2(10):hp2(8),
           backgroundColor: 'white',
           //flexDirection: 'row',
           //alignItems: 'center',
@@ -577,7 +577,7 @@ useEffect(()=>{
         tabBarLabel:() => {return null},
         tabBarStyle: {
           width: wp2(100),
-          height: hp2(8),
+          height: Platform.OS==='ios'?hp2(10):hp2(8),
           backgroundColor: 'white',
           //flexDirection: 'row',
           //alignItems: 'center',
@@ -737,7 +737,7 @@ const basket = useSelector(state => state.basket)
         tabBarLabel:() => {return null},
         tabBarStyle: {
           width: wp2(100),
-          height: hp2(8),
+          height: Platform.OS==='ios'?hp2(10):hp2(8),
           backgroundColor: 'white',
           //flexDirection: 'row',
           //alignItems: 'center',
