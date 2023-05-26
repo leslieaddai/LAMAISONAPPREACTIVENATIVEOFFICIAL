@@ -18,19 +18,20 @@ const Stack = createStackNavigator();
 
 const AppNavigatior = () => {
   const [status, setStatus] = useState('guest');
-  const userState = useSelector(state => state.userData);
+  const token = useSelector(state => state?.userData?.token);
+  const id = useSelector(state => state?.userData?.userData?.role?.[0]?.id);
   //console.log(userState);
 
   useEffect(() => {
-    if (userState.token === '') {
+    if (token === '') {
       setStatus('guest');
-      console.log(userState);
-    } else if (userState.userData.role[0].id===3) {
+      //console.log(userState);
+    } else if (id===3) {
       setStatus('brand');
-      console.log(userState.userData.role[0].title);
-    } else if (userState.userData.role[0].id===2) {
+      //console.log(userState.userData.role[0].title);
+    } else if (id===2) {
       setStatus('editor');
-      console.log(userState.userData.role[0].title);
+      //console.log(userState.userData.role[0].title);
     }
     // switch(userState){
     //   case userState?.userData?.role?.[0]?.id===3:
@@ -43,7 +44,7 @@ const AppNavigatior = () => {
     //     setStatus('guest');
     //     break;
     // }
-  }, [userState]);
+  }, [token,id]);
 
   const GuestScreensRoute = () => (
     <Stack.Navigator initialRouteName='guestScreen'>

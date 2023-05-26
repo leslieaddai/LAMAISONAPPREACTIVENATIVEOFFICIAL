@@ -86,10 +86,10 @@ export default function ProductType(props) {
       <Text style={styles.heading}>Product Type</Text>
       <FlatList
       data={GetcategoryState}
-      contentContainerStyle={{marginTop:hp2(20)}}
+      contentContainerStyle={{marginTop:hp2(20),padding:wp2(2)}}
       renderItem={({item})=>{
         return(
-          <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook')} style={[styles.box,{marginBottom:hp2(6),
+          <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook',{item})} style={[styles.box,{marginBottom:hp2(6),
           backgroundColor:item.category_name == "Footwear"?"black":"white"}]}>
           <View style={styles.iconWrap}>
           <Image

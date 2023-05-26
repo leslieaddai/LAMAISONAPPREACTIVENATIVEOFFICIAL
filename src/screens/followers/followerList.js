@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -32,10 +33,23 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
-import SearchComp from '../../components/searchComp';
+import FollowComp from './followComp';
 
 export default function FollowerList(props) {
   const [selected, setSelected]=useState('brands');
+  const [dataBrand,setDataBrand]=useState([]);
+  const [dataEditor,setDataEditor]=useState([]);
+
+  useEffect(()=>{
+    if(props?.route?.params?.list==='following'){
+      setDataBrand(props?.route?.params?.followingDataBrand)
+      setDataEditor(props?.route?.params?.followingDataEditor)
+    }else{
+      setDataBrand(props?.route?.params?.followerDataBrand)
+      setDataEditor(props?.route?.params?.followerDataEditor)
+    }
+  },[props?.route?.params?.list])
+
   return (
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
@@ -57,7 +71,19 @@ export default function FollowerList(props) {
         </TouchableOpacity>
   </View>
 
-  <ScrollView
+      <FlatList
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingBottom:hp2(12),width:wp2(96),alignSelf:'center'}}
+      data={selected==='brands'?dataBrand:dataEditor}
+      numColumns={3}
+      renderItem={({item})=>{
+        return(
+          <FollowComp list={props?.route?.params?.list} data={{item}} />
+        )
+      }}
+      />
+
+  {/* <ScrollView
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{
       paddingBottom: hp2(12),
@@ -66,17 +92,9 @@ export default function FollowerList(props) {
       width: wp2(96),
       alignSelf: 'center',
     }}>
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-    <SearchComp />
-  </ScrollView>
+    <FollowComp/>
+    <FollowComp/>
+  </ScrollView> */}
 
   {/* <BottomComp /> */}
 </View>

@@ -34,14 +34,26 @@ import {
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
 import CollectionComp from '../../components/collectionComp';
+
 import { getCollection } from '../../config/Urls';
-import { useSelector } from 'react-redux';
 import { SkypeIndicator} from 'react-native-indicators';
 import axios from 'react-native-axios';
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import { errorHandler } from '../../config/helperFunction';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+
 
 export default function LookbookScreen(props) {
 
-  const {token} = useSelector(state => state.userData);
+  const dispatch = useDispatch()
+  //const [loading, setLoading] = useState(false);
+  //const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+  const user2 = props?.route?.params?.userData
+  //console.log(user2)
+
+  //const {token} = useSelector(state => state.userData);
   const [allStates, setAllStates] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
   // const {GetcollectionLoading} = allLoading;
@@ -63,18 +75,20 @@ export default function LookbookScreen(props) {
   const getApiData = (url) => {
     setAllLoading(true)
     axios
-      .get(url,
-        {
-          headers: {Authorization: `Bearer ${token}`},
-        }
+      .post(url,{user_id:user2?.userData?.id}
+        // {
+        //   headers: {Authorization: `Bearer ${token}`},
+        // }
       )
       .then(function (response) {
         setAllLoading(false)
-        setAllStates(response.data.data)
+        setAllStates(response.data.data.reverse())
+        //console.log(response.data.data)
       })
       .catch(function (error) {
         setAllLoading(false)
         console.log("CollectionScreen error", error);
+        errorMessage('Something went wrong!')
       });
   };
   return (
@@ -97,34 +111,43 @@ export default function LookbookScreen(props) {
 
       <Text style={styles.collectionText}>Latest Collection</Text>
       <Text style={{fontWeight: '600', color: 'black',marginLeft:wp2(6),}}>{allStates[0]?.name}</Text>
-      <TouchableOpacity onPress={() => props.navigation.navigate('collectionScreen',{collection:allStates[0].collection_products,collectionname:allStates[0]?.name})} style={styles.imageContainer}>
-      <Image
-            source={{uri:allStates[0]?.media[0]?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-      </TouchableOpacity>
+      {allStates.length>0?(
+              <TouchableOpacity onPress={() => props.navigation.navigate('collectionScreen',{collection:allStates[0].collection_products,collectionname:allStates[0]?.name})} style={styles.imageContainer}>
+              <Image
+                    source={{uri:allStates[0]?.media[0]?.original_url}}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+              </TouchableOpacity>
+      ):(
+              <View style={styles.imageContainer}></View>
+      )}
       <Text style={styles.collectionText}>All Collections</Text>
      <View>
       <FlatList
-       contentContainerStyle={{paddingHorizontal:wp2(4),paddingVertical:hp2(1)}}
+      contentContainerStyle={{paddingHorizontal:wp2(4),paddingVertical:hp2(1)}}
       horizontal showsHorizontalScrollIndicator={false}
       data={allStates}
-      renderItem={({item})=>{
+      renderItem={({item,index})=>{
         return(
-          <CollectionComp
-        name={item?.name}
-        itemscollection={item.collection_products}
-        uri={{uri:item?.media[0]?.original_url}}
-        />
+         <>
+         {index>0 && (
+           <CollectionComp
+           name={item?.name}
+           itemscollection={item?.collection_products}
+           uri={{uri:item?.media[0]?.original_url}}
+           //userData={item?.user}
+           />
+         )}
+         </>
         )
       }}
       />
      </View>
 
-      <TouchableOpacity onPress={()=>props.navigation.navigate('selectCoverPhoto')} style={styles.button}>
+      {user?.userData?.id === user2?.userData?.id && user?.userData?.role?.[0]?.id===3 && <TouchableOpacity onPress={()=>props.navigation.navigate('selectCoverPhoto')} style={styles.button}>
           <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
       </ScrollView>
 

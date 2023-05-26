@@ -49,6 +49,8 @@ import { SkypeIndicator } from 'react-native-indicators';
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import LoaderComp from '../../components/loaderComp';
+
 const CreateAccountScreen = (props) => {
   const special =/[!@#\$%\^\&*\)\(+=._-]/g
     const numeric = /[0-9]/
@@ -159,11 +161,11 @@ const CreateAccountScreen = (props) => {
 
   return (
     <>
-    {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+<View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginTop:Platform.OS === "ios"? hp2(0) : hp2(4), marginLeft: wp2(8)}}>

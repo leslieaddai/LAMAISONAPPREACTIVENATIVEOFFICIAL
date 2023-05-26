@@ -54,9 +54,13 @@ import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
+import LoaderComp from '../../components/loaderComp';
+
 const PAGE_SIZE = 40;
 
 export default function ImageUploadLookbook(props) {
+
+  //console.log(props?.route?.params?.item?.id)
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
@@ -72,6 +76,7 @@ export default function ImageUploadLookbook(props) {
       description:'',
       price,
       style_id,
+      category:props?.route?.params?.item?.id,
       //quantity:[{color:'',size:'',quantity:''}],
     })
     const updateState = data => setStateChange(prev => ({...prev, ...data}));
@@ -82,6 +87,7 @@ export default function ImageUploadLookbook(props) {
       description,
       price,
       style_id,
+      category,
       //quantity,
     } = stateChange;
 
@@ -366,15 +372,15 @@ export default function ImageUploadLookbook(props) {
       formdata.append("qty[]", Number(item.quantity));
     })
 
-formdata.append("user_id", user.userData.id);
-formdata.append("category_id", 1);
-formdata.append("name", stateChange.productName);
+formdata.append("user_id", user?.userData?.id);
+formdata.append("category_id", stateChange?.category);
+formdata.append("name", stateChange?.productName);
 formdata.append("sku", Math.floor(Math.random() * 899999 + 100000));
 //formdata.append("sku", '123422');
-formdata.append("description", stateChange.description);
-formdata.append("price", parseFloat(stateChange.price). toFixed(2));
-formdata.append("piece_id", stateChange.piece_id);
-formdata.append("style", String(stateChange.style_id));
+formdata.append("description", stateChange?.description);
+formdata.append("price", parseFloat(stateChange?.price). toFixed(2));
+formdata.append("piece_id", stateChange?.piece_id);
+formdata.append("style", String(stateChange?.style_id));
 formdata.append("status", 1);
 //  formdata.append("color[]", [1]);
 //  formdata.append("size[]", [3]);
@@ -482,11 +488,11 @@ selectedImage.map((item,index)=>{
 
   return (
     <>
-     {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+     <View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
     <SafeAreaView style={styles.container}>
      
       {selectedImage?.length!==0 && !nextButton?(
@@ -678,7 +684,7 @@ selectedImage.map((item,index)=>{
      :nextButton && showQuantity && !confirmButton ? (
        <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
        {quantity?.map((item,index)=>(
-        <QuantityComp key={index} key2={index} state={{quantity,setQuantity}} />
+        <QuantityComp key={index} key2={index} state={{quantity,setQuantity,stateChange}} />
        ))}
        <View style={{flexDirection:'row',alignSelf:'flex-end',marginVertical:hp2(1)}}>        
        {quantity?.length>1 && (

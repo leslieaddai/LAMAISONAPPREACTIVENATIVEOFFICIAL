@@ -37,7 +37,7 @@ import CollectionItemsComp from '../../components/collectionItemsComp';
 
 export default function CollectionScreen({navigation,route}) {
   items = route.params
-  console.log(items)
+  //console.log(items)
   return (
     <SafeAreaView style={{flex:1}}>
 <View style={styles.container}>
@@ -51,12 +51,14 @@ export default function CollectionScreen({navigation,route}) {
       <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.flatlist}
-      data={items.collection}
+      data={items?.collection}
       numColumns={2}
       renderItem={({item})=>{
         // console.log("sajda",item?.product?.product_images[0].media[0]?.original_url)
         return(
            <CollectionItemsComp
+           //userData={items?.userData}
+           data={item}
            uri={{uri:item?.product?.product_images[0].media[0]?.original_url}}
            name={item?.product?.name}
            price={item?.product?.price}
@@ -94,9 +96,9 @@ const styles = StyleSheet.create({
     marginTop:hp2(3),
   },
   flatlist:{
-    flexDirection:'row',
+    //flexDirection:'row',
     paddingTop:hp2(2),
     paddingBottom:hp2(12),
-    justifyContent:'space-between'
+    //justifyContent:'space-between',
   }
 });

@@ -32,20 +32,22 @@ import {
 
 export default function Category(props) {
   //const [select, setSelect] = useState(false);
+  //console.log(props.data)
 
   return (
     <TouchableOpacity
       onPress={() => {
-        props.state.setSelected(props.text)
+        props?.state?.setSelected(props?.data?.item?.name)
+        props?.state?.onSelectStyle(props?.data?.item?.id)
       }}
-      style={[styles.button, {backgroundColor: props.state.selected == props.text ? 'black' : 'white'}]}>
+      style={[styles.button, {backgroundColor: props?.state?.selected == props?.data?.item?.name ? 'black' : 'white'}]}>
       <Text
         style={{
-          color: props.state.selected == props.text ? 'white' : 'black',
+          color: props?.state?.selected == props?.data?.item?.name ? 'white' : 'black',
           fontWeight: '700',
           textTransform: 'uppercase',
         }}>
-        {props.text}
+        {props?.data?.item?.name}
       </Text>
     </TouchableOpacity>
   );

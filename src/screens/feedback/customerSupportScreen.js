@@ -42,6 +42,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
+import LoaderComp from '../../components/loaderComp';
+
 export default function CustomerSupportScreen(props) {
 
   const dispatch = useDispatch()
@@ -93,11 +95,11 @@ export default function CustomerSupportScreen(props) {
     }
   return (
     <>
-        {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+<View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
 
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>

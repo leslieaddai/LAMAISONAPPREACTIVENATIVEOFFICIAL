@@ -33,14 +33,38 @@ import {
 } from '../../theme';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { UpdateProfile } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function EditProfile(props) {
   const [images, setImages] = useState([]);
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
   
   const selectImage = async () => {
     const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
-        setImages(result.assets)
-        console.log(images);
+
+      const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
+      const filename = result?.assets[0]?.uri.split("/").pop();
+      const match = /\.(\w+)$/.exec(filename);
+      const ext = match?.[1];
+      const type = match ? `image/${match[1]}` : `image`;
+    
+      setImages([{uri, name: filename, type}])
+
+        //setImages(result.assets)
+        //console.log(result.assets);
       }
   }
 
@@ -48,19 +72,62 @@ export default function EditProfile(props) {
     var array = [...images];
     if (id !== -1) {
       array.splice(id, 1);
-      setImages(array);
+      //setImages(array);
     }
+    setImages([]);
   };
+
+  const uploadImage = () => {
+    setLoading(true);
+
+    var formdata = new FormData();
+    formdata.append("image", images[0]);
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: UpdateProfile,
+  headers: { 
+    'Authorization': `Bearer ${user?.token}`, 
+    'Accept': 'application/json',
+    "Content-Type": "multipart/form-data"
+  },
+  data : formdata
+};
+
+axios.request(config)
+.then(async function (res) {
+  console.log(res.data);
+  dispatch({
+    type: types.UpdateProfilePicture,
+    payload: res.data.data.profile_image.original_url,
+  });
+  setImages([]);
+  setLoading(false);
+  successMessage('Profile Update Successfully');
+}) 
+.catch(function (error) {
+  console.log(error.response.data)
+  setLoading(false);
+  errorMessage('Upload Failed');
+});
+
+  }
 
   const settingOptions = (name, navScreen) => {
     return (
       <>
       {name == 'DISPLAY PHOTO' ? (
-         <TouchableOpacity onPress={selectImage} style={styles.filters}>
+         <TouchableOpacity disabled={images.length>=1?true:false} onPress={selectImage} style={styles.filters}>
          <Text style={{color: 'black'}}>{name}</Text>
              <View style={styles.imageWrap}>
                 {images.length >= 1 ? (
                       <>
+                        <Image
+                          source={{ uri: images[0].uri }}
+                          style={{ width: "100%", height: "100%" }}
+                          resizeMode="cover"
+                        />
                         <TouchableOpacity
                           style={styles.removeImg}
                           onPress={() => onRemove(0)}
@@ -71,15 +138,11 @@ export default function EditProfile(props) {
                             color="white"
                           />
                         </TouchableOpacity>
-                        <Image
-                          source={{ uri: images[0].uri }}
-                          style={{ width: "100%", height: "100%" }}
-                          resizeMode="cover"
-                        />
                       </>
                     ) : (
                       <Image
-                          source={IMAGES.randomProfile}
+                          //source={IMAGES.randomProfile}
+                          source={{uri:user?.userData?.profile_image}}
                           style={{width: '100%', height: '100%'}}
                           resizeMode="cover"
                       />
@@ -102,6 +165,13 @@ export default function EditProfile(props) {
     );
   };
   return (
+    <>
+        <View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
+    
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -122,12 +192,13 @@ export default function EditProfile(props) {
       {settingOptions('PASSWORD', 'passwordChange')}
 
       {images.length >= 1 && (
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity onPress={uploadImage} style={styles.button}>
               <Text style={{color:'white'}}>DONE</Text>
             </TouchableOpacity>
       )}
 
     </SafeAreaView>
+    </>
   );
 }
 

@@ -42,6 +42,10 @@ import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
+import LoaderComp from '../../components/loaderComp';
+
+import Animated, { FadeInUp,FadeOutUp, Layout } from 'react-native-reanimated';
+
 export default function ResetPassScreen(props) {
 
   const user = useSelector(state => state.userData)
@@ -164,8 +168,8 @@ export default function ResetPassScreen(props) {
 
   const resetPasswordComp = () => {
     return(
-      <>
-      <View style={styles.inputBox}>
+      <Animated.View layout={Layout.duration(1000)}>
+      <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
           <TextInput
             style={{
               flex: 1,
@@ -180,8 +184,8 @@ export default function ResetPassScreen(props) {
             onChangeText={(val) => setNewPassword(val)}
             secureTextEntry={true}
           />
-        </View>
-        <View style={styles.inputBox}>
+        </Animated.View>
+        <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
           <TextInput
             style={{
               flex: 1,
@@ -196,7 +200,7 @@ export default function ResetPassScreen(props) {
             onChangeText={(val) => setConfirmPassword(val)}
             secureTextEntry={true}
           />
-        </View>
+        </Animated.View>
         <TouchableOpacity
           onPress={onResetPassword}
           style={styles.button}>
@@ -205,25 +209,25 @@ export default function ResetPassScreen(props) {
         {showPassNotMatch && (
             <AlertComp text='Password Does not Match'/>
         )}
-      </>
+      </Animated.View>
     )
   }
 
   return (
     <>
-     {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+     <View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}>
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           resetPasswordComp()
         ) : verifyCode ? (
           <>
-          <View style={styles.inputBox}>
+          <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
           <TextInput
             style={{
               flex: 1,
@@ -238,7 +242,7 @@ export default function ResetPassScreen(props) {
             onChangeText={(val) => setCode(val)}
             keyboardType={'number-pad'}
           />
-        </View>
+        </Animated.View>
         <TouchableOpacity
           onPress={onVerifyCode}
           style={styles.button}>
@@ -247,7 +251,7 @@ export default function ResetPassScreen(props) {
           </>
         ) : (
           <>
-            <View style={styles.inputBox}>
+            <View  style={styles.inputBox}>
               <TextInput
                 style={{
                   flex: 1,

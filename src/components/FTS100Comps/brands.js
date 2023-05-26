@@ -33,19 +33,21 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
+  //console.log(props)
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen')} style={{flexDirection:'row',alignItems:'center'}}>
-        <View style={[styles.button, {backgroundColor: props.rank===1 ? '#ECC90B' : props.rank===2 ? '#C0C0C0' : props.rank===3 ? '#CD7F32' : 'white'}]}>
-        <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props.rank}</Text>
+    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen',{userData:{userData:{id:props?.data?.item?.user?.id,profile_image:props?.data?.item?.user?.profile_image?.original_url,name:props?.data?.item?.user?.name,role:[{id:3}]}}})} style={{flexDirection:'row',alignItems:'center'}}>
+        <View style={[styles.button, {backgroundColor: props?.key2===0 ? '#ECC90B' : props?.key2===1 ? '#C0C0C0' : props?.key2===2 ? '#CD7F32' : 'white'}]}>
+        <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props?.key2+1}</Text>
         <View style={styles.brandLogo}>
           <Image
-            source={IMAGES.randomPic}
+            //source={IMAGES.randomPic}
+            source={{uri: props?.data?.item?.user?.profile_image?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
         </View>
     </View>
-    <Text style={{color:'black',fontSize:rfv(18)}}>Cole Buxton</Text>
+    <Text style={{color:'black',fontSize:rfv(18)}}>{props?.data?.item?.user?.name}</Text>
     </TouchableOpacity>
     
   );

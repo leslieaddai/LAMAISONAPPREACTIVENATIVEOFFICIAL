@@ -32,7 +32,9 @@ export default function CollectionComp(props) {
     </View>
     
      <TouchableOpacity onPress={() => 
-     navigation.navigate('collectionScreen',{collection:props?.itemscollection,collectionname:props?.name})} 
+     navigation.navigate('collectionScreen',{collection:props?.itemscollection,collectionname:props?.name
+      // ,userData:props?.userData
+    })} 
      style={styles.imageContainer}>
       <Image
         source={props?.uri}

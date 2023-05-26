@@ -20,9 +20,13 @@ export default function (state = initial_state, action) {
         token: '',
       };
       break;
-    case types.UpdateProfile:
-      const updatedData = action.payload;
-      return {...state, userData: updatedData.user};
+    // case types.UpdateProfile:
+    //   const updatedData = action.payload;
+    //   return {...state, userData: updatedData.user};
+    //   break;
+    case types.UpdateProfilePicture:
+      const Picture = action.payload;
+      return {...state, userData: {...state.userData,profile_image:Picture}};
       break;
     default:
       return {...state};

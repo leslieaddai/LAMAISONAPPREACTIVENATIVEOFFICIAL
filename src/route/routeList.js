@@ -60,6 +60,9 @@ import Pieces from "../screens/imageUploadLookbook/pieces";
 import Color from "../screens/imageUploadLookbook/color";
 import Sizes from "../screens/imageUploadLookbook/sizes";
 
+import SelectColor from "../screens/dressingRoom/color";
+import SelectSizes from "../screens/dressingRoom/size";
+
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
 // import { BottomNavigation } from "./BottomNavigator";
 
@@ -173,6 +176,9 @@ export const guestScreens = [
   //  {name:'followerList',component:FollowerList},//
   //  {name:'review',component:Review},//
   //  {name:'addReview',component:AddReview},//
+
+  {name:'selectColor',component:SelectColor},
+  {name:'selectSizes',component:SelectSizes},
 ]
 
 export const brandScreens = [
@@ -229,6 +235,9 @@ export const brandScreens = [
     {name:'pieces',component:Pieces},
     {name:'color',component:Color},
     {name:'sizes',component:Sizes},
+
+    {name:'selectColor',component:SelectColor},
+    {name:'selectSizes',component:SelectSizes},
 ]
 
 export const editorScreens = [
@@ -288,4 +297,7 @@ export const editorScreens = [
    // {name:'followerList',component:FollowerList},//
    // {name:'review',component:Review},//
    // {name:'addReview',component:AddReview},//
+
+   {name:'selectColor',component:SelectColor},
+   {name:'selectSizes',component:SelectSizes},
 ]

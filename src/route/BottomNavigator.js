@@ -84,10 +84,38 @@ const TestScreen = () => {
   const navigation = useNavigation();
 
   //navigation.navigate('guestScreen')
-  navigation.reset({
-    index: 0,
-    routes: [{ name: 'guestScreen' }],
-  });
+  useEffect(()=>{
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'guestScreen' }],
+    });
+  },[])
+
+  return(
+    <View></View>
+  )
+}
+
+const TestBrand = () => {
+  const navigation = useNavigation();
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    navigation.navigate('brandProfileScreen',{userData:user})
+  },[])
+
+  return(
+    <View></View>
+  )
+}
+
+const TestEditor = () => {
+  const navigation = useNavigation();
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    navigation.navigate('editorProfileScreen',{userData:user})
+  },[])
 
   return(
     <View></View>
@@ -373,6 +401,7 @@ useEffect(()=>{
     initialRouteName="homeScreen"
     screenOptions={({route}) => ({
       orientation: 'portrait',
+      unmountOnBlur:true,
         //tabBarActiveTintColor: color.black,
         //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
@@ -438,7 +467,7 @@ useEffect(()=>{
       />
 
 <Tab.Screen
-        name="brandProfileScreen"
+        name="testBrand"
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
@@ -449,10 +478,10 @@ useEffect(()=>{
             />
           </View>
           ),
-          
+
         }}
-        component={BrandProfileScreen}
-        initialParams={{ userData:user}}
+        component={TestBrand}
+        //initialParams={{ userData:user}}
       />
 
          {/* <Tab.Screen
@@ -489,6 +518,7 @@ useEffect(()=>{
     <Tab.Screen name={'productType'} component={ProductType} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'inventory'} component={Inventory} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   </>
@@ -537,6 +567,7 @@ useEffect(()=>{
     initialRouteName="homeScreen"
     screenOptions={({route}) => ({
       orientation: 'portrait',
+      unmountOnBlur:true,
         //tabBarActiveTintColor: color.black,
         //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
@@ -627,7 +658,7 @@ useEffect(()=>{
       />
 
 <Tab.Screen
-        name="editorProfileScreen"
+        name="testEditor"
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
@@ -640,8 +671,8 @@ useEffect(()=>{
           ),
           
         }}
-        component={EditorProfileScreen}
-        initialParams={{ userData:user}}
+        component={TestEditor}
+        //initialParams={{ userData:user}}
       />
 
          {/* <Tab.Screen
@@ -677,6 +708,7 @@ useEffect(()=>{
     <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   )
@@ -695,6 +727,7 @@ const basket = useSelector(state => state.basket)
     initialRouteName="homeScreen"
     screenOptions={({route}) => ({
       orientation: 'portrait',
+      unmountOnBlur:true,
         //tabBarActiveTintColor: color.black,
         //tabBarInactiveTintColor: '#560f09',
         headerShown: false,

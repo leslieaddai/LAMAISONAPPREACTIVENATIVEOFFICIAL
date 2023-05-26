@@ -40,7 +40,7 @@ import About from '../../components/brandProfileComps/about';
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { GalleriesUrl } from '../../config/Urls';
+import { GalleriesUrl,FollowUrl,UnfollowUrl,GetBrandFollowerList,GetBrandFollowingList,GetEditorFollowerList,GetEditorFollowingList } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -49,8 +49,18 @@ export default function BrandProfileScreen(props) {
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
+  const [loadingFollow,setLoadingFollow]=useState(false);
+
+  const [loadingFollowList,setLoadingFollowList]=useState(false);
+  const [followingDataBrand,setFollowingDataBrand]=useState([]);
+  const [followerDataBrand,setFollowerDataBrand]=useState([]);
+  const [followingDataEditor,setFollowingDataEditor]=useState([]);
+  const [followerDataEditor,setFollowerDataEditor]=useState([]);
+
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
+
+  const [follow,setFollow]=useState(false);
 
   //console.log(props.route.params.userData.token);
 
@@ -58,22 +68,141 @@ export default function BrandProfileScreen(props) {
     setLoading(true);
 
     axios
-    .post(GalleriesUrl, {user_id:user?.userData?.id})
+    //.post(GalleriesUrl, {user_id:user?.userData?.id})
+    .post(GalleriesUrl, {user_id:props?.route?.params?.userData?.userData?.id})
     .then(async function (res) {
        console.log(res.data);
-       setData(res.data.data);
+       setData(res?.data?.data.reverse());
        setLoading(false);
-       
     }) 
     .catch(function (error) {
       console.log(error.response.data)
       setLoading(false);
       errorMessage('Something went wrong!')
-      //errorMessage(errorHandler(error))
-      //errorMessage('Login Failed');
     });
 
   },[])
+
+  useEffect(()=>{
+    setLoadingFollowList(true);
+
+    axios
+    .get(GetBrandFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
+    .then(async function (res) {
+       console.log(res.data);
+       setFollowerDataBrand(res.data.data);
+       if(user?.token !== ''){
+        if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===3){
+          //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
+          setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
+        }
+       }
+
+       axios
+       .get(GetBrandFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
+       .then(async function (res){
+          console.log(res.data);
+          setFollowingDataBrand(res.data.data);
+        
+          axios
+          .get(GetEditorFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
+          .then(async function (res){
+            console.log(res.data);
+            setFollowerDataEditor(res.data.data);
+            if(user?.token !== ''){
+              if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===2){
+                //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
+                setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
+              }
+            }
+
+            axios
+            .get(GetEditorFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
+            .then(async function (res){
+              console.log(res.data);
+              setFollowingDataEditor(res.data.data);
+              setLoadingFollowList(false);
+            })
+            .catch(function (error){
+              console.log(error.response.data)
+              setLoadingFollowList(false);
+              errorMessage('Something went wrong!')
+            })
+
+          })
+          .catch(function (error){
+            console.log(error.response.data)
+            setLoadingFollowList(false);
+            errorMessage('Something went wrong!')
+          })
+
+       })
+       .catch(function (error){
+        console.log(error.response.data)
+        setLoadingFollowList(false);
+        errorMessage('Something went wrong!')
+       })
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoadingFollowList(false);
+      errorMessage('Something went wrong!')
+    });
+
+  },[])
+
+  const onFollow = () => {
+    setLoadingFollow(true);
+
+    let config = {
+      method: 'post',
+      url: FollowUrl,
+      headers: { 
+        'Authorization': `Bearer ${user?.token}`, 
+        'Accept': 'application/json'
+      },
+      data:{follower_id:user?.userData?.id,following_id:props?.route?.params?.userData?.userData?.id}
+    };
+
+    axios.request(config)
+    .then(async function (res) {
+       console.log(res.data);
+       setLoadingFollow(false);
+       setFollow(true);
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoadingFollow(false);
+      errorMessage('Something went wrong!')
+    });
+  }
+
+  const onUnFollow = () => {
+    setLoadingFollow(true);
+
+    let config = {
+      method: 'post',
+      url: UnfollowUrl,
+      headers: { 
+        'Authorization': `Bearer ${user?.token}`, 
+        'Accept': 'application/json'
+      },
+      data:{follower_id:user?.userData?.id,following_id:props?.route?.params?.userData?.userData?.id}
+    };
+
+    axios.request(config)
+    .then(async function (res) {
+       console.log(res.data);
+       setLoadingFollow(false);
+       setFollow(false);
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoadingFollow(false);
+      errorMessage('Something went wrong!')
+    });
+  }
 
   return (
     <>
@@ -106,27 +235,39 @@ export default function BrandProfileScreen(props) {
       </View>
 
       <View style={{marginBottom:hp2(1),flexDirection:'row',justifyContent:'space-between',paddingHorizontal:wp2(4),alignItems:'center'}}>
-        <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>{props?.route?.params?.userData?.userData?.username}</Text>
+        <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>{props?.route?.params?.userData?.userData?.name}</Text>
         {props?.route?.params?.userData?.userData?.id!==user?.userData?.id && 
-        <TouchableOpacity style={styles.followButton}>
-            <Text style={{fontWeight:'700',color:'white',fontSize:rfv(13)}}>FOLLOW</Text>
-        </TouchableOpacity>
+        <>
+        {!loadingFollowList && user?.token!=='' && <TouchableOpacity onPress={()=>{if(!follow){onFollow()}else{onUnFollow()}}} style={[styles.followButton,{backgroundColor:follow?'white':'black'}]}>
+        {loadingFollow?(
+          <SkypeIndicator color={follow?'black':'white'} />
+        ):(
+          <Text style={{fontWeight:'700',color:follow?'black':'white',fontSize:rfv(13)}}>{follow?'FOLLOWING':'FOLLOW'}</Text>
+        )}
+    </TouchableOpacity>}
+    </>
         }
       </View>
 
           </ImageBackground>
       </View>
       
+{!loadingFollowList ?
       <View style={{flexDirection:'row',marginLeft:wp2(4),marginBottom:hp2(2)}}>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following'})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>2000 </Text>
-      <Text style={{color:'black'}}>FOLLOWING </Text>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following',followingDataBrand,followingDataEditor})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>{followingDataBrand.length+followingDataEditor.length}</Text>
+      <Text style={{color:'black'}}> FOLLOWING </Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower'})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>700 </Text>
-      <Text style={{color:'black'}}>FOLLOWERS</Text>
+      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower',followerDataBrand,followerDataEditor})}>
+      <Text style={{fontWeight:'bold',color:'black'}}>{followerDataBrand.length+followerDataEditor.length}</Text>
+      <Text style={{color:'black'}}> FOLLOWERS</Text>
       </TouchableOpacity>
       </View>
+      :
+      <View>
+        <SkypeIndicator color={'black'} />
+      </View>
+}
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(12)}}>
         <Text style={{color:'black',fontWeight:'600',fontSize:rfv(18),marginLeft:wp2(3)}}>POPULAR</Text>
@@ -136,7 +277,7 @@ export default function BrandProfileScreen(props) {
         <Popular no={'4.'} />
         <Popular no={'5.'} />
 
-        <TouchableOpacity  onPress={() => props.navigation.navigate('lookbookScreen')} style={styles.lookbook}>
+        <TouchableOpacity  onPress={() => props.navigation.navigate('lookbookScreen',{userData:props?.route?.params?.userData})} style={styles.lookbook}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
           LOOKBOOK
         </Text>

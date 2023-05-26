@@ -88,6 +88,22 @@ export default function FTS100(props) {
 
   },[])
 
+const onSelectStyle = (styleId) => {
+  setLoadingFts(true);
+
+  axios.get(FTSUrl+`/${styleId}`)
+  .then(async function (res) {
+     console.log(res.data);
+     setDataFts(res.data.data);
+     setLoadingFts(false);
+  })
+  .catch(function (error){
+     console.log(error.response.data)
+     setLoadingFts(false);
+     errorMessage('Something went wrong!')
+  });
+}
+
   return (
     <SafeAreaView style={{flex:1}}>
         <View style={styles.container}>
@@ -97,7 +113,7 @@ export default function FTS100(props) {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} >
 
       {loadingStyles ? 
-    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+    <View style={{ width:wp2(100), alignItems: 'center'}}>
       <SkypeIndicator color={'black'} />
     </View>
     :<>
@@ -105,8 +121,7 @@ export default function FTS100(props) {
         //console.log("item=======>",item);
     return(
         <>
-        <Text>Hi</Text>
-        {/* {<Category data={{item}} state={{selected,setSelected}} />} */}
+        <Category data={{item}} state={{selected,setSelected,onSelectStyle}} />
         </>
     )})}  
     </>}
@@ -118,19 +133,19 @@ export default function FTS100(props) {
         <Category text="outdoorswear" state={{selected,setSelected}} />
         <Category text="beachwear" state={{selected,setSelected}} /> */}
 
-        <Category text="activewear" state={{selected,setSelected}} />
+        {/* <Category text="activewear" state={{selected,setSelected}} />
         <Category text="beachwear" state={{selected,setSelected}} />
         <Category text="casualwear" state={{selected,setSelected}} />
         <Category text="formalwear" state={{selected,setSelected}} />
         <Category text="nightlife" state={{selected,setSelected}} />
         <Category text="outdoor" state={{selected,setSelected}} />
-        <Category text="streetwear" state={{selected,setSelected}} />
+        <Category text="streetwear" state={{selected,setSelected}} /> */}
         
       </ScrollView>
       </View>
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingTop:hp2(1),paddingBottom:hp2(12),}}>
-        <BrandComp rank={1} />      
+      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingTop:hp2(1),paddingBottom:hp2(12),flexGrow:1}}>
+        {/* <BrandComp rank={1} />      
         <BrandComp rank={2} /> 
         <BrandComp rank={3} /> 
         <BrandComp rank={4} />  
@@ -141,33 +156,20 @@ export default function FTS100(props) {
         <BrandComp rank={9} />  
         <BrandComp rank={10} />  
         <BrandComp rank={11} />  
-        <BrandComp rank={12} /> 
-
-              {/* {loading ? 
-    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+        <BrandComp rank={12} />  */}
+                      {loadingFts ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center',flex:1 }}>
       <SkypeIndicator color={'black'} />
     </View>
-    :<View style={styles.colorsWrap}>
-    {data?.map((item)=>{
+    :<>
+    {dataFts?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
         <>
-        {color(item)}
+        <BrandComp data={{item}} key2={index} /> 
         </>
     )})}  
-    </View>} */}
-{/* 
-    {isOpened && (
-            <View style={[styles.styleBox]}>     
-                {data?.map((item,index)=>(
-                    <TouchableOpacity onPress={()=>{setSelectedText(item.name); updateState({style_id:item.id}); setIsOpened(false);}} key={index} style={{width:wp2(80),height:hp2(6),alignItems:'center',justifyContent:'center',backgroundColor:selectedText===item.name?"#F6F5F3":"white",borderRadius:wp2(2),overflow:'hidden'}}>
-                    <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{item.name}</Text>
-                    </TouchableOpacity>
-                ))}
-        </View>
-        )} */}
-
-
+    </>}
 
       </ScrollView>
 

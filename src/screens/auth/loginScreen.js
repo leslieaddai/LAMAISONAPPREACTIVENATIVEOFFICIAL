@@ -37,7 +37,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { LoginUrl } from '../../config/Urls';
+import { LoginUrl,RegisterGuest } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -45,6 +45,8 @@ import { SkypeIndicator } from 'react-native-indicators';
 import Animated,{Layout} from 'react-native-reanimated';
 
 import LoaderComp from '../../components/loaderComp';
+
+import { getUniqueId, getIpAddress } from 'react-native-device-info';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
@@ -111,11 +113,66 @@ export default function LoginScreen(props) {
     }
   }
 
+  const registerGuest = () => {
+    try {
+          //props.navigation.navigate('bottomNavigationGuest')
+    // getUniqueId().then((uniqueId) => {
+    //   console.log(uniqueId)
+    // })
+
+    axios
+    .post(RegisterGuest, {device_id:'2727dummy',ip_address:'227.3.23.2'})
+    .then(async function (res) {
+       console.log(res.data);
+       //setLoading(false);
+         successMessage('Login Success as Guest')
+         dispatch({
+          type: types.LoginGuest,
+          payload: res?.data,
+        });
+        props.navigation.navigate('bottomNavigationGuest')
+      
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      //setLoading(false);
+      errorMessage('Login Failed As Guest');
+    });
+
+    // getIpAddress().then((ip) => {
+    //   console.log(ip)
+    // })
+//     "unknown" for string
+//     DeviceInfo.getAndroidId().then((androidId) => {
+//       // androidId here
+//     });
+//     let appName = DeviceInfo.getApplicationName();
+
+//     getIpAddress()
+// Deprecated Gets the device current IP address. (of wifi only) Switch to react-native-netinfo/netinfo or react-native-network-info
+
+// Examples
+// DeviceInfo.getIpAddress().then((ip) => {
+//   // "92.168.32.44"
+// });
+// Android Permissions
+// android.permission.ACCESS_WIFI_STATE
+// Notes
+// Support for iOS was added in 0.22.0
+
+
+    }catch{
+      errorMessage('Something went wrong!')
+    }
+  }
+
   return (
     <>
-    {loading && (
+    <View style={{position:'absolute',zIndex:999}}>
+{loading && (
       <LoaderComp/>
     )}
+</View>
     <SafeAreaView style={styles.container}>
       <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4),flexGrow:1}}>
         <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
@@ -170,7 +227,7 @@ export default function LoginScreen(props) {
           <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('bottomNavigationGuest')}
+          onPress={() => registerGuest()}
           style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
           <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
         </TouchableOpacity>

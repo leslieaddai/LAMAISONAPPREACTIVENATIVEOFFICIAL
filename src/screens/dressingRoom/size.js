@@ -35,44 +35,32 @@ import {
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { SizesUrl } from '../../config/Urls';
+
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
-export default function Sizes(props) {
+export default function SelectSizes(props) {
 
-  //const [selected,setSelected]=useState('');
-
-  const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [data,setData]=useState([]);
-  const user = useSelector(state => state.userData)
 
-  //const category = 2;
-  const category = props?.route?.params?.state?.stateChange?.category;
-  //console.log(props.route.params.state.stateChange.category)
-
+  //console.log(props?.route?.params?.color?.id)
 
   useEffect(()=>{
     setLoading(true);
 
     axios
-    .get(SizesUrl, {
-        headers:{'Authorization':`Bearer ${user.token}`},
-    })
+    .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`)
     .then(async function (res) {
-       console.log(res.data);
+       //console.log(res.data);
        setData(res.data.data);
        setLoading(false);
-       
     }) 
     .catch(function (error) {
       console.log(error.response.data)
       setLoading(false);
       errorMessage('Something went wrong!')
-      //errorMessage(errorHandler(error))
-      //errorMessage('Login Failed');
     });
 
   },[])
@@ -80,22 +68,13 @@ export default function Sizes(props) {
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text.size}</Text>
-                {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
-                <TouchableOpacity onPress={()=>{
-                    //setSelected(text)
-                    const newState = props.route.params.state.quantity.map((obj,index) => {
-                        // :point_down:️ if id equals 2, update country property
-                        if (index === props.route.params.key) {
-                          return {...obj, size: text.size,size_id:text.id};
-                        }
-                        // :point_down:️ otherwise return the object as is
-                        return obj;
-                      });
-                      props.route.params.state.setQuantity(newState);
-                      props.navigation.goBack();
+                <Text style={{color:'black'}}>{text?.size?.size}</Text>
+                <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{text?.quantity+' remaining!'}</Text>
 
-                    }} style={[styles.circle,{backgroundColor:props.route.params.state.quantity[props.route.params.key].size===text.size?'black':'#D9D9D9'}]}></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                      props?.route?.params?.state?.setSizeId(text);
+                      props?.navigation.goBack();
+                    }} style={[styles.circle,{backgroundColor:props?.route?.params?.state?.sizeId?.id===text?.id?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
     }
@@ -107,7 +86,7 @@ export default function Sizes(props) {
         </TouchableOpacity>
         <Text style={styles.heading}>SIZE</Text>
       </View>
-      <Text style={{marginVertical:hp2(1),alignSelf:'center',color:'black',fontWeight:'700',textTransform:'uppercase'}}>{category===1?'Footwear  (U.K)  - select all available sizes':'Clothing  (U.K)  - select your size'}</Text>
+      <Text style={{marginVertical:hp2(1),alignSelf:'center',color:'black',fontWeight:'700',textTransform:'uppercase'}}>{props?.route?.params?.data?.category_id===1?'Footwear  (U.K)  - select all available sizes':'Clothing  (U.K)  - select your size'}</Text>
 
       {loading ? 
     <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
@@ -118,16 +97,10 @@ export default function Sizes(props) {
         //console.log("item=======>",item);
     return(
         <>
-        {item.category_id === category && options(item)}
+        {options(item)}
         </>
     )})}          
     </>}
-    
-      {/* {options('SMALL')}
-      {options('MEDIUM')}
-      {options('LARGE')}
-      {options('EXTRA LARGE')} */}
-
     </SafeAreaView>
   );
 }

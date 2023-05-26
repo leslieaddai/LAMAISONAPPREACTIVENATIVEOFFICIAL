@@ -39,74 +39,145 @@ import BottomComp from '../../components/bottomComp';
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { AddToBasketUrl,AddWishListUrl } from '../../config/Urls';
+import { AddToBasketUrl,AddWishListUrl,GetProductInfoById,ProductLike,ProductShare,ProductDislike,GetAppNotice } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
+import LoaderComp from '../../components/loaderComp';
+
+import RenderHtml from 'react-native-render-html';
+
 export default function DressingRoomScreen(props) {
-  const [heart, setHeart] = useState(false);
-  const [share, setShare] = useState(false);
-  const [hanger, setHanger] = useState(false);
+  const [heart, setHeart] = useState(null);
+  const [share, setShare] = useState(null);
+  const [hanger, setHanger] = useState(null);
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
 
-  const AddBasket = () => {
-    Alert.alert('Confirmation', 'Do you want to add this product into your basket?', [
-      {
-        text: 'No',
-        onPress: () => console.log('No Pressed'),
-        style: 'cancel',
-      },
-      {text: 'Yes', onPress: () => {
+  const [colorId, setColorId]=useState();
+  const [sizeId, setSizeId]=useState(null);
 
-        setLoading(true);
+  const [appNotice, setAppNotice]=useState(null);
 
-        let obj = {
-          user_id: user?.userData?.id,
-          product_id:1,
-          qty:1,
-          size_id:1,
-          color_id:1,
-          style_id:1,
-          category_id: 1,
-          piece_id:1
-      };
+  //console.log(props?.route?.params)
 
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: AddToBasketUrl,
-          headers: { 
-            'Authorization': `Bearer ${user.token}`, 
-            'Accept': 'application/json'
-          },
-          data : obj
-        };
+  useEffect(()=>{
+    axios
+    .get(GetAppNotice)
+    .then(async function (res) {
+       //console.log(res.data);
+       setAppNotice({
+        html:`${res?.data?.data?.description}`
+       });
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      errorMessage('Something went wrong!')
+    });
+  },[])
 
-        axios.request(config)
-        .then(async function (res) {
-           console.log(res.data);
+  useEffect(()=>{
+    setLoading2(true);
 
-           dispatch({
-            type: types.AddToBasket
-          });
-          
-           setLoading(false);
-           successMessage('Success')
-        }) 
-        .catch(function (error) {
-          console.log(error.response.data)
-          setLoading(false);
-          errorMessage('Failed')
+    axios
+    .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
+    .then(async function (res) {
+       console.log(res.data);
+       setData(res.data.data);
+       setColorId(res.data.data.product_variations[0].color)
+
+       if(user?.token !== ''){
+
+        axios
+        .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`)
+        .then(async function (res){
+          console.log(res.data.data)
+          setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+          setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+          setShare(res?.data?.data?.is_shared > 0 ? true : null)
+          setLoading2(false);
+        })
+        .catch(function (e){
+          console.log(e.response.data)
+          setLoading2(false);
+          errorMessage('Something went wrong!')
         });
 
-      }
-      },
-    ]);
+       }else{
+         setLoading2(false);
+       }
+
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading2(false);
+      errorMessage('Something went wrong!')
+    });
+
+  },[])
+
+  const AddBasket = () => {
+    if(sizeId!==null){
+      Alert.alert('Confirmation', 'Do you want to add this product into your basket?', [
+        {
+          text: 'No',
+          onPress: () => console.log('No Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+  
+          setLoading(true);
+  
+          let obj = {
+            user_id: user?.userData?.id,
+            product_id:1,
+            qty:1,
+            size_id:1,
+            color_id:1,
+            style_id:1,
+            category_id: 1,
+            piece_id:1
+        };
+  
+          let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: AddToBasketUrl,
+            headers: { 
+              'Authorization': `Bearer ${user.token}`, 
+              'Accept': 'application/json'
+            },
+            data : obj
+          };
+  
+          axios.request(config)
+          .then(async function (res) {
+             console.log(res.data);
+  
+             dispatch({
+              type: types.AddToBasket
+            });
+            
+             setLoading(false);
+             successMessage('Success')
+          }) 
+          .catch(function (error) {
+            console.log(error.response.data)
+            setLoading(false);
+            errorMessage('Failed')
+          });
+  
+        }
+        },
+      ]);
+    }else{
+      errorMessage('Please select size before adding to basket')
+    }
   }
 
   const AddWishlist = () => {
@@ -117,12 +188,12 @@ export default function DressingRoomScreen(props) {
         style: 'cancel',
       },
       {text: 'Yes', onPress: () => {
-
+        //hanger!==null ? setHanger(false) : setHanger(true)
         setLoading(true);
 
         let obj = {
           user_id: user?.userData?.id,
-          product_id:66
+          product_id:props?.route?.params?.data?.product?.id
       };
 
         let config = {
@@ -139,13 +210,54 @@ export default function DressingRoomScreen(props) {
         axios.request(config)
         .then(async function (res) {
            console.log(res.data);
-           setLoading(false);
-           successMessage('Success')
+           //setHanger(true)
+
+           axios
+           .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
+           .then(async function (res) {
+              setData(res?.data?.data);  
+
+              if(user?.token !== ''){
+
+                axios
+                .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`)
+                .then(async function (res){
+                  //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+                  setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+                  //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+    
+                  setLoading(false);
+                  successMessage('Success') 
+                })
+                .catch(function (e){
+                  console.log(e.response.data)
+    
+                  setLoading(false);
+                  errorMessage('Something went wrong to update state of wishlists!')
+                });
+        
+               }else{
+                 setLoading(false);
+                 successMessage('Success') 
+               }
+
+              //setLoading(false);
+              //successMessage('Success')
+           }) 
+           .catch(function (error) {
+             console.log(error?.response?.data)
+             setLoading(false);
+             errorMessage('Something went wrong to update wishlists!')
+           });
+
+          //  setLoading(false);
+          //  successMessage('Success')
         }) 
         .catch(function (error) {
           console.log(error.response.data)
           setLoading(false);
-          errorMessage('Failed')
+          //errorMessage('Something went wrong to add product into wishlist!')
+          errorMessage(error?.response?.data?.message)
         });
 
       }
@@ -153,14 +265,164 @@ export default function DressingRoomScreen(props) {
     ]);
   }
 
+  const productLikeDislike = () => {
+    //heart ? setHeart(false) : setHeart(true)
+
+    setLoading(true);
+
+    let obj = {
+      user_id: user?.userData?.id,
+      product_id:props?.route?.params?.data?.product?.id
+  };
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: heart!==null?ProductDislike:ProductLike,
+      headers: { 
+        'Authorization': `Bearer ${user.token}`, 
+        'Accept': 'application/json'
+      },
+      data : obj
+    };
+
+    axios.request(config)
+    .then(async function (res) {
+       console.log(res.data);
+       //heart!==null?setHeart(null):setHeart(true)
+
+       axios
+       .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
+       .then(async function (res) {
+          setData(res?.data?.data); 
+
+          if(user?.token !== ''){
+
+            axios
+            .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`)
+            .then(async function (res){
+              setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+              //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+              //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+
+              setLoading(false);
+              successMessage('Success') 
+            })
+            .catch(function (e){
+              console.log(e.response.data)
+
+              setLoading(false);
+              errorMessage('Something went wrong to update state of likes!')
+            });
+    
+           }else{
+             setLoading(false);
+             successMessage('Success') 
+           }
+
+          //setLoading(false);
+          //successMessage('Success') 
+       }) 
+       .catch(function (error) {
+         console.log(error?.response?.data)
+         setLoading(false);
+         errorMessage('Something went wrong to update likes!')
+       });
+
+      //  setLoading(false);
+      //  successMessage('Success')
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong to like product!')
+    });
+
+  }
+
+  const productShare = () => {
+    //share!==null ? setShare(false) : setShare(true)
+    
+    setLoading(true);
+
+    let obj = {
+      user_id: user?.userData?.id,
+      product_id:props?.route?.params?.data?.product?.id
+  };
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: ProductShare,
+      headers: { 
+        'Authorization': `Bearer ${user.token}`, 
+        'Accept': 'application/json'
+      },
+      data : obj
+    };
+
+    axios.request(config)
+    .then(async function (res) {
+       console.log(res.data);
+       //setShare(true)
+
+       axios
+       .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
+       .then(async function (res) {
+          setData(res?.data?.data);  
+
+          if(user?.token !== ''){
+
+            axios
+            .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`)
+            .then(async function (res){
+              //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+              //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+              setShare(res?.data?.data?.is_shared > 0 ? true : null)
+
+              setLoading(false);
+              successMessage('Success') 
+            })
+            .catch(function (e){
+              console.log(e.response.data)
+
+              setLoading(false);
+              errorMessage('Something went wrong to update state of shares!')
+            });
+    
+           }else{
+             setLoading(false);
+             successMessage('Success') 
+           }
+
+          //setLoading(false);
+          //successMessage('Success')
+       }) 
+       .catch(function (error) {
+         console.log(error?.response?.data)
+         setLoading(false);
+         errorMessage('Something went wrong to update shares!')
+       });
+
+      //  setLoading(false);
+      //  successMessage('Success')
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong to share product!')
+    });
+
+  }
+
   const scrollX = new Animated.Value(0);
   return (
     <>
-    {loading && 
-    <View style={{ width: wp2(100), height: hp2(100), backgroundColor: 'rgba(0, 0, 0, 0.5)', position: 'absolute', alignItems: 'center', justifyContent: 'center', zIndex: 999 }}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    }
+<View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.headWrap}>
@@ -171,54 +433,64 @@ export default function DressingRoomScreen(props) {
           </TouchableOpacity>
           <Text style={styles.dressingText}>DRESSING ROOM</Text>
         </View>
+        { loading2 ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :    
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(2)}}>
           <View style={styles.iconWraper}>
             <View style={styles.shadow}>
               <TouchableOpacity
-                onPress={() => props.navigation.navigate('brandProfileScreen')}
+                onPress={() => props.navigation.navigate('brandProfileScreen'
+                ,{userData:{userData:{id:data?.user?.id,profile_image:data?.user?.profile_image?.original_url,name:data?.user?.name}}}
+                )}
                 style={styles.brandImage}>
                 <Image
-                  source={IMAGES.randomPic}
+                   //source={IMAGES.randomPic}
+                  source={{uri:data?.user?.profile_image?.original_url}}
                   style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
                 />
               </TouchableOpacity>
             </View>
+            
             <TouchableOpacity
               onPress={() => {
-                heart ? setHeart(false) : setHeart(true);
+                user?.token !== '' ? productLikeDislike() : errorMessage('You cant like!')
               }}>
               <ICONS.AntDesign
                 name="heart"
                 size={24}
-                color={heart ? '#FC0004' : 'black'}
+                color={heart!==null ? '#FC0004' : 'black'}
               />
             </TouchableOpacity>
-            <Text style={{color: 'black'}}>1000</Text>
+            <Text style={{color: 'black'}}>{data?.product_likes_count}</Text>
             <TouchableOpacity
               onPress={() => {
-                hanger ? setHanger(false) : setHanger(true);
+                user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? AddWishlist() : errorMessage('You cant add to wishlist!')
               }}>
               <ICONS.MaterialCommunityIcons
                 name="hanger"
                 size={34}
-                color={hanger ? '#162FAC' : 'black'}
+                color={hanger!==null ? '#162FAC' : 'black'}
               />
             </TouchableOpacity>
-            <Text style={{color: 'black'}}>1500</Text>
+            <Text style={{color: 'black'}}>{data?.product_wishlist_count}</Text>
             <TouchableOpacity
               onPress={() => {
-                share ? setShare(false) : setShare(true);
+                user?.token !== '' ? productShare() : errorMessage('You cant share!')
               }}>
               <ICONS.FontAwesome
                 name="retweet"
                 size={24}
-                color={share ? '#13D755' : 'black'}
+                color={share!==null ? '#13D755' : 'black'}
               />
             </TouchableOpacity>
-            <Text style={{color: 'black'}}>3000</Text>
+            <Text style={{color: 'black'}}>{data?.product_shares_count}</Text>
+
           </View>
 
           <View style={{flexDirection: 'row', marginVertical: hp2(1)}}>
@@ -231,7 +503,8 @@ export default function DressingRoomScreen(props) {
                     {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
                   ]}>
                   <Image
-                    source={IMAGES.randomPic}
+                    //source={IMAGES.randomPic}
+                    source={{uri:data?.product_images?.[0]?.image?.[0]?.original_url}}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="cover"
                   />
@@ -258,34 +531,47 @@ export default function DressingRoomScreen(props) {
                       {useNativeDriver: true},
                     )}>
                       <View style={styles.textBox}>
+                      <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                       <Text style={[styles.headingText,{alignSelf:'flex-start',marginLeft:wp2(1),fontSize:rfv(14),marginBottom:hp2(1)}]}>
-                        VADER IV
+                        {data?.name}
                       </Text>
-                      <Text style={{color:'black',fontSize:rfv(12),marginLeft:wp2(1),marginBottom:hp2(1)}} >PRICE: £795</Text>
-                      <Text style={styles.text}>
-                      Description: The arrivals Vader IV features a vergetable tanned leather, treated with natural compunds and a light water resistant finish. details include outer pockets, custom branding and excella hardware finishing. 
+                      <Text style={{color:'black',fontSize:rfv(12),marginLeft:wp2(1),marginBottom:hp2(1)}} >PRICE: £{data?.price}</Text>
+                      <Text style={[styles.text,{paddingBottom:hp2(3)}]}>
+                      Description: {data?.description}
                       </Text>
+                      </ScrollView>
                     </View>
 
                     <View style={styles.textBox}>
+                      <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                       <Text style={styles.headingText}>
                         shipping information
                       </Text>
-                      <Text style={styles.text}>
+                      <Text style={[styles.text,{paddingBottom:hp2(3)}]}>
                         Free shipping Worldwide, you may be subject to taxes
                         depending on where the item will be shipped to.
                       </Text>
+                      </ScrollView>
                     </View>
 
                     <View style={styles.textBox}>
+                      <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
                       <Text style={styles.headingText}>
                         La maison App Notice
                       </Text>
-                      <Text style={styles.text}>
+                      {appNotice !== null ? (
+                        <View style={{paddingHorizontal: wp2(1),paddingBottom:hp2(3)}}>
+                          <RenderHtml source={appNotice} />
+                        </View>
+                      ):(
+                        <SkypeIndicator color={'black'} />
+                      )}
+                      {/* <Text style={styles.text}>
                         the cost of shipping is <Text style={{color:'#0F2ABA',fontWeight:'700'}}>not</Text> decided by LA Maison App.
                         this is decided by the brands themselves. <Text style={{color:'#0F2ABA',fontWeight:'700'}}>the country
                         the product is delivered to may add additional taxes.</Text>
-                      </Text>
+                      </Text> */}
+                      </ScrollView>
                     </View>
                   </Animated.ScrollView>
                   <View
@@ -312,7 +598,12 @@ export default function DressingRoomScreen(props) {
                     {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                   ]}>
                   <Image
-                    source={IMAGES.randomPic}
+                    //source={IMAGES.randomPic}
+                    source={{
+                      uri:data?.product_images?.[0]?.image.length===1?data?.product_images?.[0]?.image?.[0]?.original_url
+                      :data?.product_images?.[0]?.image.length>=2?data?.product_images?.[0]?.image?.[1]?.original_url
+                      :null
+                    }}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="cover"
                   />
@@ -325,7 +616,13 @@ export default function DressingRoomScreen(props) {
                     {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                   ]}>
                   <Image
-                    source={IMAGES.vinDiesel}
+                    //source={IMAGES.vinDiesel}
+                    source={{
+                      uri:data?.product_images?.[0]?.image.length===1?data?.product_images?.[0]?.image?.[0]?.original_url
+                      :data?.product_images?.[0]?.image.length===2?data?.product_images?.[0]?.image?.[0]?.original_url
+                      :data?.product_images?.[0]?.image.length>=3?data?.product_images?.[0]?.image?.[2]?.original_url
+                      :null
+                    }}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="cover"
                   />
@@ -338,7 +635,14 @@ export default function DressingRoomScreen(props) {
                     {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                   ]}>
                   <Image
-                    source={IMAGES.randomPic}
+                    //source={IMAGES.randomPic}
+                    source={{
+                      uri:data?.product_images?.[0]?.image.length===1?data?.product_images?.[0]?.image?.[0]?.original_url
+                      :data?.product_images?.[0]?.image.length===2?data?.product_images?.[0]?.image?.[1]?.original_url
+                      :data?.product_images?.[0]?.image.length===3?data?.product_images?.[0]?.image?.[0]?.original_url
+                      :data?.product_images?.[0]?.image.length===4?data?.product_images?.[0]?.image?.[3]?.original_url
+                      :null
+                    }}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="cover"
                   />
@@ -346,14 +650,15 @@ export default function DressingRoomScreen(props) {
               </View>
               <View style={styles.shadow}>
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('colourClothing')}
+                  onPress={() => props.navigation.navigate('selectColor',{data:data,state:{colorId,setColorId,sizeId,setSizeId}})}
                   style={[
                     styles.brandImage,
                     {
                       width: wp2(34),
                       height: hp2(14),
                       borderRadius: wp2(2),
-                      backgroundColor: '#168B16',
+                      //backgroundColor: '#168B16',
+                      backgroundColor:colorId?.color_code
                     },
                   ]}></TouchableOpacity>
               </View>
@@ -363,11 +668,11 @@ export default function DressingRoomScreen(props) {
           <View style={styles.filters}>
             <Text style={{color: 'black'}}>SIZE</Text>
             <Text
-              style={{color: 'black', fontSize: rfv(22), marginLeft: wp2(66)}}>
-              9
+              style={{color: 'black', fontSize: rfv(22), position:'absolute' , right:wp2(14)}}>
+              {sizeId?.size?.size}
             </Text>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('sizeClothing')}>
+              onPress={() => props.navigation.navigate('selectSizes',{data:data,color:colorId,state:{sizeId,setSizeId}})}>
               <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
             </TouchableOpacity>
           </View>
@@ -380,7 +685,7 @@ export default function DressingRoomScreen(props) {
           </View>
 
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('checkoutScreen')}
+            onPress={() => sizeId!==null?props.navigation.navigate('checkoutScreen'):errorMessage('Please select size before proceeding')}
             style={[
               styles.button,
               {alignSelf: 'center', marginVertical: hp2(4)},
@@ -398,7 +703,9 @@ export default function DressingRoomScreen(props) {
               <Text style={styles.buttonText}>ADD TO BASKET</Text>
             </TouchableOpacity>
             <TouchableOpacity
-            onPress={AddWishlist}
+            onPress={()=>{
+              user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? AddWishlist() : errorMessage('You cant add to wishlist!')
+            }}
               style={[
                 styles.button,
                 {width: wp2(36), marginHorizontal: wp2(2)},
@@ -407,6 +714,7 @@ export default function DressingRoomScreen(props) {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        }
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>

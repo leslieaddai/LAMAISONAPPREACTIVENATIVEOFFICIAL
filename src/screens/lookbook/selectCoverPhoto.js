@@ -41,9 +41,14 @@ import ImageCard from './ImageCard';
 import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import { errorMessage } from '../../config/NotificationMessage';
 
+import { useDispatch,useSelector } from 'react-redux';
+
+
 const PAGE_SIZE = 40;
 
 export default function SelectCoverPhoto(props) {
+
+  const user = useSelector(state => state.userData)
 
   //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage]=useState();
@@ -246,7 +251,7 @@ export default function SelectCoverPhoto(props) {
 
       <View style={styles.imageContainer}>
       {selectedImage? (<Image
-        source={{uri: selectedImage}}
+        source={{uri: selectedImage?.uri}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />):(
@@ -282,7 +287,7 @@ export default function SelectCoverPhoto(props) {
           />
           <TouchableOpacity onPress={()=>
           {if(name.length>=1){
-            props.navigation.navigate('addCollection')
+            props.navigation.navigate('addCollection',{name,selectedImage})
           }
           else{
             errorMessage("Please fill the field")

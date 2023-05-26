@@ -113,7 +113,7 @@ export default function HomeScreen(props) {
         return(
            <View style={{marginVertical:hp2(2)}}>
            {nav?(
-             <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
+             <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:9}}})} style={styles.brandImage}>
              <Image
                source={IMAGES.randomPic}
                style={{width: '100%', height: '100%'}}
@@ -137,7 +137,7 @@ export default function HomeScreen(props) {
     return (
       <View style={{marginVertical:hp2(2)}}>
         <View style={styles.headWrap}>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen')} style={styles.imageWrap}>
+          <TouchableOpacity onPress={()=>props.navigation.navigate('editorProfileScreen',{userData:{userData:{id:11}}})} style={styles.imageWrap}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}

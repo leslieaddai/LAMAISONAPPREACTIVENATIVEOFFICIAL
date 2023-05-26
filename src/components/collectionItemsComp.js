@@ -33,8 +33,11 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
+  console.log(props);
   return (
-    <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen')} style={styles.imageContainer}>
+    <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen',{
+      // userData:props?.userData,
+      data:props?.data})} style={styles.imageContainer}>
       <View style={{height:hp2(18),overflow:'hidden'}}>
       <Image
         source={props.uri}
