@@ -47,6 +47,7 @@ import Animated,{Layout} from 'react-native-reanimated';
 import LoaderComp from '../../components/loaderComp';
 
 import { getUniqueId, getIpAddress } from 'react-native-device-info';
+import { NetworkInfo } from "react-native-network-info";
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
@@ -115,52 +116,33 @@ export default function LoginScreen(props) {
 
   const registerGuest = () => {
     try {
-          //props.navigation.navigate('bottomNavigationGuest')
-    // getUniqueId().then((uniqueId) => {
-    //   console.log(uniqueId)
-    // })
+
+      setLoading(true);
+NetworkInfo.getIPAddress().then(ipAddress => {
+  console.log(ipAddress);
+  getUniqueId().then((uniqueId) => {
+    console.log(uniqueId)
 
     axios
-    .post(RegisterGuest, {device_id:'2727dummy',ip_address:'227.3.23.2'})
+    .post(RegisterGuest, {device_id:uniqueId,ip_address:ipAddress})
     .then(async function (res) {
        console.log(res.data);
-       //setLoading(false);
-         successMessage('Login Success as Guest')
-         dispatch({
-          type: types.LoginGuest,
-          payload: res?.data,
-        });
+       dispatch({
+        type: types.LoginGuest,
+        payload: res?.data,
+      });
+       setLoading(false);
+        successMessage('Login Success as Guest')
         props.navigation.navigate('bottomNavigationGuest')
       
     }) 
     .catch(function (error) {
       console.log(error.response.data)
-      //setLoading(false);
+      setLoading(false);
       errorMessage('Login Failed As Guest');
     });
-
-    // getIpAddress().then((ip) => {
-    //   console.log(ip)
-    // })
-//     "unknown" for string
-//     DeviceInfo.getAndroidId().then((androidId) => {
-//       // androidId here
-//     });
-//     let appName = DeviceInfo.getApplicationName();
-
-//     getIpAddress()
-// Deprecated Gets the device current IP address. (of wifi only) Switch to react-native-netinfo/netinfo or react-native-network-info
-
-// Examples
-// DeviceInfo.getIpAddress().then((ip) => {
-//   // "92.168.32.44"
-// });
-// Android Permissions
-// android.permission.ACCESS_WIFI_STATE
-// Notes
-// Support for iOS was added in 0.22.0
-
-
+  })
+});
     }catch{
       errorMessage('Something went wrong!')
     }

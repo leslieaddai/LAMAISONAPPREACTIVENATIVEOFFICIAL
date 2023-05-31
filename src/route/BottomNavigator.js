@@ -73,6 +73,8 @@ import AddReview from "../screens/feedback/addReview";
 import WelcomeScreen from '../screens/welcome/welcomeScreen';
 import SplashScreen from '../screens/splash/splashScreen';
 
+import CommentScreen from '../screens/home/commentScreen';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -519,6 +521,7 @@ useEffect(()=>{
     <Tab.Screen name={'inventory'} component={Inventory} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   </>
@@ -709,6 +712,7 @@ useEffect(()=>{
     <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   )
@@ -863,6 +867,7 @@ const basket = useSelector(state => state.basket)
     <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   )

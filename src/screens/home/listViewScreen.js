@@ -88,12 +88,15 @@ export default function ListViewScreen(props) {
         <Text style={{color:'black'}}>3000</Text>
         </View>
 
+        <TouchableOpacity onPress={()=>props.navigation.navigate('commentScreen')}>
         <View style={{flexDirection:'row',marginLeft:wp2(2)}}>
         <Text style={{color:'black',fontWeight:'700',marginRight:wp2(2)}}>Represent</Text>
         <Text style={{color:'black'}}>Blue is the colour</Text>
         </View>
 
         <Text style={{color:'black',marginLeft:wp2(2)}}>1 hour ago</Text>
+        </TouchableOpacity>
+
       </View>
     );
   };

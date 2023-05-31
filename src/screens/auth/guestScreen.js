@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -22,8 +22,65 @@ import {
   FONTS,
 } from '../../theme';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { LoginUrl,RegisterGuest } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
+import { getUniqueId, getIpAddress } from 'react-native-device-info';
+import { NetworkInfo } from "react-native-network-info";
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function GuestScreen(props) {
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+
+  const registerGuest = () => {
+    try {
+
+      setLoading(true);
+NetworkInfo.getIPAddress().then(ipAddress => {
+  console.log(ipAddress);
+  getUniqueId().then((uniqueId) => {
+    console.log(uniqueId)
+
+    axios
+    .post(RegisterGuest, {device_id:uniqueId,ip_address:ipAddress})
+    .then(async function (res) {
+       console.log(res.data);
+       dispatch({
+        type: types.LoginGuest,
+        payload: res?.data,
+      });
+       setLoading(false);
+        successMessage('Login Success as Guest')
+        props.navigation.navigate('bottomNavigationGuest')
+      
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Login Failed As Guest');
+    });
+  })
+});
+    }catch{
+      errorMessage('Something went wrong!')
+    }
+  }
+
   return (
+    <>
+        <View style={{position:'absolute',zIndex:999}}>
+{loading && (
+      <LoaderComp/>
+    )}
+</View>
+    
     <View style={styles.container}>
       <View style={styles.logoWrap}>
         <Image
@@ -44,7 +101,7 @@ export default function GuestScreen(props) {
       </TouchableOpacity>
       <TouchableOpacity 
       //onPress={()=> props.navigation.navigate('homeScreen')} 
-      onPress={()=> props.navigation.navigate('bottomNavigationGuest')} 
+      onPress={()=> registerGuest()} 
     //     onPress={()=>navigation.navigate('bottomNavigation', {
     //   screen: 'stackNavComp',
     //   params: {
@@ -55,6 +112,7 @@ export default function GuestScreen(props) {
         <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
       </TouchableOpacity>
     </View>
+    </>
   );
 }
 

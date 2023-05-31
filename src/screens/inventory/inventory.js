@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,14 +35,63 @@ import {
 import BottomComp from '../../components/bottomComp';
 import InventoryComp from '../../components/inventoryComp';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetBrandProductsById } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function Inventory(props) {
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    setLoading(true);
+    axios
+    .get(GetBrandProductsById+`/${user?.userData?.id}`)
+    .then(async function (res) {
+       //console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+    });
+
+  },[])
+
 
   return (
     <SafeAreaView style={{flex:1}}>
         <View style={styles.container}>
       <Text style={styles.heading}>Inventory</Text>
 
-      <ScrollView
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :    
+    <FlatList
+    showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingVertical: hp2(2),alignSelf:'center'}}
+      data={data}
+      numColumns={2}
+      renderItem={({item,index})=>{
+        return(
+          <InventoryComp data={item} />
+        )
+      }}
+      />
+      }
+
+      {/* <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           flexDirection: 'row',
@@ -51,17 +101,8 @@ export default function Inventory(props) {
           justifyContent: 'space-between',
         }}>
        <InventoryComp value={300} />
-       <InventoryComp value={0} />
-       <InventoryComp value={200} />
-       <InventoryComp value={620} />
-       <InventoryComp value={110} />
-       <InventoryComp value={0} />
-       <InventoryComp value={20} />
-       <InventoryComp value={12} />
-       <InventoryComp value={330} />
-       <InventoryComp value={18} />
-       <InventoryComp value={0} />
-      </ScrollView>
+      </ScrollView> */}
+      
       {/* <BottomComp /> */}
     </View>
     </SafeAreaView>

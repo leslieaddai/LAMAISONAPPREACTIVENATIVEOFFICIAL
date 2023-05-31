@@ -7,10 +7,32 @@ import { store,persistor } from './src/Redux/Reducer';
 import FlashMessage from 'react-native-flash-message';
 
 import NetInfo from "@react-native-community/netinfo";
+import { showMessage,hideMessage } from 'react-native-flash-message';
 
 import AppNavigatior from './src/route'
 
 const App = () => {
+
+  const NetworkCheck = () =>{
+    NetInfo.addEventListener(networkState => {
+      if(!networkState?.isConnected || !networkState?.isInternetReachable){
+        showMessage({
+                        message: "",
+                        description: "Please Check Your Internet Connection",
+                        autoHide:false,
+                        type: "danger",
+                        hideOnPress:false
+        });
+        }
+        else{
+           hideMessage();
+    }
+  });
+  }
+  
+  useEffect(()=>{
+    NetworkCheck()
+  },[])
   
   return (
         <Provider store={store}>
