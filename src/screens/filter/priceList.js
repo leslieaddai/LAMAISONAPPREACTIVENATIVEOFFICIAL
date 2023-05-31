@@ -32,22 +32,33 @@ import {
   FONTS,
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import types from '../../Redux/types';
 
 export default function PriceList(props) {
+  const dispatch = useDispatch()
   const [selected,setSelected]=useState('');
   const navigation = useNavigation();
     const options = (text) => {
         return(
             <View style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                  setSelected(text)
+                }} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
             </View>
         )
     }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{
+        navigation.goBack(),
+        dispatch({
+          type:types.Priceadd,
+          payload: selected
+        })
+        }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>PRICE</Text>

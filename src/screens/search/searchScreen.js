@@ -34,8 +34,9 @@ import {
 import BottomComp from '../../components/bottomComp';
 import SearchComp from '../../components/searchComp';
 
-export default function SearchScreen(props) {
+export default function SearchScreen({navigation,route}) {
   const [selected, setSelected]=useState('brands');
+  const [text,setText]= useState(route?.params)
   return (
     <>
     <SafeAreaView style={{ flex: 0, backgroundColor: COLORS.appBackground }}></SafeAreaView>
@@ -51,12 +52,17 @@ export default function SearchScreen(props) {
               fontSize: rfv(13),
               fontWeight: '700',
             }}
+            value={text}
+            onChangeText={(value)=>{setText(value)}}
+            onSubmitEditing={()=>{console.log("submited",text)}}
             placeholderTextColor={'grey'}
+            returnKeyLabel='done'
+            returnKeyType='done'
             placeholder="what do you want to wear?"
           />
         </View>
         <TouchableOpacity 
-        onPress={()=>props.navigation.navigate('filterScreen')}
+        onPress={()=>navigation.navigate('filterScreen',text)}
          //onPress={()=>props.navigation.navigate('stackNavComp', {screen: 'filterScreen'})}
         >
           <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />

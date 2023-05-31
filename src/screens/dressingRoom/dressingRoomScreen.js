@@ -87,7 +87,7 @@ export default function DressingRoomScreen(props) {
     axios
     .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
     .then(async function (res) {
-       console.log(res.data);
+       console.log("dressing room",res.data);
        setData(res.data.data);
        setColorId(res.data.data.product_variations[0].color)
 

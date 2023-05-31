@@ -57,7 +57,7 @@ export default function SizeClothing(props) {
     axios
     .get(SizesUrl)
     .then(async function (res) {
-       console.log(res.data);
+      //  console.log(res.data);
        setData(res.data.data);
        setLoading(false);
        
@@ -78,14 +78,24 @@ export default function SizeClothing(props) {
             <View style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text?.size}</Text>
                 {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
+                <TouchableOpacity 
+                onPress={()=>setSelected(text)} 
+                style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}>
+
+                </TouchableOpacity>
             </View>
         )
     }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{
+          navigation.goBack()
+          dispatch({
+            type:types.Sizeadd,
+            payload:selected.size
+          })
+          }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>SIZE</Text>
@@ -96,24 +106,36 @@ export default function SizeClothing(props) {
       <SkypeIndicator color={'black'} />
     </View>
     :<>
-      <Text style={{marginVertical:hp2(1),color:'black',fontWeight:'700',textTransform:'uppercase',marginLeft:wp2(6),}}>APPAREL (U.K)</Text>
+      <Text style={{
+        marginVertical:hp2(1),
+        color:'black',
+        fontWeight:'700',
+        textTransform:'uppercase',
+        marginLeft:wp2(6)}}>APPAREL (U.K)</Text>
       
-    {data?.map((item)=>{
+    {data?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
-        <>
+        <View key={index}>
         {item?.category_id===2 && options(item)}
-        </>
+        </View>
     )})}
 
-    <Text style={{marginTop:hp2(2),marginBottom:hp2(1),color:'black',fontWeight:'700',textTransform:'uppercase',marginLeft:wp2(6),}}>FOOTWEAR (U.K)</Text>    
+    <Text style={{
+      marginTop:hp2(2),
+      marginBottom:hp2(1),
+      color:'black',
+      fontWeight:'700',
+      textTransform:'uppercase',
+      marginLeft:wp2(6)
+      }}>FOOTWEAR (U.K)</Text>    
 
-    {data?.map((item)=>{
+    {data?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
-        <>
+        <View key={index}>
         {item?.category_id===1 && options(item)}
-        </>
+        </View>
     )})}
 
     </>
