@@ -79,12 +79,16 @@ export default function LoginScreen(props) {
     axios
     .post(LoginUrl, obj)
     .then(async function (res) {
-       console.log(res.data);
+       console.log("login response",res.data.user.basket_count);
        setLoading(false);
        if(res.data.user.email_verified===false){
         errorMessage('Please verify your email')
        }else{
          successMessage('Login Success')
+         dispatch({
+          type:types.CartCount,
+          payload:res.data.user.basket_count
+         })
          dispatch({
           type: types.Login,
           payload: res.data,

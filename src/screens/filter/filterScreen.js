@@ -32,11 +32,19 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+import { useSelector } from 'react-redux';
 
-export default function FilterScreen(props) {
+export default function FilterScreen({navigation,route}) {
+  const {Price} = useSelector(state=>state.Price)
+  const {Colour} = useSelector(state=>state.Colour)
+  const {Size} = useSelector(state=>state.Size)
+  const {Style} = useSelector(state=>state.Style)
+  const {Item} = useSelector(state=>state.Item)
+  const {Continent} = useSelector(state=>state.Continent)
+  console.log(route.params)
   const settingOptions = (name, navScreen) => {
     return (
-      <TouchableOpacity onPress={() => props.navigation.navigate(navScreen)} style={styles.filters}>
+      <TouchableOpacity onPress={() => navigation.navigate(navScreen)} style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
          <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
       </TouchableOpacity>
@@ -54,7 +62,11 @@ export default function FilterScreen(props) {
       {settingOptions('ITEM', 'items')}
       {settingOptions('CONTINENTS', 'continents')}
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button}
+      onPress={()=>{
+        navigation.navigate('searchScreen',route.params)
+      }}
+      >
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(20)}}>
           APPLY FILTER(S)
         </Text>

@@ -6,6 +6,12 @@ import SplashReducer from './SplashReducer';
 import ImageUpload from './ImageUpload';
 import BasketCounter from './BasketCounter';
 import GuestReducer from './GuestReducer';
+import PriceReducer from './PriceReducer';
+import ColourReducer from './ColourReducer';
+import SizeReducer from './SizeReducer';
+import StyleReducer from './StyleReducer';
+import FilterItemReducer from './FilterItemReducer';
+import ContinentReducer from './ContinentReducer';
 
 const persistConfig1 = {
   key: 'auth',
@@ -32,6 +38,12 @@ export const store = configureStore({
     ImageUpload: ImageUpload,
     basket: persistReducer(persistConfig2, BasketCounter),
     guestData: persistReducer(persistConfig3, GuestReducer),
+    Price:PriceReducer,
+    Colour:ColourReducer,
+    Size:SizeReducer,
+    Style:StyleReducer,
+    Item:FilterItemReducer,
+    Continent:ContinentReducer
   },
 });
 export const persistor = persistStore(store);

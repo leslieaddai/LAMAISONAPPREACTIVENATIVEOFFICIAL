@@ -32,8 +32,11 @@ import {
   FONTS,
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import types from '../../Redux/types';
 
 export default function Continents(props) {
+  const dispatch = useDispatch()
   const [selected,setSelected]=useState('');
   const navigation = useNavigation();
     const options = (text) => {
@@ -47,7 +50,12 @@ export default function Continents(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{navigation.goBack(),
+        dispatch({
+          type:types.Continetadd,
+          payload:selected
+        })
+        }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>CONTINENTS</Text>

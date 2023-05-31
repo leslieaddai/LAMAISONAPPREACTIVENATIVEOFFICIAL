@@ -10,4 +10,12 @@ export default {
   RemoveFromBasket: 'RemoveFromBasket',
   LoginGuest: 'LoginGuest',
   LogoutGuest: 'LogoutGuest',
+  Priceadd:'Priceadd',
+  Colouradd:'Colouradd',
+  Sizeadd:'Sizeadd',
+  Styleadd:'Styleadd',
+  Itemadd:'Itemadd',
+  Continetadd:'Continetadd',
+  CartCount:'CartCount',
+  Clearcart:'Clearcart'
 };

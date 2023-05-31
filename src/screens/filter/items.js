@@ -56,7 +56,7 @@ export default function Items(props) {
     axios
     .get(PiecesUrl)
     .then(async function (res) {
-       console.log(res.data);
+      //  console.log(res.data);
        setData(res.data.data);
        setLoading(false);
        
@@ -82,7 +82,13 @@ export default function Items(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{
+          navigation.goBack()
+          dispatch({
+            type:types.Itemadd,
+            payload:selected
+          })
+          }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>ITEMS</Text>
@@ -93,12 +99,12 @@ export default function Items(props) {
       <SkypeIndicator color={'black'} />
     </View>
     :<>
-    {data?.map((item)=>{
+    {data?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
-        <>
+        <View key={index}>
         {options(item)}
-        </>
+        </View>
     )})}  
     </>}
 

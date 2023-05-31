@@ -56,13 +56,12 @@ export default function Style(props) {
     axios
     .get(StylesUrl)
     .then(async function (res) {
-       console.log(res.data);
+      //  console.log(res.data);
        setData(res.data.data);
        setLoading(false);
        
     }) 
     .catch(function (error) {
-      console.log(error.response.data)
       setLoading(false);
       errorMessage('Something went wrong!')
       //errorMessage(errorHandler(error))
@@ -82,7 +81,13 @@ export default function Style(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{
+          navigation.goBack()
+          dispatch({
+            type:types.Styleadd,
+            payload:selected
+          })
+          }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>STYLE</Text>
@@ -93,12 +98,12 @@ export default function Style(props) {
       <SkypeIndicator color={'black'} />
     </View>
     :<>
-    {data?.map((item)=>{
+    {data?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
-        <>
+        <View key={index}>
         {options(item)}
-        </>
+        </View>
     )})}  
     </>}
 

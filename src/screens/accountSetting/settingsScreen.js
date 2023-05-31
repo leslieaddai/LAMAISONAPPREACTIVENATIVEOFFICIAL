@@ -111,7 +111,9 @@ export default function SettingsScreen(props) {
             //   index: 0,
             //   routes: [{ name: 'settingsScreen',params:{user:props?.route?.params?.user} }],
             // });
-
+            dispatch({
+              type:types.Clearcart,
+            })
              dispatch({
               type: types.Logout
             });

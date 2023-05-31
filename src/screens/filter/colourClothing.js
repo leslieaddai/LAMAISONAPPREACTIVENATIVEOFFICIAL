@@ -56,7 +56,6 @@ export default function ColourClothing(props) {
     axios
     .get(ColorsUrl)
     .then(async function (res) {
-       console.log(res.data);
        setData(res.data.data);
        setLoading(false);
        
@@ -75,7 +74,17 @@ export default function ColourClothing(props) {
   const color = (col) => {
     return(
       <TouchableOpacity onPress={()=>setSelected(col)} style={[styles.color,{backgroundColor:col?.color_code}]}>
-         {selected===col && (<ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
+         {selected===col && (
+         <ICONS.AntDesign 
+         name="checkcircle" 
+         size={20} 
+         color="#0F2ABA" 
+         style={{
+          position:'absolute',
+          right:wp2(2),
+          top:hp2(0.5),
+          zIndex:999
+          }} />)}
       </TouchableOpacity>
     )
   }
@@ -83,7 +92,13 @@ export default function ColourClothing(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>{
+          navigation.goBack(),
+          dispatch({
+            type:types.Colouradd,
+            payload:selected?.color_code
+          })
+          }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>COLOUR</Text>
@@ -94,12 +109,12 @@ export default function ColourClothing(props) {
       <SkypeIndicator color={'black'} />
     </View>
     :<View style={styles.colorsWrap}>
-    {data?.map((item)=>{
+    {data?.map((item,index)=>{
         //console.log("item=======>",item);
     return(
-        <>
+        <View key={index}>
         {color(item)}
-        </>
+        </View>
     )})}  
     </View>}
 
