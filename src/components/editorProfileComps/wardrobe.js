@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -31,35 +31,53 @@ import {
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetVirtualWardrobe } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function Wardrobe(props) {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+  
+  useEffect(()=>{
+    axios
+    .get(GetVirtualWardrobe+`${props?.user?.userData?.id}`)
+    .then(async function (res) {
+       console.log(res.data,'=======> wardrobe');
+       setData(res?.data?.data);
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      errorMessage('Something went wrong!')
+    });
+  },[])
+
   return (
     <View style={{marginVertical:hp2(5)}}>
       <View style={styles.galaryContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-        <View style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
+        {data?.map((item,index)=>{
+          if(index<3) return (
+            <View key={index} style={styles.imageContainer}>
+            <Image
+              //source={IMAGES.randomPic}
+              source={{uri:item?.product_image}}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          </View>  
+          )
+        })}
       </View>
 
-      <TouchableOpacity  onPress={() => navigation.navigate('wardrobeScreen')} style={styles.wardrobe}>
+      <TouchableOpacity  onPress={() => navigation.navigate('wardrobeScreen',{user:props?.user})} style={styles.wardrobe}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
         WARDROBE
         </Text>

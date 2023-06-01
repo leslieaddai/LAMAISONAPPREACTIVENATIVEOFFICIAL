@@ -40,3 +40,4 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const GetAppNotice = getApi('app-notice');
   export const RegisterGuest = getApi('register/guest');
   export const ProductImageUpdate = getApi('product/image/update');
+  export const GetVirtualWardrobe = getApi('wardrobe/');

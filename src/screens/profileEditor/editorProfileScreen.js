@@ -268,7 +268,7 @@ export default function EditorProfileScreen(props) {
       <BrandComp/>
       </ScrollView>
 
-      <Wardrobe/>
+      <Wardrobe user={props?.route?.params?.userData} />
 
       {loading ? 
             <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
