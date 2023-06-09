@@ -60,7 +60,7 @@ const CreateAccountScreen = (props) => {
       UserName:'',
       Newpassword:'',
       ConfirmPass:'',
-      Birthday:new Date()
+      Birthday:null,
     })
     const updateState = data => setStateChange(prev => ({...prev, ...data}));
     const {
@@ -77,11 +77,11 @@ const CreateAccountScreen = (props) => {
   console.log(special.test(Newpassword));
 
   const onCreate = () => {
-    if(UserName != '' && Newpassword != '' && ConfirmPass != '' && Birthday != '' ){
+    if(UserName != '' && Newpassword != '' && ConfirmPass != '' && Birthday != null ){
       if(UserName.length >= 6){
         if(Newpassword.length >=8){
           if(numeric.test(Newpassword)){
-            if(special.test(Newpassword)){
+            if(special.test(Newpassword.match(special))){
               if(ConfirmPass === Newpassword){
                 if(checkBox){
                   let obj = {
@@ -106,12 +106,13 @@ const CreateAccountScreen = (props) => {
                    setLoading(false);
                    props.navigation.navigate('loginScreen')
                    //props.navigation.replace('loginScreen')
-                   successMessage('Account Created Please Verify Your Email Before Login')
+                   successMessage('Account verification link is sent to your email. Please check.')
                 }) 
                 .catch(function (error) {
                   console.log(error.response.data)
                   setLoading(false);
-                  errorMessage('Something went wrong')
+                  // errorMessage('Something went wrong')
+                  errorMessage(error.response.data.message)
 
                   //errorMessage(errorHandler(error))
                 });
@@ -123,7 +124,7 @@ const CreateAccountScreen = (props) => {
       
       
                 }else{
-                  errorMessage('Please agree terms and conditions')
+                  errorMessage('Please accept our Terms and Condition')
                 }
               }else{
                 //alert('Confirm password not matched')
@@ -167,7 +168,7 @@ const CreateAccountScreen = (props) => {
     )}
 </View>
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}>
+      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}> */}
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{marginTop:Platform.OS === "ios"? hp2(0) : hp2(4), marginLeft: wp2(8)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
@@ -201,13 +202,14 @@ const CreateAccountScreen = (props) => {
         <TouchableOpacity style={styles.BDaystyle} onPress={() => setOpen(true)}>
           {/* <TextInput  placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => updateState({Birthday:val})} placeholderTextColor={'grey'}/> */}
           {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
-          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday. getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
+          <Text style={[styles.textBox,{color:Birthday==null?'grey':'black'}]}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday. getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
         </TouchableOpacity>
         <DatePicker
         modal
         mode='date'
         open={open}
-        date={Birthday}
+        date={new Date()}
+        maximumDate={new Date()}
         onConfirm={(date) => {
           setOpen(false)
           updateState({Birthday:date})
@@ -222,7 +224,8 @@ const CreateAccountScreen = (props) => {
           style={{
             flexDirection: 'row',
             marginLeft: wp2(8),
-            alignItems: 'center',
+            //alignItems: 'center',
+            alignItems:'flex-end',
             marginVertical: hp2(3),
           }}>
             
@@ -244,7 +247,7 @@ const CreateAccountScreen = (props) => {
         <TouchableOpacity onPress={onCreate} style={styles.button}>
           <Text style={{color: 'white'}}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
-      </KeyboardAwareScrollView>
+      {/* </KeyboardAwareScrollView> */}
     </SafeAreaView>
     </>
   );
@@ -266,7 +269,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     width: wp2(80),
-    height: hp2(6),
+    height: hp2(5),
     backgroundColor: 'white',
     borderRadius: wp2(4),
     shadowColor: '#000',
@@ -282,7 +285,7 @@ const styles = StyleSheet.create({
   },
   BDaystyle:{
     width: wp2(80),
-    height: hp2(6),
+    height: hp2(5),
     backgroundColor: 'white',
     borderRadius: wp2(4),
     shadowColor: '#000',

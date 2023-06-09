@@ -43,7 +43,7 @@ export default function WelcomeScreen(props) {
           //source={IMAGES.randomProfile}
           source={{uri:user.userData.profile_image}}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
       {/* <Text style={[styles.text,{fontSize:rfv(32),textAlign:'center'}]}>Welcome to{'\n'}the La Maison App</Text> */}

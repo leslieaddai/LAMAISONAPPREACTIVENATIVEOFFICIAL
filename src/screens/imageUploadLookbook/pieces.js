@@ -73,13 +73,13 @@ export default function Pieces(props) {
 
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
+            <TouchableOpacity onPress={()=>{
+              props.route.params.updateState({pieces:text.piece_name,piece_id:text.id});
+              props.navigation.goBack();
+          }}  style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text.piece_name}</Text>
-                <TouchableOpacity onPress={()=>{
-                    props.route.params.updateState({pieces:text.piece_name,piece_id:text.id});
-                    props.navigation.goBack();
-                }} style={[styles.circle,{backgroundColor:props.route.params.stateChange.pieces==text.piece_name?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
+                <View style={[styles.circle,{backgroundColor:props.route.params.stateChange.pieces==text.piece_name?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (

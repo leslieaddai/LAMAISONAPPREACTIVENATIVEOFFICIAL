@@ -57,7 +57,7 @@ export default function Lookbook(props) {
         </Text>
       </TouchableOpacity> */}
       <View style={styles.galaryContainer}>
-        {props?.data?.data?.map((item,index)=>{
+        {props?.data?.galleries?.reverse().map((item,index)=>{
           if(index<6) return <ImgComp key={index} path={{item}} />
         })}
       </View>

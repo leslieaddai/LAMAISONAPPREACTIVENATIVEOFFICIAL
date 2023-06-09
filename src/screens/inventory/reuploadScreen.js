@@ -424,9 +424,9 @@ formdata.append("status", 1);
         <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
          <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{stateChange?.description}</Text>
         </View>
-        <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
+        {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
          <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>free shipping to all regions</Text>
-        </View>
+        </View> */}
         <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
          <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{stateChange?.price}</Text>
         </View>

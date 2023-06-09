@@ -47,7 +47,7 @@ export default function GalleryScreen(props) {
   const [loading, setLoading] = useState(false);
   //const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
-  const [data,setData]=useState(props?.route?.params?.data);
+  const [data,setData]=useState(props?.route?.params?.data?.galleries);
 
   //console.log(props.route.params.data)
 

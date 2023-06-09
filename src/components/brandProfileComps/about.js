@@ -34,12 +34,12 @@ export default function About(props) {
   return (
     <>
       <Text style={styles.aboutText}>ABOUT</Text>
-      <Text
+      {/* <Text
         style={[styles.aboutText, {fontSize: rfv(12), marginBottom: hp2(0.5)}]}>
         A NEW AGE
-      </Text>
+      </Text> */}
 
-      <Text
+      {/* <Text
         style={{
           color: 'black',
           marginHorizontal: wp2(3),
@@ -62,6 +62,15 @@ export default function About(props) {
         enthusiasts can share their passions. We branded Owners’ Club to be ‘For
         enthusiasts, by enthusiasts’ to create garments which can be worn by
         customers to acknowledge their passion for the brand.
+      </Text> */}
+       <Text
+        style={{
+          color: 'black',
+          marginHorizontal: wp2(3),
+          textTransform: 'uppercase',
+          textAlign:'justify',
+        }}>
+      {props?.data?.about}
       </Text>
     </>
   );

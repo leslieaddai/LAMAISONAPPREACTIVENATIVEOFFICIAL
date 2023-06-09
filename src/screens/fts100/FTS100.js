@@ -53,25 +53,44 @@ export default function FTS100(props) {
   const [dataFts,setDataFts]=useState([]);
   const user = useSelector(state => state.userData)
 
+  // useEffect(() => {
+  //   getStyles();
+  //   getFTS();
+
+  //   props?.navigation.addListener('focus', () => {
+  //     getStyles();
+  //     getFTS();
+  //   });
+
+  //   props?.navigation.addListener('blur', () => {
+  //     setSelected('');
+  //   });
+
+  // },[props?.navigation])
+
   useEffect(()=>{
-    setLoadingStyles(true);
+    getFTS();
+    getStyles();
+  },[])
+
+  const getStyles = () => {
+    //setLoadingStyles(true);
 
     axios
     .get(StylesUrl)
     .then(async function (res) {
        console.log(res.data);
        setDataStyles(res.data.data);
-       setLoadingStyles(false);
+       //setLoadingStyles(false);
     }) 
     .catch(function (error) {
       console.log(error.response.data)
-      setLoadingStyles(false);
+      //setLoadingStyles(false);
       errorMessage('Something went wrong!')
     });
+  }
 
-  },[])
-
-  useEffect(()=>{
+  const getFTS = () => {
     setLoadingFts(true);
 
     axios.get(FTSUrl)
@@ -85,23 +104,63 @@ export default function FTS100(props) {
        setLoadingFts(false);
        errorMessage('Something went wrong!')
     });
+  }
 
-  },[])
+  // useEffect(()=>{
+  //   setLoadingStyles(true);
 
-const onSelectStyle = (styleId) => {
-  setLoadingFts(true);
+  //   axios
+  //   .get(StylesUrl)
+  //   .then(async function (res) {
+  //      console.log(res.data);
+  //      setDataStyles(res.data.data);
+  //      setLoadingStyles(false);
+  //   }) 
+  //   .catch(function (error) {
+  //     console.log(error.response.data)
+  //     setLoadingStyles(false);
+  //     errorMessage('Something went wrong!')
+  //   });
 
-  axios.get(FTSUrl+`/${styleId}`)
-  .then(async function (res) {
-     console.log(res.data);
-     setDataFts(res.data.data);
-     setLoadingFts(false);
-  })
-  .catch(function (error){
-     console.log(error.response.data)
-     setLoadingFts(false);
-     errorMessage('Something went wrong!')
-  });
+  // },[])
+
+  // useEffect(()=>{
+  //   setLoadingFts(true);
+
+  //   axios.get(FTSUrl)
+  //   .then(async function (res) {
+  //      console.log(res.data);
+  //      setDataFts(res.data.data);
+  //      setLoadingFts(false);
+  //   })
+  //   .catch(function (error){
+  //      console.log(error.response.data)
+  //      setLoadingFts(false);
+  //      errorMessage('Something went wrong!')
+  //   });
+
+  // },[])
+
+const onSelectStyle = (styleId,name) => {
+  if(selected===name){
+    setSelected('');
+    getFTS();
+  }else{
+    setSelected(name);
+    setLoadingFts(true);
+
+    axios.get(FTSUrl+`/${styleId}`)
+    .then(async function (res) {
+       console.log(res.data);
+       setDataFts(res.data.data);
+       setLoadingFts(false);
+    })
+    .catch(function (error){
+       console.log(error.response.data)
+       setLoadingFts(false);
+       errorMessage('Something went wrong!')
+    });
+  }
 }
 
   return (

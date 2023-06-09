@@ -35,6 +35,9 @@ useEffect( ()=>{
     webClientId: '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
     offlineAccess: true
 })
+setFirstName('');
+setLastName('');
+setEmail('');
 },[])
   
 async function onFacebookButtonPress() {
@@ -100,7 +103,7 @@ async function onFacebookButtonPress() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}>
+      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}> */}
         <Text style={[styles.signupText]}>Create new account</Text>
         <View style={{flexDirection:'row',width:wp2(80),justifyContent:'space-between',alignSelf:'center',}}>
         <View style={[styles.inputBox,{width:wp2(36)}]}>
@@ -166,7 +169,7 @@ async function onFacebookButtonPress() {
           <ICONS.AntDesign name="facebook-square" size={24} color="black" style={{position:'absolute',left:wp2(4)}} />
           <Text style={styles.button2Text}>continue with facebook</Text>
         </TouchableOpacity>
-      </KeyboardAwareScrollView>
+      {/* </KeyboardAwareScrollView> */}
     </SafeAreaView>
   );
 }

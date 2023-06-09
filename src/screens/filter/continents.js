@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -32,41 +32,94 @@ import {
   FONTS,
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetRegionsAll } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
 
 export default function Continents(props) {
-  const dispatch = useDispatch()
-  const [selected,setSelected]=useState('');
+  const {Continent,Id} = useSelector(state=>state.Continent)
+  const [selected,setSelected]=useState(Id);
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(GetRegionsAll)
+    .then(async function (res) {
+      //  console.log(res.data);
+       setData(res.data.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+    });
+
+  },[])
+
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={()=>{
+              setSelected(text?.id)
+              dispatch({
+                type:types.Continetadd,
+                payload:{continent:text?.name,id:text?.id}
+              })
+              navigation.goBack()
+            }} style={styles.optionWrap}>
+                <Text style={{color:'black'}}>{text?.name}</Text>
+                <View style={[styles.circle,{backgroundColor:selected==text?.id?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>{navigation.goBack(),
-        dispatch({
-          type:types.Continetadd,
-          payload:selected
-        })
+        <TouchableOpacity onPress={()=>{
+          navigation.goBack()
+        // dispatch({
+        //   type:types.Continetadd,
+        //   payload:selected
+        // })
         }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>CONTINENTS</Text>
       </View>
 
-      {options('ASIA')}
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<>
+    {data?.map((item,index)=>{
+        //console.log("item=======>",item);
+    return(
+        <View key={index}>
+        {options(item)}
+        </View>
+    )})}  
+    </>}
+
+      {/* {options('ASIA')}
       {options('AFRICA')}
       {options('NORTH AMERICA')}
       {options('SOUTH AMERICA')}
       {options('EUROPE')}
-      {options('AUSTRALIA')}
+      {options('AUSTRALIA')} */}
     </SafeAreaView>
   );
 }

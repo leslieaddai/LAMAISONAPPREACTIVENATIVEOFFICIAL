@@ -1,7 +1,8 @@
 import types from '../types';
 
 const initial_state = {
-  Style: "",
+  Style: '',
+  Id:'',
 };
 
 export default function (state = initial_state, action) {
@@ -9,7 +10,8 @@ export default function (state = initial_state, action) {
     case types.Styleadd:
       const data = action.payload;
       return {
-        Style: data
+        Style: data?.style,
+        Id: data?.id,
       };
       break;
     default:

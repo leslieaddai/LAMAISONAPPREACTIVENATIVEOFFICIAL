@@ -2,6 +2,7 @@ import types from '../types';
 
 const initial_state = {
   Continent: "",
+  Id:"",
 };
 
 export default function (state = initial_state, action) {
@@ -9,7 +10,8 @@ export default function (state = initial_state, action) {
     case types.Continetadd:
       const data = action.payload;
       return {
-       Continent: data
+       Continent: data?.continent,
+       Id: data?.id,
       };
       break;
     default:

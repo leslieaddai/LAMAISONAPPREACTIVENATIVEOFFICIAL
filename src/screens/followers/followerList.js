@@ -35,18 +35,90 @@ import {
 import BottomComp from '../../components/bottomComp';
 import FollowComp from './followComp';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetBrandFollowerList,GetBrandFollowingList,GetEditorFollowerList,GetEditorFollowingList } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function FollowerList(props) {
   const [selected, setSelected]=useState('brands');
   const [dataBrand,setDataBrand]=useState([]);
   const [dataEditor,setDataEditor]=useState([]);
 
+  const [loadingFollowList,setLoadingFollowList]=useState(false);
+  // const [followingDataBrand,setFollowingDataBrand]=useState([]);
+  // const [followerDataBrand,setFollowerDataBrand]=useState([]);
+  // const [followingDataEditor,setFollowingDataEditor]=useState([]);
+  // const [followerDataEditor,setFollowerDataEditor]=useState([]);
+
+  const user = useSelector(state => state.userData)
+
   useEffect(()=>{
     if(props?.route?.params?.list==='following'){
-      setDataBrand(props?.route?.params?.followingDataBrand)
-      setDataEditor(props?.route?.params?.followingDataEditor)
+      //setDataBrand(props?.route?.params?.followingDataBrand)
+      //setDataEditor(props?.route?.params?.followingDataEditor)
+
+        setLoadingFollowList(true);
+
+        axios
+        .get(GetBrandFollowingList+`/${props?.route?.params?.id}`)
+        .then(async function (res){
+           console.log(res.data);
+           setDataBrand(res?.data?.data);
+
+           axios
+          .get(GetEditorFollowingList+`/${props?.route?.params?.id}`)
+          .then(async function (res){
+            console.log(res.data);
+            setDataEditor(res?.data?.data);
+            setLoadingFollowList(false);
+          })
+          .catch(function (error){
+            console.log(error.response.data)
+            setLoadingFollowList(false);
+            errorMessage('Something went wrong!')
+          })
+
+          })
+          .catch(function (error){
+           console.log(error.response.data)
+           setLoadingFollowList(false);
+           errorMessage('Something went wrong!')
+          })
     }else{
-      setDataBrand(props?.route?.params?.followerDataBrand)
-      setDataEditor(props?.route?.params?.followerDataEditor)
+      //setDataBrand(props?.route?.params?.followerDataBrand)
+      //setDataEditor(props?.route?.params?.followerDataEditor)
+
+      setLoadingFollowList(true);
+
+      axios
+      .get(GetBrandFollowerList+`/${props?.route?.params?.id}`)
+      .then(async function (res) {
+         console.log(res.data);
+         setDataBrand(res?.data?.data);
+         
+         axios
+         .get(GetEditorFollowerList+`/${props?.route?.params?.id}`)
+         .then(async function (res){
+           console.log(res.data);
+           setDataEditor(res.data.data);
+           setLoadingFollowList(false);
+         })
+         .catch(function (error){
+           console.log(error.response.data)
+           setLoadingFollowList(false);
+           errorMessage('Something went wrong!')
+         })
+         
+        }) 
+        .catch(function (error) {
+          console.log(error.response.data)
+          setLoadingFollowList(false);
+          errorMessage('Something went wrong!')
+        });
     }
   },[props?.route?.params?.list])
 
@@ -71,6 +143,11 @@ export default function FollowerList(props) {
         </TouchableOpacity>
   </View>
 
+  {loadingFollowList ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :
       <FlatList
       showsVerticalScrollIndicator={false}
       contentContainerStyle={{paddingBottom:hp2(12),width:wp2(96),alignSelf:'center'}}
@@ -82,7 +159,8 @@ export default function FollowerList(props) {
         )
       }}
       />
-
+    }
+    
   {/* <ScrollView
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{

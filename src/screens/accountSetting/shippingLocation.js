@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,17 +33,94 @@ import {
 } from '../../theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetRegions,SaveShippingInfo } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
+import ShippingComp from './shippingComp';
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function ShippingLocation(props) {
-  const [selected,setSelected]=useState('');
-    const options = (text) => {
-        return(
-            <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text)} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
-        )
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  const [shippingDescription,setShippingDescription]=useState(user?.userData?.Shipping_information?.description?user?.userData?.Shipping_information?.description:'');
+  const [loading2, setLoading2] = useState(false);
+
+  useEffect(()=>{
+   getAllRegions()
+  },[])
+
+  const getAllRegions = () => {
+    setLoading(true);
+
+    axios
+    .get(GetRegions,{
+      headers:{'Authorization':`Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+       //console.log(res?.data);
+       setData(res?.data?.data);
+       setLoading(false);
+       
+    }) 
+    .catch(function (error) {
+      setLoading(false);
+      errorMessage('Something went wrong!')
+    });
+  }
+
+  const saveShipping = () => {
+    if(shippingDescription !== ''){
+      setLoading2(true);
+
+      let obj = {
+        description: shippingDescription,
     }
+
+    axios
+    .post(SaveShippingInfo, obj, {
+      headers: { 
+        'Authorization': `Bearer ${user?.token}`, 
+        'Accept': 'application/json',
+      },
+    })
+    .then(async function (res) {
+       console.log(res.data);
+       dispatch({
+        type: types.UpdateShippingInfo,
+        payload: shippingDescription,
+      });
+       setLoading2(false);
+       successMessage('Shipping Information Added Successfully');
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading2(false);
+      errorMessage('Something went wrong!');
+    });
+
+    }else{
+      errorMessage('Please enter shipping information')
+    }
+  }
+
   return (
+    <>
+     <View style={{position:'absolute',zIndex:999}}>
+{loading2 && (
+      <LoaderComp/>
+    )}
+</View>
+  
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom:hp2(2),}}>
@@ -62,23 +139,38 @@ export default function ShippingLocation(props) {
             fontSize: rfv(14),
             textAlignVertical: 'top',
           }}
+          value={shippingDescription}
+          onChangeText={(val) => setShippingDescription(val)}
         />
       </View>
       <View style={{width:wp2(88),alignSelf:'center'}}>
       <Text style={{color:'black',fontWeight:'700',marginBottom:hp2(2)}}>Select Shipping Location</Text>
       </View>
-      {options('ASIA')}
+      {loading && data.length===0 ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :<>
+    {data?.map((item,index)=>{
+        //console.log("item=======>",item);
+    return(
+        <ShippingComp key={index} data={item} state={{getAllRegions}} disable={item?.name==='Asia'?false:true} />
+    )})}  
+    </>}
+      {/* {options('ASIA')}
       {options('AFRICA')}
       {options('NORTH AMERICA')}
       {options('SOUTH AMERICA')}
       {options('EUROPE')}
-      {options('AUSTRALIA')}
-      <TouchableOpacity style={styles.button}>
+      {options('AUSTRALIA')} */}
+      <TouchableOpacity onPress={()=>saveShipping()} style={styles.button}>
         <Text style={{color:'white'}}>CONFIRM</Text>
       </TouchableOpacity>
       </KeyboardAwareScrollView>
     </View>
     </SafeAreaView>
+
+    </>
   );
 }
 

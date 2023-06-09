@@ -51,12 +51,12 @@ export default function NextPickup(props) {
   return (
     <View>
       <View style={styles.galaryContainer}>
-      {props?.data?.data?.map((item,index)=>{
+      {props?.data?.wishlists?.reverse().map((item,index)=>{
           if(index<6) return <ImgComp key={index} path={{item}} />
         })}
       </View>
 
-      <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen',{data:props.data.data})} style={styles.nextpickup}>
+      <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen',{data:props.data.wishlists})} style={styles.nextpickup}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
         NEXT PICK UP
         </Text>

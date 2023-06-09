@@ -37,6 +37,12 @@
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
+	<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>This app wants to access your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>This app wants to access your location</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>This app wants to access your location</string> -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app wants to see your photos to test the CameraRollManager</string>
 	<key>UIAppFonts</key>

@@ -2,6 +2,8 @@ export default {
   Login: 'Login',
   Logout: 'Logout',
   UpdateProfilePicture: 'UpdateProfilePicture',
+  UpdateProfile: 'UpdateProfile',
+  UpdateShippingInfo: 'UpdateShippingInfo',
   HideSplash: 'HideSplash',
   ShowSplash: 'ShowSplash',
   HideWelcome: 'HideWelcome',

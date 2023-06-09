@@ -37,8 +37,11 @@ export default function Category(props) {
   return (
     <TouchableOpacity
       onPress={() => {
-        props?.state?.setSelected(props?.data?.item?.name)
-        props?.state?.onSelectStyle(props?.data?.item?.id)
+        //props?.state?.setSelected(props?.data?.item?.name)
+        //props?.state?.setSelected(prev => (prev===props?.data?.item?.name?'':props?.data?.item?.name));
+        //props?.state?.selected === props?.data?.item?.name ? props?.state?.setSelected('') : props?.state?.setSelected(props?.data?.item?.name)
+        //props?.state?.selected === props?.data?.item?.name && props?.state?.setSelected('')
+        props?.state?.onSelectStyle(props?.data?.item?.id,props?.data?.item?.name)
       }}
       style={[styles.button, {backgroundColor: props?.state?.selected == props?.data?.item?.name ? 'black' : 'white'}]}>
       <Text

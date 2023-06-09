@@ -171,6 +171,7 @@ export default function SettingsScreen(props) {
       {props?.route?.params?.user?.userData?.role?.[0]?.id === 3 ?(
         <>
         {settingOptions('PROFILE','','editProfile')}
+        {settingOptions('NOTIFICATIONS','','notificationScreen')}
         {settingOptions('IMAGE/PRODUCT UPLOAD','','destinationScreen')}
         {settingOptions('INVENTORY','red','inventory')}
         {settingOptions('STANDARD SHIPPING','','shippingLocation')}

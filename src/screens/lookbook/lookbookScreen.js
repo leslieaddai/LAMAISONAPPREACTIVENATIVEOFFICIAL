@@ -70,7 +70,12 @@ export default function LookbookScreen(props) {
 
   useEffect(() => {
     getApiData(getCollection);
-  },[])
+
+    props?.navigation.addListener('focus', () => {
+      getApiData(getCollection);
+    });
+
+  },[props?.navigation])
   
   const getApiData = (url) => {
     setAllLoading(true)

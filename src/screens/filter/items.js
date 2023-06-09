@@ -42,7 +42,8 @@ import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 export default function Items(props) {
-  const [selected,setSelected]=useState('');
+  const {Item,Id} = useSelector(state=>state.Item)
+  const [selected,setSelected]=useState(Id);
   const navigation = useNavigation();
 
   const dispatch = useDispatch()
@@ -73,10 +74,17 @@ export default function Items(props) {
 
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
+            <TouchableOpacity onPress={()=>{
+              setSelected(text?.id)
+              dispatch({
+                type:types.Itemadd,
+                payload:{item:text?.piece_name,id:text?.id}
+              })
+              navigation.goBack()
+            }}  style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text?.piece_name}</Text>
-                <TouchableOpacity onPress={()=>setSelected(text?.piece_name)} style={[styles.circle,{backgroundColor:selected==text?.piece_name?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
+                <View style={[styles.circle,{backgroundColor:selected==text?.id?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (
@@ -84,10 +92,10 @@ export default function Items(props) {
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>{
           navigation.goBack()
-          dispatch({
-            type:types.Itemadd,
-            payload:selected
-          })
+          // dispatch({
+          //   type:types.Itemadd,
+          //   payload:selected
+          // })
           }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>

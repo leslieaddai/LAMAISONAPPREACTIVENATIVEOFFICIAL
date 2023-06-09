@@ -32,43 +32,49 @@ import {
   FONTS,
 } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 
 export default function PriceList(props) {
+  const {Price} = useSelector(state=>state.Price)
   const dispatch = useDispatch()
-  const [selected,setSelected]=useState('');
+  const [selected,setSelected]=useState(Price);
   const navigation = useNavigation();
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text}</Text>
-                <TouchableOpacity onPress={()=>{
-                  setSelected(text)
-                }} style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
+            <TouchableOpacity onPress={()=>{
+              setSelected(text)
+              dispatch({
+                type:types.Priceadd,
+                payload: text
+              })
+              navigation.goBack()
+            }}  style={styles.optionWrap}>
+                <Text style={{color:'black'}}>{text==='301'?text+'+':'€'+text}</Text>
+                <View style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>{
-        navigation.goBack(),
-        dispatch({
-          type:types.Priceadd,
-          payload: selected
-        })
+        navigation.goBack()
+        // dispatch({
+        //   type:types.Priceadd,
+        //   payload: selected
+        // })
         }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>PRICE</Text>
       </View>
 
-      {options('€0-50')}
-      {options('€51-100')}
-      {options('€101-200')}
-      {options('€201-300')}
-      {options('€301+')}
+      {options('0-50')}
+      {options('51-100')}
+      {options('101-200')}
+      {options('201-300')}
+      {options('301')}
     </SafeAreaView>
   );
 }

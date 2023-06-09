@@ -52,19 +52,25 @@ export default function EditProfile(props) {
   const user = useSelector(state => state.userData)
   
   const selectImage = async () => {
-    const result = await launchImageLibrary({mediaType:'photo'});
+    const result = await launchImageLibrary({mediaType:'photo',quality:0});
     if (!result.didCancel) {
 
-      const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
-      const filename = result?.assets[0]?.uri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename);
-      const ext = match?.[1];
-      const type = match ? `image/${match[1]}` : `image`;
-    
-      setImages([{uri, name: filename, type}])
+      //console.log(result?.assets[0].type)
+      if(result?.assets[0].type === 'image/gif'){
+        errorMessage('Please select jpg or png image type.')
+      }else{
+        const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
+        const filename = result?.assets[0]?.uri.split("/").pop();
+        const match = /\.(\w+)$/.exec(filename);
+        const ext = match?.[1];
+        const type = match ? `image/${match[1]}` : `image`;
+      
+        setImages([{uri, name: filename, type}])
+  
+          //setImages(result.assets)
+          //console.log(result.assets); 
+      }
 
-        //setImages(result.assets)
-        //console.log(result.assets);
       }
   }
 
@@ -181,7 +187,7 @@ axios.request(config)
       </View>
 
       {settingOptions('DISPLAY PHOTO', 'brandProfileScreen')}
-      {props.route.params.user == 'brand' && (
+      {user?.userData?.role?.[0]?.id === 3 && (
         <>
         {settingOptions('ABOUT', 'about')}
         </>

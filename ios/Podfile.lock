@@ -464,6 +464,8 @@ PODS:
     - React-Core
   - react-native-netinfo (9.3.10):
     - React-Core
+  - react-native-network-info (5.2.1):
+    - React
   - react-native-render-html (6.3.4):
     - React-Core
   - react-native-safe-area-context (4.5.0):
@@ -677,6 +679,7 @@ DEPENDENCIES:
   - react-native-date-picker (from `../node_modules/react-native-date-picker`)
   - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-network-info (from `../node_modules/react-native-network-info`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
@@ -791,6 +794,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-image-picker"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-network-info:
+    :path: "../node_modules/react-native-network-info"
   react-native-render-html:
     :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
@@ -902,6 +907,7 @@ SPEC CHECKSUMS:
   react-native-date-picker: 89c419d88fa8e3c5f2d3cbae0bb7f7454ae8ea55
   react-native-image-picker: ec9b713e248760bfa0f879f0715391de4651a7cb
   react-native-netinfo: ccbe1085dffd16592791d550189772e13bf479e2
+  react-native-network-info: d1290ffc0bd0709e11436f5b8d7f605dcc5c4530
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
   React-perflogger: af8a3d31546077f42d729b949925cc4549f14def
@@ -937,4 +943,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 66e286c4c27395c6a6aacd7669f6f18741eb07b4
 
-COCOAPODS: 1.12.1
+COCOAPODS: 1.12.0

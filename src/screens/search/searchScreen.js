@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -33,12 +34,79 @@ import {
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
 import SearchComp from '../../components/searchComp';
+import LoaderComp from '../../components/loaderComp';
+
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { SearchUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
 
 export default function SearchScreen({navigation,route}) {
   const [selected, setSelected]=useState('brands');
   const [text,setText]= useState(route?.params)
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const [page,setPage]=useState();
+  const [pageNo,setPageNo]=useState();
+  const user = useSelector(state => state.userData)
+
+  const [loadingComp , setLoadingComp] = useState(false);
+
+  const {Price} = useSelector(state=>state.Price)
+  const color = useSelector(state=>state.Colour)
+  const size = useSelector(state=>state.Size)
+  const style = useSelector(state=>state.Style)
+  const item = useSelector(state=>state.Item)
+  const region = useSelector(state=>state.Continent)
+
+  useEffect(()=>{
+    getSearchResults('1')
+  },[])
+
+  const getSearchResults = (page_no) => {
+    setLoading(true);
+
+    let obj = {
+      keyword:text,
+      price_range:Price,
+    };
+
+    if(size?.Id!=='') { obj = {...obj, size:Number(size?.Id)}}
+    if(color?.Id!=='') { obj = {...obj, color:Number(color?.Id)}}
+    if(style?.Id!=='') { obj = {...obj, style:Number(style?.Id)}}
+    if(item?.Id!=='') { obj = {...obj, item:Number(item?.Id)}}
+    if(region?.Id!=='') { obj = {...obj, region:Number(region?.Id)}}
+    
+    axios
+    .post(SearchUrl+page_no,obj)
+    .then(async function (res) {
+       console.log(res?.data)
+       setData((prev) => [...prev, ...res?.data?.data]);
+       setPage(res?.data?.next_page_url);
+       setPageNo(res?.data?.current_page);
+       setLoading(false);
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+    });
+
+  }
+  
   return (
     <>
+    <View style={{position:'absolute',zIndex:999}}>
+{loadingComp && (
+      <LoaderComp/>
+    )}
+</View>
+
     <SafeAreaView style={{ flex: 0, backgroundColor: COLORS.appBackground }}></SafeAreaView>
     <SafeAreaView style={{flex:1, backgroundColor:'white'}}>
        <View style={styles.container}>
@@ -79,7 +147,29 @@ export default function SearchScreen({navigation,route}) {
         </TouchableOpacity>
       </View>
 
-      <ScrollView
+      {loading && data?.length===0 &&     <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>}
+
+      <FlatList
+      showsVerticalScrollIndicator={false}
+      contentContainerStyle={{paddingVertical:hp2(2),alignSelf:'center'}}
+      data={data}
+      numColumns={3}
+      onEndReached={()=> !loading && page!==null && getSearchResults(String(pageNo+1))}
+      onEndReachedThreshold={0.1}
+      renderItem={({item})=>{
+        return(
+          <SearchComp />
+        )
+      }}
+      />
+
+      {loading && data?.length!==0 && <View style={{  alignItems: 'center', justifyContent: 'center', paddingVertical:hp2(3)}}>
+      <SkypeIndicator size={26} color={'black'} />
+    </View>}
+
+      {/* <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           paddingBottom: hp2(12),
@@ -89,16 +179,8 @@ export default function SearchScreen({navigation,route}) {
           alignSelf: 'center',
         }}>
         <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-        <SearchComp />
-      </ScrollView>
+       
+      </ScrollView> */}
 
       {/* <BottomComp /> */}
     </View>

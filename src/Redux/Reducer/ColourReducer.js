@@ -2,6 +2,7 @@ import types from '../types';
 
 const initial_state = {
   Colour: "",
+  Id:"",
 };
 
 export default function (state = initial_state, action) {
@@ -9,7 +10,8 @@ export default function (state = initial_state, action) {
     case types.Colouradd:
       const data = action.payload;
       return {
-        Colour: data
+        Colour: data?.colour,
+        Id: data?.id,
       };
       break;
     default:

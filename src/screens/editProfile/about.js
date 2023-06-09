@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -33,8 +33,63 @@ import {
 } from '../../theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { GetBrandAbout, SaveBrandAbout} from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
+
 export default function About(props) {
-   
+
+  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const [data,setData]=useState([]);
+  const user = useSelector(state => state.userData)
+
+  const [description, setDescription] = useState(null);
+
+  useEffect(()=>{
+    setLoading(true);
+
+    axios
+    .get(GetBrandAbout, {
+        headers:{'Authorization':`Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+       console.log(res.data);
+       setDescription(res?.data?.data)
+       setLoading(false);   
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      errorMessage('Something went wrong!')
+    });
+  },[])
+
+  const onConfirm = () => {
+    setLoading(true);
+
+    axios
+    .post(SaveBrandAbout, {about:description}, {
+        headers:{'Authorization':`Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+       console.log(res.data);
+       //setStateChange(res.data.data);
+       setLoading(false);
+       successMessage('Done');   
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      setLoading(false);
+      //errorMessage('Something went wrong!')
+      errorMessage(error.response.data.message)
+    });
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
@@ -44,12 +99,18 @@ export default function About(props) {
         <Text style={styles.heading}>ABOUT</Text>
       </View>
 
+      {loading ? 
+    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
+      <SkypeIndicator color={'black'} />
+    </View>
+    :
       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
       <View style={styles.textBox}>
         <TextInput
           placeholder="MAXIMUM OF 300 CHARACTERS"
           placeholderTextColor={'grey'}
           multiline={true}
+          maxLength={300}
           style={{
             flex: 1,
             color: 'black',
@@ -57,13 +118,16 @@ export default function About(props) {
             fontSize: rfv(14),
             textAlignVertical: 'top',
           }}
+          value={description}
+          onChangeText={(val) => setDescription(val)}
         />
       </View>
-        <TouchableOpacity
+        <TouchableOpacity onPress={onConfirm}
           style={styles.button}>
           <Text style={styles.buttonText}>CONFIRM</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>
+}
     </SafeAreaView>
   );
 }

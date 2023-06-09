@@ -48,6 +48,9 @@ import Animated, { FadeInUp,FadeOutUp, Layout } from 'react-native-reanimated';
 
 export default function ResetPassScreen(props) {
 
+  const special =/[!@#\$%\^\&*\)\(+=._-]/g
+  const numeric = /[0-9]/
+
   const user = useSelector(state => state.userData)
   const dispatch = useDispatch()
 
@@ -79,12 +82,13 @@ export default function ResetPassScreen(props) {
 
              setLoading(false);
              setVerifyCode(true);
-             successMessage('Verification Code Has Been Sent!')
+             successMessage('Verification code is sent to your email. Please check.')
           }) 
           .catch(function (error) {
             console.log(error.response.data)
             setLoading(false);
-            errorMessage('Something Went Wrong!')
+            //errorMessage('Something Went Wrong!')
+            errorMessage(error.response.data.message)
             //errorMessage(errorHandler(error))
           });
     }else{
@@ -109,12 +113,14 @@ export default function ResetPassScreen(props) {
 
              setLoading(false);
              setShowReset(true);
-             successMessage('Code Has Been Verified!')
+             //successMessage('Code Has Been Verified!')
+             successMessage('Enter your new password')
           }) 
           .catch(function (error) {
             console.log(error.response.data)
             setLoading(false);
-            errorMessage('Something Went Wrong!')
+            //errorMessage('Something Went Wrong!')
+            errorMessage(error?.response?.data?.errors?.password_reset_code[0])
             //errorMessage(errorHandler(error))
           });
     }else{
@@ -125,38 +131,43 @@ export default function ResetPassScreen(props) {
   const onResetPassword = () => {
     if (newPassword !== '' && confirmPassword !== ''){
       if (newPassword.length >= 8){
-        if(newPassword === confirmPassword){
-          
-          setLoading(true);
+        if(numeric.test(newPassword)){
+          if(special.test(newPassword)){
+            if(newPassword === confirmPassword){
+              setLoading(true);
 
-      let obj = {
-        email: email,
-        password: newPassword,
-        password_confirmation: confirmPassword
-    }
-
-      axios
-          .post(ResetPasswordUrl,obj)
-          .then(async function (res) {
-             console.log(res.data);
-
-             setLoading(false);
-             props.navigation.navigate('loginScreen')
-             successMessage('Password Changed Successfully!')
-          }) 
-          .catch(function (error) {
-            console.log(error.response.data)
-            setLoading(false);
-            errorMessage('Something Went Wrong!')
-            //errorMessage(errorHandler(error))
-          });
-
+              let obj = {
+                email: email,
+                password: newPassword,
+                password_confirmation: confirmPassword
+            }
+        
+              axios
+                  .post(ResetPasswordUrl,obj)
+                  .then(async function (res) {
+                     console.log(res.data);
+        
+                     setLoading(false);
+                     props.navigation.navigate('loginScreen')
+                     successMessage('Password Changed Successfully!')
+                  }) 
+                  .catch(function (error) {
+                    console.log(error.response.data)
+                    setLoading(false);
+                    errorMessage('Something Went Wrong!')
+                    //errorMessage(errorHandler(error))
+                  });
+            }else{
+              setShowPassNotMatch(true);
+              setTimeout(()=>{
+                setShowPassNotMatch(false);
+              },3000)
+            }
+          }else{
+            errorMessage('Password must include at least 1 special character')
+          }
         }else{
-          //errorMessage('Confirm password not matched')
-          setShowPassNotMatch(true);
-          setTimeout(()=>{
-            setShowPassNotMatch(false);
-          },3000)
+          errorMessage('Password must include at least 1 Numerical character')
         }
       }else{
         errorMessage('Password must be at least 8 characters')
@@ -201,6 +212,17 @@ export default function ResetPassScreen(props) {
             secureTextEntry={true}
           />
         </Animated.View>
+
+        <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={{alignSelf: 'center', marginTop: hp2(2),width:wp2(80)}}>
+          <Text style={[styles.textTwo,{color:newPassword.length>=8?COLORS.green:COLORS.red}]}>Must be at least 8 characters</Text>
+          <Text style={[styles.textTwo,{color:numeric.test(newPassword)?COLORS.green:COLORS.red}]}>
+            Must include at least 1 Numerical character
+          </Text>
+          <Text style={[styles.textTwo,{color:newPassword.match(special)?COLORS.green:COLORS.red}]}>
+            Must include at least 1 special character ( Examples !”£$)
+          </Text>
+        </Animated.View>
+
         <TouchableOpacity
           onPress={onResetPassword}
           style={styles.button}>
@@ -221,7 +243,7 @@ export default function ResetPassScreen(props) {
     )}
 </View>
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}>
+      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}> */}
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           resetPasswordComp()
@@ -273,7 +295,7 @@ export default function ResetPassScreen(props) {
             </TouchableOpacity>
           </>
         )}
-      </KeyboardAwareScrollView>
+      {/* </KeyboardAwareScrollView> */}
     </SafeAreaView>
     </>
   );
@@ -336,4 +358,5 @@ const styles = StyleSheet.create({
     fontSize: rfv(11),
     textTransform: 'uppercase',
   },
+  textTwo: { fontWeight: '700', fontSize: rfv(10)},
 });

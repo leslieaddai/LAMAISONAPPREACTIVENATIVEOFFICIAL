@@ -2,6 +2,7 @@ import types from '../types';
 
 const initial_state = {
   Item: "",
+  Id:"",
 };
 
 export default function (state = initial_state, action) {
@@ -9,7 +10,8 @@ export default function (state = initial_state, action) {
     case types.Itemadd:
       const data = action.payload;
       return {
-       Item: data
+       Item: data?.item,
+       Id: data?.id,
       };
       break;
     default:

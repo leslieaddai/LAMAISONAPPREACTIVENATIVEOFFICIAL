@@ -32,7 +32,14 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
-import { useSelector } from 'react-redux';
+
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import { errorHandler } from '../../config/helperFunction';
+import { PiecesUrl } from '../../config/Urls';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
 
 export default function FilterScreen({navigation,route}) {
   const {Price} = useSelector(state=>state.Price)
@@ -41,26 +48,62 @@ export default function FilterScreen({navigation,route}) {
   const {Style} = useSelector(state=>state.Style)
   const {Item} = useSelector(state=>state.Item)
   const {Continent} = useSelector(state=>state.Continent)
+
+  const dispatch = useDispatch()
+  
   console.log(route.params)
-  const settingOptions = (name, navScreen) => {
+  const settingOptions = (name, navScreen, text) => {
     return (
       <TouchableOpacity onPress={() => navigation.navigate(navScreen)} style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
+        <Text style={{color: 'black',position:'absolute',left:wp2(36)}}>{text}</Text>
          <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
       </TouchableOpacity>
     );
   };
+  const resetFilters = () => {
+    dispatch({
+      type:types.Priceadd,
+      payload: ''
+    })
+
+    dispatch({
+      type:types.Sizeadd,
+      payload: {size:'',id:''}
+    })
+
+    dispatch({
+      type:types.Colouradd,
+      payload:{colour:'',id:''}
+    })
+
+    dispatch({
+      type:types.Styleadd,
+      payload:{style:'',id:''}
+    })
+
+    dispatch({
+      type:types.Itemadd,
+      payload:{item:'',id:''}
+    })
+
+    dispatch({
+      type:types.Continetadd,
+      payload:{continent:'',id:''}
+    })
+  }
+
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
       <Text style={styles.heading}>FILTERS</Text>
 
-      {settingOptions('PRICE', 'priceList')}
-      {settingOptions('SIZE', 'sizeClothing')}
-      {settingOptions('COLOUR', 'colourClothing')}
-      {settingOptions('STYLE', 'style')}
-      {settingOptions('ITEM', 'items')}
-      {settingOptions('CONTINENTS', 'continents')}
+      {settingOptions('PRICE', 'priceList',Price)}
+      {settingOptions('SIZE', 'sizeClothing',Size)}
+      {settingOptions('COLOUR', 'colourClothing',Colour)}
+      {settingOptions('STYLE', 'style',Style)}
+      {settingOptions('ITEM', 'items',Item)}
+      {settingOptions('CONTINENTS', 'continents',Continent)}
 
       <TouchableOpacity style={styles.button}
       onPress={()=>{
@@ -70,6 +113,10 @@ export default function FilterScreen({navigation,route}) {
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(20)}}>
           APPLY FILTER(S)
         </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={resetFilters} style={{alignSelf:'center',marginTop:hp2(2)}}>
+        <Text style={styles.resetText}>RESET FILTERS</Text>
       </TouchableOpacity>
 
       {/* <BottomComp /> */}
@@ -121,5 +168,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  resetText:{
+    color:'black',
+    fontSize:rfv(12),
+    fontWeight:'700',
+    textDecorationLine:'underline',
   },
 });

@@ -32,10 +32,11 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 export default function Popular(props) {
+  console.log(props?.data)
   const navigation = useNavigation();
   return (
     <TouchableOpacity 
-    onPress={()=>navigation.navigate('dressingRoomScreen')} 
+    onPress={()=>navigation.navigate('dressingRoomScreen',{data:{product:{id:props?.data?.product_id}}})} 
     // onPress={()=>navigation.reset({
     //   index: 0,
     //   routes: [{ name: 'dressingRoomScreen' }],
@@ -47,15 +48,16 @@ export default function Popular(props) {
     //   },
     // })}
     style={styles.container}>
-        <Text style={{color:'black',marginLeft:wp2(3)}}>{props.no}</Text>
+        <Text style={{color:'black',marginLeft:wp2(3)}}>{props?.no+1}</Text>
         <View style={styles.productImage}>
       <Image
-            source={IMAGES.randomPic}
+            //source={IMAGES.randomPic}
+            source={{uri:props?.data?.product?.product_images?.[0]?.image?.[0]?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
       </View>
-      <Text style={{color:'black'}}>Souvenir Shorts - Black/Concrete</Text>
+      <Text style={{color:'black'}}>{props?.data?.product?.name}</Text>
     </TouchableOpacity>
   );
 }

@@ -104,6 +104,9 @@ export default function ImageUploadLookbook(props) {
   const [isOpened,setIsOpened]=useState(false);
   const [selectedText, setSelectedText]=useState('SELECT STYLE');
 
+  const [isOpenedShipping,setIsOpenedShipping]=useState(false);
+  const [regions,setRegions]=useState([]);
+
   //const [colorBox, setColorBox]=useState(false);
   //const [addQuantity, setAddQuantity]=useState([1]);
 
@@ -329,7 +332,7 @@ export default function ImageUploadLookbook(props) {
   }
 
   const productDetails = () => {
-    if(stateChange.productName!=='' && stateChange.pieces!=='' && stateChange.description!=='' && stateChange.price!=='' && selectedText !== 'SELECT STYLE' ){
+    if(stateChange.productName!=='' && stateChange.pieces!=='' && stateChange.description!=='' && stateChange.price!=='' && selectedText !== 'SELECT STYLE' && regions.length!==0 ){
       setShowQuantity(true)
     }else{
       errorMessage('Please fill all details!')
@@ -337,6 +340,7 @@ export default function ImageUploadLookbook(props) {
   }
 
   const verifyQuantity = () => {
+    let tempDuplicate = quantity.filter((v,i,a)=>a.findIndex(v2=>(v2.color_id===v.color_id&&v2.size_id===v.size_id))===i);
     let tempValue=0;
     quantity.map((obj,index) => {
       if(obj.color === '' || obj.color_id === '' || obj.size === '' || obj.size_id === '' || obj.quantity === ''){
@@ -347,8 +351,17 @@ export default function ImageUploadLookbook(props) {
       }
     });
     if(quantity.length===tempValue){
-      setConfirmButton(true)
+      if(quantity.length===tempDuplicate.length){
+        setConfirmButton(true)
+      }else{
+        errorMessage('Please remove duplicate variations!')
+      }
     }
+  }
+
+  const addRegions = (item,index) => {
+    regions.some( e => e.regionId === item?.shipping_id ) ? (setRegions(regions.filter(e => e.regionId !== item?.shipping_id))) : setRegions([...regions,{regionName:item?.shipping?.name,regionId:item?.shipping_id}])
+    console.log(regions)
   }
 
   const uploadProduct = () => {
@@ -397,6 +410,9 @@ formdata.append("status", 1);
 // formdata.append("image[]", selectedImage[1]);
 selectedImage.map((item,index)=>{
   formdata.append("image[]", item);
+})
+regions.map((item,index)=>{
+  formdata.append("regions[]", item?.regionId);
 })
 
 // console.log(Array.isArray(selectedImage))
@@ -600,6 +616,23 @@ selectedImage.map((item,index)=>{
             onChangeText={(val) => updateState({description:val})}
           />
         </View>
+        <TouchableOpacity onPress={()=>isOpenedShipping?setIsOpenedShipping(false):setIsOpenedShipping(true)} style={[styles.inputBox,{flexDirection:'row',alignItems:'center',paddingHorizontal:wp2(2),justifyContent:'space-between'}]}>
+            {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>SELECT SHIPPING DETAILS</Text> */}
+            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{regions.length!==0?regions.map((item,index)=>(item?.regionName+' ')):'SELECT SHIPPING DETAILS'}</Text>
+            <View>
+            <ICONS.FontAwesome name={isOpenedShipping ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22} />
+            </View>
+        </TouchableOpacity>
+        {isOpenedShipping && (
+            <View style={[styles.styleBox]}>     
+                {props?.route?.params?.shippingData.map((item,index)=>(
+                    <TouchableOpacity onPress={()=>addRegions(item,index)} key={index} style={{flexDirection:'row',width:wp2(80),height:hp2(6),alignItems:'center',justifyContent:'center',borderRadius:wp2(2),overflow:'hidden'}}>
+                    <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13),position:'absolute',left:10}}>{item?.shipping?.name}</Text>
+                    <ICONS.AntDesign name={regions.some( e => e.regionId === item?.shipping_id )?"checkcircle":"checkcircleo"} size={24} color={regions.some( e => e.regionId === item?.shipping_id )?"black":"lightgray"} style={{position:'absolute',right:10}} />
+                    </TouchableOpacity>
+                ))}
+        </View>
+        )}
         <View style={styles.inputBox}>
           <TextInput
             style={{
@@ -620,12 +653,12 @@ selectedImage.map((item,index)=>{
          <Text>colour</Text>
         </TouchableOpacity> */}
 
-        <View style={[styles.inputBox,{flexDirection:'row',alignItems:'center',paddingHorizontal:wp2(2),justifyContent:'space-between'}]}>
+        <TouchableOpacity onPress={()=>isOpened?setIsOpened(false):setIsOpened(true)} style={[styles.inputBox,{flexDirection:'row',alignItems:'center',paddingHorizontal:wp2(2),justifyContent:'space-between'}]}>
             <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{selectedText}</Text>
-            <TouchableOpacity onPress={()=>isOpened?setIsOpened(false):setIsOpened(true)}>
+            <View>
             <ICONS.FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22} />
-            </TouchableOpacity>
-        </View>
+            </View>
+        </TouchableOpacity>
 
         {isOpened && (
             <View style={[styles.styleBox]}>     
@@ -714,11 +747,14 @@ selectedImage.map((item,index)=>{
           <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
             <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{stateChange.pieces}</Text>
           </View>
-          <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
+          <View style={[styles.inputBox2,{minHeight:hp2(6),justifyContent:'center',paddingHorizontal:wp2(2)}]}>
            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{stateChange.description}</Text>
           </View>
-          <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
+          {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>free shipping to all regions</Text>
+          </View> */}
+          <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
+           <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{regions.map((item,index)=>(item?.regionName+' '))}</Text>
           </View>
           <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{stateChange.price}</Text>
@@ -847,6 +883,24 @@ const styles = StyleSheet.create({
   inputBox: {
     width: wp2(80),
     height: hp2(6),
+    backgroundColor: 'white',
+    borderRadius: wp2(4),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    marginVertical: hp2(1),
+    alignSelf:'center',
+  },
+  inputBox2: {
+    width: wp2(80),
+    //height: hp2(6),
+    paddingVertical:hp2(1),
+    paddingHorizontal:wp2(2),
     backgroundColor: 'white',
     borderRadius: wp2(4),
     shadowColor: '#000',

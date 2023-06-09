@@ -34,7 +34,7 @@ export default function LineComp(props) {
   return (
     <View style={styles.lineWrap}>
         <View style={styles.line}></View>
-        <Text style={{color: 'black'}}>08/22</Text>
+        <Text style={{color: 'black'}}>{props?.date}</Text>
         <View
           style={[styles.line, {marginLeft: wp2(2), marginRight: wp2(0)}]}></View>
       </View>

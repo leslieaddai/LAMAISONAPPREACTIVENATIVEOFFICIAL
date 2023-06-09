@@ -42,7 +42,8 @@ import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 export default function ColourClothing(props) {
-  const [selected,setSelected]=useState();
+  const {Colour,Id} = useSelector(state=>state.Colour)
+  const [selected,setSelected]=useState(Id);
   const navigation = useNavigation();
 
   const dispatch = useDispatch()
@@ -73,8 +74,15 @@ export default function ColourClothing(props) {
 
   const color = (col) => {
     return(
-      <TouchableOpacity onPress={()=>setSelected(col)} style={[styles.color,{backgroundColor:col?.color_code}]}>
-         {selected===col && (
+      <TouchableOpacity onPress={()=>{
+        setSelected(col?.id)
+        dispatch({
+          type:types.Colouradd,
+          payload:{colour:col?.color_name,id:col?.id}
+        })
+        navigation.goBack()
+      }} style={[styles.color,{backgroundColor:col?.color_code}]}>
+         {selected===col?.id && (
          <ICONS.AntDesign 
          name="checkcircle" 
          size={20} 
@@ -93,11 +101,11 @@ export default function ColourClothing(props) {
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>{
-          navigation.goBack(),
-          dispatch({
-            type:types.Colouradd,
-            payload:selected?.color_code
-          })
+          navigation.goBack()
+          // dispatch({
+          //   type:types.Colouradd,
+          //   payload:selected?.color_code
+          // })
           }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>

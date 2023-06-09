@@ -79,24 +79,24 @@ export default function Sizes(props) {
 
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
+            <TouchableOpacity onPress={()=>{
+              //setSelected(text)
+              const newState = props.route.params.state.quantity.map((obj,index) => {
+                  // :point_down:️ if id equals 2, update country property
+                  if (index === props.route.params.key) {
+                    return {...obj, size: text.size,size_id:text.id};
+                  }
+                  // :point_down:️ otherwise return the object as is
+                  return obj;
+                });
+                props.route.params.state.setQuantity(newState);
+                props.navigation.goBack();
+
+              }}  style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text.size}</Text>
                 {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
-                <TouchableOpacity onPress={()=>{
-                    //setSelected(text)
-                    const newState = props.route.params.state.quantity.map((obj,index) => {
-                        // :point_down:️ if id equals 2, update country property
-                        if (index === props.route.params.key) {
-                          return {...obj, size: text.size,size_id:text.id};
-                        }
-                        // :point_down:️ otherwise return the object as is
-                        return obj;
-                      });
-                      props.route.params.state.setQuantity(newState);
-                      props.navigation.goBack();
-
-                    }} style={[styles.circle,{backgroundColor:props.route.params.state.quantity[props.route.params.key].size===text.size?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
+                <View style={[styles.circle,{backgroundColor:props.route.params.state.quantity[props.route.params.key].size===text.size?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (

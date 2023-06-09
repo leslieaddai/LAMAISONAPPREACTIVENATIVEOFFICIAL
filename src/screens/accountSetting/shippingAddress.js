@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -36,7 +37,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { GetShippingAddress,ChangeShippingAddress } from '../../config/Urls';
+import { GetShippingAddress,ChangeShippingAddress,GetRegionsAll,GetCountries } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -49,11 +50,12 @@ export default function ShippingAddress(props) {
   const user = useSelector(state => state.userData)
 
   const [stateChange, setStateChange] = useState({
-    address_1:'',
-    address_2:'',
-    city:'',
-    country:'',
-    postcode:'',
+    address_1:null,
+    address_2:null,
+    city:null,
+    region:null,
+    country:null,
+    postcode:null,
   })
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {
@@ -61,8 +63,17 @@ export default function ShippingAddress(props) {
     address_2,
     city,
     country,
+    region,
     postcode,
   } = stateChange;
+
+  const [isOpenedRegions,setIsOpenedRegions]=useState(false);
+  const [selectedRegion, setSelectedRegion]=useState('SELECT REGION');
+  const [regionsData,setRegionsData]=useState([]);
+
+  const [isOpenedCountries,setIsOpenedCountries]=useState(false);
+  const [selectedCountry, setSelectedCountry]=useState('SELECT COUNTRY');
+  const [countriesData,setCountriesData]=useState([]);
 
   useEffect(()=>{
     setLoading(true);
@@ -73,7 +84,14 @@ export default function ShippingAddress(props) {
     })
     .then(async function (res) {
        console.log(res.data);
-       setStateChange(res.data.data);
+       setStateChange({address_1:res?.data?.data?.address_1,address_2:res?.data?.data?.address_2,city:res?.data?.data?.city,country:res?.data?.data?.country?.country_id,region:res?.data?.data?.region?.id,postcode:res?.data?.data?.postcode});
+       if(res?.data?.data?.region !== null){
+        setSelectedRegion(res?.data?.data?.region?.name)
+       }
+       if(res?.data?.data?.region !== null && res?.data?.data?.country !== null){
+        getAllCountries(res?.data?.data?.region?.code)
+        setSelectedCountry(res?.data?.data?.country?.name)
+       }
        setLoading(false);   
     }) 
     .catch(function (error) {
@@ -81,7 +99,10 @@ export default function ShippingAddress(props) {
       setLoading(false);
       errorMessage('Something went wrong!')
     });
+  },[])
 
+  useEffect(()=>{
+    getAllRegions()
   },[])
 
   const onConfirm = () => {
@@ -94,13 +115,52 @@ export default function ShippingAddress(props) {
     .then(async function (res) {
        console.log(res.data);
        //setStateChange(res.data.data);
-       setLoading(false);   
+       setLoading(false);
+       successMessage('Shipping address saved successfully.')   
     }) 
     .catch(function (error) {
       console.log(error.response.data)
       setLoading(false);
       //errorMessage('Something went wrong!')
       errorMessage(error.response.data.message)
+    });
+  }
+
+  const getAllRegions = () => {
+    axios
+    .get(GetRegionsAll, {
+        headers:{'Authorization':`Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+       //console.log(res.data);
+       //setStateChange(res.data.data);
+       setRegionsData(res?.data?.data);
+       //setLoading(false);   
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      //setLoading(false);
+      errorMessage('Something went wrong to get regions list!')
+      //errorMessage(error.response.data.message)
+    });
+  }
+
+  const getAllCountries = (country_code) => {
+    axios
+    .get(GetCountries+country_code, {
+        headers:{'Authorization':`Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+       //console.log(res.data);
+       //setStateChange(res.data.data);
+       setCountriesData(res?.data?.data);
+       //setLoading(false);   
+    }) 
+    .catch(function (error) {
+      console.log(error.response.data)
+      //setLoading(false);
+      errorMessage('Something went wrong to get countries list!')
+      //errorMessage(error.response.data.message)
     });
   }
 
@@ -193,7 +253,59 @@ export default function ShippingAddress(props) {
             />
           </View>
 
-          <View style={styles.inputBox}>
+          {/* <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              placeholderTextColor={'grey'}
+              placeholder={'REGION'}
+              value={stateChange.region}
+              onChangeText={(val) => updateState({region:val})}
+            />
+          </View> */}
+
+        <TouchableOpacity onPress={()=>isOpenedRegions?setIsOpenedRegions(false):setIsOpenedRegions(true)} style={[styles.inputBox,{flexDirection:'row',alignItems:'center',paddingHorizontal:wp2(2),justifyContent:'space-between'}]}>
+            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{selectedRegion}</Text>
+            <View >
+            <ICONS.FontAwesome name={isOpenedRegions ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22} />
+            </View>
+        </TouchableOpacity>
+
+        {isOpenedRegions && (
+            <View style={[styles.styleBox]}>     
+                {regionsData?.map((item,index)=>(
+                    <TouchableOpacity onPress={()=>{setSelectedRegion(item?.name); updateState({region:Number(item?.id)}); setIsOpenedRegions(false); setSelectedCountry('SELECT COUNTRY'); updateState({country:null}); getAllCountries(item?.code);}} key={index} style={{flexDirection:'row',width:wp2(80),height:hp2(6),alignItems:'center',justifyContent:'center',borderRadius:wp2(2),overflow:'hidden'}}>
+                    <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13),position:'absolute',left:10}}>{item?.name}</Text>
+                    {selectedRegion===item?.name && <ICONS.Entypo name="check" size={24} color="black" style={{position:'absolute',right:10}} />}
+                    </TouchableOpacity>
+                ))}
+        </View>
+        )}
+
+        <TouchableOpacity disabled={selectedRegion==='SELECT REGION'?true:false} onPress={()=>isOpenedCountries?setIsOpenedCountries(false):setIsOpenedCountries(true)} style={[styles.inputBox,{flexDirection:'row',alignItems:'center',paddingHorizontal:wp2(2),justifyContent:'space-between'}]}>
+            <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>{selectedCountry}</Text>
+            <View >
+            <ICONS.FontAwesome name={isOpenedCountries ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22} />
+            </View>
+        </TouchableOpacity>
+
+        {isOpenedCountries && countriesData.length!==0 && (
+            <View style={[styles.styleBox]}>
+                {countriesData?.map((item,index)=>(
+                    <TouchableOpacity onPress={()=>{setSelectedCountry(item?.name); updateState({country:Number(item?.country_id)}); setIsOpenedCountries(false);}} key={index} style={{flexDirection:'row',width:wp2(80),height:hp2(6),alignItems:'center',justifyContent:'center',borderRadius:wp2(2),overflow:'hidden'}}>
+                    <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13),position:'absolute',left:10}}>{item?.name}</Text>
+                    {selectedCountry===item?.name && <ICONS.Entypo name="check" size={24} color="black" style={{position:'absolute',right:10}} />}
+                    </TouchableOpacity>
+                ))}
+            </View>
+        )}
+
+          {/* <View style={styles.inputBox}>
             <TextInput
               style={{
                 flex: 1,
@@ -207,7 +319,7 @@ export default function ShippingAddress(props) {
               value={stateChange.country}
               onChangeText={(val) => updateState({country:val})}
             />
-          </View>
+          </View> */}
 
           <View style={styles.inputBox}>
             <TextInput
@@ -222,7 +334,8 @@ export default function ShippingAddress(props) {
               placeholder={'POSTCODE'}
               value={stateChange.postcode}
               onChangeText={(val) => updateState({postcode:val})}
-              keyboardType='number-pad'
+              //keyboardType='number-pad'
+              maxLength={10}
             />
           </View>
           
@@ -268,6 +381,21 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
     marginVertical: hp2(1),
+    alignSelf:'center',
+  },
+  styleBox:{
+    width: wp2(80),
+    backgroundColor: 'white',
+    borderRadius: wp2(4),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    overflow:'hidden',
     alignSelf:'center',
   },
   button: {

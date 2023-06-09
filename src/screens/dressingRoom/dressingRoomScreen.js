@@ -39,7 +39,7 @@ import BottomComp from '../../components/bottomComp';
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { AddToBasketUrl,AddWishListUrl,GetProductInfoById,ProductLike,ProductShare,ProductDislike,GetAppNotice } from '../../config/Urls';
+import { RemoveFromWishlist,AddToBasketUrl,AddWishListUrl,GetProductInfoById,ProductLike,ProductShare,ProductDislike,GetAppNotice } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -265,6 +265,85 @@ export default function DressingRoomScreen(props) {
     ]);
   }
 
+  const RemoveWishlist = () => {
+    Alert.alert('Confirmation', 'Do you want to remove this product from your wishlist?', [
+      {
+        text: 'No',
+        onPress: () => console.log('No Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Yes', onPress: () => {
+        //hanger!==null ? setHanger(false) : setHanger(true)
+        setLoading(true);
+
+        let config = {
+          method: 'delete',
+          maxBodyLength: Infinity,
+          url: RemoveFromWishlist+props?.route?.params?.data?.product?.id,
+          headers: { 
+            'Authorization': `Bearer ${user.token}`, 
+            'Accept': 'application/json'
+          },
+        };
+
+        axios.request(config)
+        .then(async function (res) {
+           console.log(res.data);
+           //setHanger(true)
+
+           axios
+           .get(GetProductInfoById+`${props?.route?.params?.data?.product?.id}`)
+           .then(async function (res) {
+              setData(res?.data?.data);  
+
+              if(user?.token !== ''){
+
+                axios
+                .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`)
+                .then(async function (res){
+                  //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+                  setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+                  //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+    
+                  setLoading(false);
+                  successMessage('Success') 
+                })
+                .catch(function (e){
+                  console.log(e.response.data)
+    
+                  setLoading(false);
+                  errorMessage('Something went wrong to update state of wishlists!')
+                });
+        
+               }else{
+                 setLoading(false);
+                 successMessage('Success') 
+               }
+
+              //setLoading(false);
+              //successMessage('Success')
+           }) 
+           .catch(function (error) {
+             console.log(error?.response?.data)
+             setLoading(false);
+             errorMessage('Something went wrong to update wishlists!')
+           });
+
+          //  setLoading(false);
+          //  successMessage('Success')
+        }) 
+        .catch(function (error) {
+          console.log(error.response.data)
+          setLoading(false);
+          errorMessage('Something went wrong to remove product from wishlist!')
+          //errorMessage(error?.response?.data?.message)
+        });
+
+      }
+      },
+    ]);
+  }
+
   const productLikeDislike = () => {
     //heart ? setHeart(false) : setHeart(true)
 
@@ -470,7 +549,7 @@ export default function DressingRoomScreen(props) {
             <Text style={{color: 'black'}}>{data?.product_likes_count}</Text>
             <TouchableOpacity
               onPress={() => {
-                user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? AddWishlist() : errorMessage('You cant add to wishlist!')
+                user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? hanger!==null?RemoveWishlist():AddWishlist() : errorMessage('You cant add to wishlist!')
               }}>
               <ICONS.MaterialCommunityIcons
                 name="hanger"
@@ -548,8 +627,7 @@ export default function DressingRoomScreen(props) {
                         shipping information
                       </Text>
                       <Text style={[styles.text,{paddingBottom:hp2(3)}]}>
-                        Free shipping Worldwide, you may be subject to taxes
-                        depending on where the item will be shipped to.
+                        {data?.user?.shipping_information?.description}
                       </Text>
                       </ScrollView>
                     </View>
@@ -698,19 +776,19 @@ export default function DressingRoomScreen(props) {
               onPress={AddBasket}
               style={[
                 styles.button,
-                {width: wp2(36), marginHorizontal: wp2(2)},
+                {width: wp2(40), marginHorizontal: wp2(2)},
               ]}>
               <Text style={styles.buttonText}>ADD TO BASKET</Text>
             </TouchableOpacity>
             <TouchableOpacity
             onPress={()=>{
-              user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? AddWishlist() : errorMessage('You cant add to wishlist!')
+              user?.userData?.role?.[0]?.id !==3 && user?.token !== '' ? hanger!==null?RemoveWishlist():AddWishlist() : errorMessage('You cant add to wishlist!')
             }}
               style={[
                 styles.button,
-                {width: wp2(36), marginHorizontal: wp2(2)},
+                {width: wp2(40), marginHorizontal: wp2(2)},
               ]}>
-              <Text style={styles.buttonText}>ADD TO WISHLIST</Text>
+              <Text style={styles.buttonText}>{hanger!==null?'REMOVE FROM WISHLIST':'ADD TO WISHLIST'}</Text>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -803,7 +881,7 @@ const styles = StyleSheet.create({
     paddingVertical: hp2(1),
   },
   button: {
-    width: wp2(26),
+    width: wp2(36),
     height: hp2(5),
     backgroundColor: 'black',
     borderRadius: wp2(10),
@@ -822,6 +900,6 @@ const styles = StyleSheet.create({
   buttonText: {
     color: 'white',
     fontWeight: '700',
-    fontSize: rfv(11),
+    fontSize: rfv(8),
   },
 });

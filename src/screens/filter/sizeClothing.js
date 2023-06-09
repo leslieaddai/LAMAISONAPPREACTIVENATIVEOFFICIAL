@@ -42,7 +42,8 @@ import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 export default function SizeClothing(props) {
-  const [selected,setSelected]=useState('');
+  const {Size,Id} = useSelector(state=>state.Size)
+  const [selected,setSelected]=useState(Id);
   const navigation = useNavigation();
 
   const dispatch = useDispatch()
@@ -75,15 +76,18 @@ export default function SizeClothing(props) {
 
     const options = (text) => {
         return(
-            <View style={styles.optionWrap}>
+            <TouchableOpacity onPress={()=>{
+              setSelected(text?.id)
+              dispatch({
+                type:types.Sizeadd,
+                payload: {size:text?.size,id:text?.id}
+              })
+              navigation.goBack()
+            }} style={styles.optionWrap}>
                 <Text style={{color:'black'}}>{text?.size}</Text>
                 {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
-                <TouchableOpacity 
-                onPress={()=>setSelected(text)} 
-                style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}>
-
-                </TouchableOpacity>
-            </View>
+                <View style={[styles.circle,{backgroundColor:selected==text.id?'black':'#D9D9D9'}]}></View>
+            </TouchableOpacity>
         )
     }
   return (
@@ -91,10 +95,10 @@ export default function SizeClothing(props) {
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>{
           navigation.goBack()
-          dispatch({
-            type:types.Sizeadd,
-            payload:selected.size
-          })
+          // dispatch({
+          //   type:types.Sizeadd,
+          //   payload:selected.size
+          // })
           }} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
@@ -106,6 +110,8 @@ export default function SizeClothing(props) {
       <SkypeIndicator color={'black'} />
     </View>
     :<>
+    <ScrollView showsVerticalScrollIndicator={false}>
+
       <Text style={{
         marginVertical:hp2(1),
         color:'black',
@@ -138,6 +144,7 @@ export default function SizeClothing(props) {
         </View>
     )})}
 
+    </ScrollView>
     </>
     }
       

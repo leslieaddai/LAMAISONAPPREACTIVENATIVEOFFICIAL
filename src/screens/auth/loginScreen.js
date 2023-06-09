@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -84,7 +84,7 @@ export default function LoginScreen(props) {
        if(res.data.user.email_verified===false){
         errorMessage('Please verify your email')
        }else{
-         successMessage('Login Success')
+         successMessage('Login Successfully')
          dispatch({
           type:types.CartCount,
           payload:res.data.user.basket_count
@@ -160,7 +160,9 @@ NetworkInfo.getIPAddress().then(ipAddress => {
     )}
 </View>
     <SafeAreaView style={styles.container}>
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4),flexGrow:1}}>
+      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4),flexGrow:1}}> */}
+      <View style={{flexGrow:1}}>
+
         <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
         {showError && (
           <AlertComp text="Username or Password is incorrect"/>
@@ -219,7 +221,8 @@ NetworkInfo.getIPAddress().then(ipAddress => {
         </TouchableOpacity>
         
         </Animated.View>
-      </KeyboardAwareScrollView>
+        </View>
+      {/* </KeyboardAwareScrollView> */}
     </SafeAreaView>
     </>
   );

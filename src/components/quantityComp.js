@@ -36,7 +36,9 @@ export default function QuantityComp(props) {
   //console.log(props)
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={()=>navigation.navigate('color',{key:props.key2,state:props.state})} style={[styles.colorBox,{backgroundColor:props.state.quantity[props.key2].color!==''?props.state.quantity[props.key2].color:COLORS.appBackground}]}></TouchableOpacity>
+        <TouchableOpacity onPress={()=>navigation.navigate('color',{key:props.key2,state:props.state})} style={[styles.colorBox,{backgroundColor:props.state.quantity[props.key2].color!==''?props.state.quantity[props.key2].color:COLORS.appBackground,alignItems:'center',justifyContent:'center'}]}>
+        {props.state.quantity[props.key2].color===''&& <ICONS.Ionicons name="color-fill" size={24} color="black" />}
+        </TouchableOpacity>
 
         <TouchableOpacity onPress={()=>navigation.navigate('sizes',{key:props.key2,state:props.state})} style={[styles.inputBox,{alignItems:'center',justifyContent:'center'}]}>
          <Text style={{color:'black',fontWeight:'700',fontSize:rfv(11),textTransform:'uppercase'}}>{props.state.quantity[props.key2].size!==''?props.state.quantity[props.key2].size:'Sizes Available'}</Text>

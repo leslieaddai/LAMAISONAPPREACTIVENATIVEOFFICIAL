@@ -1,7 +1,8 @@
 import types from '../types';
 
 const initial_state = {
-  Size: "",
+  Size: '',
+  Id: '',
 };
 
 export default function (state = initial_state, action) {
@@ -9,7 +10,8 @@ export default function (state = initial_state, action) {
     case types.Sizeadd:
       const data = action.payload;
       return {
-       Size: data
+       Size: data?.size,
+       Id: data?.id,
       };
       break;
     default:

@@ -32,10 +32,15 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import axios from 'react-native-axios';
 import BottomComp from '../../components/bottomComp';
-import { getCategories } from '../../config/Urls';
-import { useSelector } from 'react-redux';
+
+import axios from 'react-native-axios';
+import { getCategories,GetBrandShippingInfo } from '../../config/Urls';
+import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import { errorHandler } from '../../config/helperFunction';
+import { useDispatch,useSelector } from 'react-redux';
+import types from '../../Redux/types';
+import { SkypeIndicator } from 'react-native-indicators';
 
 export default function ProductType(props) {
   const {token} = useSelector(state => state.userData);
@@ -57,10 +62,14 @@ export default function ProductType(props) {
         setAllLoading(prev => ({...prev, ...data}));
   };
 
+  const [haveShippingInfo, setHaveShippingInfo] = useState(false);
+  const [shippingData, setShippingData] = useState('');
+
   useEffect(() => {
     getApiData(getCategories,
       'GetcategoryState',
       'GetcategoryLoading');
+    getShippingInfo();
   },[])
 
   const getApiData = (url, state, loading) => {
@@ -73,12 +82,35 @@ export default function ProductType(props) {
       )
       .then(function (response) {
         updateLoadingState({[loading]: false});
-        updateState({[state]: response.data.data});
+        updateState({[state]: response?.data?.data});
       })
       .catch(function (error) {
         console.log("ProductType error", error.response.data);
       });
   };
+
+  const getShippingInfo = () => {
+    axios
+    .get(GetBrandShippingInfo,{
+      headers:{'Authorization':`Bearer ${token}`},
+    })
+    .then(async function (res) {
+       //console.log(res?.data);
+       if(res?.data?.data.length > 0){
+        setHaveShippingInfo(true)
+        setShippingData(res?.data?.data);
+        //console.log('this is true')
+       }else{
+        setHaveShippingInfo(false)
+        setShippingData('');
+        //console.log('this is false')
+       }
+    }) 
+    .catch(function (error) {
+      errorMessage('Something went wrong!')
+    });
+  }
+
   return (
     <SafeAreaView style={{flex:1}}>
      
@@ -89,16 +121,16 @@ export default function ProductType(props) {
       contentContainerStyle={{marginTop:hp2(20),padding:wp2(2)}}
       renderItem={({item})=>{
         return(
-          <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadLookbook',{item})} style={[styles.box,{marginBottom:hp2(6),
-          backgroundColor:item.category_name == "Footwear"?"black":"white"}]}>
+          <TouchableOpacity onPress={()=>haveShippingInfo?props.navigation.navigate('imageUploadLookbook',{item,shippingData}):errorMessage('Please set shipping price before uploading products!')} style={[styles.box,{marginBottom:hp2(6),
+          backgroundColor:item?.category_name == "Footwear"?"black":"white"}]}>
           <View style={styles.iconWrap}>
           <Image
-              source={item.icon == null ?item.category_name == "Footwear"?IMAGES.foot:IMAGES.shirt:{uri:item.icon}}
-              style={{width: '100%', height: '100%',tintColor:item.category_name == "Footwear"?"white":"black"}}
+              source={item?.icon == null ?item?.category_name == "Footwear"?IMAGES.foot:IMAGES.shirt:{uri:item?.icon?.original_url}}
+              style={{width: '100%', height: '100%',tintColor:item?.category_name == "Footwear"?"white":"black"}}
               resizeMode="contain"
             />
           </View>
-          <Text style={{color:item.category_name == "Footwear"?"white":"black"}}>{item.category_name}</Text>
+          <Text style={{color:item?.category_name == "Footwear"?"white":"black"}}>{item?.category_name}</Text>
         </TouchableOpacity>
         )
       }}      

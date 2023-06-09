@@ -28,6 +28,10 @@ export default function (state = initial_state, action) {
       const Picture = action.payload;
       return {...state, userData: {...state.userData,profile_image:Picture}};
       break;
+    case types.UpdateShippingInfo:
+      const Desc = action.payload;
+      return {...state, userData: {...state.userData,Shipping_information:{...state.userData.Shipping_information,description:Desc}}};
+      break;
     default:
       return {...state};
       break;
