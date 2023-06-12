@@ -37,21 +37,25 @@ import LineComp from '../../components/lineComp';
 
 export default function Review(props) {
   return (
-    <SafeAreaView style={{flex:1}}>
-        <View style={styles.container}>
-       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.supportText}>Review</Text>
-        <TouchableOpacity  onPress={()=>props.navigation.navigate('addReview')}  style={{position: 'absolute', right: wp2(4)}}>
-        <ICONS.AntDesign name="pluscircle" size={30} color="#162FAC" />
-        </TouchableOpacity>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.headWrap}>
+          <TouchableOpacity
+            onPress={() => props.navigation.goBack()}
+            style={{position: 'absolute', left: wp2(4)}}>
+            <ICONS.AntDesign name="left" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.supportText}>Review</Text>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('addReview')}
+            style={{position: 'absolute', right: wp2(4)}}>
+            <ICONS.AntDesign name="pluscircle" size={30} color="#162FAC" />
+          </TouchableOpacity>
+        </View>
+        <LineComp />
+        <ReviewComp />
+        {/* <BottomComp /> */}
       </View>
-      <LineComp/>
-      <ReviewComp />
-      {/* <BottomComp /> */}
-    </View>
     </SafeAreaView>
   );
 }
@@ -65,11 +69,11 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     //justifyContent: 'center',
-    width:wp2(100),
+    width: wp2(100),
   },
   supportText: {
     color: 'black',

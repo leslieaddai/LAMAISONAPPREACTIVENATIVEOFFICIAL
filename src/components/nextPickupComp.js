@@ -29,21 +29,31 @@ import {
   getFont,
   FONTS,
 } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function NextPickupComp(props) {
   //console.log(props);
   //console.log(props.item.item.product.product_images[0].image[0].url,'=======>');
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('dressingRoomScreen',{data:{product:{id:props?.item?.item?.product_id}}})} style={styles.imageContainer}>
-      {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && 
-      <Image
-        //source={IMAGES.randomPic}
-        source={{uri:props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url}}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />}
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('dressingRoomScreen', {
+          data: {product: {id: props?.item?.item?.product_id}},
+        })
+      }
+      style={styles.imageContainer}>
+      {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && (
+        <Image
+          //source={IMAGES.randomPic}
+          source={{
+            uri: props?.item?.item?.product?.product_images?.[0]?.image?.[0]
+              ?.url,
+          }}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
+      )}
     </TouchableOpacity>
   );
 }
@@ -54,6 +64,6 @@ const styles = StyleSheet.create({
     height: hp2(18),
     overflow: 'hidden',
     marginHorizontal: wp2(1),
-    marginTop:hp2(1),
+    marginTop: hp2(1),
   },
 });

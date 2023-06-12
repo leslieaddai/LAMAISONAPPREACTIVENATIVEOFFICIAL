@@ -8,7 +8,7 @@ import {
   TextInput,
   ScrollView,
   Platform,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,36 +34,47 @@ import {
 import BottomComp from '../../components/bottomComp';
 
 export default function ListViewScreen(props) {
-
   const postComp = () => {
-    const [showDelete,setShowDelete]=useState(false);
+    const [showDelete, setShowDelete] = useState(false);
 
-    const [heart,setHeart]=useState(false);
-    const [share,setShare]=useState(false);
-    const [hanger,setHanger]=useState(false);
+    const [heart, setHeart] = useState(false);
+    const [share, setShare] = useState(false);
+    const [hanger, setHanger] = useState(false);
     return (
-      <View style={{marginVertical:hp2(1)}}>
+      <View style={{marginVertical: hp2(1)}}>
         <View style={styles.postWrap}>
-          <TouchableOpacity   onPress={() => props.navigation.navigate('brandProfileScreen')} style={styles.imageWrap}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('brandProfileScreen')}
+            style={styles.imageWrap}>
             <Image
               source={IMAGES.randomProfile}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>{showDelete?setShowDelete(false):setShowDelete(true)}}>
-          {showDelete?(
-            <View style={styles.deleteButton}>
-                <Text style={{color:'black'}}>Delete Post</Text>
+          <TouchableOpacity
+            onPress={() => {
+              showDelete ? setShowDelete(false) : setShowDelete(true);
+            }}>
+            {showDelete ? (
+              <View style={styles.deleteButton}>
+                <Text style={{color: 'black'}}>Delete Post</Text>
                 <ICONS.Ionicons name="ios-trash-bin" size={24} color="red" />
-            </View>
-          ):(
-            <ICONS.Ionicons name="menu-outline" size={44} color="black" style={{marginLeft:wp2(68)}} />
-          )}
+              </View>
+            ) : (
+              <ICONS.Ionicons
+                name="menu-outline"
+                size={44}
+                color="black"
+                style={{marginLeft: wp2(68)}}
+              />
+            )}
           </TouchableOpacity>
         </View>
-        
-        <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageContainer}>
+
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('imageViewScreen')}
+          style={styles.imageContainer}>
           <Image
             source={IMAGES.randomPic}
             style={{width: '100%', height: '100%'}}
@@ -72,66 +83,93 @@ export default function ListViewScreen(props) {
         </TouchableOpacity>
 
         <View style={styles.iconWrap}>
-        <TouchableOpacity onPress={()=>{heart?setHeart(false):setHeart(true)}} >
-        <ICONS.AntDesign name="heart" size={34} color={heart?'#FC0004':'black'} />
-        </TouchableOpacity>
-        <Text style={{color:'black'}}>1000</Text>
+          <TouchableOpacity
+            onPress={() => {
+              heart ? setHeart(false) : setHeart(true);
+            }}>
+            <ICONS.AntDesign
+              name="heart"
+              size={34}
+              color={heart ? '#FC0004' : 'black'}
+            />
+          </TouchableOpacity>
+          <Text style={{color: 'black'}}>1000</Text>
 
-        <TouchableOpacity onPress={()=>{hanger?setHanger(false):setHanger(true)}}>
-        <ICONS.MaterialCommunityIcons name="hanger" size={34} color={hanger?'#162FAC':'black'} />
-        </TouchableOpacity>
-        <Text style={{color:'black'}}>1500</Text>
+          <TouchableOpacity
+            onPress={() => {
+              hanger ? setHanger(false) : setHanger(true);
+            }}>
+            <ICONS.MaterialCommunityIcons
+              name="hanger"
+              size={34}
+              color={hanger ? '#162FAC' : 'black'}
+            />
+          </TouchableOpacity>
+          <Text style={{color: 'black'}}>1500</Text>
 
-        <TouchableOpacity onPress={()=>{share?setShare(false):setShare(true)}}>
-        <ICONS.FontAwesome name="retweet" size={34} color={share?'#13D755':'black'} />
-        </TouchableOpacity>
-        <Text style={{color:'black'}}>3000</Text>
+          <TouchableOpacity
+            onPress={() => {
+              share ? setShare(false) : setShare(true);
+            }}>
+            <ICONS.FontAwesome
+              name="retweet"
+              size={34}
+              color={share ? '#13D755' : 'black'}
+            />
+          </TouchableOpacity>
+          <Text style={{color: 'black'}}>3000</Text>
         </View>
 
-        <TouchableOpacity onPress={()=>props.navigation.navigate('commentScreen')}>
-        <View style={{flexDirection:'row',marginLeft:wp2(2)}}>
-        <Text style={{color:'black',fontWeight:'700',marginRight:wp2(2)}}>Represent</Text>
-        <Text style={{color:'black'}}>Blue is the colour</Text>
-        </View>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('commentScreen')}>
+          <View style={{flexDirection: 'row', marginLeft: wp2(2)}}>
+            <Text
+              style={{color: 'black', fontWeight: '700', marginRight: wp2(2)}}>
+              Represent
+            </Text>
+            <Text style={{color: 'black'}}>Blue is the colour</Text>
+          </View>
 
-        <Text style={{color:'black',marginLeft:wp2(2)}}>1 hour ago</Text>
+          <Text style={{color: 'black', marginLeft: wp2(2)}}>1 hour ago</Text>
         </TouchableOpacity>
-
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('homeScreen')}
+            style={styles.iconWrap2}>
+            <Image
+              source={IMAGES.gridView}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <View style={styles.line}></View>
+          <TouchableOpacity
+            onPress={() => props.navigation.navigate('listViewScreen')}
+            style={styles.iconWrap2}>
+            <Image
+              source={IMAGES.listView}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        </View>
 
-<View style={styles.iconContainer}>
-  <TouchableOpacity onPress={() => props.navigation.navigate('homeScreen')} style={styles.iconWrap2}>
-    <Image
-      source={IMAGES.gridView}
-      style={{width: '100%', height: '100%'}}
-      resizeMode="contain"
-    />
-  </TouchableOpacity>
-  <View style={styles.line}></View>
-  <TouchableOpacity onPress={() => props.navigation.navigate('listViewScreen')} style={styles.iconWrap2}>
-    <Image
-      source={IMAGES.listView}
-      style={{width: '100%', height: '100%'}}
-      resizeMode="contain"
-    />
-  </TouchableOpacity>
-</View>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(1)}}>
+          {postComp()}
+          {postComp()}
+        </ScrollView>
 
-<ScrollView
-  showsVerticalScrollIndicator={false}
-  contentContainerStyle={{paddingBottom: hp2(12),paddingTop:hp2(1)}}>
-  {postComp()}
-  {postComp()}
-</ScrollView>
-
-{/* <BottomComp /> */}
-</View>
+        {/* <BottomComp /> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -149,7 +187,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
   },
   iconWrap2: {
     width: wp2(12),
@@ -190,24 +228,24 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     //backgroundColor:'yellow',
   },
-  iconWrap:{
-    width:wp2(80),
-    height:hp2(6),
+  iconWrap: {
+    width: wp2(80),
+    height: hp2(6),
     //backgroundColor:'red',
-    flexDirection:'row',
-    alignItems:'center',
-    justifyContent:'space-evenly',
-    alignSelf:'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    alignSelf: 'center',
   },
-  deleteButton:{
-    width:wp2(38),
-    height:hp2(6),
-    backgroundColor:'#D9D9D9',
-    borderRadius:wp2(6),
-    justifyContent:'space-evenly',
-    alignItems:'center',
-    flexDirection:'row',
-    marginLeft:wp2(44),
+  deleteButton: {
+    width: wp2(38),
+    height: hp2(6),
+    backgroundColor: '#D9D9D9',
+    borderRadius: wp2(6),
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
+    marginLeft: wp2(44),
 
     shadowColor: '#000',
     shadowOffset: {

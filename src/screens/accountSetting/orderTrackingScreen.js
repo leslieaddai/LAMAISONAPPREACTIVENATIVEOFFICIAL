@@ -37,26 +37,26 @@ import OrderComp from '../../components/orderComp';
 
 export default function OrderTrackingScreen(props) {
   return (
-    <SafeAreaView style={{flex:1}}>
-       <View style={styles.container}>
-      <Text style={styles.orderText}>Order Tracking</Text>
-      <ScrollView contentContainerStyle={{paddingBottom: hp2(12)}}>
-        <LineComp />
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <LineComp />
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-        <OrderComp/>
-      </ScrollView>
-      {/* <BottomComp /> */}
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Text style={styles.orderText}>Order Tracking</Text>
+        <ScrollView contentContainerStyle={{paddingBottom: hp2(12)}}>
+          <LineComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <LineComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+          <OrderComp />
+        </ScrollView>
+        {/* <BottomComp /> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(24),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
-    alignSelf:'center',
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    alignSelf: 'center',
   },
 });

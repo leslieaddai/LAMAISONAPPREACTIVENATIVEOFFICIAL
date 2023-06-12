@@ -29,12 +29,14 @@ import {
   getFont,
   FONTS,
 } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function SearchComp(props) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen')} style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('brandProfileScreen')}
+      style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           source={IMAGES.lookbook}

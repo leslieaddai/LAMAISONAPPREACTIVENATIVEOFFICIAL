@@ -63,15 +63,7 @@ export default function About(props) {
         enthusiasts, by enthusiasts’ to create garments which can be worn by
         customers to acknowledge their passion for the brand.
       </Text> */}
-       <Text
-        style={{
-          color: 'black',
-          marginHorizontal: wp2(3),
-          textTransform: 'uppercase',
-          textAlign:'justify',
-        }}>
-      {props?.data?.about}
-      </Text>
+      <Text style={styles.aboutDesc}>{props?.data?.about}</Text>
     </>
   );
 }
@@ -83,5 +75,11 @@ const styles = StyleSheet.create({
     fontSize: rfv(18),
     marginLeft: wp2(3),
     marginBottom: hp2(2),
+  },
+  aboutDesc: {
+    color: 'black',
+    marginHorizontal: wp2(3),
+    textTransform: 'uppercase',
+    textAlign: 'justify',
   },
 });

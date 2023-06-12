@@ -34,14 +34,14 @@ export default function GalleryComp(props) {
   //console.log(props.item.item,'=======>');
   return (
     <View style={styles.imageContainer}>
-      {props?.item?.item?.media?.[0]?.original_url && 
-            <Image
-            //source={IMAGES.randomPic}
-            source={{uri:props?.item?.item?.media?.[0]?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-      }
+      {props?.item?.item?.media?.[0]?.original_url && (
+        <Image
+          //source={IMAGES.randomPic}
+          source={{uri: props?.item?.item?.media?.[0]?.original_url}}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
+      )}
     </View>
   );
 }
@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     height: hp2(18),
     overflow: 'hidden',
     marginHorizontal: wp2(1),
-    marginTop:hp2(1),
+    marginTop: hp2(1),
   },
 });

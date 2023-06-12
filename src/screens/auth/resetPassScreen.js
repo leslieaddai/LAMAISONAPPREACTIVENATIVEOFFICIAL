@@ -32,271 +32,266 @@ import {
   FONTS,
 } from '../../theme';
 import AlertComp from '../../components/alertComp';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
-import { ResetPasswordUrl,VerifyCodeUrl,ForgetPasswordUrl } from '../../config/Urls';
-import { useDispatch,useSelector } from 'react-redux';
+import {errorHandler} from '../../config/helperFunction';
+import {
+  ResetPasswordUrl,
+  VerifyCodeUrl,
+  ForgetPasswordUrl,
+} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
 
 import LoaderComp from '../../components/loaderComp';
 
-import Animated, { FadeInUp,FadeOutUp, Layout } from 'react-native-reanimated';
+import Animated, {FadeInUp, FadeOutUp, Layout} from 'react-native-reanimated';
 
 export default function ResetPassScreen(props) {
+  const special = /[!@#\$%\^\&*\)\(+=._-]/g;
+  const numeric = /[0-9]/;
 
-  const special =/[!@#\$%\^\&*\)\(+=._-]/g
-  const numeric = /[0-9]/
-
-  const user = useSelector(state => state.userData)
-  const dispatch = useDispatch()
+  const user = useSelector(state => state.userData);
+  const dispatch = useDispatch();
 
   const [showReset, setShowReset] = useState(false);
   const [verifyCode, setVerifyCode] = useState(false);
   const [showPassNotMatch, setShowPassNotMatch] = useState(false);
 
-  const [newPassword, setNewPassword]=useState('');
-  const [confirmPassword, setConfirmPassword]=useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
-  const [email, setEmail]=useState('');
-  const [code, setCode]=useState();
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState();
 
   const [loading, setLoading] = useState(false);
 
   const sendEmail = () => {
-    if(email!==''){
-
+    if (email !== '') {
       setLoading(true);
 
       let obj = {
         email: email,
-    }
+      };
 
       axios
-          .post(ForgetPasswordUrl,obj)
-          .then(async function (res) {
-             console.log(res.data);
+        .post(ForgetPasswordUrl, obj)
+        .then(async function (res) {
+          console.log(res.data);
 
-             setLoading(false);
-             setVerifyCode(true);
-             successMessage('Verification code is sent to your email. Please check.')
-          }) 
-          .catch(function (error) {
-            console.log(error.response.data)
-            setLoading(false);
-            //errorMessage('Something Went Wrong!')
-            errorMessage(error.response.data.message)
-            //errorMessage(errorHandler(error))
-          });
-    }else{
+          setLoading(false);
+          setVerifyCode(true);
+          successMessage(
+            'Verification code is sent to your email. Please check.',
+          );
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading(false);
+          //errorMessage('Something Went Wrong!')
+          errorMessage(error.response.data.message);
+          //errorMessage(errorHandler(error))
+        });
+    } else {
       errorMessage('Please Enter Email Address');
     }
-  }
+  };
 
   const onVerifyCode = () => {
-    if(code){
-
+    if (code) {
       setLoading(true);
 
       let obj = {
         email: email,
-        password_reset_code: code
-    }
+        password_reset_code: code,
+      };
 
       axios
-          .post(VerifyCodeUrl,obj)
-          .then(async function (res) {
-             console.log(res.data);
+        .post(VerifyCodeUrl, obj)
+        .then(async function (res) {
+          console.log(res.data);
 
-             setLoading(false);
-             setShowReset(true);
-             //successMessage('Code Has Been Verified!')
-             successMessage('Enter your new password')
-          }) 
-          .catch(function (error) {
-            console.log(error.response.data)
-            setLoading(false);
-            //errorMessage('Something Went Wrong!')
-            errorMessage(error?.response?.data?.errors?.password_reset_code[0])
-            //errorMessage(errorHandler(error))
-          });
-    }else{
+          setLoading(false);
+          setShowReset(true);
+          //successMessage('Code Has Been Verified!')
+          successMessage('Enter your new password');
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading(false);
+          //errorMessage('Something Went Wrong!')
+          errorMessage(error?.response?.data?.errors?.password_reset_code[0]);
+          //errorMessage(errorHandler(error))
+        });
+    } else {
       errorMessage('Please Enter Verification Code');
     }
-  }
+  };
 
   const onResetPassword = () => {
-    if (newPassword !== '' && confirmPassword !== ''){
-      if (newPassword.length >= 8){
-        if(numeric.test(newPassword)){
-          if(special.test(newPassword)){
-            if(newPassword === confirmPassword){
+    if (newPassword !== '' && confirmPassword !== '') {
+      if (newPassword.length >= 8) {
+        if (numeric.test(newPassword)) {
+          if (special.test(newPassword)) {
+            if (newPassword === confirmPassword) {
               setLoading(true);
 
               let obj = {
                 email: email,
                 password: newPassword,
-                password_confirmation: confirmPassword
-            }
-        
+                password_confirmation: confirmPassword,
+              };
+
               axios
-                  .post(ResetPasswordUrl,obj)
-                  .then(async function (res) {
-                     console.log(res.data);
-        
-                     setLoading(false);
-                     props.navigation.navigate('loginScreen')
-                     successMessage('Password Changed Successfully!')
-                  }) 
-                  .catch(function (error) {
-                    console.log(error.response.data)
-                    setLoading(false);
-                    errorMessage('Something Went Wrong!')
-                    //errorMessage(errorHandler(error))
-                  });
-            }else{
+                .post(ResetPasswordUrl, obj)
+                .then(async function (res) {
+                  console.log(res.data);
+
+                  setLoading(false);
+                  props.navigation.navigate('loginScreen');
+                  successMessage('Password Changed Successfully!');
+                })
+                .catch(function (error) {
+                  console.log(error.response.data);
+                  setLoading(false);
+                  errorMessage('Something Went Wrong!');
+                  //errorMessage(errorHandler(error))
+                });
+            } else {
               setShowPassNotMatch(true);
-              setTimeout(()=>{
+              setTimeout(() => {
                 setShowPassNotMatch(false);
-              },3000)
+              }, 3000);
             }
-          }else{
-            errorMessage('Password must include at least 1 special character')
+          } else {
+            errorMessage('Password must include at least 1 special character');
           }
-        }else{
-          errorMessage('Password must include at least 1 Numerical character')
+        } else {
+          errorMessage('Password must include at least 1 Numerical character');
         }
-      }else{
-        errorMessage('Password must be at least 8 characters')
+      } else {
+        errorMessage('Password must be at least 8 characters');
       }
-    }else{
-      errorMessage('Please fill all fields')
+    } else {
+      errorMessage('Please fill all fields');
     }
-  }
+  };
 
   const resetPasswordComp = () => {
-    return(
+    return (
       <Animated.View layout={Layout.duration(1000)}>
-      <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
+        <Animated.View
+          entering={FadeInUp.duration(1000)}
+          exiting={FadeOutUp.duration(500)}
+          style={styles.inputBox}>
           <TextInput
-            style={{
-              flex: 1,
-              color: 'black',
-              paddingHorizontal: wp2(2),
-              fontSize: rfv(13),
-              fontWeight: '700',
-            }}
+            style={styles.inputTxt}
             placeholderTextColor={'grey'}
             placeholder="ENTER PASSWORD"
             value={newPassword}
-            onChangeText={(val) => setNewPassword(val)}
+            onChangeText={val => setNewPassword(val)}
             secureTextEntry={true}
           />
         </Animated.View>
-        <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
+        <Animated.View
+          entering={FadeInUp.duration(1000)}
+          exiting={FadeOutUp.duration(500)}
+          style={styles.inputBox}>
           <TextInput
-            style={{
-              flex: 1,
-              color: 'black',
-              paddingHorizontal: wp2(2),
-              fontSize: rfv(13),
-              fontWeight: '700',
-            }}
+            style={styles.inputTxt}
             placeholderTextColor={'grey'}
             placeholder="RE-ENTER PASSWORD"
             value={confirmPassword}
-            onChangeText={(val) => setConfirmPassword(val)}
+            onChangeText={val => setConfirmPassword(val)}
             secureTextEntry={true}
           />
         </Animated.View>
 
-        <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={{alignSelf: 'center', marginTop: hp2(2),width:wp2(80)}}>
-          <Text style={[styles.textTwo,{color:newPassword.length>=8?COLORS.green:COLORS.red}]}>Must be at least 8 characters</Text>
-          <Text style={[styles.textTwo,{color:numeric.test(newPassword)?COLORS.green:COLORS.red}]}>
+        <Animated.View
+          entering={FadeInUp.duration(1000)}
+          exiting={FadeOutUp.duration(500)}
+          style={{alignSelf: 'center', marginTop: hp2(2), width: wp2(80)}}>
+          <Text
+            style={[
+              styles.textTwo,
+              {color: newPassword.length >= 8 ? COLORS.green : COLORS.red},
+            ]}>
+            Must be at least 8 characters
+          </Text>
+          <Text
+            style={[
+              styles.textTwo,
+              {color: numeric.test(newPassword) ? COLORS.green : COLORS.red},
+            ]}>
             Must include at least 1 Numerical character
           </Text>
-          <Text style={[styles.textTwo,{color:newPassword.match(special)?COLORS.green:COLORS.red}]}>
+          <Text
+            style={[
+              styles.textTwo,
+              {color: newPassword.match(special) ? COLORS.green : COLORS.red},
+            ]}>
             Must include at least 1 special character ( Examples !”£$)
           </Text>
         </Animated.View>
 
-        <TouchableOpacity
-          onPress={onResetPassword}
-          style={styles.button}>
+        <TouchableOpacity onPress={onResetPassword} style={styles.button}>
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
-        {showPassNotMatch && (
-            <AlertComp text='Password Does not Match'/>
-        )}
+        {showPassNotMatch && <AlertComp text="Password Does not Match" />}
       </Animated.View>
-    )
-  }
+    );
+  };
 
   return (
     <>
-     <View style={{position:'absolute',zIndex:999}}>
-{loading && (
-      <LoaderComp/>
-    )}
-</View>
-    <SafeAreaView style={styles.container}>
-      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}> */}
+      <View style={{position: 'absolute', zIndex: 999}}>
+        {loading && <LoaderComp />}
+      </View>
+      <SafeAreaView style={styles.container}>
+        {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}> */}
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           resetPasswordComp()
         ) : verifyCode ? (
           <>
-          <Animated.View entering={FadeInUp.duration(1000)} exiting={FadeOutUp.duration(500)} style={styles.inputBox}>
-          <TextInput
-            style={{
-              flex: 1,
-              color: 'black',
-              paddingHorizontal: wp2(2),
-              fontSize: rfv(13),
-              fontWeight: '700',
-            }}
-            placeholderTextColor={'grey'}
-            placeholder="VERIFY CODE"
-            value={code}
-            onChangeText={(val) => setCode(val)}
-            keyboardType={'number-pad'}
-          />
-        </Animated.View>
-        <TouchableOpacity
-          onPress={onVerifyCode}
-          style={styles.button}>
-          <Text style={styles.buttonText}>Verify Code</Text>
-        </TouchableOpacity>
+            <Animated.View
+              entering={FadeInUp.duration(1000)}
+              exiting={FadeOutUp.duration(500)}
+              style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder="VERIFY CODE"
+                value={code}
+                onChangeText={val => setCode(val)}
+                keyboardType={'number-pad'}
+              />
+            </Animated.View>
+            <TouchableOpacity onPress={onVerifyCode} style={styles.button}>
+              <Text style={styles.buttonText}>Verify Code</Text>
+            </TouchableOpacity>
           </>
         ) : (
           <>
-            <View  style={styles.inputBox}>
+            <View style={styles.inputBox}>
               <TextInput
-                style={{
-                  flex: 1,
-                  color: 'black',
-                  paddingHorizontal: wp2(2),
-                  fontSize: rfv(13),
-                  fontWeight: '700',
-                }}
+                style={styles.inputTxt}
                 placeholderTextColor={'grey'}
                 placeholder="EMAIL ADDRESS"
                 value={email}
-                onChangeText={(val) => setEmail(val)}
+                onChangeText={val => setEmail(val)}
               />
             </View>
-            <TouchableOpacity
-              onPress={sendEmail}
-              style={styles.button}>
+            <TouchableOpacity onPress={sendEmail} style={styles.button}>
               <Text style={styles.buttonText}>Send link to email address</Text>
             </TouchableOpacity>
           </>
         )}
-      {/* </KeyboardAwareScrollView> */}
-    </SafeAreaView>
+        {/* </KeyboardAwareScrollView> */}
+      </SafeAreaView>
     </>
   );
 }
@@ -313,7 +308,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(26),
     fontWeight: '700',
     marginVertical: hp2(4),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     marginLeft: wp2(8),
   },
   inputBox: {
@@ -358,5 +353,12 @@ const styles = StyleSheet.create({
     fontSize: rfv(11),
     textTransform: 'uppercase',
   },
-  textTwo: { fontWeight: '700', fontSize: rfv(10)},
+  textTwo: {fontWeight: '700', fontSize: rfv(10)},
+  inputTxt: {
+    flex: 1,
+    color: 'black',
+    paddingHorizontal: wp2(2),
+    fontSize: rfv(13),
+    fontWeight: '700',
+  },
 });

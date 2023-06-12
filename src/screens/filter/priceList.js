@@ -31,40 +31,50 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch,useSelector } from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 
 export default function PriceList(props) {
-  const {Price} = useSelector(state=>state.Price)
-  const dispatch = useDispatch()
-  const [selected,setSelected]=useState(Price);
+  const {Price} = useSelector(state => state.Price);
+  const dispatch = useDispatch();
+  const [selected, setSelected] = useState(Price);
   const navigation = useNavigation();
-    const options = (text) => {
-        return(
-            <TouchableOpacity onPress={()=>{
-              setSelected(text)
-              dispatch({
-                type:types.Priceadd,
-                payload: text
-              })
-              navigation.goBack()
-            }}  style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text==='301'?text+'+':'€'+text}</Text>
-                <View style={[styles.circle,{backgroundColor:selected==text?'black':'#D9D9D9'}]}></View>
-            </TouchableOpacity>
-        )
-    }
+  const options = text => {
+    return (
+      <TouchableOpacity
+        onPress={() => {
+          setSelected(text);
+          dispatch({
+            type: types.Priceadd,
+            payload: text,
+          });
+          navigation.goBack();
+        }}
+        style={styles.optionWrap}>
+        <Text style={{color: 'black'}}>
+          {text === '301' ? text + '+' : '€' + text}
+        </Text>
+        <View
+          style={[
+            styles.circle,
+            {backgroundColor: selected == text ? 'black' : '#D9D9D9'},
+          ]}></View>
+      </TouchableOpacity>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>{
-        navigation.goBack()
-        // dispatch({
-        //   type:types.Priceadd,
-        //   payload: selected
-        // })
-        }} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+            // dispatch({
+            //   type:types.Priceadd,
+            //   payload: selected
+            // })
+          }}
+          style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>PRICE</Text>
@@ -86,32 +96,32 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
-    width:wp2(100),
+    width: wp2(100),
   },
   heading: {
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(26),
   },
-  optionWrap:{
-    width:wp2(90),
-    height:hp2(4),
+  optionWrap: {
+    width: wp2(90),
+    height: hp2(4),
     //backgroundColor:'red',
-    borderBottomWidth:1,
-    justifyContent:'space-between',
-    flexDirection:'row',
-    paddingHorizontal:wp2(1),
-    marginTop:hp2(2),
-    alignSelf:'center',
+    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: wp2(1),
+    marginTop: hp2(2),
+    alignSelf: 'center',
   },
-  circle:{
-    width:wp2(5),
-    height:wp2(5),
+  circle: {
+    width: wp2(5),
+    height: wp2(5),
     //backgroundColor:'#D9D9D9',
-    borderRadius:100,
+    borderRadius: 100,
   },
 });

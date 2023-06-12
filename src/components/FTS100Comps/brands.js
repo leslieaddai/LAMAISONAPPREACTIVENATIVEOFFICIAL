@@ -29,15 +29,44 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
   //console.log(props)
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen',{userData:{userData:{id:props?.data?.item?.user?.id,profile_image:props?.data?.item?.user?.profile_image?.original_url,name:props?.data?.item?.user?.name,role:[{id:3}]}}})} style={{flexDirection:'row',alignItems:'center'}}>
-        <View style={[styles.button, {backgroundColor: props?.key2===0 ? '#ECC90B' : props?.key2===1 ? '#C0C0C0' : props?.key2===2 ? '#CD7F32' : 'white'}]}>
-        <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props?.key2+1}</Text>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('brandProfileScreen', {
+          userData: {
+            userData: {
+              id: props?.data?.item?.user?.id,
+              profile_image:
+                props?.data?.item?.user?.profile_image?.original_url,
+              name: props?.data?.item?.user?.name,
+              role: [{id: 3}],
+            },
+          },
+        })
+      }
+      style={{flexDirection: 'row', alignItems: 'center'}}>
+      <View
+        style={[
+          styles.button,
+          {
+            backgroundColor:
+              props?.key2 === 0
+                ? '#ECC90B'
+                : props?.key2 === 1
+                ? '#C0C0C0'
+                : props?.key2 === 2
+                ? '#CD7F32'
+                : 'white',
+          },
+        ]}>
+        <Text style={{color: 'black', fontWeight: '700', fontSize: rfv(22)}}>
+          {props?.key2 + 1}
+        </Text>
         <View style={styles.brandLogo}>
           <Image
             //source={IMAGES.randomPic}
@@ -46,10 +75,11 @@ export default function BrandComp(props) {
             resizeMode="cover"
           />
         </View>
-    </View>
-    <Text style={{color:'black',fontSize:rfv(18)}}>{props?.data?.item?.user?.name}</Text>
+      </View>
+      <Text style={{color: 'black', fontSize: rfv(18)}}>
+        {props?.data?.item?.user?.name}
+      </Text>
     </TouchableOpacity>
-    
   );
 }
 
@@ -60,9 +90,9 @@ const styles = StyleSheet.create({
     borderRadius: wp2(8),
     alignItems: 'center',
     justifyContent: 'space-evenly',
-    marginHorizontal:wp2(4),
-    marginVertical:hp2(1),
-    flexDirection:'row',
+    marginHorizontal: wp2(4),
+    marginVertical: hp2(1),
+    flexDirection: 'row',
 
     shadowColor: '#000',
     shadowOffset: {
@@ -77,6 +107,6 @@ const styles = StyleSheet.create({
     width: wp2(12),
     height: wp2(12),
     overflow: 'hidden',
-    borderRadius:wp2(4),
+    borderRadius: wp2(4),
   },
 });

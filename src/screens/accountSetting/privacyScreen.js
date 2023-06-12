@@ -36,7 +36,9 @@ export default function PrivacyScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity
+          onPress={() => props.navigation.goBack()}
+          style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>Privacy & Security</Text>
@@ -85,9 +87,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //backgroundColor:'red',
     //justifyContent: 'center',
-    width:wp2(100),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
-    marginBottom:hp2(2),
+    width: wp2(100),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    marginBottom: hp2(2),
   },
   heading: {
     color: 'black',

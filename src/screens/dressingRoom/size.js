@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -32,75 +32,95 @@ import {
   FONTS,
 } from '../../theme';
 
-import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
+import {errorHandler} from '../../config/helperFunction';
 
-import { useDispatch,useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function SelectSizes(props) {
-
   const [loading, setLoading] = useState(false);
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
 
   //console.log(props?.route?.params?.color?.id)
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
 
     axios
-    .get(`https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`)
-    .then(async function (res) {
-       //console.log(res.data);
-       setData(res.data.data);
-       setLoading(false);
-    }) 
-    .catch(function (error) {
-      console.log(error.response.data)
-      setLoading(false);
-      errorMessage('Something went wrong!')
-    });
+      .get(
+        `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`,
+      )
+      .then(async function (res) {
+        //console.log(res.data);
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        errorMessage('Something went wrong!');
+      });
+  }, []);
 
-  },[])
+  const options = text => {
+    return (
+      <View style={styles.optionWrap}>
+        <Text style={{color: 'black'}}>{text?.size?.size}</Text>
+        <Text style={styles.quantityTxt}>{text?.quantity + ' remaining!'}</Text>
 
-    const options = (text) => {
-        return(
-            <View style={styles.optionWrap}>
-                <Text style={{color:'black'}}>{text?.size?.size}</Text>
-                <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{text?.quantity+' remaining!'}</Text>
-
-                <TouchableOpacity onPress={()=>{
-                      props?.route?.params?.state?.setSizeId(text);
-                      props?.navigation.goBack();
-                    }} style={[styles.circle,{backgroundColor:props?.route?.params?.state?.sizeId?.id===text?.id?'black':'#D9D9D9'}]}></TouchableOpacity>
-            </View>
-        )
-    }
+        <TouchableOpacity
+          onPress={() => {
+            props?.route?.params?.state?.setSizeId(text);
+            props?.navigation.goBack();
+          }}
+          style={[
+            styles.circle,
+            {
+              backgroundColor:
+                props?.route?.params?.state?.sizeId?.id === text?.id
+                  ? 'black'
+                  : '#D9D9D9',
+            },
+          ]}></TouchableOpacity>
+      </View>
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity
+          onPress={() => props.navigation.goBack()}
+          style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>SIZE</Text>
       </View>
-      <Text style={{marginVertical:hp2(1),alignSelf:'center',color:'black',fontWeight:'700',textTransform:'uppercase'}}>{props?.route?.params?.data?.category_id===1?'Footwear  (U.K)  - select all available sizes':'Clothing  (U.K)  - select your size'}</Text>
+      <Text style={styles.titleTxt}>
+        {props?.route?.params?.data?.category_id === 1
+          ? 'Footwear  (U.K)  - select all available sizes'
+          : 'Clothing  (U.K)  - select your size'}
+      </Text>
 
-      {loading ? 
-    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    :<>
-    {data?.map((item)=>{
-        //console.log("item=======>",item);
-    return(
+      {loading ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: hp2(6),
+          }}>
+          <SkypeIndicator color={'black'} />
+        </View>
+      ) : (
         <>
-        {options(item)}
+          {data?.map(item => {
+            //console.log("item=======>",item);
+            return <>{options(item)}</>;
+          })}
         </>
-    )})}          
-    </>}
+      )}
     </SafeAreaView>
   );
 }
@@ -112,32 +132,40 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
     //backgroundColor:'red',
     justifyContent: 'center',
-    width:wp2(100),
+    width: wp2(100),
   },
   heading: {
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(24),
   },
-  optionWrap:{
-    width:wp2(90),
-    height:hp2(4),
+  optionWrap: {
+    width: wp2(90),
+    height: hp2(4),
     //backgroundColor:'red',
-    borderBottomWidth:1,
-    justifyContent:'space-between',
-    flexDirection:'row',
-    paddingHorizontal:wp2(1),
-    marginTop:hp2(2),
-    alignSelf:'center',
+    borderBottomWidth: 1,
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingHorizontal: wp2(1),
+    marginTop: hp2(2),
+    alignSelf: 'center',
   },
-  circle:{
-    width:wp2(5),
-    height:wp2(5),
+  circle: {
+    width: wp2(5),
+    height: wp2(5),
     //backgroundColor:'#D9D9D9',
-    borderRadius:100,
+    borderRadius: 100,
+  },
+  quantityTxt: {color: '#E81717', position: 'absolute', left: wp2(28)},
+  titleTxt: {
+    marginVertical: hp2(1),
+    alignSelf: 'center',
+    color: 'black',
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
 });

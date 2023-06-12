@@ -30,20 +30,20 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-  export function ImgComp  (props)  {
-    return(
-      <View style={styles.imageContainer}>
+export function ImgComp(props) {
+  return (
+    <View style={styles.imageContainer}>
       <Image
         //source={IMAGES.randomPic}
-        source={{uri:props?.path?.item?.media?.[0]?.original_url}}
+        source={{uri: props?.path?.item?.media?.[0]?.original_url}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
     </View>
-    )
-  }
+  );
+}
 
 export default function Lookbook(props) {
   //console.log(props.data.data,'=======>')
@@ -57,8 +57,8 @@ export default function Lookbook(props) {
         </Text>
       </TouchableOpacity> */}
       <View style={styles.galaryContainer}>
-        {props?.data?.galleries?.reverse().map((item,index)=>{
-          if(index<6) return <ImgComp key={index} path={{item}} />
+        {props?.data?.galleries?.reverse().map((item, index) => {
+          if (index < 6) return <ImgComp key={index} path={{item}} />;
         })}
       </View>
 
@@ -74,7 +74,6 @@ export default function Lookbook(props) {
       }}
 
      /> */}
-
     </>
   );
 }

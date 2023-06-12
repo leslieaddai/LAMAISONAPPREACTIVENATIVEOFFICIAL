@@ -29,18 +29,15 @@ import {
   getFont,
   FONTS,
 } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BasketComp(props) {
   const navigation = useNavigation();
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignSelf: 'center',
-        marginTop: hp2(4),
-      }}>
-      <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate('imageViewScreen')}
+        style={styles.imageWrap}>
         <Image
           source={IMAGES.randomPic}
           style={{width: '100%', height: '100%'}}
@@ -48,27 +45,10 @@ export default function BasketComp(props) {
         />
       </TouchableOpacity>
       <View style={styles.detailsContainer}>
-        <Text style={{color: 'black', textTransform: 'uppercase'}}>
-          wild chestnut X white penny loather
-        </Text>
-        <Text
-          style={{
-            color: 'black',
-            textTransform: 'uppercase',
-          }}>
-          £299
-        </Text>
+        <Text style={styles.titleTxt}>wild chestnut X white penny loather</Text>
+        <Text style={styles.priceTxt}>£299</Text>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text
-            style={{
-              color: 'black',
-              textTransform: 'uppercase',
-              fontWeight: '700',
-              fontSize: rfv(20),
-              marginRight: wp2(4),
-            }}>
-            1
-          </Text>
+          <Text style={styles.quantityTxt}>1</Text>
           <TouchableOpacity style={styles.button}>
             <ICONS.Entypo name="plus" size={30} color="white" />
           </TouchableOpacity>
@@ -86,6 +66,24 @@ export default function BasketComp(props) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: hp2(4),
+  },
+  titleTxt: {color: 'black', textTransform: 'uppercase'},
+  priceTxt: {
+    color: 'black',
+    textTransform: 'uppercase',
+  },
+  quantityTxt: {
+    color: 'black',
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    fontSize: rfv(20),
+    marginRight: wp2(4),
+  },
+
   imageWrap: {
     width: wp2(38),
     height: hp2(18),

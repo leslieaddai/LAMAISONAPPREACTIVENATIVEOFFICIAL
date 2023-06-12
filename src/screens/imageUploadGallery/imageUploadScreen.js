@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useCallback,memo} from 'react';
+import React, {useState, useEffect, useCallback, memo} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
-  PermissionsAndroid, 
+  PermissionsAndroid,
   Platform,
   SafeAreaView,
   FlatList,
@@ -36,46 +36,46 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ImageCard from './ImageCard';
-import {request,check, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import {request, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
-import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
-import { CreateGalleryUrl } from '../../config/Urls';
-import { useDispatch,useSelector,connect } from 'react-redux';
+import {errorHandler} from '../../config/helperFunction';
+import {CreateGalleryUrl} from '../../config/Urls';
+import {useDispatch, useSelector, connect} from 'react-redux';
 import types from '../../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
 
 import LoaderComp from '../../components/loaderComp';
 
 const PAGE_SIZE = 40;
 
 export default function ImageUploadScreen(props) {
-//function ImageUploadScreen(props) {
+  //function ImageUploadScreen(props) {
 
-const dispatch = useDispatch()
-const [loading, setLoading] = useState(false);
-const [data,setData]=useState([]);
-const user = useSelector(state => state.userData)
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData);
 
-const [caption,setCaption]=useState('');
+  const [caption, setCaption] = useState('');
 
   //const dispatch = useDispatch()
-  
+
   //const [photos, setPhotos]=useState();
-  const [selectedImage, setSelectedImage]=useState();
-  const [nextButton, setNextButton]=useState(false);
-  const [confirmButton, setConfirmButton]=useState(false);
-  const [uploadButton, setUploadButton]=useState(false);
+  const [selectedImage, setSelectedImage] = useState();
+  const [nextButton, setNextButton] = useState(false);
+  const [confirmButton, setConfirmButton] = useState(false);
+  const [uploadButton, setUploadButton] = useState(false);
 
   const [photos, setPhotos] = useState([]);
   const [after, setAfter] = useState();
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  const [perm,setPerm]=useState(false);
+  const [perm, setPerm] = useState(false);
 
   const loadMorePhotos = useCallback(async () => {
     if (!hasNextPage || isLoading) {
@@ -84,10 +84,10 @@ const [caption,setCaption]=useState('');
 
     setIsLoading(true);
     try {
-      const { edges, page_info } = await CameraRoll.getPhotos({
+      const {edges, page_info} = await CameraRoll.getPhotos({
         first: PAGE_SIZE,
         after: after,
-        include:['filename'],
+        include: ['filename'],
       });
 
       setAfter(page_info.end_cursor);
@@ -102,7 +102,7 @@ const [caption,setCaption]=useState('');
       //   type: 'setHasNextPage',
       //   payload: page_info.has_next_page,
       // });
-      setPhotos((prevPhotos) => [...prevPhotos, ...edges]);
+      setPhotos(prevPhotos => [...prevPhotos, ...edges]);
       //console.log(...edges,'===========> edges')
       // dispatch({
       //   type: 'setPhotos',
@@ -116,8 +116,8 @@ const [caption,setCaption]=useState('');
   }, [after, hasNextPage, isLoading]);
 
   useEffect(() => {
-    async function runThis () {
-      if (Platform.OS === "android" && (await hasAndroidPermission())) {
+    async function runThis() {
+      if (Platform.OS === 'android' && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
       if (Platform.OS === 'ios' && (await hasIosPermission())) {
@@ -128,40 +128,43 @@ const [caption,setCaption]=useState('');
   }, []);
 
   const checkCondition = async () => {
-     if(Platform.OS==='android' && perm===true){
-      if(!isLoading){
+    if (Platform.OS === 'android' && perm === true) {
+      if (!isLoading) {
         loadMorePhotos();
       }
-     }
-     if(Platform.OS==='ios' && perm === true){
-      if(!isLoading){
+    }
+    if (Platform.OS === 'ios' && perm === true) {
+      if (!isLoading) {
         loadMorePhotos();
       }
-     }
-  }
+    }
+  };
 
   // useEffect(()=>{
-    // async function runThis () {
-    //   if (Platform.OS === "android" && (await hasAndroidPermission())) {
-    //     showPhotos();
-    //   }
-    //   if (Platform.OS === 'ios') {
-    //     showPhotos();
-    //   }
-    // }
-    // runThis();
+  // async function runThis () {
+  //   if (Platform.OS === "android" && (await hasAndroidPermission())) {
+  //     showPhotos();
+  //   }
+  //   if (Platform.OS === 'ios') {
+  //     showPhotos();
+  //   }
+  // }
+  // runThis();
   // },[])
 
   async function hasAndroidPermission() {
-    const permission = Platform.Version >= 33 ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
-  
+    const permission =
+      Platform.Version >= 33
+        ? PermissionsAndroid.PERMISSIONS.READ_MEDIA_IMAGES
+        : PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE;
+
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
       //console.log(hasPermission)
       return true;
     }
-  
+
     const status = await PermissionsAndroid.request(permission);
     if (status === 'granted') {
       setPerm(true);
@@ -171,74 +174,74 @@ const [caption,setCaption]=useState('');
   }
 
   async function hasIosPermission() {
-
     const hasPermission = await check(PERMISSIONS.IOS.PHOTO_LIBRARY)
-    .then((result) => {
-      switch (result) {
-        case RESULTS.UNAVAILABLE:
-          console.log('This feature is not available (on this device / in this context)');
-          return false;
+      .then(result => {
+        switch (result) {
+          case RESULTS.UNAVAILABLE:
+            console.log(
+              'This feature is not available (on this device / in this context)',
+            );
+            return false;
           //break;
-        case RESULTS.DENIED:
-          console.log('The permission has not been requested / is denied but requestable');
-          return false;
+          case RESULTS.DENIED:
+            console.log(
+              'The permission has not been requested / is denied but requestable',
+            );
+            return false;
           //break;
-        case RESULTS.LIMITED:
-          console.log('The permission is limited: some actions are possible');
-          //setPerm(true);
-          return true;
+          case RESULTS.LIMITED:
+            console.log('The permission is limited: some actions are possible');
+            //setPerm(true);
+            return true;
           //break;
-        case RESULTS.GRANTED:
-          console.log('The permission is granted');
-          //setPerm(true);
-          return true;
+          case RESULTS.GRANTED:
+            console.log('The permission is granted');
+            //setPerm(true);
+            return true;
           //break;
-        case RESULTS.BLOCKED:
-          console.log('The permission is denied and not requestable anymore');
-          Alert.alert(
-            'Photo Library Permission',
-            'Photo Library permission is blocked in the device ' +
+          case RESULTS.BLOCKED:
+            console.log('The permission is denied and not requestable anymore');
+            Alert.alert(
+              'Photo Library Permission',
+              'Photo Library permission is blocked in the device ' +
                 'settings. Allow the app to access Photo Library to ' +
                 'see images.',
-            [
+              [
                 {
-                    text: 'OK',
-                    onPress: () => {
-                        Linking.openSettings()
-                    },
-
+                  text: 'OK',
+                  onPress: () => {
+                    Linking.openSettings();
+                  },
                 },
-                { text: 'CANCEL',  onPress:()=>props.navigation.goBack()}
-            ],
-        )
-          return false;
+                {text: 'CANCEL', onPress: () => props.navigation.goBack()},
+              ],
+            );
+            return false;
           //break;
-      }
-    })
-    .catch((error) => {
-      // …
-    });
+        }
+      })
+      .catch(error => {
+        // …
+      });
 
     if (hasPermission) {
       setPerm(true);
       return true;
     }
 
-  const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY).then((result) => {
-      if (result===RESULTS.GRANTED || result===RESULTS.LIMITED){
-        return true;
-      }
-    })
-    .catch((error)=>{
+    const status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY)
+      .then(result => {
+        if (result === RESULTS.GRANTED || result === RESULTS.LIMITED) {
+          return true;
+        }
+      })
+      .catch(error => {});
 
-    });
+    if (status) {
+      setPerm(true);
+    }
 
-  if (status) {
-    setPerm(true);
-  }
-
-  return status===true;
-    
+    return status === true;
   }
 
   // async function showPhotos() {
@@ -259,189 +262,210 @@ const [caption,setCaption]=useState('');
   //   //console.log(result);
   // };
 
-  if (uploadButton){
-    return(
-      <View style={[styles.container,{alignItems:'center',justifyContent:'center'}]}>
+  if (uploadButton) {
+    return (
+      <View
+        style={[
+          styles.container,
+          {alignItems: 'center', justifyContent: 'center'},
+        ]}>
         <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" />
-        <Text style={{marginTop:hp2(2),color:'black',textTransform:'uppercase',fontWeight:'700',fontSize:rfv(16)}}>Successfully Uploaded!</Text>
+        <Text
+          style={{
+            marginTop: hp2(2),
+            color: 'black',
+            textTransform: 'uppercase',
+            fontWeight: '700',
+            fontSize: rfv(16),
+          }}>
+          Successfully Uploaded!
+        </Text>
       </View>
-    )
+    );
   }
 
   const goBackFunction = () => {
-    if(nextButton && !confirmButton){
+    if (nextButton && !confirmButton) {
       setNextButton(false);
     }
-    if(nextButton  && confirmButton){
+    if (nextButton && confirmButton) {
       setConfirmButton(false);
     }
-  }
-
-  const uploadProduct = () => {
-    if(caption !== '' && !confirmButton){
-      setConfirmButton(true)
-    }
-    else if (caption !=='' && confirmButton){
-
-    //setUploadButton(true)
-    setLoading(true);
-
-var formdata = new FormData();
-formdata.append("user_id", user?.userData?.id);
-formdata.append("caption", caption);
-formdata.append("image", selectedImage);
-
-  //   let obj = {
-  //     user_id: user.userData.id,
-  //     caption: caption,
-  //     image:selectedImage
-  // }
-
-  // console.log(obj)
-
-  //console.log(formdata);
-
-  let config = {
-    method: 'post',
-    maxBodyLength: Infinity,
-    url: CreateGalleryUrl,
-    headers: { 
-      'Authorization': `Bearer ${user.token}`, 
-      'Accept': 'application/json',
-      "Content-Type": "multipart/form-data"
-    },
-    data : formdata
   };
 
-  axios.request(config)
-  .then(async function (res) {
+  const uploadProduct = () => {
+    if (caption !== '' && !confirmButton) {
+      setConfirmButton(true);
+    } else if (caption !== '' && confirmButton) {
+      //setUploadButton(true)
+      setLoading(true);
 
-    console.log(res.data);
-    setLoading(false);
-    successMessage('Upload Success')
-    setUploadButton(true)
+      var formdata = new FormData();
+      formdata.append('user_id', user?.userData?.id);
+      formdata.append('caption', caption);
+      formdata.append('image', selectedImage);
 
-   setTimeout(()=>{
-     props.navigation.goBack()
-   },3000);
+      //   let obj = {
+      //     user_id: user.userData.id,
+      //     caption: caption,
+      //     image:selectedImage
+      // }
 
-  }) 
-  .catch(function (error) {
-    console.log(error.response.data)
-    setLoading(false);
-    errorMessage('Upload Failed');
-  });
+      // console.log(obj)
 
+      //console.log(formdata);
+
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: CreateGalleryUrl,
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+        data: formdata,
+      };
+
+      axios
+        .request(config)
+        .then(async function (res) {
+          console.log(res.data);
+          setLoading(false);
+          successMessage('Upload Success');
+          setUploadButton(true);
+
+          setTimeout(() => {
+            props.navigation.goBack();
+          }, 3000);
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading(false);
+          errorMessage('Upload Failed');
+        });
+    } else {
+      errorMessage('Please add caption!');
     }
-    else{
-      errorMessage('Please add caption!')
-    }
-  }
+  };
 
   return (
     <>
-     <View style={{position:'absolute',zIndex:999}}>
-{loading && (
-      <LoaderComp/>
-    )}
-</View>
-  
-    <SafeAreaView style={styles.container}>
-     
-      {selectedImage && !nextButton?(
-        <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Gallery</Text>
-        <TouchableOpacity onPress={()=>setNextButton(true)} style={styles.button}>
-          <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>NEXT</Text>
-        </TouchableOpacity>
+      <View style={{position: 'absolute', zIndex: 999}}>
+        {loading && <LoaderComp />}
       </View>
-      ):nextButton?(
-        <View style={[styles.headWrap,{justifyContent:'center'}]}>
-         <TouchableOpacity onPress={goBackFunction} style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Gallery</Text>
-      </View>
-      ):(
-        <View style={[styles.headWrap,{justifyContent:'center'}]}>
-        <Text style={styles.heading}>Gallery</Text>
-      </View>
-      )}
 
-      <View style={styles.imageContainer}>
-      {selectedImage? (<Image
-        source={{uri: selectedImage?.uri}}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />):(
-      // <Text>Select Image</Text>
-      <Image
-      source={IMAGES.selectIMG}
-      style={{width: '100%', height: '100%'}}
-      resizeMode="cover"
-    />
-      )}
-    </View>
+      <SafeAreaView style={styles.container}>
+        {selectedImage && !nextButton ? (
+          <View style={styles.headWrap}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <ICONS.AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.heading}>Gallery</Text>
+            <TouchableOpacity
+              onPress={() => setNextButton(true)}
+              style={styles.button}>
+              <Text style={styles.nextTxt}>NEXT</Text>
+            </TouchableOpacity>
+          </View>
+        ) : nextButton ? (
+          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
+            <TouchableOpacity
+              onPress={goBackFunction}
+              style={{position: 'absolute', left: wp2(4)}}>
+              <ICONS.AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.heading}>Gallery</Text>
+          </View>
+        ) : (
+          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
+            <Text style={styles.heading}>Gallery</Text>
+          </View>
+        )}
 
-     {nextButton?(
-      <ScrollView contentContainerStyle={{paddingVertical:hp2(1)}}>
-      <View style={styles.inputBox}>
-          <TextInput
-            style={{
-              flex: 1,
-              color: 'black',
-              paddingHorizontal: wp2(2),
-              fontSize: rfv(13),
-              fontWeight: '700',
-            }}
-            placeholderTextColor={'grey'}
-            placeholder="CAPTION"
-            value={caption}
-            onChangeText={(val) => setCaption(val)}
-            readOnly={confirmButton}
-          />
+        <View style={styles.imageContainer}>
+          {selectedImage ? (
+            <Image
+              source={{uri: selectedImage?.uri}}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          ) : (
+            // <Text>Select Image</Text>
+            <Image
+              source={IMAGES.selectIMG}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          )}
         </View>
-        <TouchableOpacity onPress={uploadProduct} style={[styles.button,{width:wp2(30),alignSelf:'flex-end',marginRight:wp2(10)}]}>
-          <Text style={{color: 'white',fontWeight:'700',fontSize:rfv(13)}}>{confirmButton?'UPLOAD':'CONFIRM'}</Text>
-        </TouchableOpacity>
-      </ScrollView>
-     ):(
-      <>
-      {photos?.length>0?
-      <>
-      <FlatList 
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingVertical: hp2(2),paddingHorizontal:wp2(2),}}
-      numColumns={4}
-       data={photos}
-       onEndReached={checkCondition}
-       onEndReachedThreshold={0.1}
-        renderItem={({item,i})=>{
-          return(
-      //       <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-      //    <Image
-      //       key={i}
-      //       source={{ uri: item.node.image.uri }}
-      //      style={{width: '100%', height: '100%'}}
-      //      resizeMode="cover"
-      //    />
-      //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-      //  </TouchableOpacity>
-      <ImageCard item={item} key={i} state={{selectedImage,setSelectedImage}} />
-      //<ImageCard item={item} key={i}  />
-          )
-        }}
 
-       />
-       
-       {isLoading && <View style={{alignItems:'center',justifyContent:'center'}}>
-       <ActivityIndicator color='black' size='large' /> 
-       </View>}
+        {nextButton ? (
+          <ScrollView contentContainerStyle={{paddingVertical: hp2(1)}}>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder="CAPTION"
+                value={caption}
+                onChangeText={val => setCaption(val)}
+                readOnly={confirmButton}
+              />
+            </View>
+            <TouchableOpacity
+              onPress={uploadProduct}
+              style={[
+                styles.button,
+                {width: wp2(30), alignSelf: 'flex-end', marginRight: wp2(10)},
+              ]}>
+              <Text style={styles.nextTxt}>
+                {confirmButton ? 'UPLOAD' : 'CONFIRM'}
+              </Text>
+            </TouchableOpacity>
+          </ScrollView>
+        ) : (
+          <>
+            {photos?.length > 0 ? (
+              <>
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{
+                    paddingVertical: hp2(2),
+                    paddingHorizontal: wp2(2),
+                  }}
+                  numColumns={4}
+                  data={photos}
+                  onEndReached={checkCondition}
+                  onEndReachedThreshold={0.1}
+                  renderItem={({item, i}) => {
+                    return (
+                      //       <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
+                      //    <Image
+                      //       key={i}
+                      //       source={{ uri: item.node.image.uri }}
+                      //      style={{width: '100%', height: '100%'}}
+                      //      resizeMode="cover"
+                      //    />
+                      //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
+                      //  </TouchableOpacity>
+                      <ImageCard
+                        item={item}
+                        key={i}
+                        state={{selectedImage, setSelectedImage}}
+                      />
+                      //<ImageCard item={item} key={i}  />
+                    );
+                  }}
+                />
 
-    {/* //    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
+                {isLoading && (
+                  <View
+                    style={{alignItems: 'center', justifyContent: 'center'}}>
+                    <ActivityIndicator color="black" size="large" />
+                  </View>
+                )}
+
+                {/* //    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
     //    {photos?.map((p, i) => {
     //    return (
     //      <TouchableOpacity onPress={()=>setSelectedImage(p.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
@@ -456,16 +480,16 @@ formdata.append("image", selectedImage);
     //    );
     //  })}
     //  </ScrollView> */}
-      </>
-      :
-      <View style={styles.noPhotos}>
-        <Text>No Photos Available</Text>
-      </View>
-      }
-      </>
-     )}
-    </SafeAreaView>
-  </>
+              </>
+            ) : (
+              <View style={styles.noPhotos}>
+                <Text>No Photos Available</Text>
+              </View>
+            )}
+          </>
+        )}
+      </SafeAreaView>
+    </>
   );
 }
 
@@ -484,13 +508,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   headWrap: {
-    width:wp2(92),
+    width: wp2(92),
     flexDirection: 'row',
     marginVertical: hp2(4),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
     justifyContent: 'space-between',
-    alignSelf:'center',
+    alignSelf: 'center',
   },
   heading: {
     color: 'black',
@@ -520,9 +544,9 @@ const styles = StyleSheet.create({
     height: hp2(36),
     overflow: 'hidden',
     backgroundColor: 'white',
-    alignSelf:'center',
-    alignItems:'center',
-    justifyContent:'center',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   inputBox: {
     width: wp2(80),
@@ -538,11 +562,19 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
     marginVertical: hp2(2),
-    alignSelf:'center',
+    alignSelf: 'center',
   },
-  noPhotos:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
+  noPhotos: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nextTxt: {color: 'white', fontWeight: '700', fontSize: rfv(13)},
+  inputTxt: {
+    flex: 1,
+    color: 'black',
+    paddingHorizontal: wp2(2),
+    fontSize: rfv(13),
+    fontWeight: '700',
   },
 });

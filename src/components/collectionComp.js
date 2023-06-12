@@ -16,34 +16,33 @@ import {
   RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import {
-  wp2,
-  hp2
-} from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import {wp2, hp2} from '../theme';
+import {useNavigation} from '@react-navigation/native';
 
 export default function CollectionComp(props) {
   const navigation = useNavigation();
   return (
     <View>
-    
-    <View style={{width:wp2(54),alignItems:'center'}}>
-    <Text style={{color:'black',fontSize:rfv(10)}}>{props?.name}</Text>
+      <View style={{width: wp2(54), alignItems: 'center'}}>
+        <Text style={{color: 'black', fontSize: rfv(10)}}>{props?.name}</Text>
+      </View>
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('collectionScreen', {
+            collection: props?.itemscollection,
+            collectionname: props?.name,
+            // ,userData:props?.userData
+          })
+        }
+        style={styles.imageContainer}>
+        <Image
+          source={props?.uri}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
+      </TouchableOpacity>
     </View>
-    
-     <TouchableOpacity onPress={() => 
-     navigation.navigate('collectionScreen',{collection:props?.itemscollection,collectionname:props?.name
-      // ,userData:props?.userData
-    })} 
-     style={styles.imageContainer}>
-      <Image
-        source={props?.uri}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />
-    </TouchableOpacity>
-    </View>
-   
   );
 }
 
@@ -63,6 +62,6 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     marginHorizontal: wp2(3),
-    marginTop:hp2(1),
+    marginTop: hp2(1),
   },
 });

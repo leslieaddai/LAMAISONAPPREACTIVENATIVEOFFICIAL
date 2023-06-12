@@ -54,26 +54,26 @@ export default function AnalyticsScreen(props) {
   };
 
   return (
-    <SafeAreaView style={{flex:1}}>
-         <View style={styles.container}>
-      <Text style={styles.heading}>Hello Represent!</Text>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Hello Represent!</Text>
 
-      <View style={styles.box}>
-        <Text style={styles.textOne}>£255,000</Text>
-        <Text style={styles.textTwo}>PROFIT</Text>
+        <View style={styles.box}>
+          <Text style={styles.textOne}>£255,000</Text>
+          <Text style={styles.textTwo}>PROFIT</Text>
+        </View>
+
+        <View style={styles.detailsContainer}>
+          {boxComp(false)}
+          {boxComp(false)}
+          {boxComp(false)}
+          {boxComp(false)}
+          {boxComp(false)}
+          {boxComp(true)}
+        </View>
+
+        {/* <BottomComp /> */}
       </View>
-
-      <View style={styles.detailsContainer}>
-        {boxComp(false)}
-        {boxComp(false)}
-        {boxComp(false)}
-        {boxComp(false)}
-        {boxComp(false)}
-        {boxComp(true)}
-      </View>
-
-      {/* <BottomComp /> */}
-    </View>
     </SafeAreaView>
   );
 }
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     marginLeft: wp2(8),
   },
   box: {

@@ -29,12 +29,14 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('brandProfileScreen')} style={styles.brandImage}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('brandProfileScreen')}
+      style={styles.brandImage}>
       <Image
         source={IMAGES.randomPic}
         style={{width: '100%', height: '100%'}}

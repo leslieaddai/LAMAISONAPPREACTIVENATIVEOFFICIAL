@@ -40,10 +40,12 @@ export default function OrderComp(props) {
           resizeMode="cover"
         />
       </View>
-      <View style={{marginLeft:wp2(3)}}>
-        <Text style={{color:'#065521',fontWeight:'600',fontSize:rfv(14),}}>Delivered</Text>
-        <Text style={{color:'black'}}>Flannel Jacket</Text>
-        <Text style={{color:'black'}}>Noongoons</Text>
+      <View style={{marginLeft: wp2(3)}}>
+        <Text style={{color: '#065521', fontWeight: '600', fontSize: rfv(14)}}>
+          Delivered
+        </Text>
+        <Text style={{color: 'black'}}>Flannel Jacket</Text>
+        <Text style={{color: 'black'}}>Noongoons</Text>
       </View>
     </View>
   );

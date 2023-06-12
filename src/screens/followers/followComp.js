@@ -29,7 +29,7 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function FollowComp(props) {
   const navigation = useNavigation();
@@ -37,32 +37,79 @@ export default function FollowComp(props) {
   //console.log(props?.list)
 
   const navigateScreen = () => {
-    if(props?.list==='follower'){
-      if(props?.data?.item?.followers?.roles[0]?.id===3){
-        navigation.navigate('brandProfileScreen',{userData:{userData:{id:props?.data?.item?.followers?.id,profile_image:props?.data?.item?.followers?.profile_image?.original_url,name:props?.data?.item?.followers?.name,role:[{id:3}]}}})
-      }else{
-        navigation.navigate('editorProfileScreen',{userData:{userData:{id:props?.data?.item?.followers?.id,profile_image:props?.data?.item?.followers?.profile_image?.original_url,username:props?.data?.item?.followers?.username}}})
+    if (props?.list === 'follower') {
+      if (props?.data?.item?.followers?.roles[0]?.id === 3) {
+        navigation.navigate('brandProfileScreen', {
+          userData: {
+            userData: {
+              id: props?.data?.item?.followers?.id,
+              profile_image:
+                props?.data?.item?.followers?.profile_image?.original_url,
+              name: props?.data?.item?.followers?.name,
+              role: [{id: 3}],
+            },
+          },
+        });
+      } else {
+        navigation.navigate('editorProfileScreen', {
+          userData: {
+            userData: {
+              id: props?.data?.item?.followers?.id,
+              profile_image:
+                props?.data?.item?.followers?.profile_image?.original_url,
+              username: props?.data?.item?.followers?.username,
+            },
+          },
+        });
       }
-    }else{
-      if(props?.data?.item?.followings?.roles[0]?.id===3){
-        navigation.navigate('brandProfileScreen',{userData:{userData:{id:props?.data?.item?.followings?.id,profile_image:props?.data?.item?.followings?.profile_image?.original_url,name:props?.data?.item?.followings?.name,role:[{id:3}]}}})
-      }else{
-        navigation.navigate('editorProfileScreen',{userData:{userData:{id:props?.data?.item?.followings?.id,profile_image:props?.data?.item?.followings?.profile_image?.original_url,username:props?.data?.item?.followings?.username}}})
+    } else {
+      if (props?.data?.item?.followings?.roles[0]?.id === 3) {
+        navigation.navigate('brandProfileScreen', {
+          userData: {
+            userData: {
+              id: props?.data?.item?.followings?.id,
+              profile_image:
+                props?.data?.item?.followings?.profile_image?.original_url,
+              name: props?.data?.item?.followings?.name,
+              role: [{id: 3}],
+            },
+          },
+        });
+      } else {
+        navigation.navigate('editorProfileScreen', {
+          userData: {
+            userData: {
+              id: props?.data?.item?.followings?.id,
+              profile_image:
+                props?.data?.item?.followings?.profile_image?.original_url,
+              username: props?.data?.item?.followings?.username,
+            },
+          },
+        });
       }
     }
-  }
+  };
 
   return (
     <TouchableOpacity onPress={navigateScreen} style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
           //source={IMAGES.lookbook}
-          source={{uri:props?.list==='follower'?props?.data?.item?.followers?.profile_image?.original_url:props?.data?.item?.followings?.profile_image?.original_url}}
+          source={{
+            uri:
+              props?.list === 'follower'
+                ? props?.data?.item?.followers?.profile_image?.original_url
+                : props?.data?.item?.followings?.profile_image?.original_url,
+          }}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
       </View>
-      <Text style={styles.text}>{props?.list==='follower'?props?.data?.item?.followers?.username:props?.data?.item?.followings?.username}</Text>
+      <Text style={styles.text}>
+        {props?.list === 'follower'
+          ? props?.data?.item?.followers?.username
+          : props?.data?.item?.followings?.username}
+      </Text>
     </TouchableOpacity>
   );
 }

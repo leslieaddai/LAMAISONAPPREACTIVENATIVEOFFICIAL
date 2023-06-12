@@ -41,12 +41,26 @@ export default function Category(props) {
         //props?.state?.setSelected(prev => (prev===props?.data?.item?.name?'':props?.data?.item?.name));
         //props?.state?.selected === props?.data?.item?.name ? props?.state?.setSelected('') : props?.state?.setSelected(props?.data?.item?.name)
         //props?.state?.selected === props?.data?.item?.name && props?.state?.setSelected('')
-        props?.state?.onSelectStyle(props?.data?.item?.id,props?.data?.item?.name)
+        props?.state?.onSelectStyle(
+          props?.data?.item?.id,
+          props?.data?.item?.name,
+        );
       }}
-      style={[styles.button, {backgroundColor: props?.state?.selected == props?.data?.item?.name ? 'black' : 'white'}]}>
+      style={[
+        styles.button,
+        {
+          backgroundColor:
+            props?.state?.selected == props?.data?.item?.name
+              ? 'black'
+              : 'white',
+        },
+      ]}>
       <Text
         style={{
-          color: props?.state?.selected == props?.data?.item?.name ? 'white' : 'black',
+          color:
+            props?.state?.selected == props?.data?.item?.name
+              ? 'white'
+              : 'black',
           fontWeight: '700',
           textTransform: 'uppercase',
         }}>
@@ -64,8 +78,8 @@ const styles = StyleSheet.create({
     borderRadius: wp2(6),
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal:wp2(1),
-    marginVertical:hp2(1),
+    marginHorizontal: wp2(1),
+    marginVertical: hp2(1),
 
     shadowColor: '#000',
     shadowOffset: {

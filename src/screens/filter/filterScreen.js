@@ -33,94 +33,96 @@ import {
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
 
-import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
-import { PiecesUrl } from '../../config/Urls';
-import { useDispatch,useSelector } from 'react-redux';
+import {errorHandler} from '../../config/helperFunction';
+import {PiecesUrl} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
 
-export default function FilterScreen({navigation,route}) {
-  const {Price} = useSelector(state=>state.Price)
-  const {Colour} = useSelector(state=>state.Colour)
-  const {Size} = useSelector(state=>state.Size)
-  const {Style} = useSelector(state=>state.Style)
-  const {Item} = useSelector(state=>state.Item)
-  const {Continent} = useSelector(state=>state.Continent)
+export default function FilterScreen({navigation, route}) {
+  const {Price} = useSelector(state => state.Price);
+  const {Colour} = useSelector(state => state.Colour);
+  const {Size} = useSelector(state => state.Size);
+  const {Style} = useSelector(state => state.Style);
+  const {Item} = useSelector(state => state.Item);
+  const {Continent} = useSelector(state => state.Continent);
 
-  const dispatch = useDispatch()
-  
-  console.log(route.params)
+  const dispatch = useDispatch();
+
+  console.log(route.params);
   const settingOptions = (name, navScreen, text) => {
     return (
-      <TouchableOpacity onPress={() => navigation.navigate(navScreen)} style={styles.filters}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate(navScreen)}
+        style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
-        <Text style={{color: 'black',position:'absolute',left:wp2(36)}}>{text}</Text>
-         <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
+        <Text style={styles.selectedTxt}>{text}</Text>
+        <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
       </TouchableOpacity>
     );
   };
   const resetFilters = () => {
     dispatch({
-      type:types.Priceadd,
-      payload: ''
-    })
+      type: types.Priceadd,
+      payload: '',
+    });
 
     dispatch({
-      type:types.Sizeadd,
-      payload: {size:'',id:''}
-    })
+      type: types.Sizeadd,
+      payload: {size: '', id: ''},
+    });
 
     dispatch({
-      type:types.Colouradd,
-      payload:{colour:'',id:''}
-    })
+      type: types.Colouradd,
+      payload: {colour: '', id: ''},
+    });
 
     dispatch({
-      type:types.Styleadd,
-      payload:{style:'',id:''}
-    })
+      type: types.Styleadd,
+      payload: {style: '', id: ''},
+    });
 
     dispatch({
-      type:types.Itemadd,
-      payload:{item:'',id:''}
-    })
+      type: types.Itemadd,
+      payload: {item: '', id: ''},
+    });
 
     dispatch({
-      type:types.Continetadd,
-      payload:{continent:'',id:''}
-    })
-  }
+      type: types.Continetadd,
+      payload: {continent: '', id: ''},
+    });
+  };
 
   return (
-    <SafeAreaView style={{flex:1}}>
+    <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-      <Text style={styles.heading}>FILTERS</Text>
+        <Text style={styles.heading}>FILTERS</Text>
 
-      {settingOptions('PRICE', 'priceList',Price)}
-      {settingOptions('SIZE', 'sizeClothing',Size)}
-      {settingOptions('COLOUR', 'colourClothing',Colour)}
-      {settingOptions('STYLE', 'style',Style)}
-      {settingOptions('ITEM', 'items',Item)}
-      {settingOptions('CONTINENTS', 'continents',Continent)}
+        {settingOptions('PRICE', 'priceList', Price)}
+        {settingOptions('SIZE', 'sizeClothing', Size)}
+        {settingOptions('COLOUR', 'colourClothing', Colour)}
+        {settingOptions('STYLE', 'style', Style)}
+        {settingOptions('ITEM', 'items', Item)}
+        {settingOptions('CONTINENTS', 'continents', Continent)}
 
-      <TouchableOpacity style={styles.button}
-      onPress={()=>{
-        navigation.navigate('searchScreen',route.params)
-      }}
-      >
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(20)}}>
-          APPLY FILTER(S)
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            navigation.navigate('searchScreen', route.params);
+          }}>
+          <Text style={styles.btnTxt}>APPLY FILTER(S)</Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity onPress={resetFilters} style={{alignSelf:'center',marginTop:hp2(2)}}>
-        <Text style={styles.resetText}>RESET FILTERS</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={resetFilters}
+          style={{alignSelf: 'center', marginTop: hp2(2)}}>
+          <Text style={styles.resetText}>RESET FILTERS</Text>
+        </TouchableOpacity>
 
-      {/* <BottomComp /> */}
-    </View>
+        {/* <BottomComp /> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(22),
     fontWeight: '700',
     marginVertical: hp2(4),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     //marginLeft: wp2(8),
     alignSelf: 'center',
   },
@@ -157,7 +159,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop:hp2(4),
+    marginTop: hp2(4),
 
     shadowColor: '#000',
     shadowOffset: {
@@ -169,10 +171,12 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-  resetText:{
-    color:'black',
-    fontSize:rfv(12),
-    fontWeight:'700',
-    textDecorationLine:'underline',
+  resetText: {
+    color: 'black',
+    fontSize: rfv(12),
+    fontWeight: '700',
+    textDecorationLine: 'underline',
   },
+  selectedTxt: {color: 'black', position: 'absolute', left: wp2(36)},
+  btnTxt: {color: 'white', fontWeight: '700', fontSize: rfv(20)},
 });

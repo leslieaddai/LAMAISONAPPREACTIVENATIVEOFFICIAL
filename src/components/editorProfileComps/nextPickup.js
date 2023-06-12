@@ -30,19 +30,21 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
-export function ImgComp  (props)  {
-  return(
+export function ImgComp(props) {
+  return (
     <View style={styles.imageContainer}>
-    <Image
-      //source={IMAGES.randomPic}
-      source={{uri:props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url}}
-      style={{width: '100%', height: '100%'}}
-      resizeMode="cover"
-    />
-  </View>
-  )
+      <Image
+        //source={IMAGES.randomPic}
+        source={{
+          uri: props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url,
+        }}
+        style={{width: '100%', height: '100%'}}
+        resizeMode="cover"
+      />
+    </View>
+  );
 }
 
 export default function NextPickup(props) {
@@ -51,14 +53,18 @@ export default function NextPickup(props) {
   return (
     <View>
       <View style={styles.galaryContainer}>
-      {props?.data?.wishlists?.reverse().map((item,index)=>{
-          if(index<6) return <ImgComp key={index} path={{item}} />
+        {props?.data?.wishlists?.reverse().map((item, index) => {
+          if (index < 6) return <ImgComp key={index} path={{item}} />;
         })}
       </View>
 
-      <TouchableOpacity  onPress={() => navigation.navigate('nextPickupScreen',{data:props.data.wishlists})} style={styles.nextpickup}>
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate('nextPickupScreen', {data: props.data.wishlists})
+        }
+        style={styles.nextpickup}>
         <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
-        NEXT PICK UP
+          NEXT PICK UP
         </Text>
       </TouchableOpacity>
     </View>

@@ -29,26 +29,31 @@ import {
   getFont,
   FONTS,
 } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
   console.log(props);
   return (
-    <TouchableOpacity  onPress={() => navigation.navigate('dressingRoomScreen',{
-      // userData:props?.userData,
-      data:props?.data})} style={styles.imageContainer}>
-      <View style={{height:hp2(18),overflow:'hidden'}}>
-      <Image
-        source={props.uri}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('dressingRoomScreen', {
+          // userData:props?.userData,
+          data: props?.data,
+        })
+      }
+      style={styles.imageContainer}>
+      <View style={{height: hp2(18), overflow: 'hidden'}}>
+        <Image
+          source={props.uri}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
       </View>
-      <Text style={{color:'black',textAlign:'center',fontSize:rfv(11)}}>{props?.name}{'\n'}
-      <Text>
-        {props.price}
-      </Text>
+      <Text style={{color: 'black', textAlign: 'center', fontSize: rfv(11)}}>
+        {props?.name}
+        {'\n'}
+        <Text>{props.price}</Text>
       </Text>
     </TouchableOpacity>
   );
@@ -69,6 +74,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    margin:wp2(2),
+    margin: wp2(2),
   },
 });

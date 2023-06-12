@@ -35,31 +35,35 @@ import BottomComp from '../../components/bottomComp';
 
 export default function DestinationScreen(props) {
   return (
-    <SafeAreaView style={{flex:1}}>
-       <View style={styles.container}>
-      <Text style={styles.destinationText}>Destination</Text>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('imageUploadScreen')} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
-        <View style={styles.iconWrap}>
-        <Image
-            source={IMAGES.editoricon}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={{color:'black'}}>Gallery</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('productType')} style={styles.box}>
-        <View style={styles.iconWrap}>
-        <Image
-            source={IMAGES.brandicon}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={{color:'black'}}>Collection</Text>
-      </TouchableOpacity>
-      {/* <BottomComp /> */}
-    </View>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Text style={styles.destinationText}>Destination</Text>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('imageUploadScreen')}
+          style={[styles.box, {marginTop: hp2(20), marginBottom: hp2(6)}]}>
+          <View style={styles.iconWrap}>
+            <Image
+              source={IMAGES.editoricon}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </View>
+          <Text style={{color: 'black'}}>Gallery</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('productType')}
+          style={styles.box}>
+          <View style={styles.iconWrap}>
+            <Image
+              source={IMAGES.brandicon}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </View>
+          <Text style={{color: 'black'}}>Collection</Text>
+        </TouchableOpacity>
+        {/* <BottomComp /> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -74,9 +78,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
   },
-  box:{
+  box: {
     width: wp2(38),
     height: hp2(18),
     backgroundColor: 'white',
@@ -92,7 +96,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
-  iconWrap:{
+  iconWrap: {
     width: wp2(18),
     height: wp2(18),
     overflow: 'hidden',

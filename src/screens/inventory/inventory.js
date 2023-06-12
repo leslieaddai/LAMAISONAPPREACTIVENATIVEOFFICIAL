@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -35,63 +35,66 @@ import {
 import BottomComp from '../../components/bottomComp';
 import InventoryComp from '../../components/inventoryComp';
 
-import { errorMessage,successMessage } from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
-import { GetBrandProductsById } from '../../config/Urls';
-import { useDispatch,useSelector } from 'react-redux';
+import {errorHandler} from '../../config/helperFunction';
+import {GetBrandProductsById} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function Inventory(props) {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [data,setData]=useState([]);
-  const user = useSelector(state => state.userData)
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
     axios
-    .get(GetBrandProductsById+`/${user?.userData?.id}`)
-    .then(async function (res) {
-       //console.log(res.data);
-       setData(res.data.data);
-       setLoading(false);
-    }) 
-    .catch(function (error) {
-      console.log(error.response.data)
-      setLoading(false);
-      errorMessage('Something went wrong!')
-    });
-
-  },[])
-
+      .get(GetBrandProductsById + `/${user?.userData?.id}`)
+      .then(async function (res) {
+        //console.log(res.data);
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        errorMessage('Something went wrong!');
+      });
+  }, []);
 
   return (
-    <SafeAreaView style={{flex:1}}>
-        <View style={styles.container}>
-      <Text style={styles.heading}>Inventory</Text>
+    <SafeAreaView style={{flex: 1}}>
+      <View style={styles.container}>
+        <Text style={styles.heading}>Inventory</Text>
 
-      {loading ? 
-    <View style={{  alignItems: 'center', justifyContent: 'center', marginVertical:hp2(6)}}>
-      <SkypeIndicator color={'black'} />
-    </View>
-    :    
-    <FlatList
-    showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingVertical: hp2(2),alignSelf:'center'}}
-      data={data}
-      numColumns={2}
-      renderItem={({item,index})=>{
-        return(
-          <InventoryComp data={item} />
-        )
-      }}
-      />
-      }
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingVertical: hp2(2),
+              alignSelf: 'center',
+            }}
+            data={data}
+            numColumns={2}
+            renderItem={({item, index}) => {
+              return <InventoryComp data={item} />;
+            }}
+          />
+        )}
 
-      {/* <ScrollView
+        {/* <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{
           flexDirection: 'row',
@@ -102,9 +105,9 @@ export default function Inventory(props) {
         }}>
        <InventoryComp value={300} />
       </ScrollView> */}
-      
-      {/* <BottomComp /> */}
-    </View>
+
+        {/* <BottomComp /> */}
+      </View>
     </SafeAreaView>
   );
 }
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     fontSize: rfv(19),
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignSelf: 'center',
     textTransform: 'uppercase',
   },

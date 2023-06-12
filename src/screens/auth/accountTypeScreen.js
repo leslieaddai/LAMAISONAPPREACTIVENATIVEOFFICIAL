@@ -38,25 +38,39 @@ export default function AccountTypeScreen(props) {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.accTypeText}>Account Type</Text>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('createAccountScreen',{user:'editor',data:props.route.params.data})} style={[styles.box,{marginTop:hp2(20),marginBottom:hp2(6)}]}>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('createAccountScreen', {
+            user: 'editor',
+            data: props.route.params.data,
+          })
+        }
+        style={[styles.box, {marginTop: hp2(20), marginBottom: hp2(6)}]}>
         <View style={styles.iconWrap}>
-        <Image
+          <Image
             source={IMAGES.editoricon}
             style={{width: '100%', height: '100%'}}
             resizeMode="contain"
           />
         </View>
-        <Text style={{color:'black'}}>Editor</Text>
+        <Text style={{color: 'black'}}>Editor</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={()=>props.navigation.navigate('createAccountScreen',{user:'brand',data:props.route.params.data})} style={styles.box}>
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('createAccountScreen', {
+            user: 'brand',
+            data: props.route.params.data,
+          })
+        }
+        style={styles.box}>
         <View style={styles.iconWrap}>
-        <Image
+          <Image
             source={IMAGES.brandicon}
             style={{width: '100%', height: '100%'}}
             resizeMode="contain"
           />
         </View>
-        <Text style={{color:'black'}}>Brand</Text>
+        <Text style={{color: 'black'}}>Brand</Text>
       </TouchableOpacity>
       {/* <BottomComp /> */}
     </SafeAreaView>
@@ -73,9 +87,9 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(26),
     fontWeight: '700',
-    marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
   },
-  box:{
+  box: {
     width: wp2(38),
     height: hp2(18),
     backgroundColor: 'white',
@@ -91,7 +105,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
     elevation: 8,
   },
-  iconWrap:{
+  iconWrap: {
     width: wp2(18),
     height: wp2(18),
     overflow: 'hidden',

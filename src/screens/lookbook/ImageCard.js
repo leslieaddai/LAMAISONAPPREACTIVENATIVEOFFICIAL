@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useCallback,memo} from 'react';
+import React, {useState, useEffect, useCallback, memo} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
-  PermissionsAndroid, 
+  PermissionsAndroid,
   Platform,
   SafeAreaView,
   FlatList,
@@ -33,51 +33,65 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import { CameraRoll } from "@react-native-camera-roll/camera-roll";
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import FastImage from 'react-native-fast-image';
 
-const ImageCard = (props) => {
+const ImageCard = props => {
   console.log(props.item.node.image.uri);
   //const [myState,setMyState]=useState();
 
-  const formatImgObj = (img) => {
-    const uri = Platform.OS === "android" ? img.uri : img.uri.replace("file://", "");
-    const filename = img.uri.split("/").pop();
+  const formatImgObj = img => {
+    const uri =
+      Platform.OS === 'android' ? img.uri : img.uri.replace('file://', '');
+    const filename = img.uri.split('/').pop();
     const match = /\.(\w+)$/.exec(filename);
     const ext = match?.[1];
     const type = match ? `image/${match[1]}` : `image`;
-  
+
     props.state.setSelectedImage({
       uri,
       name: filename,
-      type
-    })
-  }
+      type,
+    });
+  };
 
-        return (
-            <TouchableOpacity 
-            onPress={()=>
-              //props.state.setSelectedImage(props.item.node.image.uri)
-              formatImgObj(props.item.node.image)
-            }
-            //onPress={()=>setMyState(props.item.node.image.uri)} 
-            key={props.key} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-            <Image
-               key={props.key}
-               source={{ uri: props.item.node.image.uri }}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-            {/* <FastImage
+  return (
+    <TouchableOpacity
+      onPress={() =>
+        //props.state.setSelectedImage(props.item.node.image.uri)
+        formatImgObj(props.item.node.image)
+      }
+      //onPress={()=>setMyState(props.item.node.image.uri)}
+      key={props.key}
+      style={{width: wp2(24), height: wp2(24), overflow: 'hidden'}}>
+      <Image
+        key={props.key}
+        source={{uri: props.item.node.image.uri}}
+        style={{width: '100%', height: '100%'}}
+        resizeMode="cover"
+      />
+      {/* <FastImage
              key={props.key}
              source={{ uri: props.item.node.image.uri, priority: FastImage.priority.normal,}}
             style={{width: '100%', height: '100%'}}
             resizeMode={FastImage.resizeMode.cover}
             /> */}
-           {/* {myState===props.item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)} */}
-           {props?.state?.selectedImage?.uri===props?.item?.node?.image?.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-          </TouchableOpacity>
-        );
-    };
-    
- export default memo(ImageCard);
+      {/* {myState===props.item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)} */}
+      {props?.state?.selectedImage?.uri === props?.item?.node?.image?.uri && (
+        <ICONS.AntDesign
+          name="checkcircle"
+          size={20}
+          color="#0F2ABA"
+          style={{
+            position: 'absolute',
+            right: wp2(2),
+            top: hp2(0.5),
+            zIndex: 999,
+          }}
+        />
+      )}
+    </TouchableOpacity>
+  );
+};
+
+export default memo(ImageCard);
