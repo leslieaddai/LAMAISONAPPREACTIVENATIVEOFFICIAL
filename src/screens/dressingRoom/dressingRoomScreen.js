@@ -48,6 +48,7 @@ import {
   ProductShare,
   ProductDislike,
   GetAppNotice,
+  GetUserBasket,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
@@ -61,12 +62,15 @@ export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(null);
   const [share, setShare] = useState(null);
   const [hanger, setHanger] = useState(null);
+  //const [basket, setBasket] = useState(null);
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
+  const {products} = useSelector(state => state.GuestBasket);
+  console.log(products,'=====> basket state')
 
   const [colorId, setColorId] = useState();
   const [sizeId, setSizeId] = useState(null);
@@ -96,7 +100,7 @@ export default function DressingRoomScreen(props) {
     axios
       .get(GetProductInfoById + `${props?.route?.params?.data?.product?.id}`)
       .then(async function (res) {
-        console.log('dressing room', res.data);
+        //console.log('dressing room', res.data);
         setData(res.data.data);
         setColorId(res.data.data.product_variations[0].color);
 
@@ -106,11 +110,36 @@ export default function DressingRoomScreen(props) {
               `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
             )
             .then(async function (res) {
-              console.log(res.data.data);
+              //console.log(res.data.data);
               setHeart(res?.data?.data?.is_liked > 0 ? true : null);
               setHanger(res?.data?.data?.is_wishlist > 0 ? true : null);
               setShare(res?.data?.data?.is_shared > 0 ? true : null);
               setLoading2(false);
+
+                    //  if(user?.userData?.role?.[0]?.id===2){
+                    //   axios
+                    //   .get(GetUserBasket, {
+                    //     headers: {Authorization: `Bearer ${user?.token}`},
+                    //   })
+                    
+                    // .then(async function (res){
+                    //   console.log(res.data.data.length!==0?true:false)
+                    //   if(res?.data?.data?.length===0){
+                    //     setBasket(null);
+                    //   }else{
+                    //     setBasket(res?.data?.data)
+                    //   }
+                    //   setLoading2(false)
+                    // })
+                    // .catch(function (error){
+                    //   console.log(e.response.data);
+                    //   setLoading2(false);
+                    //   errorMessage('Something went wrong!');
+                    // })
+                    //  }else{
+                    //   setLoading2(false);
+                    //  }
+
             })
             .catch(function (e) {
               console.log(e.response.data);
@@ -146,13 +175,13 @@ export default function DressingRoomScreen(props) {
 
               let obj = {
                 user_id: user?.userData?.id,
-                product_id: 1,
+                product_id: props?.route?.params?.data?.product?.id,
                 qty: 1,
-                size_id: 1,
-                color_id: 1,
-                style_id: 1,
-                category_id: 1,
-                piece_id: 1,
+                size_id: sizeId?.size_id,
+                color_id: colorId?.id,
+                style_id: props?.route?.params?.data?.product?.style,
+                category_id: props?.route?.params?.data?.product?.category_id,
+                piece_id: props?.route?.params?.data?.product?.piece_id,
               };
 
               let config = {
@@ -191,6 +220,60 @@ export default function DressingRoomScreen(props) {
       errorMessage('Please select size before adding to basket');
     }
   };
+
+  const AddBasketGuest = () => {
+    if (sizeId !== null) {
+      if(products.some(e => e.data.id === props?.route?.params?.data?.product?.id && e.colorId.id === colorId.id && e.sizeId.size_id === sizeId.size_id)){
+        errorMessage('This Variation is Already in Your Basket!')
+      }else{
+        Alert.alert(
+          'Confirmation',
+          'Do you want to add this product into your basket?',
+          [
+            {
+              text: 'No',
+              onPress: () => console.log('No Pressed'),
+              style: 'cancel',
+            },
+            {
+              text: 'Yes',
+              onPress: () => {
+                dispatch({
+                  type: types.AddToBasketGuest,
+                  payload: {data,colorId,sizeId,Quantity:1}
+                });
+              },
+            },
+          ],
+        );
+      }
+    } else {
+      errorMessage('Please select size before adding to basket');
+    }
+  };
+
+  // const RemoveBasketGuest = () => {
+  //       Alert.alert(
+  //         'Confirmation',
+  //         'Do you want to remove this product from your basket?',
+  //         [
+  //           {
+  //             text: 'No',
+  //             onPress: () => console.log('No Pressed'),
+  //             style: 'cancel',
+  //           },
+  //           {
+  //             text: 'Yes',
+  //             onPress: () => {
+  //               dispatch({
+  //                 type: types.RemoveFromBasketGuest,
+  //                 payload: props?.route?.params?.data?.product?.id
+  //               });
+  //             },
+  //           },
+  //         ],
+  //       );    
+  // };
 
   const AddWishlist = () => {
     Alert.alert(
@@ -909,14 +992,25 @@ export default function DressingRoomScreen(props) {
               </TouchableOpacity>
 
               <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                <TouchableOpacity
-                  onPress={AddBasket}
+                {user?.token!==''?(
+                  <TouchableOpacity
+                  onPress={()=>{false?AddBasket():AddBasket()}}
                   style={[
                     styles.button,
                     {width: wp2(40), marginHorizontal: wp2(2)},
-                  ]}>
-                  <Text style={styles.buttonText}>ADD TO BASKET</Text>
+                  ]}>                  
+                    <Text style={styles.buttonText}>{true?'REMOVE FROM BASKET':'ADD TO BASKET'}</Text>
                 </TouchableOpacity>
+                ):(
+                  <TouchableOpacity
+                  onPress={()=>{AddBasketGuest()}}
+                  style={[
+                    styles.button,
+                    {width: wp2(40), marginHorizontal: wp2(2)},
+                  ]}>                  
+                    <Text style={styles.buttonText}>{'ADD TO BASKET'}</Text>
+                </TouchableOpacity>
+                )}
                 <TouchableOpacity
                   onPress={() => {
                     user?.userData?.role?.[0]?.id !== 3 && user?.token !== ''

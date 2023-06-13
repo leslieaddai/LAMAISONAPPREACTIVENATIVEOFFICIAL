@@ -19,5 +19,10 @@ export default {
   Itemadd:'Itemadd',
   Continetadd:'Continetadd',
   CartCount:'CartCount',
-  Clearcart:'Clearcart'
+  Clearcart:'Clearcart',
+  AddToBasketGuest:'AddToBasketGuest',
+  RemoveFromBasketGuest:'RemoveFromBasketGuest',
+  IncreamentQuantity:'IncreamentQuantity',
+  DecreamentQuantity:'DecreamentQuantity',
+  ClearBasketGuest:'ClearBasketGuest',
 };

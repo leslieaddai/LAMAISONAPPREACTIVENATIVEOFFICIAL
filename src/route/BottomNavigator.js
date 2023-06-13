@@ -724,7 +724,8 @@ export const BottomNavigationGuest = () => {
 const [loading, setLoading] = useState(false);
 const [data,setData]=useState([]);
 const user = useSelector(state => state.userData)
-const basket = useSelector(state => state.basket)
+//const basket = useSelector(state => state.basket)
+const {products} = useSelector(state => state.GuestBasket);
   return(
     <Tab.Navigator
     backBehavior='history'
@@ -810,9 +811,9 @@ const basket = useSelector(state => state.basket)
               resizeMode="contain"
             />
           </View>
-           {basket?.count > 0 && 
+           {products?.length !== 0 && 
             <View style={styles.basketCounter}>
-            <Text style={{color:'white',fontSize:rfv(10)}}>{basket?.count}</Text>
+            <Text style={{color:'white',fontSize:rfv(10)}}>{products?.length}</Text>
         </View>
         }
            </>
@@ -1280,7 +1281,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     backgroundColor:'#0F2ABA',
     position:'absolute',
-    right:wp2(-1),
-    top:wp2(-1),
+    right:wp2(2),
+    top:wp2(1),
   },
 });

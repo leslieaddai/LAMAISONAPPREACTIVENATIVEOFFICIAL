@@ -54,3 +54,4 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const SaveBrandAbout = getApi('change/about');
   export const RemoveFromWishlist = getApi('wishlists/');
   export const SearchUrl = getApi('product/search?page=');
+  export const GetUserBasket = getApi('baskets');

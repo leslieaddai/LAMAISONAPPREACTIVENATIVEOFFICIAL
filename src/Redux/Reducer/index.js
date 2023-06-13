@@ -12,6 +12,7 @@ import SizeReducer from './SizeReducer';
 import StyleReducer from './StyleReducer';
 import FilterItemReducer from './FilterItemReducer';
 import ContinentReducer from './ContinentReducer';
+import GuestBasket from './GuestBasket';
 
 const persistConfig1 = {
   key: 'auth',
@@ -31,6 +32,12 @@ const persistConfig3 = {
   whitelist: ['id','device_id','ip_address'],
 };
 
+const persistConfig4 = {
+  key: 'guestbasket',
+  storage: AsyncStorage,
+  whitelist: ['products'],
+};
+
 export const store = configureStore({
   reducer: {
     userData: persistReducer(persistConfig1, AuthReducer),
@@ -43,7 +50,8 @@ export const store = configureStore({
     Size:SizeReducer,
     Style:StyleReducer,
     Item:FilterItemReducer,
-    Continent:ContinentReducer
+    Continent:ContinentReducer,
+    GuestBasket:persistReducer(persistConfig4,GuestBasket),
   },
 });
 export const persistor = persistStore(store);
