@@ -175,6 +175,12 @@ export default function ReuploadScreen(props) {
   };
 
   const verifyQuantity = () => {
+    let tempDuplicate = quantity.filter(
+      (v, i, a) =>
+        a.findIndex(
+          v2 => v2.color_id == v.color_id && v2.size_id == v.size_id,
+        ) == i,
+    );
     let tempValue = 0;
     quantity.map((obj, index) => {
       if (
@@ -191,7 +197,11 @@ export default function ReuploadScreen(props) {
       }
     });
     if (quantity.length === tempValue) {
-      setConfirmButton(true);
+      if (quantity.length === tempDuplicate.length) {
+        setConfirmButton(true);
+      } else {
+        errorMessage('Please remove duplicate variations!');
+      }
     }
   };
 

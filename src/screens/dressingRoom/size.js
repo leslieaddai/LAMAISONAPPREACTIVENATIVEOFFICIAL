@@ -72,6 +72,7 @@ export default function SelectSizes(props) {
         <Text style={styles.quantityTxt}>{text?.quantity + ' remaining!'}</Text>
 
         <TouchableOpacity
+        disabled={text?.quantity < 1 ? true : false}
           onPress={() => {
             props?.route?.params?.state?.setSizeId(text);
             props?.navigation.goBack();

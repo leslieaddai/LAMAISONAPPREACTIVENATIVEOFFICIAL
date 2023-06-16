@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -35,7 +35,7 @@ import {useNavigation} from '@react-navigation/native';
 import {errorMessage, successMessage} from '../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../config/helperFunction';
-import {GetUserBasket} from '../config/Urls';
+import {GetUserBasket,BasketQuantityIncreamentDecreament} from '../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -45,15 +45,24 @@ export default function BasketComp(props) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
 
   const onIncreament = (indexVal) => {
-    dispatch({
-      type: types.IncreamentQuantity,
-      payload: products[indexVal]
-    });
+    props?.data?.data?.product_variations?.map((item,index)=>{
+      if(item?.size_id === props?.data?.sizeId?.size_id && item?.color_id === props?.data?.colorId?.id){
+        if(item?.quantity > props?.data?.Quantity){
+          dispatch({
+            type: types.IncreamentQuantity,
+            payload: products[indexVal]
+          });
+        }else{
+          errorMessage('Quantity Outreach')
+        }
+      }
+    })
   }
 
   const onDecreament = (indexVal) => {
@@ -86,9 +95,133 @@ export default function BasketComp(props) {
     }
   }
 
+  const onIncreamentEditor = (basketId) => {
+    setLoading2(true);
+
+    axios
+      .post(BasketQuantityIncreamentDecreament,{basket_id:basketId,type:'increment'}, {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res.data);
+        //getBasket()
+        props?.basket?.getBasket();
+        setLoading2(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading2(false);
+        errorMessage('Something went wrong!');
+      });
+}
+
+const onDecreamentEditor = (basketId) => {
+if(props?.data?.qty<2){
+Alert.alert(
+  'Confirmation',
+  'Do you want to remove this product from your basket?',
+  [
+    {
+      text: 'No',
+      onPress: () => console.log('No Pressed'),
+      style: 'cancel',
+    },
+    {
+      text: 'Yes',
+      onPress: () => {
+        setLoading2(true);
+
+        axios
+          .delete(`https://lamaison.clickysoft.net/api/v1/baskets/${basketId}`, {
+            headers: {Authorization: `Bearer ${user?.token}`},
+          })
+          .then(async function (res) { 
+            console.log(res.data);
+            dispatch({
+              type: types.RemoveFromBasket
+            });
+            //getBasket()
+            props?.basket?.getBasket();
+            setLoading2(false);
+          })
+          .catch(function (error) {
+            console.log(error.response.data);
+            setLoading2(false);
+            errorMessage('Something went wrong!');
+          });
+      },
+    },
+  ],
+);    
+}else{
+setLoading2(true);
+
+axios
+  .post(BasketQuantityIncreamentDecreament,{basket_id:basketId,type:'decrement'}, {
+    headers: {Authorization: `Bearer ${user?.token}`},
+  })
+  .then(async function (res) {
+    console.log(res.data);
+    //getBasket()
+    props?.basket?.getBasket();
+    setLoading2(false);
+  })
+  .catch(function (error) {
+    console.log(error.response.data);
+    setLoading2(false);
+    errorMessage('Something went wrong!');
+  });
+}
+}
+
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      {user?.token!==''?(
+        <>
+        <TouchableOpacity
+        onPress={() => navigation.navigate('imageViewScreen')}
+        style={styles.imageWrap}>
+        <Image
+          //source={IMAGES.randomPic}
+          source={{uri:props?.data?.product?.product_images[0].image[0]?.original_url}}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />
+      </TouchableOpacity>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.titleTxt}>{props?.data?.product?.name}</Text>
+        <Text style={styles.priceTxt}>£{props?.data?.product?.price}</Text>
+        
+        {/* <View style={{flexDirection:'row',alignItems:'center',marginVertical:hp2(2)}}>
+          <View style={{width:wp2(9),height:wp2(9),backgroundColor:props?.data?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{props?.data?.sizeId?.size?.size}</Text>
+          </View> */}
+
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          {loading2?(
+              <View>
+                <SkypeIndicator color={'black'} />
+              </View>
+          ):(
+            <Text style={styles.quantityTxt}>{props?.data?.qty}</Text>
+          )}
+          <TouchableOpacity onPress={()=>onIncreamentEditor(props?.data?.id)} style={styles.button}>
+            <ICONS.Entypo name="plus" size={30} color="white" />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>onDecreamentEditor(props?.data?.id)}
+            style={[
+              styles.button,
+              {backgroundColor: 'white', borderColor: 'black'},
+            ]}>
+            <ICONS.Entypo name="minus" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+      </View>
+        </>
+      ):(
+        <>
+        <TouchableOpacity
         onPress={() => navigation.navigate('imageViewScreen')}
         style={styles.imageWrap}>
         <Image
@@ -108,7 +241,7 @@ export default function BasketComp(props) {
           </View>
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={styles.quantityTxt}>{props?.data?.Quantity}</Text>
+            <Text style={styles.quantityTxt}>{props?.data?.Quantity}</Text>
           <TouchableOpacity onPress={()=>onIncreament(props?.index)} style={styles.button}>
             <ICONS.Entypo name="plus" size={30} color="white" />
           </TouchableOpacity>
@@ -121,6 +254,8 @@ export default function BasketComp(props) {
           </TouchableOpacity>
         </View>
       </View>
+        </>
+      )}
     </View>
   );
 }

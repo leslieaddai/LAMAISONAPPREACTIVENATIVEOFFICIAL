@@ -39,7 +39,7 @@ import BasketComp from '../../components/basketComp';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {GetUserBasket} from '../../config/Urls';
+import {GetUserBasket,BasketQuantityIncreamentDecreament} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -48,15 +48,123 @@ export default function BasketScreen(props) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
 
+  useEffect(() => {
+   user?.token!=='' && getBasket()
+  }, []);
+
+  const getBasket = () => {
+    setLoading(true);
+
+    axios
+      .get(GetUserBasket, {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res.data);
+        setData(res.data.data);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        errorMessage('Something went wrong!');
+      });
+  }
+
   const onIncreament = (indexVal) => {
-    dispatch({
-      type: types.IncreamentQuantity,
-      payload: products[indexVal]
-    });
+    products[0].data?.product_variations?.map((item,index)=>{
+      if(item?.size_id === products[0].sizeId?.size_id && item?.color_id === products[0].colorId?.id){
+        if(item?.quantity > products[0].Quantity){
+          dispatch({
+            type: types.IncreamentQuantity,
+            payload: products[indexVal]
+          });
+        }else{
+          errorMessage('Quantity Outreach')
+        }
+      }
+    })
+  }
+
+  const onIncreamentEditor = (basketId) => {
+          setLoading2(true);
+
+          axios
+            .post(BasketQuantityIncreamentDecreament,{basket_id:basketId,type:'increment'}, {
+              headers: {Authorization: `Bearer ${user?.token}`},
+            })
+            .then(async function (res) {
+              console.log(res.data);
+              getBasket()
+              setLoading2(false);
+            })
+            .catch(function (error) {
+              console.log(error.response.data);
+              setLoading2(false);
+              errorMessage('Something went wrong!');
+            });
+  }
+
+  const onDecreamentEditor = (basketId) => {
+    if(data[0]?.qty<2){
+      Alert.alert(
+        'Confirmation',
+        'Do you want to remove this product from your basket?',
+        [
+          {
+            text: 'No',
+            onPress: () => console.log('No Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: () => {
+              setLoading2(true);
+
+              axios
+                .delete(`https://lamaison.clickysoft.net/api/v1/baskets/${basketId}`, {
+                  headers: {Authorization: `Bearer ${user?.token}`},
+                })
+                .then(async function (res) { 
+                  console.log(res.data);
+                  dispatch({
+                    type: types.RemoveFromBasket
+                  });
+                  getBasket()
+                  setLoading2(false);
+                })
+                .catch(function (error) {
+                  console.log(error.response.data);
+                  setLoading2(false);
+                  errorMessage('Something went wrong!');
+                });
+            },
+          },
+        ],
+      );    
+    }else{
+      setLoading2(true);
+
+      axios
+        .post(BasketQuantityIncreamentDecreament,{basket_id:basketId,type:'decrement'}, {
+          headers: {Authorization: `Bearer ${user?.token}`},
+        })
+        .then(async function (res) {
+          console.log(res.data);
+          getBasket()
+          setLoading2(false);
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading2(false);
+          errorMessage('Something went wrong!');
+        });
+    }
   }
 
   const onDecreament = (indexVal) => {
@@ -93,82 +201,176 @@ export default function BasketScreen(props) {
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
       <Text style={styles.basket}>Basket</Text>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingTop: hp2(4),
-          paddingBottom: hp2(12),
-        }}>
-
-        {products?.length!==0 && 
-        <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-        <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
-          <Image
-            //source={IMAGES.randomPic}
-            source={{uri:products[0]?.data?.product_images[0].image[0]?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
-        <View style={styles.detailsContainer}>
-          <Text style={{color: 'black', textTransform: 'uppercase'}}>
-            {products[0]?.data?.name}
-          </Text>
-          <Text
-            style={{
-              color: 'black',
-              textTransform: 'uppercase',
-              marginVertical: hp2(4),
-            }}>
-            £{products[0]?.data?.price}
-          </Text>
-
-          <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
-          <View style={{width:wp2(9),height:wp2(9),backgroundColor:products[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{products[0]?.sizeId?.size?.size}</Text>
-          </View>
-
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text
-              style={{
-                color: 'black',
-                textTransform: 'uppercase',
-                fontWeight: '700',
-                fontSize: rfv(20),
-                marginRight: wp2(4),
+      {user?.token !== '' ? (
+              <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingTop: hp2(4),
+                paddingBottom: hp2(12),
               }}>
-              {products[0]?.Quantity}
-            </Text>
-            <TouchableOpacity onPress={()=>onIncreament(0)} style={styles.button}>
-              <ICONS.Entypo name="plus" size={30} color="white" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>onDecreament(0)}
-              style={[
-                styles.button,
-                {backgroundColor: 'white', borderColor: 'black'},
-              ]}>
-              <ICONS.Entypo name="minus" size={30} color="black" />
-            </TouchableOpacity>
-          </View>
+                {loading && data?.length===0 ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <SkypeIndicator color={'black'} />
         </View>
-      </View>
-      }
-    
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={products}
-            renderItem={({item, index}) => {
-              return index!== 0 && <BasketComp data={item} index={index} /> ;
-            }}
-          />
-
-       {products?.length!==0 && 
-        <TouchableOpacity onPress={() => props.navigation.navigate('checkoutScreen')} style={styles.checkoutButton}>
-        <Text style={styles.buttonText}>CHECKOUT</Text>
-      </TouchableOpacity>
-      }
-
-      </ScrollView>
+      ) : (
+        <>
+              {data?.length!==0 && 
+              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
+                <Image
+                  //source={IMAGES.randomPic}
+                  source={{uri:data[0]?.product?.product_images[0]?.image[0]?.original_url}}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+              <View style={styles.detailsContainer}>
+                <Text style={{color: 'black', textTransform: 'uppercase'}}>
+                  {data[0]?.product?.name}
+                </Text>
+                <Text
+                  style={{
+                    color: 'black',
+                    textTransform: 'uppercase',
+                    marginVertical: hp2(4),
+                  }}>
+                  £{data[0]?.product?.price}
+                </Text>
+      
+                {/* <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
+                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{products[0]?.sizeId?.size?.size}</Text>
+                </View> */}
+      
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  {loading2 ? (
+                    <SkypeIndicator color={'black'} />
+                  ) : (
+                    <Text
+                    style={{
+                      color: 'black',
+                      textTransform: 'uppercase',
+                      fontWeight: '700',
+                      fontSize: rfv(20),
+                      marginRight: wp2(4),
+                    }}>
+                    {data[0]?.qty}
+                  </Text>
+                  )}
+                  <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(data[0]?.id)} style={styles.button}>
+                    <ICONS.Entypo name="plus" size={30} color="white" />
+                  </TouchableOpacity>
+                  <TouchableOpacity disabled={loading2} onPress={()=>onDecreamentEditor(data[0]?.id)}
+                    style={[
+                      styles.button,
+                      {backgroundColor: 'white', borderColor: 'black'},
+                    ]}>
+                    <ICONS.Entypo name="minus" size={30} color="black" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            }
+          
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={data}
+                  renderItem={({item, index}) => {
+                    return index!== 0 && <BasketComp data={item} index={index} basket={{getBasket}} /> ;
+                  }}
+                />
+      
+             {data?.length!==0 && 
+              <TouchableOpacity onPress={() => props.navigation.navigate('checkoutScreen',{data})} style={styles.checkoutButton}>
+              <Text style={styles.buttonText}>CHECKOUT</Text>
+            </TouchableOpacity>
+            }
+               
+        </>
+      )}
+            </ScrollView>
+      ) : (
+              <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingTop: hp2(4),
+                paddingBottom: hp2(12),
+              }}>
+      
+              {products?.length!==0 && 
+              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
+                <Image
+                  //source={IMAGES.randomPic}
+                  source={{uri:products[0]?.data?.product_images[0].image[0]?.original_url}}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+              <View style={styles.detailsContainer}>
+                <Text style={{color: 'black', textTransform: 'uppercase'}}>
+                  {products[0]?.data?.name}
+                </Text>
+                <Text
+                  style={{
+                    color: 'black',
+                    textTransform: 'uppercase',
+                    marginVertical: hp2(4),
+                  }}>
+                  £{products[0]?.data?.price}
+                </Text>
+      
+                <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
+                <View style={{width:wp2(9),height:wp2(9),backgroundColor:products[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{products[0]?.sizeId?.size?.size}</Text>
+                </View>
+      
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      textTransform: 'uppercase',
+                      fontWeight: '700',
+                      fontSize: rfv(20),
+                      marginRight: wp2(4),
+                    }}>
+                    {products[0]?.Quantity}
+                  </Text>
+                  <TouchableOpacity onPress={()=>onIncreament(0)} style={styles.button}>
+                    <ICONS.Entypo name="plus" size={30} color="white" />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>onDecreament(0)}
+                    style={[
+                      styles.button,
+                      {backgroundColor: 'white', borderColor: 'black'},
+                    ]}>
+                    <ICONS.Entypo name="minus" size={30} color="black" />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+            }
+          
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={products}
+                  renderItem={({item, index}) => {
+                    return index!== 0 && <BasketComp data={item} index={index} /> ;
+                  }}
+                />
+      
+             {products?.length!==0 && 
+              <TouchableOpacity onPress={() => props.navigation.navigate('checkoutScreen')} style={styles.checkoutButton}>
+              <Text style={styles.buttonText}>CHECKOUT</Text>
+            </TouchableOpacity>
+            }
+      
+            </ScrollView>
+      )}
       {/* <BottomComp /> */}
     </View>
     </SafeAreaView>

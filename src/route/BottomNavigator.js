@@ -74,6 +74,7 @@ import WelcomeScreen from '../screens/welcome/welcomeScreen';
 import SplashScreen from '../screens/splash/splashScreen';
 
 import CommentScreen from '../screens/home/commentScreen';
+import BuyNow from '../screens/checkout/buyNow';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -713,6 +714,7 @@ useEffect(()=>{
     <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'buyNow'} component={BuyNow} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   )
@@ -869,6 +871,7 @@ const {products} = useSelector(state => state.GuestBasket);
     <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
     <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
+    <Tab.Screen name={'buyNow'} component={BuyNow} options={{tabBarButton: () => null,}}/>
 
     </Tab.Navigator>
   )

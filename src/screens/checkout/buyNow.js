@@ -54,7 +54,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
-export default function CheckoutScreen(props) {
+export default function BuyNow(props) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
