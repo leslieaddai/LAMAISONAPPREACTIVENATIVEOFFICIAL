@@ -126,10 +126,10 @@ export default function WardrobeComp(props) {
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.data?.product_id}},
-        })
+        }):navigation.navigate('imageViewScreen')
       }
       style={styles.imageContainer}>
       <Image

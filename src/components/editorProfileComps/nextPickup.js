@@ -31,10 +31,20 @@ import {
   FONTS,
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 export function ImgComp(props) {
+  const user = useSelector(state => state.userData);
+  const navigation = useNavigation();
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity 
+    onPress={() => user?.userData?.role?.[0]?.id!==3?
+      navigation.navigate('dressingRoomScreen', {
+        // userData:props?.userData,
+        data: {product: {id: props?.path?.item?.product_id}},
+      }):navigation.navigate('imageViewScreen')
+    }
+     style={styles.imageContainer}>
       <Image
         //source={IMAGES.randomPic}
         source={{
@@ -43,7 +53,7 @@ export function ImgComp(props) {
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 

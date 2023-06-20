@@ -93,7 +93,8 @@ export default function DressingRoomScreen(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -147,7 +148,8 @@ export default function DressingRoomScreen(props) {
             .catch(function (e) {
               console.log(e.response.data);
               setLoading2(false);
-              errorMessage('Something went wrong!');
+              //errorMessage('Something went wrong!');
+              errorMessage(errorHandler(error))
             });
         } else {
           setLoading2(false);
@@ -156,7 +158,8 @@ export default function DressingRoomScreen(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading2(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -475,7 +478,7 @@ export default function DressingRoomScreen(props) {
   };
 
   const BuyNowButton = () => {
-    props.navigation.navigate('buyNow',{data,qty})
+    props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
   }
 
   const productLikeDislike = () => {

@@ -72,7 +72,8 @@ export default function BasketScreen(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }
 
@@ -106,7 +107,8 @@ export default function BasketScreen(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoading2(false);
-              errorMessage('Something went wrong!');
+              //errorMessage('Something went wrong!');
+              errorMessage(errorHandler(error))
             });
   }
 
@@ -141,7 +143,8 @@ export default function BasketScreen(props) {
                 .catch(function (error) {
                   console.log(error.response.data);
                   setLoading2(false);
-                  errorMessage('Something went wrong!');
+                  //errorMessage('Something went wrong!');
+                  errorMessage(errorHandler(error))
                 });
             },
           },
@@ -162,7 +165,8 @@ export default function BasketScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading2(false);
-          errorMessage('Something went wrong!');
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
         });
     }
   }
@@ -241,10 +245,10 @@ export default function BasketScreen(props) {
                   £{data[0]?.product?.price}
                 </Text>
       
-                {/* <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
-                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{products[0]?.sizeId?.size?.size}</Text>
-                </View> */}
+                <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
+                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{data[0]?.size?.size}</Text>
+                </View>
       
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {loading2 ? (

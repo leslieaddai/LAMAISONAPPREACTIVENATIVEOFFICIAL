@@ -30,16 +30,18 @@ import {
   FONTS,
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function Popular(props) {
   console.log(props?.data);
   const navigation = useNavigation();
+  const user = useSelector(state => state.userData);
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.data?.product_id}},
-        })
+        }):navigation.navigate('imageViewScreen')
       }
       // onPress={()=>navigation.reset({
       //   index: 0,

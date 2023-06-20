@@ -144,7 +144,8 @@ export default function ReuploadScreen(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -286,6 +287,7 @@ export default function ReuploadScreen(props) {
         console.log(error.response.data);
         setLoading(false);
         errorMessage('Reupload Failed');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -337,6 +339,7 @@ export default function ReuploadScreen(props) {
               console.log(error.response.data);
               setLoading2(false);
               errorMessage('Image Update Failed');
+              errorMessage(errorHandler(error))
             });
         }
       }

@@ -7,10 +7,19 @@ let statusCode = 'ghjkl';
 
 export const errorHandler = err => {
   let msg = 'Network Request Failed.';
-  if (parseInt(err.response.status) === 422) {
-    msg = err.response.data.error;
-  } else {
-    msg = err.response.data.error;
-  }
+  // if (parseInt(err.response.status) === 422) {
+  //   msg = err.response.data.error;
+  // } else {
+  //   msg = err.response.data.error;
+  // }
   return msg;
 };
+
+// if(error.response.data.message === 'Call to a member function tokens() on null'){
+//   dispatch({
+//     type: types.Clearcart,
+//   });
+//   dispatch({
+//     type: types.Logout,
+//   });
+// }

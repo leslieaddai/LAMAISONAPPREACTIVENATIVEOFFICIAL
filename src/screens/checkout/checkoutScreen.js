@@ -140,19 +140,35 @@ export default function CheckoutScreen(props) {
   }, []);
 
   useEffect(()=>{
-    if(stateChange?.region !== null && stateChange?.region !== ''){
-      let val = 0;
-      products.map((item,index)=>{
-        val=val+Number(item?.data?.price*item?.Quantity)
-        item?.data?.product_region?.map((item,index)=>{
-          if(stateChange?.region === item?.region_id){
-            val = val + Number(item?.price)
-          }
+
+      if(stateChange?.region !== null && stateChange?.region !== ''){
+        if(user?.token!==''){
+            let val = 0;
+            props?.route?.params?.data.map((item,index)=>{
+              val=val+Number(item?.product?.price*item?.qty)
+              item?.product?.product_region?.map((item,index)=>{
+                if(stateChange?.region === item?.region_id){
+                  val = val + Number(item?.shipping_price?.price)
+                }
+              })
+            })
+            console.log(val);
+            setTotal(val);
+        }else{
+          let val = 0;
+        products.map((item,index)=>{
+          val=val+Number(item?.data?.price*item?.Quantity)
+          item?.data?.product_region?.map((item,index)=>{
+            if(stateChange?.region === item?.region_id){
+              val = val + Number(item?.price)
+            }
+          })
         })
-      })
-      console.log(val);
-      setTotal(val);
-    }
+        console.log(val);
+        setTotal(val);
+        }
+      }
+
   },[stateChange?.region])
 
   const getAllRegions = () => {
@@ -335,6 +351,7 @@ export default function CheckoutScreen(props) {
         console.log(res.data);
         setLoading(false);
         //props.navigation.pop();
+        props.navigation.goBack();
         props.navigation.navigate('confirmationScreen');
         //props.navigation.replace('confirmationScreen')
         //props.navigation.replace('bottomNavigation', {screen: 'confirmationScreen',})
@@ -432,10 +449,10 @@ export default function CheckoutScreen(props) {
              <Text style={styles.text}>£{item?.product?.price}</Text>
            </View>
 
-           {/* <View style={{flexDirection:'row',alignItems:'center'}}>
-         <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{item?.sizeId?.size?.size}</Text>
-         </View> */}
+           <View style={{flexDirection:'row',alignItems:'center'}}>
+         <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{item?.size?.size}</Text>
+         </View>
 
          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.qty}</Text>
 
@@ -443,13 +460,13 @@ export default function CheckoutScreen(props) {
            <View
            style={{flexDirection: 'row', justifyContent: 'space-between'}}>
            <Text style={styles.text}>Shipping</Text>
-           {/* <Text style={styles.text}>{item?.data?.product_region.map((item,index)=>{
+           <Text style={styles.text}>{item?.product?.product_region.map((item,index)=>{
              if(stateChange?.region === item?.region_id){
                return (
-                 '£'+item?.price
+                 '£'+item?.shipping_price?.price
                )
              }
-           })}</Text> */}
+           })}</Text>
          </View>
          }
          </View>

@@ -78,7 +78,8 @@ export default function NotificationComp(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoadingFollow(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -106,7 +107,8 @@ export default function NotificationComp(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoadingFollow(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -140,7 +142,7 @@ export default function NotificationComp(props) {
           //source={IMAGES.randomProfile}
           source={{uri: props?.user?.profile_image?.original_url}}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </TouchableOpacity>
       <View
@@ -151,7 +153,7 @@ export default function NotificationComp(props) {
         <Text style={{color: 'black', marginBottom: 4}}>
           {props?.type === 'follow'
             ? `${props?.user?.username} started following you`
-            : `${props?.user?.username} ${props?.type} your post`}
+            : `${props?.user?.username} ${props?.type} your ${props?.product?.name}`}
         </Text>
         <Text style={{color: 'black'}}>{moment(props?.date).fromNow()}</Text>
       </View>
@@ -180,10 +182,10 @@ export default function NotificationComp(props) {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          onPress={() =>
+          onPress={() => user?.userData?.role?.[0]?.id!==3?
             navigation.navigate('dressingRoomScreen', {
               data: {product: {id: props?.product?.id}},
-            })
+            }):navigation.navigate('imageViewScreen')
           }
           style={styles.imgWrap}>
           <Image

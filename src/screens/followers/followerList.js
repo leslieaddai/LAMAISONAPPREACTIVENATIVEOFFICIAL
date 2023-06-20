@@ -84,13 +84,15 @@ export default function FollowerList(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoadingFollowList(false);
-              errorMessage('Something went wrong!');
+              //errorMessage('Something went wrong!');
+              errorMessage(errorHandler(error))
             });
         })
         .catch(function (error) {
           console.log(error.response.data);
           setLoadingFollowList(false);
-          errorMessage('Something went wrong!');
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
         });
     } else {
       //setDataBrand(props?.route?.params?.followerDataBrand)
@@ -114,13 +116,15 @@ export default function FollowerList(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoadingFollowList(false);
-              errorMessage('Something went wrong!');
+              //errorMessage('Something went wrong!');
+              errorMessage(errorHandler(error))
             });
         })
         .catch(function (error) {
           console.log(error.response.data);
           setLoadingFollowList(false);
-          errorMessage('Something went wrong!');
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
         });
     }
   }, [props?.route?.params?.list]);

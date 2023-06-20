@@ -63,9 +63,8 @@ export default function Style(props) {
       })
       .catch(function (error) {
         setLoading(false);
-        errorMessage('Something went wrong!');
-        //errorMessage(errorHandler(error))
-        //errorMessage('Login Failed');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 

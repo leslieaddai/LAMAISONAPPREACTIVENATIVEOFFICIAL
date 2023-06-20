@@ -135,9 +135,8 @@ export default function ImageUploadLookbook(props) {
       .catch(function (error) {
         console.log(error.response.data);
         //setLoading(false);
-        errorMessage('Something went wrong!');
-        //errorMessage(errorHandler(error))
-        //errorMessage('Login Failed');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -500,6 +499,7 @@ export default function ImageUploadLookbook(props) {
         console.log(error.response.data);
         setLoading(false);
         errorMessage('Upload Failed');
+        errorMessage(errorHandler(error))
       });
 
     //   const uri =

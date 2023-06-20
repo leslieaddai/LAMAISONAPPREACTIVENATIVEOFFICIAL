@@ -92,7 +92,8 @@ export default function LookbookScreen(props) {
       .catch(function (error) {
         setAllLoading(false);
         console.log('CollectionScreen error', error);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
   return (
@@ -111,7 +112,8 @@ export default function LookbookScreen(props) {
               <Text style={styles.lookbookText}>Lookbook</Text>
             </View>
 
-            <ScrollView
+            {allStates.length!==0?(
+              <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: hp2(12)}}>
               <Text style={styles.collectionText}>Latest Collection</Text>
@@ -172,6 +174,11 @@ export default function LookbookScreen(props) {
                   </TouchableOpacity>
                 )}
             </ScrollView>
+            ):(
+              <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+                <Text>No collection added yet</Text>
+              </View>
+            )}
 
             {/* <BottomComp /> */}
           </View>

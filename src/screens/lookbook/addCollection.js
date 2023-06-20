@@ -64,13 +64,14 @@ export default function AddCollection(props) {
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
         //console.log(res.data);
-        setData(res.data.data);
+        setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -115,6 +116,7 @@ export default function AddCollection(props) {
         console.log(error.response.data);
         setLoading2(false);
         errorMessage('Upload Failed');
+        errorMessage(errorHandler(error))
       });
   };
 

@@ -30,17 +30,19 @@ import {
   FONTS,
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function NextPickupComp(props) {
   //console.log(props);
   //console.log(props.item.item.product.product_images[0].image[0].url,'=======>');
   const navigation = useNavigation();
+  const user = useSelector(state => state.userData);
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.item?.item?.product_id}},
-        })
+        }):navigation.navigate('imageViewScreen')
       }
       style={styles.imageContainer}>
       {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && (

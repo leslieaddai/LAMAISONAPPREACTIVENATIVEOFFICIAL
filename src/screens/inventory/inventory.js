@@ -50,20 +50,29 @@ export default function Inventory(props) {
   const user = useSelector(state => state.userData);
 
   useEffect(() => {
+    getApiData();
+
+    props?.navigation.addListener('focus', () => {
+      getApiData();
+    });
+  }, [props?.navigation]);
+
+  const getApiData = () => {
     setLoading(true);
     axios
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
         //console.log(res.data);
-        setData(res.data.data);
+        setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
-  }, []);
+  }
 
   return (
     <SafeAreaView style={{flex: 1}}>

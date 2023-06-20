@@ -95,7 +95,7 @@ export default function GalleryScreen(props) {
             }}>
             <SkypeIndicator color={'black'} />
           </View>
-        ) : data ? (
+        ) : data.length!==0 ? (
           // <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignSelf:'center',width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
           // {data?.map((item)=>{
           //     //console.log("item=======>",item);
@@ -116,7 +116,7 @@ export default function GalleryScreen(props) {
               return <GalleryComp key={i} item={{item}} />;
             }}
           />
-        ) : null}
+        ) : <View style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>No images added yet</Text></View>}
 
         {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
         <GalleryComp/>

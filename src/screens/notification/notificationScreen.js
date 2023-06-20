@@ -79,7 +79,8 @@ export default function NotificationScreen(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 
@@ -120,7 +121,9 @@ export default function NotificationScreen(props) {
           //     )
           //   }}
           // />
-          <FlatList
+          <>
+          {data?.length!==0?(
+            <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: hp2(2)}}
             data={uniqDates}
@@ -147,6 +150,12 @@ export default function NotificationScreen(props) {
               );
             }}
           />
+          ):(
+            <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+              <Text>No notifications received yet</Text>
+            </View>
+          )}
+          </>
         )}
 
         {/* <ScrollView contentContainerStyle={{paddingBottom:hp2(12),}}>

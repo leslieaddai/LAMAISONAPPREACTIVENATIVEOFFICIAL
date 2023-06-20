@@ -56,7 +56,8 @@ export default function Wardrobe(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 

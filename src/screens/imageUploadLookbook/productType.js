@@ -82,6 +82,7 @@ export default function ProductType(props) {
       })
       .catch(function (error) {
         console.log('ProductType error', error.response.data);
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -103,7 +104,8 @@ export default function ProductType(props) {
         }
       })
       .catch(function (error) {
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
 

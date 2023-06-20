@@ -65,9 +65,14 @@ export default function LoginScreen(props) {
   const [loading, setLoading] = useState(false);
   //console.log(loading)
 
+  function containsWhitespace(str) {
+    return /\s/.test(str);
+  }
+
   const onSignIn = () => {
     if (UserName != '' && Password != '') {
-      setLoading(true);
+      if(!containsWhitespace(UserName)){
+        setLoading(true);
       //props.navigation.navigate('homeScreen')
       let obj = {
         email: UserName,
@@ -97,10 +102,11 @@ export default function LoginScreen(props) {
           setLoading(false);
           //errorMessage(errorHandler(error))
           //errorMessage('Login Failed');
-          setShowError(true);
-          setTimeout(() => {
-            setShowError(false);
-          }, 3000);
+          errorMessage(errorHandler(error))
+          // setShowError(true);
+          // setTimeout(() => {
+          //   setShowError(false);
+          // }, 3000);
         });
 
       // setShowError(true);
@@ -109,6 +115,9 @@ export default function LoginScreen(props) {
       //     setTimeout(()=>{
       //       setShowError(false)
       //     },5000);
+      }else{
+        errorMessage('Please remove space from username!')
+      }
     } else {
       errorMessage('Please fill all details');
     }

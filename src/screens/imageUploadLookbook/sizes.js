@@ -67,9 +67,8 @@ export default function Sizes(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong!');
-        //errorMessage(errorHandler(error))
-        //errorMessage('Login Failed');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   }, []);
 

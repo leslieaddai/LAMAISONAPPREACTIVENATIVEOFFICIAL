@@ -75,7 +75,8 @@ export default function CustomerSupportScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          errorMessage('Something went wrong!');
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please fill all details!');

@@ -72,8 +72,9 @@ export default function Category(props) {
 
 const styles = StyleSheet.create({
   button: {
-    width: wp2(30),
+    minWidth: wp2(30),
     height: hp2(5),
+    paddingHorizontal:wp2(2),
     //backgroundColor: 'black',
     borderRadius: wp2(6),
     alignItems: 'center',

@@ -86,7 +86,8 @@ export default function FTS100(props) {
       .catch(function (error) {
         console.log(error.response.data);
         //setLoadingStyles(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -103,7 +104,8 @@ export default function FTS100(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoadingFts(false);
-        errorMessage('Something went wrong!');
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -160,7 +162,8 @@ export default function FTS100(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoadingFts(false);
-          errorMessage('Something went wrong!');
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
         });
     }
   };

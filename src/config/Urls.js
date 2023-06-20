@@ -58,3 +58,6 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const CreateGuestOrder = getApi('orders/guests');
   export const BasketQuantityIncreamentDecreament = getApi('baskets/quantity');
   export const CreateEditorOrder = getApi('orders');
+  export const BuyNowOrderEditor = getApi('orders/editor/buy-now');
+  export const BuyNowOrderGuest = getApi('orders/guest/buy-now');
+  export const GetAnalytics = getApi('analytics');

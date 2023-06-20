@@ -116,6 +116,7 @@ axios.request(config)
   console.log(error.response.data)
   setLoading(false);
   errorMessage('Upload Failed');
+  errorMessage(errorHandler(error))
 });
 
   }

@@ -30,17 +30,19 @@ import {
   FONTS,
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
   console.log(props);
+  const user = useSelector(state => state.userData);
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           // userData:props?.userData,
           data: props?.data,
-        })
+        }):navigation.navigate('imageViewScreen')
       }
       style={styles.imageContainer}>
       <View style={{height: hp2(18), overflow: 'hidden'}}>
