@@ -52,7 +52,9 @@ import {
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
+import {BottomSheet} from 'react-native-btr';
 import {SkypeIndicator} from 'react-native-indicators';
+import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 
 export default function CheckoutScreen(props) {
 
@@ -62,6 +64,7 @@ export default function CheckoutScreen(props) {
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
   const {products} = useSelector(state => state.GuestBasket);
+  const [visible, setVisible] = useState(false);
 
   const [continueButton, setContinueButton] = useState('continue');
 
@@ -88,6 +91,7 @@ export default function CheckoutScreen(props) {
   const [isOpenedCountries, setIsOpenedCountries] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('SELECT COUNTRY');
   const [countriesData, setCountriesData] = useState([]);
+  const [modalData, setModalData] = useState()
 
   const [total, setTotal] = useState(0);
   const [commission, setCommission] = useState(15);
@@ -371,6 +375,48 @@ export default function CheckoutScreen(props) {
 
   const scrollX = new Animated.Value(0);
 
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedRegions(false)
+    setIsOpenedCountries(false)
+  };
+
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+
+  useEffect(()=>{            
+    if(isOpenedRegions){
+      setModalData(regionsData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedRegions])
+
+  useEffect(()=>{            
+    if(isOpenedCountries){
+      setModalData(countriesData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedCountries])
+
+  const SelectRegion = (Bool,regionname, regionid,regioncode)=>{
+    setSelectedRegion(regionname);
+    updateState({region: Number(regionid)});
+    setIsOpenedRegions(false);
+    setSelectedCountry('SELECT COUNTRY');
+    updateState({country: null});
+    setIsOpenedRegions(Bool)
+    getAllCountries(regioncode);
+  }
+
+  const SelectCountry = (Bool,countryname,countryid)=>{
+    setSelectedCountry(countryname);
+    updateState({country: Number(countryid)});
+    setIsOpenedCountries(Bool)
+  }
   // const textBox = (place) => {
   //   return (
   //     <View style={styles.inputBox}>
@@ -595,7 +641,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-         {isOpenedRegions && (
+         {/* {isOpenedRegions && (
            <View style={[styles.styleBox]}>
              {regionsData?.map((item, index) => (
                <TouchableOpacity
@@ -621,7 +667,7 @@ export default function CheckoutScreen(props) {
                </TouchableOpacity>
              ))}
            </View>
-         )}
+         )} */}
 
          <TouchableOpacity
            disabled={selectedRegion === 'SELECT REGION' ? true : false}
@@ -959,7 +1005,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-         {isOpenedRegions && (
+         {/* {isOpenedRegions && (
            <View style={[styles.styleBox]}>
              {regionsData?.map((item, index) => (
                <TouchableOpacity
@@ -985,7 +1031,7 @@ export default function CheckoutScreen(props) {
                </TouchableOpacity>
              ))}
            </View>
-         )}
+         )} */}
 
          <TouchableOpacity
            disabled={selectedRegion === 'SELECT REGION' ? true : false}
@@ -1012,31 +1058,6 @@ export default function CheckoutScreen(props) {
              />
            </View>
          </TouchableOpacity>
-
-         {isOpenedCountries && countriesData.length !== 0 && (
-           <View style={[styles.styleBox]}>
-             {countriesData?.map((item, index) => (
-               <TouchableOpacity
-                 onPress={() => {
-                   setSelectedCountry(item?.name);
-                   updateState({country: Number(item?.country_id)});
-                   setIsOpenedCountries(false);
-                 }}
-                 key={index}
-                 style={styles.itemWrap}>
-                 <Text style={styles.itemTxt}>{item?.name}</Text>
-                 {selectedCountry === item?.name && (
-                   <ICONS.Entypo
-                     name="check"
-                     size={24}
-                     color="black"
-                     style={{position: 'absolute', right: 10}}
-                   />
-                 )}
-               </TouchableOpacity>
-             ))}
-           </View>
-         )}
 
      {/* <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'COUNTRY'}  placeholderTextColor={'grey'}  />
@@ -1149,6 +1170,22 @@ export default function CheckoutScreen(props) {
      )}
       {/* <BottomComp /> */}
     </View>
+    <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+           <BottomSheetView
+          Data={modalData}
+          regioninfo={selectedRegion}
+          uibottomesheetvisiblity={uibottomesheetvisiblity}
+          SelectRegion={SelectRegion}
+          SelectCountry={SelectCountry}
+          countryinfo = {selectedCountry}
+        />
+
+
+          </BottomSheet>
     </SafeAreaView>
 
     </>

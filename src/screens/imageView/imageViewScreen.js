@@ -37,6 +37,8 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 
 export default function ImageViewScreen(props) {
   const scrollX = new Animated.Value(0);
+  itemdata = props.route.params.item
+ 
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
@@ -57,37 +59,18 @@ export default function ImageViewScreen(props) {
           [{nativeEvent: {contentOffset: {x: scrollX}}}],
           {useNativeDriver: true},
         )}>
-        <View style={{width: wp2(100), height: hp2(100)}}>
-          <Image
-            source={IMAGES.vinDiesel}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={{width: wp2(100), height: hp2(100)}}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={{width: wp2(100), height: hp2(100)}}>
-          <Image
-            source={IMAGES.vinDiesel}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-
-        <View style={{width: wp2(100), height: hp2(100)}}>
-          <Image
-            source={IMAGES.randomProfile}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
+          {itemdata[0]?.image?.map((item)=>{
+             console.log("testimgas",itemdata[0]?.image.length)
+            return(
+            <View style={{width: wp2(100), height: hp2(100)}}>
+            <Image
+              source={{uri:item.original_url}}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          </View>
+          )
+          })}
       </Animated.ScrollView>
       <View
         style={{

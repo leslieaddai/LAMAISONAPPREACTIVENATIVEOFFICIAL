@@ -792,7 +792,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                       onPress={() =>
-                        props.navigation.navigate('imageViewScreen')
+                        props.navigation.navigate('imageViewScreen',{item:data?.product_images})
                       }
                       style={[
                         styles.brandImage,
@@ -845,7 +845,7 @@ export default function DressingRoomScreen(props) {
                               ]}>
                               {data?.name}
                             </Text>
-                            <Text style={styles.priceTxt}>
+                            <Text style={[styles.priceTxt,{paddingLeft:3}]}>
                               PRICE: £{data?.price}
                             </Text>
                             <Text

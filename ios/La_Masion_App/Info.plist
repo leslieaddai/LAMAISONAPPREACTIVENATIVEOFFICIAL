@@ -45,6 +45,8 @@
 	<string>This app wants to access your location</string> -->
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app wants to see your photos to test the CameraRollManager</string>
+	 <key>NSPhotoLibraryAddUsageDescription</key>
+  <string>YOUR TEXT</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

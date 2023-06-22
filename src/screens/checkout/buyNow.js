@@ -38,7 +38,7 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 import BottomComp from '../../components/bottomComp';
 import LoaderComp from '../../components/loaderComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
+import {BottomSheet} from 'react-native-btr';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
@@ -55,6 +55,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 
 export default function BuyNow(props) {
 
@@ -64,6 +65,8 @@ export default function BuyNow(props) {
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
   //const {products} = useSelector(state => state.GuestBasket);
+  const [visible, setVisible] = useState(false);
+  const [modalData, setModalData] = useState()
 
   const [continueButton, setContinueButton] = useState('continue');
 
@@ -379,7 +382,48 @@ export default function BuyNow(props) {
   //     </>
   //   );
   // };
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedRegions(false)
+    setIsOpenedCountries(false)
+  };
 
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+
+  useEffect(()=>{            
+    if(isOpenedRegions){
+      setModalData(regionsData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedRegions])
+
+  useEffect(()=>{            
+    if(isOpenedCountries){
+      setModalData(countriesData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedCountries])
+
+  const SelectRegion = (Bool,regionname, regionid,regioncode)=>{
+    setSelectedRegion(regionname);
+    updateState({region: Number(regionid)});
+    setIsOpenedRegions(false);
+    setSelectedCountry('SELECT COUNTRY');
+    updateState({country: null});
+    setIsOpenedRegions(Bool)
+    getAllCountries(regioncode);
+  }
+
+  const SelectCountry = (Bool,countryname,countryid)=>{
+    setSelectedCountry(countryname);
+    updateState({country: Number(countryid)});
+    setIsOpenedCountries(Bool)
+  }
   return (
     <>
      <View style={{position: 'absolute', zIndex: 999}}>
@@ -565,7 +609,7 @@ export default function BuyNow(props) {
            </View>
          </TouchableOpacity>
 
-         {isOpenedRegions && (
+         {/* {isOpenedRegions && (
            <View style={[styles.styleBox]}>
              {regionsData?.map((item, index) => (
                <TouchableOpacity
@@ -591,7 +635,7 @@ export default function BuyNow(props) {
                </TouchableOpacity>
              ))}
            </View>
-         )}
+         )} */}
 
          <TouchableOpacity
            disabled={selectedRegion === 'SELECT REGION' ? true : false}
@@ -619,7 +663,7 @@ export default function BuyNow(props) {
            </View>
          </TouchableOpacity>
 
-         {isOpenedCountries && countriesData.length !== 0 && (
+         {/* {isOpenedCountries && countriesData.length !== 0 && (
            <View style={[styles.styleBox]}>
              {countriesData?.map((item, index) => (
                <TouchableOpacity
@@ -642,7 +686,7 @@ export default function BuyNow(props) {
                </TouchableOpacity>
              ))}
            </View>
-         )}
+         )} */}
 
      {/* <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'COUNTRY'}  placeholderTextColor={'grey'}  />
@@ -755,6 +799,22 @@ export default function BuyNow(props) {
    
       {/* <BottomComp /> */}
     </View>
+    <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+           <BottomSheetView
+          Data={modalData}
+          regioninfo={selectedRegion}
+          uibottomesheetvisiblity={uibottomesheetvisiblity}
+          SelectRegion={SelectRegion}
+          SelectCountry={SelectCountry}
+          countryinfo = {selectedCountry}
+        />
+
+
+          </BottomSheet>
     </SafeAreaView>
 
     </>

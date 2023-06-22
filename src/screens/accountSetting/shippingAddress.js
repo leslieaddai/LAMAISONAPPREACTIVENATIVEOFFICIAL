@@ -33,7 +33,7 @@ import {
   FONTS,
 } from '../../theme';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
+import {BottomSheet} from 'react-native-btr';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
@@ -46,11 +46,13 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 
 export default function ShippingAddress(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [visible, setVisible] = useState(false);
   const user = useSelector(state => state.userData);
 
   const [stateChange, setStateChange] = useState({
@@ -71,6 +73,7 @@ export default function ShippingAddress(props) {
   const [isOpenedCountries, setIsOpenedCountries] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('SELECT COUNTRY');
   const [countriesData, setCountriesData] = useState([]);
+  const [modalData, setModalData] = useState()
 
   useEffect(() => {
     setLoading(true);
@@ -112,6 +115,16 @@ export default function ShippingAddress(props) {
     getAllRegions();
   }, []);
 
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedRegions(false)
+    setIsOpenedCountries(false)
+  };
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+
   const onConfirm = () => {
     setLoading(true);
 
@@ -152,6 +165,22 @@ export default function ShippingAddress(props) {
       });
   };
 
+  const SelectRegion = (Bool,regionname, regionid,regioncode)=>{
+    setSelectedRegion(regionname);
+    updateState({region: Number(regionid)});
+    setIsOpenedRegions(false);
+    setSelectedCountry('SELECT COUNTRY');
+    updateState({country: null});
+    setIsOpenedRegions(Bool)
+    getAllCountries(regioncode);
+  }
+
+  const SelectCountry = (Bool,countryname,countryid)=>{
+    setSelectedCountry(countryname);
+    updateState({country: Number(countryid)});
+    setIsOpenedCountries(Bool)
+  }
+
   const getAllCountries = country_code => {
     axios
       .get(GetCountries + country_code, {
@@ -171,25 +200,21 @@ export default function ShippingAddress(props) {
       });
   };
 
-  // const textBox = (place) => {
-  //     return(
-  //         <View style={styles.inputBox}>
-  //         <TextInput
-  //           style={{
-  //             flex: 1,
-  //             color: 'black',
-  //             paddingHorizontal: wp2(2),
-  //             fontSize: rfv(13),
-  //             fontWeight: '700',
-  //           }}
-  //           placeholderTextColor={'grey'}
-  //           placeholder={place}
-  //           value={stateChange.productName}
-  //           onChangeText={(val) => updateState({productName:val})}
-  //         />
-  //       </View>
-  //     )
-  // }
+  useEffect(()=>{            
+    if(isOpenedRegions){
+      setModalData(regionsData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedRegions])
+
+  useEffect(()=>{            
+    if(isOpenedCountries){
+      setModalData(countriesData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedCountries])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -281,41 +306,13 @@ export default function ShippingAddress(props) {
               {selectedRegion}
             </Text>
             <View>
-              <ICONS.FontAwesome
+            <ICONS.FontAwesome
                 name={isOpenedRegions ? 'chevron-up' : 'chevron-down'}
                 color={'#A1A1A1'}
                 size={22}
               />
             </View>
           </TouchableOpacity>
-
-          {isOpenedRegions && (
-            <View style={[styles.styleBox]}>
-              {regionsData?.map((item, index) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedRegion(item?.name);
-                    updateState({region: Number(item?.id)});
-                    setIsOpenedRegions(false);
-                    setSelectedCountry('SELECT COUNTRY');
-                    updateState({country: null});
-                    getAllCountries(item?.code);
-                  }}
-                  key={index}
-                  style={styles.itemWrap}>
-                  <Text style={styles.itemTxt}>{item?.name}</Text>
-                  {selectedRegion === item?.name && (
-                    <ICONS.Entypo
-                      name="check"
-                      size={24}
-                      color="black"
-                      style={{position: 'absolute', right: 10}}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
 
           <TouchableOpacity
             disabled={selectedRegion === 'SELECT REGION' ? true : false}
@@ -343,41 +340,6 @@ export default function ShippingAddress(props) {
             </View>
           </TouchableOpacity>
 
-          {isOpenedCountries && countriesData.length !== 0 && (
-            <View style={[styles.styleBox]}>
-              {countriesData?.map((item, index) => (
-                <TouchableOpacity
-                  onPress={() => {
-                    setSelectedCountry(item?.name);
-                    updateState({country: Number(item?.country_id)});
-                    setIsOpenedCountries(false);
-                  }}
-                  key={index}
-                  style={styles.itemWrap}>
-                  <Text style={styles.itemTxt}>{item?.name}</Text>
-                  {selectedCountry === item?.name && (
-                    <ICONS.Entypo
-                      name="check"
-                      size={24}
-                      color="black"
-                      style={{position: 'absolute', right: 10}}
-                    />
-                  )}
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
-
-          {/* <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'COUNTRY'}
-              value={stateChange.country}
-              onChangeText={(val) => updateState({country:val})}
-            />
-          </View> */}
-
           <View style={styles.inputBox}>
             <TextInput
               style={styles.inputTxt}
@@ -395,6 +357,21 @@ export default function ShippingAddress(props) {
           </TouchableOpacity>
         </KeyboardAwareScrollView>
       )}
+      <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+          <BottomSheetView
+          Data={modalData}
+          regioninfo={selectedRegion}
+          uibottomesheetvisiblity={uibottomesheetvisiblity}
+          SelectRegion={SelectRegion}
+          SelectCountry={SelectCountry}
+          countryinfo = {selectedCountry}
+        />
+
+        </BottomSheet>
     </SafeAreaView>
   );
 }

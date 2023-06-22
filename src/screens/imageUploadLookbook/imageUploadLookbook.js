@@ -53,7 +53,8 @@ import {StylesUrl, ProductUploadUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
-
+import {BottomSheet} from 'react-native-btr';
+import BottomSheetShippingView from '../../components/bottomSheet/BottomSheetShippingView';
 import LoaderComp from '../../components/loaderComp';
 
 const PAGE_SIZE = 40;
@@ -65,6 +66,9 @@ export default function ImageUploadLookbook(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
+  const [modalData, setModalData] = useState()
+  const [visible, setVisible] = useState(false);
+
 
   const scrollX = new Animated.Value(0);
 
@@ -96,29 +100,19 @@ export default function ImageUploadLookbook(props) {
 
   //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage] = useState([]);
-  const [nextButton, setNextButton] = useState(false);
+  const [nextButton, setNextButton] = useState(true);
   const [showQuantity, setShowQuantity] = useState(false);
   const [confirmButton, setConfirmButton] = useState(false);
   const [uploadButton, setUploadButton] = useState(false);
-
-  //const data? = ["BEACHWEAR", "CASUALWEAR", "FORMALWEAR", "NIGHTLIFE","OUTDOORWEAR","SPORTSWEAR","STREETWEAR"];
   const [isOpened, setIsOpened] = useState(false);
   const [selectedText, setSelectedText] = useState('SELECT STYLE');
-
   const [isOpenedShipping, setIsOpenedShipping] = useState(false);
   const [regions, setRegions] = useState([]);
-
-  //const [colorBox, setColorBox]=useState(false);
-  //const [addQuantity, setAddQuantity]=useState([1]);
-
   const [photos, setPhotos] = useState([]);
   const [after, setAfter] = useState();
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   const [perm, setPerm] = useState(false);
-
-  //console.log(selectedImage);
 
   useEffect(() => {
     //setLoading(true);
@@ -188,17 +182,6 @@ export default function ImageUploadLookbook(props) {
     }
   };
 
-  // useEffect(()=>{
-  //   async function runThis () {
-  //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
-  //       showPhotos();
-  //     }
-  //     if(Platform.OS==='ios'){
-  //       showPhotos();
-  //     }
-  //   }
-  //   runThis();
-  // },[])
 
   async function hasAndroidPermission() {
     const permission =
@@ -292,23 +275,6 @@ export default function ImageUploadLookbook(props) {
     return status === true;
   }
 
-  // async function showPhotos() {
-  //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-  //   //   return;
-  //   // }
-  //   const result = await CameraRoll.getPhotos({
-  //     first: 20,
-  //     assetType: 'Photos',
-  //   })
-  //   .then(r => {
-  //     setPhotos(r.edges);
-  //   })
-  //   .catch((err) => {
-  //      //Error Loading Images
-  //      console.log(err)
-  //   });
-  //   //console.log(result);
-  // };
 
   if (uploadButton) {
     return (
@@ -422,54 +388,12 @@ export default function ImageUploadLookbook(props) {
     formdata.append('piece_id', stateChange?.piece_id);
     formdata.append('style', String(stateChange?.style_id));
     formdata.append('status', 1);
-    //  formdata.append("color[]", [1]);
-    //  formdata.append("size[]", [3]);
-    //  formdata.append("qty[]", [34]);
-    // formdata.append("color[]", colorArr[0]);
-    // formdata.append("size[]", sizeArr[0]);
-    // formdata.append("qty[]", quantityArr[0]);
-    // formdata.append("color[]", colorArr[1]);
-    // formdata.append("size[]", sizeArr[1]);
-    // formdata.append("qty[]", quantityArr[1]);
-    //formdata.append("image[]", {uri: selectedImage[0].uri, name: selectedImage[0].name, type: selectedImage[0].type});
-    //formdata.append("image[]", {uri: selectedImage[0].uri, name: "asdasdas.jpg", type: selectedImage[0].type});
-    // formdata.append("image[]", selectedImage[0]);
-    // formdata.append("image[]", selectedImage[1]);
     selectedImage.map((item, index) => {
       formdata.append('image[]', item);
     });
     regions.map((item, index) => {
       formdata.append('regions[]', item?.regionId);
     });
-
-    // console.log(Array.isArray(selectedImage))
-    // console.log(Array.isArray(colorArr))
-    // console.log(Array.isArray(sizeArr))
-    // console.log(Array.isArray(quantityArr))
-
-    //console.log(selectedImage)
-    //console.log(colorArr,sizeArr,quantityArr)
-
-    //   let obj = {
-    //     user_id: user.userData.id,
-    //     category_id: 1,
-    //     name: stateChange.productName,
-    //     //sku: Math.floor(Math.random() * 899999 + 100000),
-    //     sku: '1010101',
-    //     description: stateChange.description,
-    //     price: parseFloat(stateChange.price). toFixed(2),
-    //     piece_id: stateChange.piece_id,
-    //     style: String(stateChange.style_id),
-    //     status:1,
-    //     color:colorArr,
-    //     size:sizeArr,
-    //     qty:quantityArr,
-    //     image:selectedImage
-    // }
-
-    // console.log(obj)
-
-    //console.log(formdata);
 
     let config = {
       method: 'post',
@@ -501,33 +425,24 @@ export default function ImageUploadLookbook(props) {
         errorMessage('Upload Failed');
         errorMessage(errorHandler(error))
       });
-
-    //   const uri =
-    //   Platform.OS === "android"
-    //     ? selectedImage[0].path
-    //     : selectedImage[0].path.replace("file://", "");
-    // const filename = selectedImage[0].path.split("/").pop();
-    // const match = /\.(\w+)$/.exec(filename);
-    // const ext = match?.[1];
-    // const type = match ? `image/${match[1]}` : `image`;
-
-    // const formData = new FormData();
-    // formData.append("file", {
-    //   uri,
-    //   name: `image.${ext}`,
-    //   type,
-    // });
-
-    // console.log(formData._parts[0][1])
-
-    //   axios.post(`https://cmms.clickysoft.net/api/abc`, formData, {
-    //     headers: { "Content-Type": "multipart/form-data" },
-    //   }).then(async function(res){
-    //     console.log(res.data);
-    //   }).catch(async function(error){
-    //     console.log(error.response.data)
-    //   });
   };
+
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedShipping(false)
+  };
+
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+
+  useEffect(()=>{            
+    if(isOpenedShipping){
+      setModalData(props?.route?.params?.shippingData)
+      uibottomesheetvisiblity(true)
+    }
+  },[isOpenedShipping])
 
   return (
     <>
@@ -668,7 +583,7 @@ export default function ImageUploadLookbook(props) {
                 />
               </View>
             </TouchableOpacity>
-            {isOpenedShipping && (
+            {/* {isOpenedShipping && (
               <View style={[styles.styleBox]}>
                 {props?.route?.params?.shippingData.map((item, index) => (
                   <TouchableOpacity
@@ -693,7 +608,7 @@ export default function ImageUploadLookbook(props) {
                   </TouchableOpacity>
                 ))}
               </View>
-            )}
+            )} */}
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
@@ -757,26 +672,6 @@ export default function ImageUploadLookbook(props) {
               </View>
             )}
 
-            {/* <SelectDropdown data={stylesDropdown} defaultButtonText="SELECT STYLE" buttonStyle={styles.inputBox} 
-        buttonTextStyle={{color:'black',fontWeight:'700',fontSize:rfv(13),textAlign:'left'}}
-        renderDropdownIcon={isOpened => {
-            return <ICONS.FontAwesome name={isOpened ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22} />;
-          }}
-          dropdownIconPosition={'right'}
-          dropdownStyle={{backgroundColor:'white',borderRadius: wp2(4),overflow:'hidden',
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: 4,
-          },
-          shadowOpacity: 0.3,
-          shadowRadius: 4.65,
-          elevation: 8,}}
-          rowStyle={{borderBottomWidth:0,borderRadius:wp2(2),overflow:'hidden'}}
-          rowTextStyle={{color:'black',fontWeight:'700',fontSize:rfv(13)}}
-          selectedRowStyle={{backgroundColor:'#F6F5F3'}}
-        /> */}
-
             <TouchableOpacity
               onPress={productDetails}
               style={[
@@ -791,25 +686,7 @@ export default function ImageUploadLookbook(props) {
               <Text style={styles.nextTxt}>NEXT</Text>
             </TouchableOpacity>
           </KeyboardAwareScrollView>
-        ) : //  :nextButton && colorBox ? (
-        //     <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
-        //         <Text style={{color:'black',textTransform:'uppercase',fontWeight:'700',fontSize:rfv(16),alignSelf:'center'}}>Select all colours for this piece</Text>
-        //         <View style={styles.colorsWrap}>
-        //   <ColorBox color="black"/>
-        //   <ColorBox color="white"/>
-        //   <ColorBox color="#A1A1A1"/>
-        //   <ColorBox color="#F61616"/>
-        //   <ColorBox color="#008000E8"/>
-        //   <ColorBox color="#0000FF"/>
-        //   <ColorBox color="#5C4033"/>
-        //   <ColorBox color="#FF69B4"/>
-        //   <ColorBox color="#FAFA33"/>
-        //   <ColorBox color="#FFA500"/>
-        //   <ColorBox color="#800080"/>
-        //   <ColorBox color="#F5F5DC"/>
-        //   </View>
-        //     </ScrollView>
-        //  )
+        ) :
         nextButton && showQuantity && !confirmButton ? (
           <KeyboardAwareScrollView
             showsVerticalScrollIndicator={false}
@@ -915,9 +792,6 @@ export default function ImageUploadLookbook(props) {
               ]}>
               <Text style={styles.selectTxt}>{stateChange.price}</Text>
             </View>
-            {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-           <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>colour</Text>
-          </View> */}
             <View
               style={[
                 styles.inputBox,
@@ -961,15 +835,6 @@ export default function ImageUploadLookbook(props) {
                   onEndReachedThreshold={0.1}
                   renderItem={({item, i}) => {
                     return (
-                      //       <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-                      //    <Image
-                      //       key={i}
-                      //       source={{ uri: item.node.image.uri }}
-                      //      style={{width: '100%', height: '100%'}}
-                      //      resizeMode="cover"
-                      //    />
-                      //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-                      //  </TouchableOpacity>
                       <ImageCard
                         item={item}
                         key={i}
@@ -986,21 +851,19 @@ export default function ImageUploadLookbook(props) {
                   </View>
                 )}
 
-                {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
-       {photos?.map((p, i) => {
-       return (
-         <TouchableOpacity onPress={()=>selectedImage.includes(p.node.image.uri)?(setSelectedImage(selectedImage.filter(e => e !== p.node.image.uri))):(setSelectedImage([...selectedImage,p.node.image.uri]))} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-         <Image
-            key={i}
-            source={{ uri: p.node.image.uri }}
-           style={{width: '100%', height: '100%'}}
-           resizeMode="cover"
-         />
-        {selectedImage.includes(p.node.image.uri) && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-       </TouchableOpacity>
-       );
-     })}
-     </ScrollView> */}
+      <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+          <BottomSheetShippingView
+          Data={modalData}
+          uibottomesheetvisiblity={uibottomesheetvisiblity}
+          addRegions={addRegions}
+          regions={regions}
+          />
+
+          </BottomSheet>
               </>
             ) : (
               <View style={styles.noPhotos}>
