@@ -31,14 +31,14 @@ import {
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
 
-export default function SearchComp(props) {
+export default function SearchComp2(props) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('brandProfileScreen',{
+      onPress={() => navigation.navigate('editorProfileScreen',{
         userData: {
           userData: {
-            id: props?.data?.user?.id,
+            id: props?.data?.id,
           },
         },
       })}
@@ -46,12 +46,12 @@ export default function SearchComp(props) {
       <View style={styles.imageContainer}>
         <Image
           //source={IMAGES.lookbook}
-          source={props?.data?.user?.profile_image!==null?{uri:props?.data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
+          source={props?.data?.profile_image!==null?{uri:props?.data?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
       </View>
-      <Text style={styles.text}>{props?.data?.user?.name}</Text>
+      <Text style={styles.text}>{props?.data?.username}</Text>
     </TouchableOpacity>
   );
 }

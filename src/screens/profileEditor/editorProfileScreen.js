@@ -294,7 +294,7 @@ export default function EditorProfileScreen(props) {
               <ImageBackground
                 //source={IMAGES.randomProfile}
                 //source={{uri:props?.route?.params?.userData?.userData?.profile_image}}
-                source={{uri: data?.profile_image?.original_url}}
+                source={data?.profile_image!==null?{uri: data?.profile_image?.original_url}:IMAGES.profileIcon3}
                 style={{width: '100%', height: '100%'}}
                 resizeMode="contain">
                 {props?.route?.params?.userData?.userData?.id ===

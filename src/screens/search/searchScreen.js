@@ -34,12 +34,13 @@ import {
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
 import SearchComp from '../../components/searchComp';
+import SearchComp2 from '../../components/searchComp2';
 import LoaderComp from '../../components/loaderComp';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {SearchUrl} from '../../config/Urls';
+import {SearchUrl,EditorSearch} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -51,6 +52,8 @@ export default function SearchScreen({navigation, route}) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [dataEditor, setDataEditor] = useState([]);
+  const [loading2, setLoading2] = useState(false);
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
@@ -66,7 +69,25 @@ export default function SearchScreen({navigation, route}) {
 
   useEffect(() => {
     getSearchResults('1');
+    getEditorResults();
   }, []);
+
+  const getEditorResults = () => {
+    setLoading2(true);
+    axios
+      .post(EditorSearch,{keyword:text})
+      .then(async function (res) {
+        console.log(res?.data);
+        setDataEditor(res?.data?.data)
+        setLoading2(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading2(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  }
 
   const getSearchResults = page_no => {
     setLoading(true);
@@ -128,7 +149,11 @@ export default function SearchScreen({navigation, route}) {
                   setText(value);
                 }}
                 onSubmitEditing={() => {
-                  console.log('submited', text);
+                  //console.log('submited', text);
+                  setData([]);
+                  setDataEditor([]);
+                  getSearchResults('1');
+                  getEditorResults();
                 }}
                 placeholderTextColor={'grey'}
                 returnKeyLabel="done"
@@ -166,7 +191,7 @@ export default function SearchScreen({navigation, route}) {
             </TouchableOpacity>
           </View>
 
-          {loading && data?.length === 0 && (
+          {loading && data?.length === 0 && selected==='brands' && (
             <View
               style={{
                 alignItems: 'center',
@@ -177,7 +202,19 @@ export default function SearchScreen({navigation, route}) {
             </View>
           )}
 
-          <FlatList
+          {loading2 && dataEditor?.length === 0 && selected==='editors' && (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginVertical: hp2(6),
+              }}>
+              <SkypeIndicator color={'black'} />
+            </View>
+          )}
+
+          {selected==='brands'?(
+            <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               paddingVertical: hp2(2),
@@ -189,12 +226,26 @@ export default function SearchScreen({navigation, route}) {
               !loading && page !== null && getSearchResults(String(pageNo + 1))
             }
             onEndReachedThreshold={0.1}
-            renderItem={({item}) => {
-              return <SearchComp />;
+            renderItem={({item,index}) => {
+              return <SearchComp key={index} data={item} />;
             }}
           />
+          ):(
+            <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              paddingVertical: hp2(2),
+              alignSelf: 'center',
+            }}
+            data={dataEditor}
+            numColumns={3}
+            renderItem={({item,index}) => {
+              return <SearchComp2 key={index} data={item} />;
+            }}
+          />
+          )}
 
-          {loading && data?.length !== 0 && (
+          {loading && data?.length !== 0 && selected==='brands' && (
             <View
               style={{
                 alignItems: 'center',

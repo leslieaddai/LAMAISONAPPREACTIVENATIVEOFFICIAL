@@ -31,4 +31,5 @@ export const IMAGES={
     logoblack: require('../assets/logoblack.png'),
     logowhite: require('../assets/logowhite.png'),
     lamaisonname: require('../assets/lamaisonname.png'),
+    profileIcon3: require('../assets/profileIcon3.png'),
 }

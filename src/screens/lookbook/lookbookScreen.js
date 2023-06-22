@@ -177,6 +177,16 @@ export default function LookbookScreen(props) {
             ):(
               <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
                 <Text>No collection added yet</Text>
+                {user?.userData?.id === user2?.userData?.id &&
+                user?.userData?.role?.[0]?.id === 3 && (
+                  <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('selectCoverPhoto')
+                    }
+                    style={styles.button}>
+                    <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
+                  </TouchableOpacity>
+                )}
               </View>
             )}
 

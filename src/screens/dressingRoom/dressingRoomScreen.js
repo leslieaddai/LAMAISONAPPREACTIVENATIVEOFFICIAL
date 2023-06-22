@@ -731,7 +731,7 @@ export default function DressingRoomScreen(props) {
                     style={styles.brandImage}>
                     <Image
                       //source={IMAGES.randomPic}
-                      source={{uri: data?.user?.profile_image?.original_url}}
+                      source={data?.user?.profile_image!==null?{uri: data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
                       style={{width: '100%', height: '100%'}}
                       resizeMode="cover"
                     />

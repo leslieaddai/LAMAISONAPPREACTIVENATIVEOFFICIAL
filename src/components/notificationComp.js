@@ -140,7 +140,8 @@ export default function NotificationComp(props) {
         style={styles.imgWrap}>
         <Image
           //source={IMAGES.randomProfile}
-          source={{uri: props?.user?.profile_image?.original_url}}
+          //source={{uri: props?.user?.profile_image?.original_url}}
+          source={props?.user?.profile_image!==null?{uri: props?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
