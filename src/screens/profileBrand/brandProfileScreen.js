@@ -307,7 +307,7 @@ export default function BrandProfileScreen(props) {
               <ImageBackground
                 //source={IMAGES.temp}
                 //source={{uri:props?.route?.params?.userData?.userData?.profile_image}}
-                source={{uri: data?.profile_image?.original_url}}
+                source={data?.profile_image!==null?{uri: data?.profile_image?.original_url}:IMAGES.profileIcon3}
                 style={{
                   width: '100%',
                   height: '100%',

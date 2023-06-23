@@ -56,11 +56,11 @@ const CreateAccountScreen = props => {
   const numeric = /[0-9]/;
 
   const [stateChange, setStateChange] = useState({
-    BrandName: '',
+    BrandName: props?.route?.params?.user=='editor'?undefined:'',
     UserName: '',
     Newpassword: '',
     ConfirmPass: '',
-    Birthday: null,
+    Birthday: subtractYears(new Date(),6),
   });
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {BrandName, UserName, Newpassword, ConfirmPass, Birthday} = stateChange;
@@ -69,14 +69,25 @@ const CreateAccountScreen = props => {
   const [loading, setLoading] = useState(false);
 
   console.log(special.test(Newpassword));
+  
+  function subtractYears(date, years) {
+    date.setFullYear(date.getFullYear() - years);
+    return date;
+  }
+
+  function containsWhitespace(str) {
+    return /\s/.test(str);
+  }
 
   const onCreate = () => {
     if (
+      BrandName != '' &&
       UserName != '' &&
       Newpassword != '' &&
       ConfirmPass != '' &&
-      Birthday != null
+      Birthday != ''
     ) {
+    if(!containsWhitespace(UserName)){
       if (UserName.length >= 6) {
         if (Newpassword.length >= 8) {
           if (numeric.test(Newpassword)) {
@@ -148,6 +159,9 @@ const CreateAccountScreen = props => {
         //alert("Username must contain at least 6 characters");
         errorMessage('Username must contain at least 6 characters');
       }
+    }else{
+      errorMessage('Please remove space from username!')
+    }  
     } else {
       //alert('Please fill all details')
       errorMessage('Please fill all details');
@@ -169,12 +183,10 @@ const CreateAccountScreen = props => {
       </View>
       <SafeAreaView style={styles.container}>
         {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}> */}
+        <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.goBack()}
-          style={{
-            marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-            marginLeft: wp2(8),
-          }}>
+          style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>
@@ -182,6 +194,8 @@ const CreateAccountScreen = props => {
             ? 'Create Editor Account'
             : 'Create Brand Account'}
         </Text>
+      </View>
+
         {props.route.params.user == 'brand' && (
           <View style={styles.inputBox}>
             <TextInput
@@ -251,24 +265,14 @@ const CreateAccountScreen = props => {
           onPress={() => setOpen(true)}>
           {/* <TextInput  placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => updateState({Birthday:val})} placeholderTextColor={'grey'}/> */}
           {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
-          <Text
-            style={[
-              styles.textBox,
-              {color: Birthday == null ? 'grey' : 'black'},
-            ]}>
-            {Birthday == null
-              ? `BIRTHDAY DD/MM/YYYY`
-              : ` ${Birthday.getDate()} - ${
-                  Birthday.getMonth() + 1
-                } - ${Birthday.getFullYear()}`}
-          </Text>
+          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday.getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
         </TouchableOpacity>
         <DatePicker
           modal
           mode="date"
           open={open}
-          date={new Date()}
-          maximumDate={new Date()}
+          date={Birthday}
+          maximumDate={subtractYears(new Date(),6)}
           onConfirm={date => {
             setOpen(false);
             updateState({Birthday: date});
@@ -313,12 +317,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
   },
+    headWrap: {
+    flexDirection: 'row',
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    alignItems: 'center',
+    //backgroundColor:'red',
+    justifyContent: 'center',
+    marginBottom:hp2(1),
+  },
   heading: {
     color: 'black',
     fontSize: rfv(20),
     fontWeight: '700',
-    marginLeft: wp2(8),
-    marginBottom: hp2(2),
+    //marginLeft: wp2(8),
+    //marginBottom: hp2(2),
   },
   inputBox: {
     width: wp2(80),

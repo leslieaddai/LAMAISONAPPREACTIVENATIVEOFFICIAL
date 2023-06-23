@@ -95,12 +95,12 @@ export default function FollowComp(props) {
       <View style={styles.imageContainer}>
         <Image
           //source={IMAGES.lookbook}
-          source={{
+          source={props?.data?.item?.followers?.profile_image!==null && props?.data?.item?.followings?.profile_image!==null ?{
             uri:
               props?.list === 'follower'
                 ? props?.data?.item?.followers?.profile_image?.original_url
                 : props?.data?.item?.followings?.profile_image?.original_url,
-          }}
+          }:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />

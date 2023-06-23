@@ -70,7 +70,7 @@ export default function BrandComp(props) {
         <View style={styles.brandLogo}>
           <Image
             //source={IMAGES.randomPic}
-            source={{uri: props?.data?.item?.user?.profile_image?.original_url}}
+            source={props?.data?.item?.user?.profile_image!==null?{uri: props?.data?.item?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
