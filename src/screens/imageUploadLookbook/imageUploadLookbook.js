@@ -56,6 +56,7 @@ import {SkypeIndicator} from 'react-native-indicators';
 import {BottomSheet} from 'react-native-btr';
 import BottomSheetShippingView from '../../components/bottomSheet/BottomSheetShippingView';
 import LoaderComp from '../../components/loaderComp';
+import Icons from '../../theme/icons';
 
 const PAGE_SIZE = 40;
 
@@ -100,7 +101,7 @@ export default function ImageUploadLookbook(props) {
 
   //const [photos, setPhotos]=useState();
   const [selectedImage, setSelectedImage] = useState([]);
-  const [nextButton, setNextButton] = useState(true);
+  const [nextButton, setNextButton] = useState(false);
   const [showQuantity, setShowQuantity] = useState(false);
   const [confirmButton, setConfirmButton] = useState(false);
   const [uploadButton, setUploadButton] = useState(false);
@@ -113,6 +114,7 @@ export default function ImageUploadLookbook(props) {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [perm, setPerm] = useState(false);
+  const [styleVisible, setStyleVisible]= useState(false)
 
   useEffect(() => {
     //setLoading(true);
@@ -347,7 +349,7 @@ export default function ImageUploadLookbook(props) {
     }
   };
 
-  const addRegions = (item, index) => {
+  const addRegions = (item) => {
     regions.some(e => e.regionId === item?.shipping_id)
       ? setRegions(regions.filter(e => e.regionId !== item?.shipping_id))
       : setRegions([
@@ -432,6 +434,20 @@ export default function ImageUploadLookbook(props) {
     uibottomesheetvisiblity(!visible);
     setIsOpenedShipping(false)
   };
+  const togglestylebottomsheet = () =>{
+    setStyleVisible(!styleVisible)
+    uistylebottomsheetvisibility(!styleVisible)
+    setIsOpened(false)
+  }
+  const uistylebottomsheetvisibility = Bool =>{
+   setStyleVisible(Bool)
+  }
+   
+  useEffect(()=>{
+    if(isOpened){
+      uistylebottomsheetvisibility(true)
+    }
+  },[isOpened])
 
   const uibottomesheetvisiblity = Bool => {
     setVisible(Bool);
@@ -570,7 +586,7 @@ export default function ImageUploadLookbook(props) {
                 },
               ]}>
               {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>SELECT SHIPPING DETAILS</Text> */}
-              <Text style={styles.selectTxt}>
+              <Text style={[styles.selectTxt,{width:wp2(70)}]}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
                   : 'SELECT SHIPPING DETAILS'}
@@ -646,7 +662,7 @@ export default function ImageUploadLookbook(props) {
               </View>
             </TouchableOpacity>
 
-            {isOpened && (
+            {/* {isOpened && (
               <View style={[styles.styleBox]}>
                 {data?.map((item, index) => (
                   <TouchableOpacity
@@ -670,7 +686,7 @@ export default function ImageUploadLookbook(props) {
                   </TouchableOpacity>
                 ))}
               </View>
-            )}
+            )} */}
 
             <TouchableOpacity
               onPress={productDetails}
@@ -843,7 +859,7 @@ export default function ImageUploadLookbook(props) {
                     );
                   }}
                 />
-
+  
                 {isLoading && (
                   <View
                     style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -851,19 +867,7 @@ export default function ImageUploadLookbook(props) {
                   </View>
                 )}
 
-      <BottomSheet
-        visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
-        >
-          <BottomSheetShippingView
-          Data={modalData}
-          uibottomesheetvisiblity={uibottomesheetvisiblity}
-          addRegions={addRegions}
-          regions={regions}
-          />
-
-          </BottomSheet>
+    
               </>
             ) : (
               <View style={styles.noPhotos}>
@@ -872,6 +876,81 @@ export default function ImageUploadLookbook(props) {
             )}
           </>
         )}
+        <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+          {/* <BottomSheetShippingView
+          Data={modalData}
+          uibottomesheetvisiblity={uibottomesheetvisiblity}
+          addRegions={addRegions}
+          regions={regions}
+          /> */}
+           <View style={styles.bottomcontainer}>
+        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
+        <View style={[styles.bottomstyleBox]}>
+                 {props?.route?.params?.shippingData.map((item, index) =>
+                   ( 
+                     <TouchableOpacity
+                     onPress={() => {
+                      uibottomesheetvisiblity(false)
+                      setIsOpenedShipping(false)
+                        addRegions(item, index)
+                    }}
+                     key={index}
+                     style={styles.bottomitemWrap}>
+                     <Text style={styles.bottomitemTxtitemTxt}>{item?.shipping?.name}</Text>
+                     <Icons.AntDesign
+                       name={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'checkcircle'
+                           : 'checkcircleo'
+                       }
+                       size={24}
+                       color={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'black'
+                           : 'lightgray'
+                       }
+                       style={{position: 'absolute', right: 10}}
+                     />
+                   </TouchableOpacity>
+                 ))}
+              </View>
+        </ScrollView>
+      </View>
+
+          </BottomSheet>
+          <BottomSheet
+        visible={styleVisible}
+        onBackButtonPress={togglestylebottomsheet}
+        onBackdropPress={togglestylebottomsheet}
+        >
+           <View style={styles.bottomcontainer}>
+        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
+        <View style={[styles.bottomstyleBox]}>
+        {data?.map((item, index) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelectedText(item.name);
+                      updateState({style_id: item.id});
+                      setIsOpened(false);
+                      uistylebottomsheetvisibility(false)
+                    }}
+                    key={index}
+                    style={styles.bottomitemWrap}>
+                    <Text style={styles.bottomitemTxtitemTxt}>{item.name}</Text>
+                  </TouchableOpacity>
+                ))}
+        </View>
+        </ScrollView>
+        </View>
+
+
+        </BottomSheet>
+
+      
       </SafeAreaView>
     </>
   );
@@ -1029,5 +1108,80 @@ const styles = StyleSheet.create({
     fontSize: rfv(13),
     position: 'absolute',
     left: 10,
+  },
+  
+
+
+
+
+
+  bottomcontainer: {
+    width:wp('100'),
+    flexDirection: 'column',
+    backgroundColor: '#D3D3D3',
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16,
+  },
+  bottomText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    padding: 2,
+  },
+  bottomTextInput: {
+    fontSize: 14,
+  },
+  bottomButton: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    shadowRadius: 12,
+    borderRadius: 12,
+    width: 100,
+    shadowOpacity: 0.4,
+    shadowOffset: {height: 0, width: 1},
+    shadowColor: 'grey',
+  },
+  bottomCardView:{
+    width:wp('95'),
+    height:hp('6'),
+    marginVertical:hp('1'),
+    flexDirection:'row',
+    alignItems:'center',
+    paddingHorizontal:wp('4'),
+    borderRadius:10,
+    backgroundColor:'white'
+  },
+  bottomitemTxt: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: rfv(13),
+    position: 'absolute',
+    left: 10,
+  },
+  bottomitemWrap: {
+    flexDirection: 'row',
+    width: wp(90),
+    height: hp(6),
+    alignSelf:"center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(2),
+    overflow: 'hidden',
+    backgroundColor:'white',
+    marginVertical:hp(1)
+  },
+  bottomstyleBox: {
+    width: wp(100),
+    backgroundColor: '#D3D3D3',
+    borderRadius: wp(4),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    overflow: 'hidden',
+    alignSelf: 'center',
   },
 });

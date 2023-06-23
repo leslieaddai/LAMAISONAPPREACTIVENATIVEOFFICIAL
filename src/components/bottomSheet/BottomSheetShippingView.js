@@ -29,50 +29,42 @@ regions
 ) => {
 
     useEffect(() => {
-        console.log("asd",Data[0].continent_code);
+        console.log("asd",regions);
       }, []);   
     const width = Dimensions.get('screen').width / 3;
-    const changebottomsheetvisibility = (Bool) => {
+    const changebottomsheetvisibility = (Bool,item) => {
         uibottomesheetvisiblity(Bool);
-        addRegions()
+        addRegions(item)
     
       };
     return (
       <View style={styles.container}>
         <ScrollView style={[styles.container,{height: '35%',marginBottom:hp(2)}]}>
         <View style={[styles.styleBox]}>
-                {/* {Data?.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                        changebottomsheetvisibility(false,item,index)
+                 {Data?.Data.map((item, index) => ( 
+                     <TouchableOpacity
+                     onPress={() => {
+                        changebottomsheetvisibility(false,item)
                     }}
-                    key={index}
-                    style={styles.itemWrap}>
-                    <Text style={styles.itemTxt}>{item?.name}</Text>
-                    <icons.AntDesign
-                      name={
-                        regions.some(e => e.regionId === item?.shipping_id)
-                          ? 'checkcircle'
-                          : 'checkcircleo'
-                      }
-                      size={24}
-                      color={
-                        regions.some(e => e.regionId === item?.shipping_id)
-                          ? 'black'
-                          : 'lightgray'
-                      }
-                      style={{position: 'absolute', right: 10}}
-                    />
-                  </TouchableOpacity>
-                ))} */}
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
-                <Text>test</Text>
+                     key={index}
+                     style={styles.itemWrap}>
+                     <Text style={styles.itemTxt}>{item?.name}</Text>
+                     <icons.AntDesign
+                       name={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'checkcircle'
+                           : 'checkcircleo'
+                       }
+                       size={24}
+                       color={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'black'
+                           : 'lightgray'
+                       }
+                       style={{position: 'absolute', right: 10}}
+                     />
+                   </TouchableOpacity>
+                 ))}
               </View>
         </ScrollView>
       </View>
