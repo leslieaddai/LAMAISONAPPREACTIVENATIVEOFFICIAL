@@ -132,7 +132,8 @@ export default function SettingsScreen(props) {
               .catch(function (error) {
                 console.log(error.response.data);
                 setLoading(false);
-                errorMessage('Logout Failed');
+                //errorMessage('Logout Failed');
+                errorMessage(errorHandler(error))
                 //errorMessage(errorHandler(error))
               });
 

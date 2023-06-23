@@ -86,7 +86,8 @@ export default function WardrobeComp(props) {
       .catch(function (error) {
         console.log(error.response.data);
         props?.state?.setLoadingComp(false);
-        errorMessage('Something went wrong to like product!');
+        //errorMessage('Something went wrong to like product!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -120,7 +121,8 @@ export default function WardrobeComp(props) {
       .catch(function (error) {
         console.log(error.response.data);
         props?.state?.setLoadingComp(false);
-        errorMessage('Something went wrong to share product!');
+        //errorMessage('Something went wrong to share product!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -129,7 +131,7 @@ export default function WardrobeComp(props) {
       onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.data?.product_id}},
-        }):navigation.navigate('imageViewScreen')
+        }):navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_image}]}]})
       }
       style={styles.imageContainer}>
       <Image

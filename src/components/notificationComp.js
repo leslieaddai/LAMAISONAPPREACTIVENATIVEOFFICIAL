@@ -114,8 +114,7 @@ export default function NotificationComp(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() =>
+      <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}}  onPress={() =>
           props?.user?.roles?.[0]?.id === 2
             ? navigation.navigate('editorProfileScreen', {
                 userData: {
@@ -136,7 +135,8 @@ export default function NotificationComp(props) {
                   },
                 },
               })
-        }
+        }>
+            <View
         style={styles.imgWrap}>
         <Image
           //source={IMAGES.randomProfile}
@@ -145,7 +145,7 @@ export default function NotificationComp(props) {
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
-      </TouchableOpacity>
+      </View>
       <View
         style={{
           width: wp2(props?.type === 'follow' ? 50 : 60),
@@ -154,10 +154,13 @@ export default function NotificationComp(props) {
         <Text style={{color: 'black', marginBottom: 4}}>
           {props?.type === 'follow'
             ? `${props?.user?.username} started following you`
-            : `${props?.user?.username} ${props?.type} your ${props?.product?.name}`}
+            : props?.type === 'share' ? `${props?.user?.username} shared your ${props?.product?.name}` : 
+        props?.type ==='like' ? `${props?.user?.username} liked your ${props?.product?.name}`:''}
         </Text>
         <Text style={{color: 'black'}}>{moment(props?.date).fromNow()}</Text>
       </View>
+
+      </TouchableOpacity>
       {props?.type === 'follow' ? (
         <TouchableOpacity
           disabled={loadingFollow}
@@ -186,7 +189,7 @@ export default function NotificationComp(props) {
           onPress={() => user?.userData?.role?.[0]?.id!==3?
             navigation.navigate('dressingRoomScreen', {
               data: {product: {id: props?.product?.id}},
-            }):navigation.navigate('imageViewScreen')
+            }):navigation.navigate('imageViewScreen',{item:props?.product?.product_images})
           }
           style={styles.imgWrap}>
           <Image

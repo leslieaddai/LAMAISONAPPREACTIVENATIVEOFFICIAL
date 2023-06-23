@@ -424,7 +424,7 @@ export default function ImageUploadLookbook(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Upload Failed');
+        //errorMessage('Upload Failed');
         errorMessage(errorHandler(error))
       });
   };

@@ -33,15 +33,16 @@ import {
 import {useNavigation} from '@react-navigation/native';
 
 export function ImgComp(props) {
+  const navigation = useNavigation();
   return (
-    <View style={styles.imageContainer}>
+    <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.media?.[0]?.original_url}]}]})} style={styles.imageContainer}>
       <Image
         //source={IMAGES.randomPic}
         source={{uri: props?.path?.item?.media?.[0]?.original_url}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-    </View>
+    </TouchableOpacity>
   );
 }
 
@@ -57,9 +58,9 @@ export default function Lookbook(props) {
         </Text>
       </TouchableOpacity> */}
       <View style={styles.galaryContainer}>
-        {props?.data?.galleries?.reverse().map((item, index) => {
+        {props?.data?.galleries?.length!==0? props?.data?.galleries?.reverse().map((item, index) => {
           if (index < 6) return <ImgComp key={index} path={{item}} />;
-        })}
+        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Gallery Not Available</Text></View>}
       </View>
 
       {/* <FlatList 

@@ -87,16 +87,57 @@ export default function SignupScreen(props) {
     }
   }
 
+  const special = /[!@#\$%\^\&*\)\(+=._-]/g;
+  const numeric = /[0-9]/;
+
+  function ValidateEmail(input) {
+
+    //var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    var validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+    if (input.match(validRegex)) {
+  
+      return true;
+  
+    } else {
+  
+      return false;
+  
+    }
+  
+  }
+  
+  
+
   const onContinue = () => {
     if (firstName != '' && lastName != '' && email != '') {
-      let data = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-      };
-      props.navigation.navigate('accountTypeScreen', {data: data});
+      if(!numeric.test(firstName)){
+        if(!special.test(firstName.match(special))){
+          if(!numeric.test(lastName)){
+            if(!special.test(lastName.match(special))){
+             if(ValidateEmail(email)){
+              let data = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+              };
+              props.navigation.navigate('accountTypeScreen', {data: data});
+             }else{
+              errorMessage('Invalid email address!');
+             }
+            }else{
+              errorMessage('Please remove special characters from last name!');
+            }
+          }else{
+            errorMessage('Please remove numbers from last name!');
+          }
+        }else{
+          errorMessage('Please remove special characters from first name!');
+        }
+      }else{
+        errorMessage('Please remove numbers from first name!');
+      }
     } else {
-      //alert("Please fill all details");
       errorMessage('Please fill all details');
     }
   };

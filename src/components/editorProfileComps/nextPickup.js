@@ -42,7 +42,7 @@ export function ImgComp(props) {
       navigation.navigate('dressingRoomScreen', {
         // userData:props?.userData,
         data: {product: {id: props?.path?.item?.product_id}},
-      }):navigation.navigate('imageViewScreen')
+      }):navigation.navigate('imageViewScreen',{item:props?.path?.item?.product?.product_images})
     }
      style={styles.imageContainer}>
       <Image
@@ -63,9 +63,9 @@ export default function NextPickup(props) {
   return (
     <View>
       <View style={styles.galaryContainer}>
-        {props?.data?.wishlists?.reverse().map((item, index) => {
+        {props?.data?.wishlists?.length!==0? props?.data?.wishlists?.reverse().map((item, index) => {
           if (index < 6) return <ImgComp key={index} path={{item}} />;
-        })}
+        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Next Pick Up Not Available</Text></View>}
       </View>
 
       <TouchableOpacity

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -34,22 +34,81 @@ import {
 import BottomComp from '../../components/bottomComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import {errorHandler} from '../../config/helperFunction';
+import {PostReview} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../Redux/types';
+import {SkypeIndicator} from 'react-native-indicators';
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function AddReview(props) {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData);
+  pid = props?.route?.params?.data
+
+  const onSend = () => {
+    if (selected !== '' && desc !== '') {
+      setLoading(true);
+
+      let obj = {
+        user_id: user?.userData?.id,
+        product_id:pid,
+        review: desc,
+        feeling: selected,
+      };
+
+      //console.log(obj)
+
+      axios
+        .post(PostReview, obj, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        })
+        .then(async function (res) {
+          console.log(res.data);
+          setLoading(false);
+          successMessage('Done!');
+          props.navigation.goBack();
+        })
+        .catch(function (error) {
+          console.log(error.response.data);
+          setLoading(false);
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
+        });
+    } else {
+      errorMessage('Please fill all details!');
+    }
+  };
+
   const [selected, setSelected] = useState('');
+  const [desc, setDesc] = useState('');
+
   const options = text => {
     return (
-      <View style={styles.optionWrap}>
+      <TouchableOpacity  onPress={() => setSelected(text)} style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{text}</Text>
-        <TouchableOpacity
-          onPress={() => setSelected(text)}
+        <View
           style={[
             styles.circle,
             {backgroundColor: selected == text ? 'black' : '#D9D9D9'},
-          ]}></TouchableOpacity>
-      </View>
+          ]}></View>
+      </TouchableOpacity>
     );
   };
+
   return (
+    <>
+    <View style={{position: 'absolute', zIndex: 999}}>
+        {loading && <LoaderComp />}
+      </View>
+
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <KeyboardAwareScrollView
@@ -73,6 +132,8 @@ export default function AddReview(props) {
               placeholderTextColor={'grey'}
               multiline={true}
               style={styles.inputTxt}
+              onChangeText={val => setDesc(val)}
+              value={desc}
             />
           </View>
           <View style={{width: wp2(88)}}>
@@ -84,13 +145,15 @@ export default function AddReview(props) {
           {options('EXCITED')}
           {options('CONFUSED')}
           {options('PANICKED')}
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity onPress={onSend} style={styles.button}>
             <Text style={{color: 'white'}}>SEND</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+
+    </>
   );
 }
 

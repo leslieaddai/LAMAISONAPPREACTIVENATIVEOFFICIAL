@@ -124,7 +124,8 @@ const CreateAccountScreen = props => {
                       console.log(error.response.data);
                       setLoading(false);
                       // errorMessage('Something went wrong')
-                      errorMessage(error.response.data.message);
+                      //errorMessage(error.response.data.message);
+                      errorMessage(errorHandler(error))
 
                       //errorMessage(errorHandler(error))
                     });

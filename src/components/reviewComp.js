@@ -36,18 +36,17 @@ export default function ReviewComp(props) {
     <View style={styles.container}>
       <View style={styles.imageWrap}>
         <Image
-          source={IMAGES.randomProfile}
+          //source={IMAGES.randomProfile}
+          source={props?.data?.user?.profile_image!==null?{uri:props?.data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
       </View>
       <View>
-        <Text style={styles.text}>Angry</Text>
+        <Text style={styles.text}>{props?.data?.feeling}</Text>
         <View style={styles.messageBox}>
           <Text style={[styles.text, {fontSize: rfv(13)}]}>
-            I ordered an item from represent and I still have not received my
-            items I ordered an item from represent and I still have not received
-            my items
+            {props?.data?.description}
           </Text>
         </View>
       </View>

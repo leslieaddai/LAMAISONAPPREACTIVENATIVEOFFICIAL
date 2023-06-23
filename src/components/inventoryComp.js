@@ -60,7 +60,7 @@ export default function InventoryComp(props) {
           fontSize: rfv(9),
           fontWeight: 'bold',
         }}>
-        {props?.data?.product_variations_sum_quantity == 0
+        {props?.data?.product_variations_sum_quantity < 1
           ? 'Out of Stock!!'
           : props?.data?.product_variations_sum_quantity + ' Remaining'}
       </Text>

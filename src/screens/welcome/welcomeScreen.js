@@ -41,7 +41,8 @@ export default function WelcomeScreen(props) {
       <View style={styles.imgWrap}>
         <Image
           //source={IMAGES.randomProfile}
-          source={{uri:user.userData.profile_image}}
+          //source={{uri:user.userData.profile_image}}
+          source={user?.userData?.profile_image!==''?{uri:user?.userData?.profile_image}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />

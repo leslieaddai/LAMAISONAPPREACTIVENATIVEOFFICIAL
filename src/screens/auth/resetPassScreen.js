@@ -92,7 +92,8 @@ export default function ResetPassScreen(props) {
           console.log(error.response.data);
           setLoading(false);
           //errorMessage('Something Went Wrong!')
-          errorMessage(error.response.data.message);
+          //errorMessage(error.response.data.message);
+          errorMessage(errorHandler(error))
           //errorMessage(errorHandler(error))
         });
     } else {
@@ -123,7 +124,8 @@ export default function ResetPassScreen(props) {
           console.log(error.response.data);
           setLoading(false);
           //errorMessage('Something Went Wrong!')
-          errorMessage(error?.response?.data?.errors?.password_reset_code[0]);
+          //errorMessage(error?.response?.data?.errors?.password_reset_code[0]);
+          errorMessage(errorHandler(error))
           //errorMessage(errorHandler(error))
         });
     } else {
@@ -157,7 +159,8 @@ export default function ResetPassScreen(props) {
                 .catch(function (error) {
                   console.log(error.response.data);
                   setLoading(false);
-                  errorMessage('Something Went Wrong!');
+                  //errorMessage('Something Went Wrong!');
+                  errorMessage(errorHandler(error))
                   //errorMessage(errorHandler(error))
                 });
             } else {

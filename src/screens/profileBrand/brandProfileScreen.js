@@ -315,18 +315,21 @@ export default function BrandProfileScreen(props) {
                 }}
                 resizeMode="contain">
                 <View style={styles.iconWrap}>
+                {data?.products_count > 0 && (
                   <TouchableOpacity
-                    onPress={() => props.navigation.navigate('FTS100')}
-                    style={styles.badge}>
-                    <Image
-                      source={IMAGES.badge}
-                      style={{width: '100%', height: '100%'}}
-                      resizeMode="contain"
-                    />
-                  </TouchableOpacity>
+                  onPress={() => props.navigation.navigate('FTS100')}
+                  style={styles.badge}>
+                  <Image
+                    source={IMAGES.badge}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="contain"
+                  />
+                </TouchableOpacity>
+                )}
                   {props?.route?.params?.userData?.userData?.id ===
                     user?.userData?.id && (
                     <TouchableOpacity
+                    style={{position:'absolute',right:wp2(4)}}
                       onPress={() =>
                         props.navigation.navigate('settingsScreen', {
                           user: user,
@@ -432,9 +435,9 @@ export default function BrandProfileScreen(props) {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: hp2(12)}}>
               <Text style={styles.popularTxt}>POPULAR</Text>
-              {data?.popular_products?.map((item, index) => {
+              {data?.popular_products?.length!==0? data?.popular_products?.map((item, index) => {
                 return <Popular key={index} data={item} no={index} />;
-              })}
+              }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Popular Products Not Available</Text></View>}
 
               {/* <Popular no={'1.'} />
         <Popular no={'2.'} />
@@ -482,7 +485,7 @@ const styles = StyleSheet.create({
   iconWrap: {
     flexDirection: 'row',
     paddingHorizontal: wp2(4),
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     marginTop: hp2(1),
   },
   badge: {

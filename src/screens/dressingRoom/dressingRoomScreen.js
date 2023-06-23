@@ -220,7 +220,8 @@ export default function DressingRoomScreen(props) {
                   console.log(error.response.data);
                   setLoading(false);
                   //errorMessage('Failed');
-                  errorMessage(error.response.data.message)
+                  //errorMessage(error.response.data.message)
+                  errorMessage(errorHandler(error))
                 });
             },
           },
@@ -350,9 +351,10 @@ export default function DressingRoomScreen(props) {
                           console.log(e.response.data);
 
                           setLoading(false);
-                          errorMessage(
-                            'Something went wrong to update state of wishlists!',
-                          );
+                          // errorMessage(
+                          //   'Something went wrong to update state of wishlists!',
+                          // );
+                          errorMessage(errorHandler(error))
                         });
                     } else {
                       setLoading(false);
@@ -365,7 +367,8 @@ export default function DressingRoomScreen(props) {
                   .catch(function (error) {
                     console.log(error?.response?.data);
                     setLoading(false);
-                    errorMessage('Something went wrong to update wishlists!');
+                    //errorMessage('Something went wrong to update wishlists!');
+                    errorMessage(errorHandler(error))
                   });
 
                 //  setLoading(false);
@@ -375,7 +378,8 @@ export default function DressingRoomScreen(props) {
                 console.log(error.response.data);
                 setLoading(false);
                 //errorMessage('Something went wrong to add product into wishlist!')
-                errorMessage(error?.response?.data?.message);
+                //errorMessage(error?.response?.data?.message);
+                errorMessage(errorHandler(error))
               });
           },
         },
@@ -442,9 +446,10 @@ export default function DressingRoomScreen(props) {
                           console.log(e.response.data);
 
                           setLoading(false);
-                          errorMessage(
-                            'Something went wrong to update state of wishlists!',
-                          );
+                          // errorMessage(
+                          //   'Something went wrong to update state of wishlists!',
+                          // );
+                          errorMessage(errorHandler(error))
                         });
                     } else {
                       setLoading(false);
@@ -457,7 +462,8 @@ export default function DressingRoomScreen(props) {
                   .catch(function (error) {
                     console.log(error?.response?.data);
                     setLoading(false);
-                    errorMessage('Something went wrong to update wishlists!');
+                    //errorMessage('Something went wrong to update wishlists!');
+                    errorMessage(errorHandler(error))
                   });
 
                 //  setLoading(false);
@@ -466,10 +472,11 @@ export default function DressingRoomScreen(props) {
               .catch(function (error) {
                 console.log(error.response.data);
                 setLoading(false);
-                errorMessage(
-                  'Something went wrong to remove product from wishlist!',
-                );
+                // errorMessage(
+                //   'Something went wrong to remove product from wishlist!',
+                // );
                 //errorMessage(error?.response?.data?.message)
+                errorMessage(errorHandler(error))
               });
           },
         },
@@ -478,7 +485,11 @@ export default function DressingRoomScreen(props) {
   };
 
   const BuyNowButton = () => {
-    props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
+    if(qty!==undefined && qty!=='' && qty!=0 && qty!==null){
+      props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
+    }else{
+      errorMessage('Please add quantity!')
+    }
   }
 
   const productLikeDislike = () => {
@@ -532,9 +543,10 @@ export default function DressingRoomScreen(props) {
                   console.log(e.response.data);
 
                   setLoading(false);
-                  errorMessage(
-                    'Something went wrong to update state of likes!',
-                  );
+                  // errorMessage(
+                  //   'Something went wrong to update state of likes!',
+                  // );
+                  errorMessage(errorHandler(error))
                 });
             } else {
               setLoading(false);
@@ -547,7 +559,8 @@ export default function DressingRoomScreen(props) {
           .catch(function (error) {
             console.log(error?.response?.data);
             setLoading(false);
-            errorMessage('Something went wrong to update likes!');
+            // errorMessage('Something went wrong to update likes!');
+            errorMessage(errorHandler(error))
           });
 
         //  setLoading(false);
@@ -556,7 +569,8 @@ export default function DressingRoomScreen(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong to like product!');
+        // errorMessage('Something went wrong to like product!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -611,9 +625,10 @@ export default function DressingRoomScreen(props) {
                   console.log(e.response.data);
 
                   setLoading(false);
-                  errorMessage(
-                    'Something went wrong to update state of shares!',
-                  );
+                  // errorMessage(
+                  //   'Something went wrong to update state of shares!',
+                  // );
+                  errorMessage(errorHandler(error))
                 });
             } else {
               setLoading(false);
@@ -626,7 +641,8 @@ export default function DressingRoomScreen(props) {
           .catch(function (error) {
             console.log(error?.response?.data);
             setLoading(false);
-            errorMessage('Something went wrong to update shares!');
+            //errorMessage('Something went wrong to update shares!');
+            errorMessage(errorHandler(error))
           });
 
         //  setLoading(false);
@@ -635,7 +651,8 @@ export default function DressingRoomScreen(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        errorMessage('Something went wrong to share product!');
+        //errorMessage('Something went wrong to share product!');
+        errorMessage(errorHandler(error))
       });
   };
 
@@ -792,7 +809,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                       onPress={() =>
-                        props.navigation.navigate('imageViewScreen',{item:data?.product_images})
+                        props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})
                       }
                       style={[
                         styles.brandImage,
@@ -913,7 +930,14 @@ export default function DressingRoomScreen(props) {
                 </View>
                 <View style={[styles.imagesWrap, {width: wp2(40)}]}>
                   <View style={styles.shadow}>
-                    <View
+                    <TouchableOpacity
+                     onPress={() =>
+                      props.navigation.navigate('imageViewScreen',{item:
+                        data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0] ?.original_url}]}]
+                        : data?.product_images?.[0]?.image.length >= 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
+                        : null,
+                      })
+                    }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
@@ -933,10 +957,18 @@ export default function DressingRoomScreen(props) {
                         style={{width: '100%', height: '100%'}}
                         resizeMode="cover"
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.shadow}>
-                    <View
+                    <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('imageViewScreen',{item:
+                        data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                        : data?.product_images?.[0]?.image.length === 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                         : data?.product_images?.[0]?.image.length >= 3 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[2]?.original_url}]}]
+                           : null,
+                      })
+                    }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
@@ -959,10 +991,19 @@ export default function DressingRoomScreen(props) {
                         style={{width: '100%', height: '100%'}}
                         resizeMode="cover"
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.shadow}>
-                    <View
+                    <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('imageViewScreen',{item:
+                        data?.product_images?.[0]?.image.length === 1? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                          : data?.product_images?.[0]?.image.length === 2? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
+                           : data?.product_images?.[0]?.image.length === 3? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                              : data?.product_images?.[0]?.image.length === 4? [{image:[{original_url:data?.product_images?.[0]?.image?.[3]?.original_url}]}]
+                              : null,
+                      })
+                    }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
@@ -988,7 +1029,7 @@ export default function DressingRoomScreen(props) {
                         style={{width: '100%', height: '100%'}}
                         resizeMode="cover"
                       />
-                    </View>
+                    </TouchableOpacity>
                   </View>
                   <View style={styles.shadow}>
                     <TouchableOpacity
@@ -1012,27 +1053,25 @@ export default function DressingRoomScreen(props) {
                 </View>
               </View>
 
-              <View style={styles.filters}>
-                <Text style={{color: 'black'}}>SIZE</Text>
-                <Text style={styles.selectedSizeTxt}>{sizeId?.size?.size}</Text>
-                <TouchableOpacity
-                  onPress={() =>
+              <TouchableOpacity onPress={() =>
                     props.navigation.navigate('selectSizes', {
                       data: data,
                       color: colorId,
                       state: {sizeId, setSizeId},
                     })
-                  }>
+                  } style={styles.filters}>
+                <Text style={{color: 'black'}}>SIZE</Text>
+                <Text style={styles.selectedSizeTxt}>{sizeId?.size?.size}</Text>
+                <View>
                   <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.filters}>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => props.navigation.navigate('review',{data:data?.id})} style={styles.filters}>
                 <Text style={{color: 'black'}}>REVIEWS</Text>
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('review')}>
+                <View>
                   <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
-                </TouchableOpacity>
-              </View>
+                </View>
+              </TouchableOpacity>
 
               <TouchableOpacity
                 onPress={() =>

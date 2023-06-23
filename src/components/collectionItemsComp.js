@@ -42,7 +42,7 @@ export default function CollectionItemsComp(props) {
         navigation.navigate('dressingRoomScreen', {
           // userData:props?.userData,
           data: props?.data,
-        }):navigation.navigate('imageViewScreen')
+        }):navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})
       }
       style={styles.imageContainer}>
       <View style={{height: hp2(18), overflow: 'hidden'}}>

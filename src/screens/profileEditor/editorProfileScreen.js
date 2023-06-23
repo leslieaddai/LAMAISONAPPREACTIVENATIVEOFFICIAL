@@ -400,16 +400,18 @@ export default function EditorProfileScreen(props) {
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: hp2(12)}}>
               <Text style={styles.favBrandsTxt}>FAVOURITE BRANDS</Text>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-                <BrandComp />
-              </ScrollView>
+             
+              {data?.fav_brands?.length!==0?(
+               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+               {data?.fav_brands?.map((item,index)=>{
+                 return(
+                   <BrandComp data={item} key={index} />
+                 )
+               })}
+             </ScrollView>
+            ):(
+              <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Favourite Brands Not Available</Text></View>
+            )}
 
               <Wardrobe user={props?.route?.params?.userData} />
 

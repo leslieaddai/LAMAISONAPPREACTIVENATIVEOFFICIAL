@@ -42,7 +42,7 @@ export default function NextPickupComp(props) {
       onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.item?.item?.product_id}},
-        }):navigation.navigate('imageViewScreen')
+        }):navigation.navigate('imageViewScreen',{item:props?.item?.item?.product?.product_images})
       }
       style={styles.imageContainer}>
       {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && (

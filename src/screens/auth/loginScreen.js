@@ -146,7 +146,8 @@ export default function LoginScreen(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoading(false);
-              errorMessage('Login Failed As Guest');
+              //errorMessage('Login Failed As Guest');
+              errorMessage(errorHandler(error))
             });
         });
       });

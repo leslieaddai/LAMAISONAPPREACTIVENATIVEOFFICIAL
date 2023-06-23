@@ -224,7 +224,7 @@ export default function BasketScreen(props) {
         <>
               {data?.length!==0 && 
               <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
+              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen',{item:data[0]?.product?.product_images})} style={styles.imageWrap}>
                 <Image
                   //source={IMAGES.randomPic}
                   source={{uri:data[0]?.product?.product_images[0]?.image[0]?.original_url}}
@@ -307,7 +307,7 @@ export default function BasketScreen(props) {
       
               {products?.length!==0 && 
               <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen')} style={styles.imageWrap}>
+              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen',{item:products[0]?.data?.product_images})} style={styles.imageWrap}>
                 <Image
                   //source={IMAGES.randomPic}
                   source={{uri:products[0]?.data?.product_images[0].image[0]?.original_url}}

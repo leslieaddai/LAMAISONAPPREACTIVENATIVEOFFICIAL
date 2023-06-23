@@ -115,7 +115,7 @@ export default function AddCollection(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading2(false);
-        errorMessage('Upload Failed');
+        //errorMessage('Upload Failed');
         errorMessage(errorHandler(error))
       });
   };

@@ -35,10 +35,17 @@ export default function BrandComp(props) {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('brandProfileScreen')}
+      onPress={() => navigation.navigate('brandProfileScreen',{
+        userData: {
+          userData: {
+            id: props?.data?.id,
+          },
+        },
+      })}
       style={styles.brandImage}>
       <Image
-        source={IMAGES.randomPic}
+        //source={IMAGES.randomPic}
+        source={props?.data?.profile_image!==null?{uri:props?.data?.profile_image?.original_url}:IMAGES.profileIcon3}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />

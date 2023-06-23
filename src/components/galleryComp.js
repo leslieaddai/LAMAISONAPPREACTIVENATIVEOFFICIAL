@@ -29,20 +29,24 @@ import {
   getFont,
   FONTS,
 } from '../theme';
+import { useNavigation } from '@react-navigation/native';
 
 export default function GalleryComp(props) {
   //console.log(props.item.item,'=======>');
+  const navigation = useNavigation();
   return (
-    <View style={styles.imageContainer}>
-      {props?.item?.item?.media?.[0]?.original_url && (
+    <TouchableOpacity onPress={() =>
+      navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.item?.item?.media?.[0]?.original_url}]}]})
+    } style={styles.imageContainer}>
+      
         <Image
           //source={IMAGES.randomPic}
           source={{uri: props?.item?.item?.media?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
-      )}
-    </View>
+     
+    </TouchableOpacity>
   );
 }
 

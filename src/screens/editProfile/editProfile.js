@@ -52,23 +52,27 @@ export default function EditProfile(props) {
   const user = useSelector(state => state.userData)
   
   const selectImage = async () => {
-    const result = await launchImageLibrary({mediaType:'photo',quality:0});
+    const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
 
-      //console.log(result?.assets[0].type)
-      if(result?.assets[0].type === 'image/gif'){
-        errorMessage('Please select jpg or png image type.')
+      console.log(result?.assets[0].fileSize/1024)
+      if(result?.assets[0].type !== 'image/gif'){
+        if(result?.assets[0].fileSize < 1572864){
+          const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
+          const filename = result?.assets[0]?.uri.split("/").pop();
+          const match = /\.(\w+)$/.exec(filename);
+          const ext = match?.[1];
+          const type = match ? `image/${match[1]}` : `image`;
+        
+          setImages([{uri, name: filename, type}])
+    
+            //setImages(result.assets)
+            //console.log(result.assets); 
+        }else{
+          errorMessage('The maximum file size allowed is 1.5mb.')
+        }
       }else{
-        const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
-        const filename = result?.assets[0]?.uri.split("/").pop();
-        const match = /\.(\w+)$/.exec(filename);
-        const ext = match?.[1];
-        const type = match ? `image/${match[1]}` : `image`;
-      
-        setImages([{uri, name: filename, type}])
-  
-          //setImages(result.assets)
-          //console.log(result.assets); 
+        errorMessage('Please select jpg or png image type.')
       }
 
       }
@@ -115,7 +119,7 @@ axios.request(config)
 .catch(function (error) {
   console.log(error.response.data)
   setLoading(false);
-  errorMessage('Upload Failed');
+  //errorMessage('Upload Failed');
   errorMessage(errorHandler(error))
 });
 
@@ -149,7 +153,8 @@ axios.request(config)
                     ) : (
                       <Image
                           //source={IMAGES.randomProfile}
-                          source={{uri:user?.userData?.profile_image}}
+                          //source={{uri:user?.userData?.profile_image}}
+                          source={user?.userData?.profile_image!==''?{uri:user?.userData?.profile_image}:IMAGES.profileIcon3}
                           style={{width: '100%', height: '100%'}}
                           resizeMode="cover"
                       />

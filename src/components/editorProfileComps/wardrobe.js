@@ -64,7 +64,7 @@ export default function Wardrobe(props) {
   return (
     <View style={{marginVertical: hp2(5)}}>
       <View style={styles.galaryContainer}>
-        {data?.map((item, index) => {
+        {data?.length!==0? data?.map((item, index) => {
           if (index < 3)
             return (
               <View key={index} style={styles.imageContainer}>
@@ -76,7 +76,7 @@ export default function Wardrobe(props) {
                 />
               </View>
             );
-        })}
+        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Wardrobe Not Available</Text></View>}
       </View>
 
       <TouchableOpacity

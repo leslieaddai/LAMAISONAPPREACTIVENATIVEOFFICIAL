@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   button: {
     width: wp2(24),
     height: hp2(8),
-    borderRadius: wp2(8),
+    borderRadius: wp2(10),
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginHorizontal: wp2(4),

@@ -41,7 +41,7 @@ export default function Popular(props) {
       onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
           data: {product: {id: props?.data?.product_id}},
-        }):navigation.navigate('imageViewScreen')
+        }):navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})
       }
       // onPress={()=>navigation.reset({
       //   index: 0,

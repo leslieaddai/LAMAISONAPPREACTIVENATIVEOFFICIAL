@@ -183,7 +183,7 @@ axios
       {user?.token!==''?(
         <>
         <TouchableOpacity
-        onPress={() => navigation.navigate('imageViewScreen')}
+        onPress={() => navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})}
         style={styles.imageWrap}>
         <Image
           //source={IMAGES.randomPic}
@@ -225,7 +225,7 @@ axios
       ):(
         <>
         <TouchableOpacity
-        onPress={() => navigation.navigate('imageViewScreen')}
+        onPress={() => navigation.navigate('imageViewScreen',{item:props?.data?.data?.product_images})}
         style={styles.imageWrap}>
         <Image
           //source={IMAGES.randomPic}
