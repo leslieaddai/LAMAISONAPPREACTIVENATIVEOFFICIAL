@@ -42,6 +42,7 @@ import {GetReviews} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import moment from 'moment';
 
 export default function Review(props) {
 
@@ -100,7 +101,6 @@ export default function Review(props) {
             <ICONS.AntDesign name="pluscircle" size={30} color="#162FAC" />
           </TouchableOpacity>
         </View>
-        <LineComp />
         {loading ? (
         <View
           style={{
@@ -114,6 +114,7 @@ export default function Review(props) {
         <>
           {data?.length!==0? 
           uniqDates?.map((item,index)=>{
+            console.log(uniqDates)
             return(
               <>
               <LineComp date={item} key={index} />
