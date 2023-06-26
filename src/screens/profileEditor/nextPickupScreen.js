@@ -58,7 +58,7 @@ export default function NextPickupScreen(props) {
             style={{position: 'absolute', left: wp2(4)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
-          <Text style={styles.pickupText}>NEXT PICKUP</Text>
+          <Text style={styles.pickupText}>NEXT PICKUP</Text> 
         </View>
 
         {loading ? (

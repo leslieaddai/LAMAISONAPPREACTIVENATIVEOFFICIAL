@@ -31,7 +31,6 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
-import AlertComp from '../../components/alertComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
@@ -243,7 +242,7 @@ export default function ResetPassScreen(props) {
         <TouchableOpacity onPress={onResetPassword} style={styles.button}>
           <Text style={styles.buttonText}>Reset Password</Text>
         </TouchableOpacity>
-        {showPassNotMatch && <AlertComp text="Password Does not Match" />}
+        {showPassNotMatch && errorMessage("Password Does not Match")}
       </Animated.View>
     );
   };

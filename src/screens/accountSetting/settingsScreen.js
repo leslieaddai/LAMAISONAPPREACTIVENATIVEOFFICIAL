@@ -43,9 +43,12 @@ import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
 import LoaderComp from '../../components/loaderComp';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
   //const user = useSelector(state => state.userData)
   //console.log(props?.route?.params?.user)
 
@@ -160,13 +163,32 @@ export default function SettingsScreen(props) {
       </TouchableOpacity>
     );
   };
-
+useEffect(()=>{
+  if(loading){
+  const parent = props.navigation.setOptions({
+    tabBarStyle: { display: 'none' },
+  });}
+},[loading])
   return (
     <>
+    
       <View style={{position: 'absolute', zIndex: 999}}>
-        {loading && <LoaderComp />}
+      {loading &&
+      // <LoaderComp />
+      <SkypeIndicator
+      style={{
+        width: wp2(100),
+        height: hp2(100),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+      }}
+      color={'black'}
+    />}
       </View>
       <SafeAreaView style={{flex: 1}}>
+      
+   
         <View style={styles.container}>
           <View style={styles.headWrap}>
             <TouchableOpacity
@@ -208,6 +230,7 @@ export default function SettingsScreen(props) {
 
           {/* <BottomComp /> */}
         </View>
+        
       </SafeAreaView>
     </>
   );

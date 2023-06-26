@@ -34,7 +34,7 @@ import {
 import AlertComp from '../../components/alertComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import {successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {LoginUrl, RegisterGuest} from '../../config/Urls';
@@ -51,9 +51,9 @@ import {NetworkInfo} from 'react-native-network-info';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
+  const [errormsg,setError]= useState()
 
   const dispatch = useDispatch();
-  //console.log(useSelector(state => state.userData))
 
   const [stateChange, setStateChange] = useState({
     UserName: '',
@@ -63,7 +63,6 @@ export default function LoginScreen(props) {
   const {UserName, Password} = stateChange;
 
   const [loading, setLoading] = useState(false);
-  //console.log(loading)
 
   function containsWhitespace(str) {
     return /\s/.test(str);
@@ -73,7 +72,6 @@ export default function LoginScreen(props) {
     if (UserName != '' && Password != '') {
       if(!containsWhitespace(UserName)){
         setLoading(true);
-      //props.navigation.navigate('homeScreen')
       let obj = {
         email: UserName,
         password: Password,
@@ -84,7 +82,7 @@ export default function LoginScreen(props) {
           console.log('login response', res.data.user.basket_count);
           setLoading(false);
           if (res.data.user.email_verified === false) {
-            errorMessage('Please verify your email');
+            setError('Please verify your email');
           } else {
             successMessage('Login Successfully');
             dispatch({
@@ -100,26 +98,26 @@ export default function LoginScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          //errorMessage(errorHandler(error))
-          //errorMessage('Login Failed');
-          errorMessage(errorHandler(error))
-          // setShowError(true);
-          // setTimeout(() => {
-          //   setShowError(false);
-          // }, 3000);
+          setError(errorHandler(error))
+          setShowError(true);
+          setTimeout(() => {
+            setShowError(false);
+          }, 3000);
         });
 
-      // setShowError(true);
-      //     setLoading(false);
-
-      //     setTimeout(()=>{
-      //       setShowError(false)
-      //     },5000);
       }else{
-        errorMessage('Please remove space from username!')
+        setError('Please remove space from username!')
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 3000);
       }
     } else {
-      errorMessage('Please fill all details');
+      setError('Please fill all details');
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   };
 
@@ -146,13 +144,20 @@ export default function LoginScreen(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoading(false);
-              //errorMessage('Login Failed As Guest');
-              errorMessage(errorHandler(error))
+              setError(errorHandler(error))
+              setShowError(true);
+              setTimeout(() => {
+                setShowError(false);
+              }, 3000);
             });
         });
       });
     } catch {
-      errorMessage('Something went wrong!');
+      setError('Something went wrong!');
+      setShowError(true);
+      setTimeout(() => {
+        setShowError(false);
+      }, 3000);
     }
   };
 
@@ -162,10 +167,9 @@ export default function LoginScreen(props) {
         {loading && <LoaderComp />}
       </View>
       <SafeAreaView style={styles.container}>
-        {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4),flexGrow:1}}> */}
         <View style={{flexGrow: 1}}>
           <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
-          {showError && <AlertComp text="Username or Password is incorrect" />}
+          {showError && <AlertComp text={errormsg} />}
 
           <Animated.View layout={Layout.duration(1000)}>
             <View style={styles.inputBox}>
@@ -206,7 +210,6 @@ export default function LoginScreen(props) {
             </TouchableOpacity>
           </Animated.View>
         </View>
-        {/* </KeyboardAwareScrollView> */}
       </SafeAreaView>
     </>
   );
@@ -216,8 +219,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
   },
   signinText: {
     color: 'black',
@@ -267,7 +268,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical:hp(2),
     marginTop: hp2(3),
     alignSelf: 'center',
   },
