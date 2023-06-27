@@ -7,6 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
+  Platform,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -38,23 +39,15 @@ export default function WelcomeScreen(props) {
   return (
     <View style={styles.container}>
         <Text style={styles.text}>{'Hi '+user.userData.username}</Text>
-      <View style={styles.imgWrap}>
+      <View style={[styles.imgWrap,{backgroundColor:Platform.OS =='android'&&'white'}]}>
         <Image
-          //source={IMAGES.randomProfile}
-          //source={{uri:user.userData.profile_image}}
           source={user?.userData?.profile_image!==''?{uri:user?.userData?.profile_image}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
       </View>
-      {/* <Text style={[styles.text,{fontSize:rfv(32),textAlign:'center'}]}>Welcome to{'\n'}the La Maison App</Text> */}
       <Text style={[styles.text,{fontSize:rfv(28),textAlign:'center'}]}>Welcome Back</Text>
-      <View style={{width:wp2(100),height:hp2(8),position:'absolute',bottom:hp2(2),}}>
-        {/* <Image
-          source={IMAGES.lamaisonname}
-          style={{width: '100%', height: '100%'}}
-          resizeMode="contain"
-        /> */}
+      <View style={{width:wp2(100),height:hp2(8),position:'absolute',bottom:hp2(2),elevation:5}}>
         <Text style={{fontSize:rfv(18),alignSelf:'center',color:'gray'}}>LA MAISON APP</Text>
       </View>
     </View>
@@ -75,12 +68,12 @@ const styles = StyleSheet.create({
     borderRadius: wp2(8),
     shadowColor: '#000',
     shadowOffset: {
-      width: 0,
+      width: 2,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation:5
   },
   text:{
     color:'black',

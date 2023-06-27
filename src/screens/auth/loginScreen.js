@@ -177,6 +177,7 @@ export default function LoginScreen(props) {
                 style={styles.inputTxt}
                 placeholder="USERNAME"
                 placeholderTextColor={'grey'}
+                value={stateChange.UserName}
                 onChangeText={val => updateState({UserName: val})}
               />
             </View>
@@ -186,11 +187,15 @@ export default function LoginScreen(props) {
                 placeholder="PASSWORD"
                 secureTextEntry={true}
                 placeholderTextColor={'grey'}
+                value={stateChange.Password}
                 onChangeText={val => updateState({Password: val})}
               />
             </View>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('resetPassScreen')}>
+              onPress={() => {
+                props.navigation.navigate('resetPassScreen'),
+                updateState({UserName:''}),
+                updateState({Password:''})}}>
               <Text style={styles.forgetText}>
                 Forgotten your Username/Password?
               </Text>
@@ -199,12 +204,17 @@ export default function LoginScreen(props) {
               <Text style={styles.buttonText}>SIGN IN</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => props.navigation.navigate('signupScreen')}
+              onPress={() => {props.navigation.navigate('signupScreen'),
+              updateState({UserName:''}),
+              updateState({Password:''})}}
               style={[styles.button, {width: wp2(48), marginTop: hp2(10)}]}>
               <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => registerGuest()}
+              onPress={() => {registerGuest(),
+                updateState({UserName:''}),
+                updateState({Password:''})}
+              }
               style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
               <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
             </TouchableOpacity>
