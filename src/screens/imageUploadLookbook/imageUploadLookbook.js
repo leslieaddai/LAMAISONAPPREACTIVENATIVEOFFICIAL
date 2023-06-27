@@ -116,6 +116,37 @@ export default function ImageUploadLookbook(props) {
   const [perm, setPerm] = useState(false);
   const [styleVisible, setStyleVisible]= useState(false)
 
+
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedShipping(false)
+  };
+  const togglestylebottomsheet = () =>{
+    setStyleVisible(!styleVisible)
+    uistylebottomsheetvisibility(!styleVisible)
+    setIsOpened(false)
+  }
+  const uistylebottomsheetvisibility = Bool =>{
+   setStyleVisible(Bool)
+  }
+   
+  useEffect(()=>{
+    if(isOpened){
+      uistylebottomsheetvisibility(true)
+    }
+  },[isOpened])
+
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+
+  useEffect(()=>{            
+    if(isOpenedShipping){
+      setModalData(props?.route?.params?.shippingData)
+      uibottomesheetvisiblity(true)
+    }
+  },[isOpenedShipping])
   useEffect(() => {
     //setLoading(true);
 
@@ -429,36 +460,7 @@ export default function ImageUploadLookbook(props) {
       });
   };
 
-  const toggleBottomNavigationView = () => {
-    setVisible(!visible);
-    uibottomesheetvisiblity(!visible);
-    setIsOpenedShipping(false)
-  };
-  const togglestylebottomsheet = () =>{
-    setStyleVisible(!styleVisible)
-    uistylebottomsheetvisibility(!styleVisible)
-    setIsOpened(false)
-  }
-  const uistylebottomsheetvisibility = Bool =>{
-   setStyleVisible(Bool)
-  }
-   
-  useEffect(()=>{
-    if(isOpened){
-      uistylebottomsheetvisibility(true)
-    }
-  },[isOpened])
 
-  const uibottomesheetvisiblity = Bool => {
-    setVisible(Bool);
-  };
-
-  useEffect(()=>{            
-    if(isOpenedShipping){
-      setModalData(props?.route?.params?.shippingData)
-      uibottomesheetvisiblity(true)
-    }
-  },[isOpenedShipping])
 
   return (
     <>
