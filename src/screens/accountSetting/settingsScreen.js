@@ -204,7 +204,7 @@ useEffect(()=>{
               {settingOptions('PROFILE', '', 'editProfile')}
               {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
               {settingOptions('IMAGE/PRODUCT UPLOAD', '', 'destinationScreen')}
-              {settingOptions('INVENTORY', 'red', 'inventory')}
+              {settingOptions('INVENTORY', '', 'inventory')}
               {settingOptions('STANDARD SHIPPING', '', 'shippingLocation')}
               {settingOptions('ANALYTICS', '', 'analyticsScreen')}
               {settingOptions('ALL ORDERS', 'blue', 'orderTrackingScreen')}

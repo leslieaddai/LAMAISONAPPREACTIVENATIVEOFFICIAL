@@ -68,9 +68,15 @@ export default function SelectSizes(props) {
 
   const options = text => {
     return (
-      <View style={styles.optionWrap}>
+      <TouchableOpacity style={styles.optionWrap}
+      disabled={text?.quantity < 1 ? true : false}
+          onPress={() => {
+            props?.route?.params?.state?.setSizeId(text);
+            props?.navigation.goBack();
+          }}
+      >
         <Text style={{color: 'black'}}>{text?.size?.size}</Text>
-        <Text style={styles.quantityTxt}>{text?.quantity + ' remaining!'}</Text>
+        <Text style={[styles.quantityTxt,{color:text.quantity<5?'#E81717':'black'}]}>{text?.quantity + ' remaining!'}</Text>
 
         <TouchableOpacity
         disabled={text?.quantity < 1 ? true : false}
@@ -87,7 +93,7 @@ export default function SelectSizes(props) {
                   : '#D9D9D9',
             },
           ]}></TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     );
   };
   return (
@@ -162,7 +168,7 @@ const styles = StyleSheet.create({
     //backgroundColor:'#D9D9D9',
     borderRadius: 100,
   },
-  quantityTxt: {color: '#E81717', position: 'absolute', left: wp2(28)},
+  quantityTxt: { position: 'absolute', left: wp2(28)},
   titleTxt: {
     marginVertical: hp2(1),
     alignSelf: 'center',

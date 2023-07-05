@@ -36,16 +36,13 @@
 <string>6305325462877732</string>
 <key>FacebookDisplayName</key>
 <string>Lamaison</string>
-<!-- <key>LSApplicationQueriesSchemes</key>
+<key>LSApplicationQueriesSchemes</key>
 <array>
   <string>fbapi</string>
   <string>fb-messenger-share-api</string>
   <string>fbauth2</string>
   <string>fbshareextension</string>
-</array> -->
-			</array>
-		</dict>
-	</array>
+</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
