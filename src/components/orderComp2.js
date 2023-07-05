@@ -38,7 +38,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
-export default function OrderComp(props) {
+export default function OrderComp2(props) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -57,10 +57,9 @@ export default function OrderComp(props) {
       </View>
       <View style={{marginLeft: wp2(3)}}>
         <Text style={{color: '#065521', fontWeight: '600', fontSize: rfv(14)}}>
-          {props?.data?.status?.status}
+          Delivered
         </Text>
         <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
-        <Text style={{color: 'black'}}>{props?.data?.product?.user?.name}</Text>
       </View>
     </View>
   );

@@ -34,7 +34,7 @@ import {
 import AlertComp from '../../components/alertComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
-import {successMessage} from '../../config/NotificationMessage';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {LoginUrl, RegisterGuest} from '../../config/Urls';
@@ -82,7 +82,9 @@ export default function LoginScreen(props) {
           console.log('login response', res.data.user.basket_count);
           setLoading(false);
           if (res.data.user.email_verified === false) {
-            setError('Please verify your email');
+            //setError('Please verify your email');
+            props.navigation.navigate('verifyAccountScreen');
+            errorMessage('Please verify your email');
           } else {
             successMessage('Login Successfully');
             dispatch({

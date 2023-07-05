@@ -114,10 +114,11 @@ const CreateAccountScreen = props => {
                     .then(async function (res) {
                       console.log(res.data);
                       setLoading(false);
-                      props.navigation.navigate('loginScreen');
+                      //props.navigation.navigate('loginScreen');
+                      props.navigation.navigate('verifyAccountScreen');
                       //props.navigation.replace('loginScreen')
                       successMessage(
-                        'Account verification link is sent to your email. Please check.',
+                        'Account verification code is sent to your email. Please check.',
                       );
                     })
                     .catch(function (error) {
