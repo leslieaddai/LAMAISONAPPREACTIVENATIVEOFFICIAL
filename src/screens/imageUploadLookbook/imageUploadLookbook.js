@@ -902,7 +902,7 @@ export default function ImageUploadLookbook(props) {
                     }}
                      key={index}
                      style={styles.bottomitemWrap}>
-                     <Text style={styles.bottomitemTxtitemTxt}>{item?.shipping?.name}</Text>
+                     <Text style={styles.bottomitemTxt}>{item?.shipping?.name}</Text>
                      <Icons.AntDesign
                        name={
                          regions.some(e => e.regionId === item?.shipping_id)
@@ -942,7 +942,7 @@ export default function ImageUploadLookbook(props) {
                     }}
                     key={index}
                     style={styles.bottomitemWrap}>
-                    <Text style={styles.bottomitemTxtitemTxt}>{item.name}</Text>
+                    <Text style={styles.bottomitemTxt}>{item.name}</Text>
                   </TouchableOpacity>
                 ))}
         </View>

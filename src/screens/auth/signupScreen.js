@@ -17,7 +17,7 @@ import auth from '@react-native-firebase/auth';
 import {errorMessage} from '../../config/NotificationMessage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-// import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import { LoginManager, AccessToken ,Settings} from 'react-native-fbsdk-next';
 
 export default function SignupScreen(props) {
   const [firstName, setFirstName] = useState('');
@@ -25,12 +25,16 @@ export default function SignupScreen(props) {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
+    Settings.setAppID('6305325462877732')
     GoogleSignin.configure({
       scopes: ['email'],
       webClientId:
         '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
+        iosClientId:
+        '74975728118-k752rb5vodjvsfrk6bo0p0evvvg2ae6u.apps.googleusercontent.com',
       offlineAccess: true,
     });
+    
     setFirstName('');
     setLastName('');
     setEmail('');
@@ -49,7 +53,7 @@ export default function SignupScreen(props) {
 
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
-
+    console.log("result", result)
     if (!data) {
       throw 'Something went wrong obtaining access token';
     }
@@ -73,7 +77,7 @@ export default function SignupScreen(props) {
       // Get the users ID token
       const data = await GoogleSignin.signIn();
 
-      // console.log("data",data)
+      console.log("data",data)
 
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
@@ -186,7 +190,7 @@ export default function SignupScreen(props) {
       <TouchableOpacity
         onPress={() =>
           onGoogleButtonPress().then(res =>
-            console.log('Signed in with Google!'),
+            console.log('Signed in with Google!',res),
           )
         }
         style={styles.button2}>
@@ -199,7 +203,7 @@ export default function SignupScreen(props) {
         <Text style={styles.button2Text}>continue with Google</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        // onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
+        onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
         style={styles.button2}>
         <ICONS.AntDesign
           name="facebook-square"

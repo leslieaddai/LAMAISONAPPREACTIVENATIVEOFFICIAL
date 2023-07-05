@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">La Maison</string>
-    <string name="facebook_app_id">896414718100665</string>
+    <string name="facebook_app_id">6305325462877732</string>
+    <string name="facebook_client_token">559c13747c52b12d7f8da754fab85bd1</string>
 </resources>

@@ -131,7 +131,6 @@ export default function HomeScreen(props) {
   //        </View>
   //     )
   // }
-
   const brandComp = nav => {
     return (
       <View style={{marginVertical: hp2(2)}}>

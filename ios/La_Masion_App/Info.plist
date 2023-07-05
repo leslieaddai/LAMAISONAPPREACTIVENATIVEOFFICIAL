@@ -20,6 +20,29 @@
 	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.74975728118-k752rb5vodjvsfrk6bo0p0evvvg2ae6u</string>
+				 <string>fb6305325462877732</string>
+			</array>
+		</dict>
+	</array>
+<key>FacebookAppID</key>
+<string>6305325462877732</string>
+<key>FacebookDisplayName</key>
+<string>Lamaison</string>
+<!-- <key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>fbapi</string>
+  <string>fb-messenger-share-api</string>
+  <string>fbauth2</string>
+  <string>fbshareextension</string>
+</array> -->
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -35,18 +58,16 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>La Maison would like to use your camera</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
-	<!-- <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>This app wants to access your location</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>This app wants to access your location</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>This app wants to access your location</string> -->
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>YOUR TEXT</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app wants to see your photos to test the CameraRollManager</string>
-	 <key>NSPhotoLibraryAddUsageDescription</key>
-  <string>YOUR TEXT</string>
+	<string>La Maison would like access to your photo gallery</string>
+	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
+	<true/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -66,14 +87,6 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
-
-	<key>NSPhotoLibraryUsageDescription</key>
-    <string>La Maison would like access to your photo gallery</string>
-    <key>NSCameraUsageDescription</key>
-    <string>La Maison would like to use your camera</string>
-	<key>PHPhotoLibraryPreventAutomaticLimitedAccessAlert</key>
-    <true/>
-
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
