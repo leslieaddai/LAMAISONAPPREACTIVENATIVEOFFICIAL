@@ -160,7 +160,7 @@ export default function FTS100(props) {
           setLoadingFts(false);
         })
         .catch(function (error) {
-          console.log(error.response.data);
+          console.log(error.response.status);
           setLoadingFts(false);
           //errorMessage('Something went wrong!');
           errorMessage(errorHandler(error))
@@ -187,7 +187,7 @@ export default function FTS100(props) {
                     <>
                       <Category
                         data={{item}}
-                        state={{selected, setSelected, onSelectStyle}}
+                        state={{selected, setSelected, onSelectStyle,loadingFts}}
                       />
                     </>
                   );
@@ -238,7 +238,9 @@ export default function FTS100(props) {
             </View>
           ) : (
             <>
-              {dataFts?.map((item, index) => {
+              {dataFts?.length!==0?(
+                <>
+                {dataFts?.map((item, index) => {
                 //console.log("item=======>",item);
                 return (
                   <>
@@ -246,6 +248,10 @@ export default function FTS100(props) {
                   </>
                 );
               })}
+                </>
+              ):(
+                <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>FTS Not Available</Text></View>
+              )}
             </>
           )}
         </ScrollView>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -34,27 +35,282 @@ import {
 import BottomComp from '../../components/bottomComp';
 import LineComp from '../../components/lineComp';
 import OrderComp from '../../components/orderComp';
+import OrderComp2 from '../../components/orderComp2';
+
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import {errorHandler} from '../../config/helperFunction';
+import {GetBrandOrders,GetOrdersByEditorAndGuest} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../Redux/types';
+import {SkypeIndicator} from 'react-native-indicators';
+import moment from 'moment';
 
 export default function OrderTrackingScreen(props) {
+
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData);
+  const guestUser = useSelector(state => state.guestData);
+
+  const [page, setPage] = useState();
+  const [pageNo, setPageNo] = useState();
+
+  const [uniqDates, setUniqDates] = useState([]);
+  const [filterDates, setFilterDates] = useState([]);
+
+  useEffect(() => {
+    user?.token!==null && user?.userData?.role?.[0]?.id === 3 && getOrdersByBrand('1');
+    user?.token!==null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
+    user?.token===null && getOrdersByGuest('1');
+  }, []);
+
+  const getOrdersByBrand = page_no => {
+    setLoading(true);
+
+    axios
+      .get(GetBrandOrders + page_no , {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res?.data);
+        setData(prev => [...prev, ...res?.data?.data]);
+
+        // setUniqDates(prev => [...prev,
+        //   ...res?.data?.data
+        //     .filter(
+        //       (v, i, a) =>
+        //         a.findIndex(
+        //           v2 =>
+        //             moment(v2?.created_at).format('MM/YY') ===
+        //             moment(v?.created_at).format('MM/YY'),
+        //         ) === i,
+        //     )
+        //     .map((item, index) => moment(item?.created_at).format('MM/YY')),
+        //   ]);
+
+        tempArr = res?.data?.data
+            .filter(
+              (v, i, a) =>
+                a.findIndex(
+                  v2 =>
+                    moment(v2?.created_at).format('MM/YY') ===
+                    moment(v?.created_at).format('MM/YY'),
+                ) === i,
+            )
+            .map((item, index) => moment(item?.created_at).format('MM/YY')),
+
+          //console.log(filterDates?.includes(tempArr[0]))
+          !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
+
+          //setFilterDates([...new Set(uniqDates)])
+          //uniq = [...new Set(uniqDates)];
+          //setFilterDates(uniq);
+          console.log(filterDates);
+
+        setPage(res?.data?.next_page_url);
+        setPageNo(res?.data?.current_page);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  };
+
+  const getOrdersByEditor = page_no => {
+    setLoading(true);
+
+    axios
+      .get(GetOrdersByEditorAndGuest + `editor/${user?.userData?.id}?page=${page_no}`)
+      .then(async function (res) {
+        console.log(res?.data);
+        setData(prev => [...prev, ...res?.data?.data]);
+        
+        tempArr = res?.data?.data
+        .filter(
+          (v, i, a) =>
+            a.findIndex(
+              v2 =>
+                moment(v2?.created_at).format('MM/YY') ===
+                moment(v?.created_at).format('MM/YY'),
+            ) === i,
+        )
+        .map((item, index) => moment(item?.created_at).format('MM/YY')),
+
+      !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
+      console.log(filterDates);
+
+        setPage(res?.data?.next_page_url);
+        setPageNo(res?.data?.current_page);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  };
+
+  const getOrdersByGuest = page_no => {
+    setLoading(true);
+
+    axios
+      .get(GetBrandOrders + `guest/${guestUser?.device_id}?page=${page_no}`)
+      .then(async function (res) {
+        console.log(res?.data);
+        setData(prev => [...prev, ...res?.data?.data]);
+
+        tempArr = res?.data?.data
+        .filter(
+          (v, i, a) =>
+            a.findIndex(
+              v2 =>
+                moment(v2?.created_at).format('MM/YY') ===
+                moment(v?.created_at).format('MM/YY'),
+            ) === i,
+        )
+        .map((item, index) => moment(item?.created_at).format('MM/YY')),
+        
+      !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
+      console.log(filterDates);
+
+        setPage(res?.data?.next_page_url);
+        setPageNo(res?.data?.current_page);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  };
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.orderText}>Order Tracking</Text>
-        <ScrollView contentContainerStyle={{paddingBottom: hp2(12)}}>
-          <LineComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <LineComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-          <OrderComp />
-        </ScrollView>
+
+        {loading && data?.length === 0 && (
+          <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: hp2(6),
+          }}>
+          <SkypeIndicator color={'black'} />
+        </View>
+        )}
+
+       {user?.token!== null && user?.userData?.role?.[0]?.id===3 ? (
+
+          <FlatList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingVertical: hp2(2)}}
+          data={filterDates}
+          onEndReached={() =>
+            !loading && page !== null && getOrdersByBrand(String(pageNo + 1))
+          }
+          onEndReachedThreshold={0.1}
+          renderItem={({item,index}) => {
+           return(
+             <>
+             <LineComp date={item} key={index} />
+ 
+             {data?.map((item2,index2)=>{
+               if(moment(item2?.created_at).format('MM/YY') === item){
+                 return(
+                   <>
+                   {item2?.order?.[0]?.vendor_order_details?.map((item3,index3)=>{
+                     return(
+                       <OrderComp2 data={item3} key={index3} />
+                     )
+                   })}
+                   </>
+                 )
+               }
+             })}
+             </>
+           )
+          }}
+        />
+
+       ) : user?.token!== null && user?.userData?.role?.[0]?.id===2 ? (
+      
+         <FlatList
+         showsVerticalScrollIndicator={false}
+         contentContainerStyle={{paddingVertical: hp2(2)}}
+         data={filterDates}
+         onEndReached={() =>
+           !loading && page !== null && getOrdersByEditor(String(pageNo + 1))
+         }
+         onEndReachedThreshold={0.1}
+         renderItem={({item,index}) => {
+           return (
+             <>
+             <LineComp date={item} key={index} />
+
+             {data?.map((item2,index2)=>{
+              if(moment(item2?.created_at).format('MM/YY') === item){
+                return(
+                  <OrderComp data={item2} key={index2} />      
+                )
+              }
+             })}
+             </>
+           );
+         }}
+       />
+
+       ) : (
+
+          <FlatList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingVertical: hp2(2)}}
+          data={filterDates}
+          onEndReached={() =>
+            !loading && page !== null && getOrdersByGuest(String(pageNo + 1))
+          }
+          onEndReachedThreshold={0.1}
+          renderItem={({item,index}) => {
+            return (
+              <>
+              <LineComp date={item} key={index} />
+  
+              {data?.map((item2,index2)=>{
+                if(moment(item2?.created_at).format('MM/YY') === item){
+                  return(
+                    <OrderComp data={item2} key={index2} />      
+                  )
+                }
+               })}
+              </>
+            );
+          }}
+        />
+       
+       )}
+
+{!loading && data?.length === 0 && (
+          <View style={{alignItems:'center',flex:1}}><Text>Orders Not Available</Text></View>
+        )}
+
+          {loading && data?.length !== 0 && (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: hp2(3),
+              }}>
+              <SkypeIndicator size={26} color={'black'} />
+            </View>
+          )}
+        
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>

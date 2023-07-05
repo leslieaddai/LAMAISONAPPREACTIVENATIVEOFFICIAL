@@ -43,6 +43,9 @@
   <string>fbauth2</string>
   <string>fbshareextension</string>
 </array> -->
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>

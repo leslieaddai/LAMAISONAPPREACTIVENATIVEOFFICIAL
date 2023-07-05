@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     borderBottomColor: 'black',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: hp2(2),
+    paddingVertical: hp2(1.5),
   },
   circle: {
     width: wp2(6),

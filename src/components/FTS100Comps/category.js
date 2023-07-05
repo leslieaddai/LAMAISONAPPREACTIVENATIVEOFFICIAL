@@ -36,6 +36,7 @@ export default function Category(props) {
 
   return (
     <TouchableOpacity
+    disabled={props?.state?.loadingFts}
       onPress={() => {
         //props?.state?.setSelected(props?.data?.item?.name)
         //props?.state?.setSelected(prev => (prev===props?.data?.item?.name?'':props?.data?.item?.name));

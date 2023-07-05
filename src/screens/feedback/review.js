@@ -113,7 +113,8 @@ export default function Review(props) {
       ) : (
         <>
           {data?.length!==0? 
-          uniqDates?.map((item,index)=>{
+          <ScrollView showsVerticalScrollIndicator={false}>
+            {uniqDates?.map((item,index)=>{
             console.log(uniqDates)
             return(
               <>
@@ -130,7 +131,8 @@ export default function Review(props) {
                   })}
               </>
             )
-          })
+          })}
+          </ScrollView>
           :<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Reviews Not Available</Text></View>}
         </>
       )}

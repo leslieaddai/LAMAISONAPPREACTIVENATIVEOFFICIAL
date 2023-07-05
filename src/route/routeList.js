@@ -62,6 +62,7 @@ import Sizes from "../screens/imageUploadLookbook/sizes";
 
 import SelectColor from "../screens/dressingRoom/color";
 import SelectSizes from "../screens/dressingRoom/size";
+import VerifyAccountScreen from "../screens/auth/verifyAccountScreen";
 
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
 // import { BottomNavigation } from "./BottomNavigator";
@@ -179,6 +180,7 @@ export const guestScreens = [
 
   {name:'selectColor',component:SelectColor},
   {name:'selectSizes',component:SelectSizes},
+  {name:"verifyAccountScreen", component:VerifyAccountScreen},
 ]
 
 export const brandScreens = [

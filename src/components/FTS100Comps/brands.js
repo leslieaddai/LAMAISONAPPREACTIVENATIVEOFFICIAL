@@ -64,7 +64,7 @@ export default function BrandComp(props) {
                 : 'white',
           },
         ]}>
-        <Text style={{color: 'black', fontWeight: '700', fontSize: rfv(22)}}>
+        <Text style={{color: 'black', fontWeight: '700', fontSize: rfv(14)}}>
           {props?.key2 + 1}
         </Text>
         <View style={styles.brandLogo}>

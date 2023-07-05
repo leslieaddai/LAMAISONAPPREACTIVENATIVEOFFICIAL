@@ -65,3 +65,6 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const GetReviews = getApi('reviews/product/');
   export const PostReview = getApi('review/product');
   export const Newsfeed = getApi('news-feed');
+  export const GetBrandOrders = getApi('orders/brands?page=');
+  export const GetOrdersByEditorAndGuest = getApi('orders/');
+  export const VerifyAccount = getApi('verify-account');
