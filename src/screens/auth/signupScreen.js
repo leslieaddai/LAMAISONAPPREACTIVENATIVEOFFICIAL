@@ -68,6 +68,7 @@ export default function SignupScreen(props) {
     // Sign-in the user with the credential
     return auth().signInWithCredential(facebookCredential);
   }
+  
 
   async function onGoogleButtonPress() {
     try {
