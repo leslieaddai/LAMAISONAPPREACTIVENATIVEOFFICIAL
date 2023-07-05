@@ -131,6 +131,23 @@ export default function HomeScreen(props) {
   //        </View>
   //     )
   // }
+const newsfeed = () =>{
+  let config = {
+    method: 'get',
+    maxBodyLength: Infinity,
+    url: 'https://lamaison.clickysoft.net/api/v1/news-feed',
+    headers: { 
+      'Authorization': 'Bearer 831|YHYYF5RFrYJ3TcumBaWoi4qLxEvWo8ATftCPhkvQ',
+    }
+  }
+  axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+}
   const brandComp = nav => {
     return (
       <View style={{marginVertical: hp2(2)}}>
