@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -39,7 +40,7 @@ import SplashScreen from '../splash/splashScreen';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {Popular} from '../../config/Urls';
+import {Popular,Newsfeed} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -48,6 +49,9 @@ export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [popularData, setPopularData] = useState([]);
+  const [feedData, setFeedData] = useState([]);
+  const [page, setPage] = useState();
+  const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
 
   useEffect(() => {
@@ -60,7 +64,8 @@ export default function HomeScreen(props) {
       .then(async function (res) {
         console.log(res?.data);
         setPopularData(res?.data?.data);
-        setLoading(false);
+        user?.token!==''?getNewsfeed('1'):setLoading(false)
+        //setLoading(false);
       })
       .catch(function (error) {
         console.log(error?.response?.data);
@@ -69,6 +74,29 @@ export default function HomeScreen(props) {
         errorMessage(errorHandler(error))
       });
   }, []);
+
+  const getNewsfeed = page_no => {
+    !loading && setLoading(true);
+
+    axios
+      .get(Newsfeed+page_no,{
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res?.data);
+        setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
+        setPage(res?.data?.data?.newsfeed?.next_page_url);
+        setPageNo(res?.data?.data?.newsfeed?.current_page);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error?.response?.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  };
+
 
   //const showSplash = useSelector(state => state.Splash.showSplash)
   //const showWelcome = useSelector(state => state.Splash.showWelcome)
@@ -162,6 +190,55 @@ export default function HomeScreen(props) {
   //        </View>
   //     )
   // }
+
+//   <ScrollView
+// showsVerticalScrollIndicator={false}
+// contentContainerStyle={{paddingBottom: hp2(2)}}>
+// {/* {postComp()} */}
+
+// <Text style={styles.text}>Popular Brands</Text>
+// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+//   {/* {brandComp('brandProfileScreen')} */}
+//   {popularData?.brands?.map((item,index)=>{
+//     return(
+//       <>
+//       {brandComp(item)}
+//       </>
+//     )
+//   })}
+// </ScrollView>
+
+// {/* {productComp()} */}
+
+// <Text style={styles.text}>Popular Pieces</Text>
+// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+//   {/* {brandComp('dressingRoomScreen')} */}
+//   {popularData?.pieces?.map((item,index)=>{
+//     return(
+//       <>
+//       {pieceComp(item)}
+//       </>
+//     )
+//   })}
+// </ScrollView>
+
+// {/* {productComp2()} */}
+
+// <Text style={styles.text}>Popular Colour</Text>
+// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+//   {/* {brandComp('dressingRoomScreen')} */}  
+//   {popularData?.colors?.map((item,index)=>{
+//     return(
+//       <>
+//       {colorComp(item)}
+//       </>
+//     )
+//   })}
+// </ScrollView>
+
+// {/* {productComp2()} */}
+// </ScrollView>
+
 const newsfeed = () =>{
   let config = {
     method: 'get',
@@ -211,7 +288,7 @@ const newsfeed = () =>{
       <View style={{marginVertical: hp2(2)}}>
         <View
           style={[styles.brandImage,{backgroundColor:'lightgray',alignItems:'center',justifyContent:'center',}]}>
-            <Text style={{fontSize:rfv(14)}} >{data?.piece?.piece_name}</Text>
+            <Text style={{fontSize:rfv(14),color:'black'}} >{data?.piece?.piece_name}</Text>
           {/* <Image
             //source={IMAGES.randomPic}
             source={{uri:`https://placehold.jp/000000/300x300.png?text=${data?.piece?.piece_name}`}}
@@ -223,7 +300,7 @@ const newsfeed = () =>{
     );
   };
 
-  const postComp = () => {
+  const postComp = (data) => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -248,7 +325,8 @@ const newsfeed = () =>{
           onPress={() => props.navigation.navigate('imageViewScreen')}
           style={styles.imageContainer}>
           <Image
-            source={IMAGES.randomPic}
+            //source={IMAGES.randomPic}
+            source={{uri:data?.product_images?.[0]?.image?.[0]?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
@@ -257,7 +335,7 @@ const newsfeed = () =>{
     );
   };
 
-  const productComp = () => {
+  const productComp = (data) => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <TouchableOpacity
@@ -273,49 +351,36 @@ const newsfeed = () =>{
           />
         </TouchableOpacity>
 
+        <ICONS.FontAwesome
+            name="retweet"
+            size={24}
+            color={'black'}
+            style={{marginHorizontal: wp2(4)}}
+          />
+          <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+
         <View style={styles.productContainer}>
-          <TouchableOpacity
+          {data?.product_images?.[0]?.image?.map((item,index)=>{
+            return(
+              <TouchableOpacity
+              key={index}
             onPress={() => props.navigation.navigate('imageViewScreen')}
             style={styles.productImageContainer}>
             <Image
-              source={IMAGES.randomPic}
+              //source={IMAGES.randomPic}
+              source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('imageViewScreen')}
-            style={styles.productImageContainer}>
-            <Image
-              source={IMAGES.randomPic}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('imageViewScreen')}
-            style={styles.productImageContainer}>
-            <Image
-              source={IMAGES.randomPic}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('imageViewScreen')}
-            style={styles.productImageContainer}>
-            <Image
-              source={IMAGES.randomPic}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
+            )
+          })}
         </View>
       </View>
     );
   };
 
-  const productComp2 = () => {
+  const productComp2 = (data) => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <TouchableOpacity
@@ -330,6 +395,14 @@ const newsfeed = () =>{
             resizeMode="contain"
           />
         </TouchableOpacity>
+
+        <ICONS.FontAwesome
+            name="retweet"
+            size={24}
+            color={'black'}
+            style={{marginHorizontal: wp2(4)}}
+          />
+          <Text style={{color: 'black'}}>ICEY.B Shared</Text>
 
         <View
           style={{
@@ -337,24 +410,23 @@ const newsfeed = () =>{
             width: wp2(100),
             justifyContent: 'space-between',
           }}>
-          <TouchableOpacity
+
+            {data?.product_images?.[0]?.image?.map((item,index)=>{
+            return(
+              <TouchableOpacity
+              key={index}
             onPress={() => props.navigation.navigate('imageViewScreen')}
             style={styles.productImageContainer2}>
             <Image
-              source={IMAGES.randomPic}
+              //source={IMAGES.randomPic}
+              source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"
             />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('imageViewScreen')}
-            style={styles.productImageContainer2}>
-            <Image
-              source={IMAGES.randomPic}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
+            )
+          })}
+
         </View>
       </View>
     );
@@ -396,6 +468,7 @@ const newsfeed = () =>{
         </TouchableOpacity>
         <View style={styles.line}></View>
         <TouchableOpacity
+        disabled={user?.token!==''?false:true}
           onPress={() => props.navigation.navigate('listViewScreen')}
           style={styles.iconWrap}>
           <Image
@@ -406,7 +479,9 @@ const newsfeed = () =>{
         </TouchableOpacity>
       </View>
 
-      {loading ? (
+      {user?.token!==''?(
+        <>
+        {loading && feedData?.length === 0 && (
         <View
           style={{
             alignItems: 'center',
@@ -415,16 +490,63 @@ const newsfeed = () =>{
           }}>
           <SkypeIndicator color={'black'} />
         </View>
-      ) : (
-        <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp2(12)}}>
-        {/* {postComp()} */}
+      )}
 
-        <Text style={styles.text}>Popular Brands</Text>
+      {!loading && feedData?.length === 0 ? (
+           <ScrollView
+           showsVerticalScrollIndicator={false}
+           contentContainerStyle={{paddingBottom: hp2(2)}}>
+
+           <Text style={styles.text}>Popular Brands</Text>
+           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+             {popularData?.brands?.map((item,index)=>{
+               return(
+                 <>
+                 {brandComp(item)}
+                 </>
+               )
+             })}
+           </ScrollView>
+         
+           <Text style={styles.text}>Popular Pieces</Text>
+           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+             {popularData?.pieces?.map((item,index)=>{
+               return(
+                 <>
+                 {pieceComp(item)}
+                 </>
+               )
+             })}
+           </ScrollView>
+         
+           <Text style={styles.text}>Popular Colour</Text>
+           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+             {popularData?.colors?.map((item,index)=>{
+               return(
+                 <>
+                 {colorComp(item)}
+                 </>
+               )
+             })}
+           </ScrollView>
+          
+         </ScrollView>   
+      ):(
+        <FlatList
+            showsVerticalScrollIndicator={false}
+            data={feedData}
+            onEndReached={() =>
+              !loading && page !== null && getNewsfeed(String(pageNo + 1))
+            }
+            onEndReachedThreshold={0.1}
+            renderItem={({item,index}) => {
+              if(feedData?.length===1){
+                return(
+                  <>
+                {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
+
+                <Text style={styles.text}>Popular Brands</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* {brandComp('brandProfileScreen')} */}
-
           {popularData?.brands?.map((item,index)=>{
             return(
               <>
@@ -434,12 +556,8 @@ const newsfeed = () =>{
           })}
         </ScrollView>
 
-        {/* {productComp()} */}
-
         <Text style={styles.text}>Popular Pieces</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* {brandComp('dressingRoomScreen')} */}
-
           {popularData?.pieces?.map((item,index)=>{
             return(
               <>
@@ -449,12 +567,8 @@ const newsfeed = () =>{
           })}
         </ScrollView>
 
-        {/* {productComp2()} */}
-
         <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {/* {brandComp('dressingRoomScreen')} */}
-
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
           {popularData?.colors?.map((item,index)=>{
             return(
               <>
@@ -463,9 +577,182 @@ const newsfeed = () =>{
             )
           })}
         </ScrollView>
+                </>
+                )
+              }
 
-        {/* {productComp2()} */}
+             else if(feedData?.length===2){
+                return(
+                  <>
+                    {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
+                    {index === 0 && (
+                      <>
+                              <Text style={styles.text}>Popular Brands</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.brands?.map((item,index)=>{
+            return(
+              <>
+              {brandComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+                      </>
+                    )}
+                     {index === 1 && (
+                      <>
+                       <Text style={styles.text}>Popular Pieces</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.pieces?.map((item,index)=>{
+            return(
+              <>
+              {pieceComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+
+        <Text style={styles.text}>Popular Colour</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
+          {popularData?.colors?.map((item,index)=>{
+            return(
+              <>
+              {colorComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+                      </>
+                    )}        
+                </>
+                 
+                )
+              }
+
+              else if(feedData?.length>=3){
+                return(
+                  <>
+                    {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
+                    {index === 0 && (
+                      <>
+                              <Text style={styles.text}>Popular Brands</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.brands?.map((item,index)=>{
+            return(
+              <>
+              {brandComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+                      </>
+                    )}
+                     {index === 1 && (
+                      <>
+                       <Text style={styles.text}>Popular Pieces</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.pieces?.map((item,index)=>{
+            return(
+              <>
+              {pieceComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+                      </>
+                    )} 
+          {index === 2 && (
+                      <>
+                       <Text style={styles.text}>Popular Colour</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.colors?.map((item,index)=>{
+            return(
+              <>
+              {colorComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+                      </>
+                    )}                       
+                </>
+                 
+                )
+              }
+
+              // return (
+              //   <>
+              //   {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
+              //   </>
+
+              // );
+            }}
+          />
+      )}
+
+       {loading && feedData?.length !== 0 && (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: hp2(3),
+              }}>
+              <SkypeIndicator size={26} color={'black'} />
+            </View>
+          )}
+        </>
+      ):(
+        <>
+        {loading ? (
+           <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: hp2(6),
+          }}>
+          <SkypeIndicator color={'black'} />
+        </View>
+        ) : (
+                  <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{paddingBottom: hp2(2)}}>
+
+        <Text style={styles.text}>Popular Brands</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.brands?.map((item,index)=>{
+            return(
+              <>
+              {brandComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+
+        <Text style={styles.text}>Popular Pieces</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.pieces?.map((item,index)=>{
+            return(
+              <>
+              {pieceComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+          
+        <Text style={styles.text}>Popular Colour</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {popularData?.colors?.map((item,index)=>{
+            return(
+              <>
+              {colorComp(item)}
+              </>
+            )
+          })}
+        </ScrollView>
+        
       </ScrollView>
+        )}
+        </>
       )}
 
       {/* <BottomComp /> */}
