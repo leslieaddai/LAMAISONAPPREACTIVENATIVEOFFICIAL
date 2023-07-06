@@ -609,27 +609,30 @@ export default function DressingRoomScreen(props) {
             setData(res?.data?.data);
 
             if (user?.token !== '') {
-              axios
-                .get(
-                  `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
-                )
-                .then(async function (res) {
-                  //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
-                  //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
-                  setShare(res?.data?.data?.is_shared > 0 ? true : null);
+              // axios
+              //   .get(
+              //     `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
+              //   )
+              //   .then(async function (res) {
+              //     //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+              //     //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
+              //     setShare(res?.data?.data?.is_shared > 0 ? true : null);
 
+              //     setLoading(false);
+              //     successMessage('Success');
+              //   })
+              //   .catch(function (e) {
+              //     console.log(e.response.data);
+
+              //     setLoading(false);
+              //     // errorMessage(
+              //     //   'Something went wrong to update state of shares!',
+              //     // );
+              //     errorMessage(errorHandler(error))
+              //   });
+                  setShare(share===null?true:null);
                   setLoading(false);
                   successMessage('Success');
-                })
-                .catch(function (e) {
-                  console.log(e.response.data);
-
-                  setLoading(false);
-                  // errorMessage(
-                  //   'Something went wrong to update state of shares!',
-                  // );
-                  errorMessage(errorHandler(error))
-                });
             } else {
               setLoading(false);
               successMessage('Success');
@@ -788,6 +791,7 @@ export default function DressingRoomScreen(props) {
                   {data?.product_wishlist_count}
                 </Text>
                 <TouchableOpacity
+                disabled={loading}
                   onPress={() => {
                     user?.token !== ''
                       ? productShare()

@@ -33,6 +33,16 @@ import {
 } from '../../theme';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import {errorHandler} from '../../config/helperFunction';
+import {ChangePassword} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../Redux/types';
+import {SkypeIndicator} from 'react-native-indicators';
+
+import LoaderComp from '../../components/loaderComp';
+
 export default function PasswordChange(props) {
     // const textBox = (placeText,onChangeText) => {
     //     return(
@@ -53,7 +63,65 @@ export default function PasswordChange(props) {
       Newpassword,
       ReEnterpassword,
     } = stateChange;
+
+    const user = useSelector(state => state.userData);
+    const dispatch = useDispatch();
+
+    const [loading, setLoading] = useState(false);
+
+    const onChangePassword = () => {
+      if (stateChange?.currentPassword !== '' && stateChange?.Newpassword !== '' && stateChange?.ReEnterpassword !== '') {
+        if (stateChange?.Newpassword.length >= 8) {
+          if (numeric.test(stateChange?.Newpassword)) {
+            if (special.test(stateChange?.Newpassword.match(special))) {
+              if (stateChange?.Newpassword === stateChange?.ReEnterpassword) {
+                setLoading(true);
+  
+                let obj = {
+                  curr_password: stateChange?.currentPassword,
+                  password: stateChange?.Newpassword,
+                  password_confirmation: stateChange?.ReEnterpassword,
+                };
+  
+                axios
+                  .post(ChangePassword, obj,{
+                    headers: {Authorization: `Bearer ${user?.token}`},
+                  })
+                  .then(async function (res) {
+                    console.log(res?.data);
+  
+                    setLoading(false);
+                    props?.navigation?.goBack();
+                    successMessage('Password Changed Successfully!');
+                  })
+                  .catch(function (error) {
+                    console.log(error?.response?.data);
+                    setLoading(false);
+                    errorMessage(errorHandler(error))
+                  });
+              } else {
+                errorMessage('Password does not match');
+              }
+            } else {
+              errorMessage('Password must include at least 1 special character');
+            }
+          } else {
+            errorMessage('Password must include at least 1 Numerical character');
+          }
+        } else {
+          errorMessage('Password must be at least 8 characters');
+        }
+      } else {
+        errorMessage('Please fill all fields');
+      }
+    };
+
   return (
+    <>
+    <View style={{position: 'absolute', zIndex: 999}}>
+        {loading && <LoaderComp />}
+      </View>
+
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -75,6 +143,8 @@ export default function PasswordChange(props) {
               placeholder={'ENTER CURRENT PASSWORD'}
               placeholderTextColor={'grey'}
               onChangeText={(e)=>{updateState({currentPassword:e})}}
+              value={stateChange?.currentPassword}
+              secureTextEntry={true}
             />
             
           </View>
@@ -90,6 +160,8 @@ export default function PasswordChange(props) {
               placeholder={'ENTER NEW PASSWORD'}
               placeholderTextColor={'grey'}
               onChangeText={(e)=>{updateState({Newpassword:e})}}
+              value={stateChange?.Newpassword}
+              secureTextEntry={true}
             />
             
           </View>
@@ -105,10 +177,13 @@ export default function PasswordChange(props) {
               placeholder={'RE-ENTER NEW PASSWORD'}
               placeholderTextColor={'grey'}
               onChangeText={(e)=>{updateState({ReEnterpassword:e})}}
+              value={stateChange?.ReEnterpassword}
+              secureTextEntry={true}
             />
             
           </View>
         <TouchableOpacity
+        onPress={onChangePassword}
           style={styles.button}>
           <Text style={styles.buttonText}>RESET PASSWORD</Text>
         </TouchableOpacity>
@@ -124,6 +199,8 @@ export default function PasswordChange(props) {
         </View>
       </KeyboardAwareScrollView>
     </SafeAreaView>
+
+    </>
   );
 }
 

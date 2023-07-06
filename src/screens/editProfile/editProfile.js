@@ -167,6 +167,8 @@ axios.request(config)
       
           {name == 'ABOUT' ? (
             <ICONS.MaterialIcons name="edit" size={24} color="black" />
+          ) : name == 'PASSWORD' ? (
+            <Text style={{color: 'black'}}>************</Text>
           ) : (
             <Text style={{color: 'black'}}>XXXXXXXXXX</Text>
           )}

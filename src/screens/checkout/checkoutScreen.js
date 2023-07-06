@@ -49,6 +49,7 @@ import {
   GetCountries,
   CreateGuestOrder,
   CreateEditorOrder,
+  ShippingAvailability,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
@@ -114,8 +115,8 @@ export default function CheckoutScreen(props) {
             address_1: res?.data?.data?.address_1,
             address_2: res?.data?.data?.address_2,
             city: res?.data?.data?.city,
-            country: res?.data?.data?.country?.country_id,
-            region: res?.data?.data?.region?.id,
+            country: res?.data?.data?.country!==null?res?.data?.data?.country?.country_id:null,
+            region: res?.data?.data?.region!==null?res?.data?.data?.region?.id:null,
             postcode: res?.data?.data?.postcode,
             email:null,
             name:null,
@@ -227,7 +228,22 @@ export default function CheckoutScreen(props) {
   const onContinue = () => {
 
   if( (stateChange.address_1 !== '' && stateChange.address_1 !== null) && (stateChange.city !== '' && stateChange.city !== null) && (stateChange.region!== '' && stateChange.region!== null) && (stateChange.country !== '' && stateChange.country !== null) && (stateChange.postcode !== '' && stateChange.postcode !== null)){
-    setContinueButton('confirm')
+    //setContinueButton('confirm')
+    let obj = {
+      region:stateChange?.region,
+      product_id:user?.token!==''?props?.route?.params?.data?.map((item,index)=>{return(item?.product_id)}):products?.map((item,index)=>{return(item?.data?.id)}),
+    }
+    axios
+    .post(ShippingAvailability,obj)
+    .then(async function(res){
+      console.log(res?.data)
+      setContinueButton('confirm')
+    })
+    .catch(function (error) {
+      console.log(error?.response?.data)
+      //errorMessage(errorHandler(error))
+      errorMessage(error?.response?.data?.message)
+    })
   }else{
     errorMessage('Please fill all fields!')
   }

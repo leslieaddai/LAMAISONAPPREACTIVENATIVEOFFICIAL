@@ -41,7 +41,7 @@ regions
       <View style={styles.container}>
         <ScrollView style={[styles.container,{height: '35%',marginBottom:hp(2)}]}>
         <View style={[styles.styleBox]}>
-                 {Data?.Data.map((item, index) => ( 
+                 {Data?.Data?.map((item, index) => ( 
                      <TouchableOpacity
                      onPress={() => {
                         changebottomsheetvisibility(false,item)
@@ -51,13 +51,13 @@ regions
                      <Text style={styles.itemTxt}>{item?.name}</Text>
                      <icons.AntDesign
                        name={
-                         regions.some(e => e.regionId === item?.shipping_id)
+                         regions?.some(e => e?.regionId === item?.shipping_id)
                            ? 'checkcircle'
                            : 'checkcircleo'
                        }
                        size={24}
                        color={
-                         regions.some(e => e.regionId === item?.shipping_id)
+                         regions?.some(e => e?.regionId === item?.shipping_id)
                            ? 'black'
                            : 'lightgray'
                        }

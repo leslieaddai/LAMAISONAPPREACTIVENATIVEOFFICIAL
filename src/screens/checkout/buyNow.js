@@ -51,6 +51,7 @@ import {
   CreateEditorOrder,
   BuyNowOrderEditor,
   BuyNowOrderGuest,
+  ShippingAvailability,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
@@ -97,6 +98,9 @@ export default function BuyNow(props) {
   const [total, setTotal] = useState(0);
   const [commission, setCommission] = useState(15);
 
+  //console.log(props?.route?.params?.data?.id)
+  //console.log(stateChange?.region)
+
   useEffect(() => {
     getAllRegions();
   }, []);
@@ -115,8 +119,8 @@ export default function BuyNow(props) {
             address_1: res?.data?.data?.address_1,
             address_2: res?.data?.data?.address_2,
             city: res?.data?.data?.city,
-            country: res?.data?.data?.country?.country_id,
-            region: res?.data?.data?.region?.id,
+            country: res?.data?.data?.country!==null?res?.data?.data?.country?.country_id:null,
+            region: res?.data?.data?.region!==null?res?.data?.data?.region?.id:null,
             postcode: res?.data?.data?.postcode,
             email:null,
             name:null,
@@ -212,7 +216,18 @@ export default function BuyNow(props) {
   const onContinue = () => {
 
   if( (stateChange.address_1 !== '' && stateChange.address_1 !== null) && (stateChange.city !== '' && stateChange.city !== null) && (stateChange.region!== '' && stateChange.region!== null) && (stateChange.country !== '' && stateChange.country !== null) && (stateChange.postcode !== '' && stateChange.postcode !== null)){
-    setContinueButton('confirm')
+    //setContinueButton('confirm')
+    axios
+    .post(ShippingAvailability,{region:stateChange?.region,product_id:[props?.route?.params?.data?.id]})
+    .then(async function(res){
+      console.log(res?.data)
+      setContinueButton('confirm')
+    })
+    .catch(function (error) {
+      console.log(error?.response?.data)
+      //errorMessage(errorHandler(error))
+      errorMessage(error?.response?.data?.message)
+    })
   }else{
     errorMessage('Please fill all fields!')
   }

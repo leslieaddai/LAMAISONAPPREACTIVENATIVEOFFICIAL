@@ -31,17 +31,48 @@ import {
   getFont,
   FONTS,
 } from '../../theme';
+
 import BottomComp from '../../components/bottomComp';
-import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
 import WelcomeScreen from '../welcome/welcomeScreen';
 import SplashScreen from '../splash/splashScreen';
 
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import {errorHandler} from '../../config/helperFunction';
+import {Popular} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../Redux/types';
+import {SkypeIndicator} from 'react-native-indicators';
+
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [popularData, setPopularData] = useState([]);
+  const user = useSelector(state => state.userData);
+
+  useEffect(() => {
+    setLoading(true);
+
+    axios
+      .get(Popular, {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res?.data);
+        setPopularData(res?.data?.data);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error?.response?.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  }, []);
+
   //const showSplash = useSelector(state => state.Splash.showSplash)
   //const showWelcome = useSelector(state => state.Splash.showWelcome)
-  const user = useSelector(state => state.userData);
+
   //const [showSplash,setShowSplash]=useState(true);
   //const [showWelcome,setShowWelcome]=useState(true);
   //const splashState = useSelector(state => state.Splash)
@@ -148,18 +179,46 @@ const newsfeed = () =>{
   console.log(error);
 });
 }
-  const brandComp = nav => {
+  const brandComp = data => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate(nav)}
+          onPress={() => props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:data?.user_id}}})}
           style={styles.brandImage}>
           <Image
-            source={IMAGES.randomPic}
+            //source={IMAGES.randomPic}
+            source={{uri:data?.brand?.profile_image?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
         </TouchableOpacity>
+      </View>
+    );
+  };
+
+  const colorComp = data => {
+    return (
+      <View style={{marginVertical: hp2(2)}}>
+        <View
+          style={[styles.brandImage,{backgroundColor:data?.color?.color_code}]}>
+        </View>
+      </View>
+    );
+  };
+
+  const pieceComp = data => {
+    return (
+      <View style={{marginVertical: hp2(2)}}>
+        <View
+          style={[styles.brandImage,{backgroundColor:'lightgray',alignItems:'center',justifyContent:'center',}]}>
+            <Text style={{fontSize:rfv(14)}} >{data?.piece?.piece_name}</Text>
+          {/* <Image
+            //source={IMAGES.randomPic}
+            source={{uri:`https://placehold.jp/000000/300x300.png?text=${data?.piece?.piece_name}`}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          /> */}
+        </View>
       </View>
     );
   };
@@ -347,44 +406,67 @@ const newsfeed = () =>{
         </TouchableOpacity>
       </View>
 
-      <ScrollView
+      {loading ? (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: hp2(6),
+          }}>
+          <SkypeIndicator color={'black'} />
+        </View>
+      ) : (
+        <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{paddingBottom: hp2(12)}}>
-        {postComp()}
+        {/* {postComp()} */}
 
         <Text style={styles.text}>Popular Brands</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {brandComp('brandProfileScreen')}
-          {brandComp('brandProfileScreen')}
-          {brandComp('brandProfileScreen')}
-          {brandComp('brandProfileScreen')}
-          {brandComp('brandProfileScreen')}
+          {/* {brandComp('brandProfileScreen')} */}
+
+          {popularData?.brands?.map((item,index)=>{
+            return(
+              <>
+              {brandComp(item)}
+              </>
+            )
+          })}
         </ScrollView>
 
-        {productComp()}
+        {/* {productComp()} */}
 
         <Text style={styles.text}>Popular Pieces</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
+          {/* {brandComp('dressingRoomScreen')} */}
+
+          {popularData?.pieces?.map((item,index)=>{
+            return(
+              <>
+              {pieceComp(item)}
+              </>
+            )
+          })}
         </ScrollView>
 
-        {productComp2()}
+        {/* {productComp2()} */}
 
         <Text style={styles.text}>Popular Colour</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
-          {brandComp('dressingRoomScreen')}
+          {/* {brandComp('dressingRoomScreen')} */}
+
+          {popularData?.colors?.map((item,index)=>{
+            return(
+              <>
+              {colorComp(item)}
+              </>
+            )
+          })}
         </ScrollView>
 
-        {productComp2()}
+        {/* {productComp2()} */}
       </ScrollView>
+      )}
 
       {/* <BottomComp /> */}
     </View>

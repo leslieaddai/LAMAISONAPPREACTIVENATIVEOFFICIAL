@@ -136,7 +136,7 @@ export default function ResetPassScreen(props) {
     if (newPassword !== '' && confirmPassword !== '') {
       if (newPassword.length >= 8) {
         if (numeric.test(newPassword)) {
-          if (special.test(newPassword)) {
+          if (special.test(newPassword.match(special))) {
             if (newPassword === confirmPassword) {
               setLoading(true);
 

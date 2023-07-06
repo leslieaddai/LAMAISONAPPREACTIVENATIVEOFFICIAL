@@ -143,6 +143,7 @@ export default function WardrobeComp(props) {
       <View style={styles.iconWrap}>
         <TouchableOpacity
           //onPress={()=>{heart?setHeart(false):setHeart(true)}}
+          disabled={props?.state?.loadingComp}
           onPress={() => {
             user?.token !== ''
               ? productLikeDislike()
@@ -155,6 +156,7 @@ export default function WardrobeComp(props) {
           />
         </TouchableOpacity>
         <TouchableOpacity
+        disabled={props?.state?.loadingComp}
           //onPress={()=>{share?setShare(false):setShare(true)}}
           onPress={() => {
             user?.token !== ''

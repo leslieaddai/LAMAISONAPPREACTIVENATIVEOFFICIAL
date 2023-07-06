@@ -32,7 +32,7 @@ const BottomSheetView = ({
 
 }) => {
   useEffect(() => {
-    console.log("asd",Data[0].continent_code);
+    console.log("asd",Data?.[0]?.continent_code);
   }, []);
 
   
@@ -57,7 +57,7 @@ const BottomSheetView = ({
               {Data?.map((item, index) => (
                 <TouchableOpacity
                   onPress={() => {
-                    if(Data[0].continent_code != undefined){
+                    if(Data?.[0]?.continent_code != undefined){
                       changebottomsheetCountry(false,item?.name,item?.country_id,)
                     }
                     else{
@@ -68,7 +68,7 @@ const BottomSheetView = ({
                   style={styles.itemWrap}>
                   <Text style={styles.itemTxt}>{item?.name}</Text>
 
-                  {Data[0].continent_code != undefined?
+                  {Data?.[0]?.continent_code != undefined?
                   countryinfo === item?.name && (
                     <icons.Entypo
                       name="check"
