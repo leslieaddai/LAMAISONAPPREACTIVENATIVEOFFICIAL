@@ -220,6 +220,8 @@ export default function BasketScreen(props) {
           }}>
           <SkypeIndicator color={'black'} />
         </View>
+      ) : !loading && data?.length === 0 ? (
+        <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>There are no product added in basket</Text></View>
       ) : (
         <>
               {data?.length!==0 && 
@@ -252,7 +254,7 @@ export default function BasketScreen(props) {
       
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {loading2 ? (
-                    <SkypeIndicator color={'black'} />
+                    <SkypeIndicator size={20} style={{position:'absolute'}} color={'black'} />
                   ) : (
                     <Text
                     style={{
@@ -260,18 +262,19 @@ export default function BasketScreen(props) {
                       textTransform: 'uppercase',
                       fontWeight: '700',
                       fontSize: rfv(20),
-                      marginRight: wp2(4),
+                      //marginRight: wp2(4),
+                      position:'absolute',
                     }}>
                     {data[0]?.qty}
                   </Text>
                   )}
-                  <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(data[0]?.id)} style={styles.button}>
+                  <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(data[0]?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>
                     <ICONS.Entypo name="plus" size={30} color="white" />
                   </TouchableOpacity>
                   <TouchableOpacity disabled={loading2} onPress={()=>onDecreamentEditor(data[0]?.id)}
                     style={[
                       styles.button,
-                      {backgroundColor: 'white', borderColor: 'black'},
+                      {backgroundColor: 'white', borderColor: 'black',},
                     ]}>
                     <ICONS.Entypo name="minus" size={30} color="black" />
                   </TouchableOpacity>
@@ -305,7 +308,7 @@ export default function BasketScreen(props) {
                 paddingBottom: hp2(12),
               }}>
       
-              {products?.length!==0 && 
+              {products?.length!==0 ? 
               <View style={{flexDirection: 'row', alignSelf: 'center'}}>
               <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen',{item:products[0]?.data?.product_images})} style={styles.imageWrap}>
                 <Image
@@ -357,7 +360,7 @@ export default function BasketScreen(props) {
                 </View>
               </View>
             </View>
-            }
+            : <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>There are no product added in basket</Text></View>}
           
                 <FlatList
                   showsVerticalScrollIndicator={false}

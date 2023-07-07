@@ -114,7 +114,8 @@ export default function WardrobeComp(props) {
       .request(config)
       .then(async function (res) {
         console.log(res.data);
-        !share && setShare(true);
+        //!share && setShare(true);
+        share ? setShare(false) : setShare(true);
         props?.state?.setLoadingComp(false);
         successMessage('Success');
       })

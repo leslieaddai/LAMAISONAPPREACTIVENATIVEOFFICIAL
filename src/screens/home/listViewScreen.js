@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -32,108 +33,48 @@ import {
   FONTS,
 } from '../../theme';
 import BottomComp from '../../components/bottomComp';
+import PostCompListView from './postCompListView';
+
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import axios from 'react-native-axios';
+import {errorHandler} from '../../config/helperFunction';
+import {Popular,Newsfeed} from '../../config/Urls';
+import {useDispatch, useSelector} from 'react-redux';
+import types from '../../Redux/types';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function ListViewScreen(props) {
-  const postComp = () => {
-    const [showDelete, setShowDelete] = useState(false);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [feedData, setFeedData] = useState([]);
+  const [page, setPage] = useState();
+  const [pageNo, setPageNo] = useState();
+  const user = useSelector(state => state.userData);
 
-    const [heart, setHeart] = useState(false);
-    const [share, setShare] = useState(false);
-    const [hanger, setHanger] = useState(false);
-    return (
-      <View style={{marginVertical: hp2(1)}}>
-        <View style={styles.postWrap}>
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('brandProfileScreen')}
-            style={styles.imageWrap}>
-            <Image
-              source={IMAGES.randomProfile}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              showDelete ? setShowDelete(false) : setShowDelete(true);
-            }}>
-            {showDelete ? (
-              <View style={styles.deleteButton}>
-                <Text style={{color: 'black'}}>Delete Post</Text>
-                <ICONS.Ionicons name="ios-trash-bin" size={24} color="red" />
-              </View>
-            ) : (
-              <ICONS.Ionicons
-                name="menu-outline"
-                size={44}
-                color="black"
-                style={{marginLeft: wp2(68)}}
-              />
-            )}
-          </TouchableOpacity>
-        </View>
+  useEffect(() => {
+    getNewsfeed('1');
+  }, []);
 
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('imageViewScreen')}
-          style={styles.imageContainer}>
-          <Image
-            source={IMAGES.randomPic}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
+  const getNewsfeed = page_no => {
+    setLoading(true);
 
-        <View style={styles.iconWrap}>
-          <TouchableOpacity
-            onPress={() => {
-              heart ? setHeart(false) : setHeart(true);
-            }}>
-            <ICONS.AntDesign
-              name="heart"
-              size={34}
-              color={heart ? '#FC0004' : 'black'}
-            />
-          </TouchableOpacity>
-          <Text style={{color: 'black'}}>1000</Text>
-
-          <TouchableOpacity
-            onPress={() => {
-              hanger ? setHanger(false) : setHanger(true);
-            }}>
-            <ICONS.MaterialCommunityIcons
-              name="hanger"
-              size={34}
-              color={hanger ? '#162FAC' : 'black'}
-            />
-          </TouchableOpacity>
-          <Text style={{color: 'black'}}>1500</Text>
-
-          <TouchableOpacity
-            onPress={() => {
-              share ? setShare(false) : setShare(true);
-            }}>
-            <ICONS.FontAwesome
-              name="retweet"
-              size={34}
-              color={share ? '#13D755' : 'black'}
-            />
-          </TouchableOpacity>
-          <Text style={{color: 'black'}}>3000</Text>
-        </View>
-
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('commentScreen')}>
-          <View style={{flexDirection: 'row', marginLeft: wp2(2)}}>
-            <Text
-              style={{color: 'black', fontWeight: '700', marginRight: wp2(2)}}>
-              Represent
-            </Text>
-            <Text style={{color: 'black'}}>Blue is the colour</Text>
-          </View>
-
-          <Text style={{color: 'black', marginLeft: wp2(2)}}>1 hour ago</Text>
-        </TouchableOpacity>
-      </View>
-    );
+    axios
+      .get(Newsfeed+page_no,{
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log(res?.data);
+        setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
+        setPage(res?.data?.data?.newsfeed?.next_page_url);
+        setPageNo(res?.data?.data?.newsfeed?.current_page);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error?.response?.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
   };
 
   return (
@@ -151,6 +92,7 @@ export default function ListViewScreen(props) {
           </TouchableOpacity>
           <View style={styles.line}></View>
           <TouchableOpacity
+          disabled={user?.token!==''?false:true}
             onPress={() => props.navigation.navigate('listViewScreen')}
             style={styles.iconWrap2}>
             <Image
@@ -161,12 +103,42 @@ export default function ListViewScreen(props) {
           </TouchableOpacity>
         </View>
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: hp2(12), paddingTop: hp2(1)}}>
-          {postComp()}
-          {postComp()}
-        </ScrollView>
+        {loading && feedData?.length === 0 && (
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: hp2(6),
+          }}>
+          <SkypeIndicator color={'black'} />
+        </View>
+      )}
+
+        <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingVertical:hp2(2)}}
+            data={feedData}
+            onEndReached={() =>
+              !loading && page !== null && getNewsfeed(String(pageNo + 1))
+            }
+            onEndReachedThreshold={0.1}
+            renderItem={({item,index}) => {
+              return (
+               <PostCompListView key={index} data={item} />
+              );
+            }}
+          />
+
+          {loading && feedData?.length !== 0 && (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                paddingVertical: hp2(3),
+              }}>
+              <SkypeIndicator size={26} color={'black'} />
+            </View>
+          )}
 
         {/* <BottomComp /> */}
       </View>

@@ -106,9 +106,17 @@ export default function FollowComp(props) {
         />
       </View>
       <Text style={styles.text}>
-        {props?.list === 'follower'
+        {props?.list === 'follower' ? 
+        props?.data?.item?.followers?.roles[0]?.id === 3 ? 
+        props?.data?.item?.followers?.name : props?.data?.item?.followers?.username
+        :
+        props?.data?.item?.followings?.roles[0]?.id === 3 ? 
+        props?.data?.item?.followings?.name : props?.data?.item?.followings?.username
+        }
+        {/* {props?.list === 'follower'
           ? props?.data?.item?.followers?.username
-          : props?.data?.item?.followings?.username}
+          : props?.data?.item?.followings?.username
+        } */}
       </Text>
     </TouchableOpacity>
   );

@@ -486,7 +486,12 @@ export default function DressingRoomScreen(props) {
 
   const BuyNowButton = () => {
     if(qty!==undefined && qty!=='' && qty!=0 && qty!==null){
-      props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
+      var numberRegex = /^\d+$/;
+      if(numberRegex.test(qty)){
+        props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
+      }else{
+        errorMessage('Please remove decimal value!')
+      }
     }else{
       errorMessage('Please add quantity!')
     }

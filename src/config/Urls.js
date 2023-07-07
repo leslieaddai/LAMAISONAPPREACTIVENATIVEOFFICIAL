@@ -71,3 +71,4 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const VerifyAccount = getApi('verify-account');
   export const ChangePassword = getApi('change-password');
   export const ShippingAvailability = getApi('product/shipping/availability');
+  export const AddComment = getApi('product/add/comment');

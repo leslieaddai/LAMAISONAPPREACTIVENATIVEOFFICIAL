@@ -42,7 +42,7 @@ export default function CommentComp(props) {
       </View>
       <View>
         <View style={styles.messageBox}>
-          <Text style={[styles.text, {fontSize: rfv(13)}]}>{props?.text}</Text>
+          <Text style={[styles.text, {fontSize: rfv(13)}]}>{props?.data?.comment}</Text>
         </View>
       </View>
     </View>

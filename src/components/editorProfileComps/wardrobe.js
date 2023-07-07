@@ -48,15 +48,18 @@ export default function Wardrobe(props) {
   const user = useSelector(state => state.userData);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get(GetVirtualWardrobe + `${props?.user?.userData?.id}`)
       .then(async function (res) {
         console.log(res.data, '=======> wardrobe');
         setData(res?.data?.data);
+        setLoading(false);
       })
       .catch(function (error) {
         console.log(error.response.data);
         //errorMessage('Something went wrong!');
+        setLoading(false);
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -67,16 +70,22 @@ export default function Wardrobe(props) {
         {data?.length!==0? data?.map((item, index) => {
           if (index < 3)
             return (
-              <View key={index} style={styles.imageContainer}>
+              <TouchableOpacity 
+              onPress={() => user?.userData?.role?.[0]?.id!==3?
+                navigation.navigate('dressingRoomScreen', {
+                  data: {product: {id: item?.product_id}},
+                }):navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.product_image}]}]})
+              }
+              key={index} style={styles.imageContainer}>
                 <Image
                   //source={IMAGES.randomPic}
                   source={{uri: item?.product_image}}
                   style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
                 />
-              </View>
+              </TouchableOpacity>
             );
-        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Wardrobe Not Available</Text></View>}
+        }):!loading?<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Wardrobe Not Available</Text></View>:null}
       </View>
 
       <TouchableOpacity

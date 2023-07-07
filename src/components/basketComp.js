@@ -203,13 +203,13 @@ axios
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {loading2?(
-              <View>
-                <SkypeIndicator color={'black'} />
-              </View>
+             
+                <SkypeIndicator size={20} style={{position:'absolute'}} color={'black'} />
+              
           ):(
-            <Text style={styles.quantityTxt}>{props?.data?.qty}</Text>
+            <Text style={[styles.quantityTxt,{position:'absolute',}]}>{props?.data?.qty}</Text>
           )}
-          <TouchableOpacity onPress={()=>onIncreamentEditor(props?.data?.id)} style={styles.button}>
+          <TouchableOpacity onPress={()=>onIncreamentEditor(props?.data?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>
             <ICONS.Entypo name="plus" size={30} color="white" />
           </TouchableOpacity>
           <TouchableOpacity onPress={()=>onDecreamentEditor(props?.data?.id)}
@@ -268,6 +268,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'center',
     marginTop: hp2(4),
+    paddingVertical:hp2(1),
   },
   titleTxt: {color: 'black', textTransform: 'uppercase'},
   priceTxt: {

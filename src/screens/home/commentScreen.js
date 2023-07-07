@@ -34,22 +34,75 @@ import {
 
 import DateComp from './dateComp';
 import CommentComp from './commentComp';
+import LineComp from '../../components/lineComp';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {ColorsUrl} from '../../config/Urls';
+import {AddComment} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import moment from 'moment';
+
+import LoaderComp from '../../components/loaderComp';
 
 export default function CommentScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
+  const [uniqDates, setUniqDates] = useState();
+  pid = props?.route?.params?.product_id;
+  commentsArr = props?.route?.params?.comments;
+  const [desc, setDesc] = useState('');
+
+  // useEffect(() => {
+  //   setUniqDates(commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY')),);
+  // }, [commentsArr]);
+
+  const onSend = () => {
+    if (desc !== '') {
+      setLoading(true);
+
+      let obj = {
+        user_id: user?.userData?.id,
+        product_id:pid,
+        comment: desc,
+      };
+
+      //console.log(obj)
+
+      axios
+        .post(AddComment, obj, {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        })
+        .then(async function (res) {
+          console.log(res?.data);
+          commentsArr?.push({comment:desc,created_at:new Date()});
+          setDesc('');
+          setLoading(false);
+          successMessage('Comment Added!');
+        })
+        .catch(function (error) {
+          console.log(error?.response?.data);
+          setLoading(false);
+          //errorMessage('Something went wrong!');
+          errorMessage(errorHandler(error))
+        });
+    } else {
+      errorMessage('Please fill details!');
+    }
+  };
 
   return (
+    <>
+     <View style={{position: 'absolute', zIndex: 999}}>
+        {loading && <LoaderComp />}
+      </View>
+
     <View style={styles.container}>
       <SafeAreaView></SafeAreaView>
       <View style={styles.headWrap}>
@@ -60,31 +113,45 @@ export default function CommentScreen(props) {
         </TouchableOpacity>
         <Text style={styles.commentText}>Comments</Text>
       </View>
-      <ScrollView contentContainerStyle={{paddingVertical: hp2(2)}}>
-        <DateComp />
-        <CommentComp text="I ordered an item from represent and I still have not received my items I ordered an item from represent and I still have not received my items" />
-        <CommentComp text="I still have not received my items" />
-        <CommentComp text="I ordered an item from represent and I still have not received my items" />
-        <CommentComp text="I ordered an item from represent and I still have not received my items I ordered" />
-        <DateComp />
-        <CommentComp text="I ordered an item from represent" />
-        <CommentComp text="from represent and I still have not received my items I ordered" />
-        <CommentComp text="still have not received my items I ordered an item from represent" />
-        <CommentComp text="and I still have not received my items I ordered" />
-      </ScrollView>
+
+      <>
+          {commentsArr?.length!==0? 
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
+            {/* {uniqDates?.map((item,index)=>{ */}
+            {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
+            //console.log(uniqDates)
+            return(
+              <>
+              <LineComp date={item} key={index} />
+
+          {commentsArr?.map((item2, index2) => {
+                    if (moment(item2?.created_at).format('MM/YY') === item)
+                      return (
+                        <CommentComp data={item2} key={index2} />
+                      );
+                  })}
+              </>
+            )
+          })}
+          </ScrollView>
+          :<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Comments Not Available</Text></View>}
+      </>
 
       <View style={styles.textBox}>
         <TextInput
           placeholder={'Write your text here...'}
           placeholderTextColor={'grey'}
           style={styles.inputTxt}
+          onChangeText={val => setDesc(val)}
+          value={desc}
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity onPress={onSend} style={styles.button}>
         <Text style={styles.buttonText}>Add your comment</Text>
       </TouchableOpacity>
     </View>
+  </>
   );
 }
 

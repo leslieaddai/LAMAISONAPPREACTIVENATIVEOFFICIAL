@@ -264,7 +264,7 @@ const newsfeed = () =>{
           style={styles.brandImage}>
           <Image
             //source={IMAGES.randomPic}
-            source={{uri:data?.brand?.profile_image?.original_url}}
+            source={data?.brand?.profile_image!==null?{uri:data?.brand?.profile_image?.original_url}:IMAGES.profileIcon3}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
@@ -322,7 +322,7 @@ const newsfeed = () =>{
           <Text style={{color: 'black'}}>ICEY.B Shared</Text>
         </View>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('imageViewScreen')}
+          onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
           style={styles.imageContainer}>
           <Image
             //source={IMAGES.randomPic}
@@ -338,11 +338,12 @@ const newsfeed = () =>{
   const productComp = (data) => {
     return (
       <View style={{marginVertical: hp2(2)}}>
+        <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('brandProfileScreen')}
           style={[
             styles.imageWrap,
-            {marginLeft: wp2(3), marginVertical: hp2(1)},
+            // {marginLeft: wp2(3), marginVertical: hp2(1)},
           ]}>
           <Image
             source={IMAGES.randomProfile}
@@ -350,7 +351,6 @@ const newsfeed = () =>{
             resizeMode="contain"
           />
         </TouchableOpacity>
-
         <ICONS.FontAwesome
             name="retweet"
             size={24}
@@ -358,13 +358,14 @@ const newsfeed = () =>{
             style={{marginHorizontal: wp2(4)}}
           />
           <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+        </View>
 
         <View style={styles.productContainer}>
           {data?.product_images?.[0]?.image?.map((item,index)=>{
             return(
               <TouchableOpacity
               key={index}
-            onPress={() => props.navigation.navigate('imageViewScreen')}
+            onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer}>
             <Image
               //source={IMAGES.randomPic}
@@ -383,11 +384,12 @@ const newsfeed = () =>{
   const productComp2 = (data) => {
     return (
       <View style={{marginVertical: hp2(2)}}>
+        <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('brandProfileScreen')}
           style={[
             styles.imageWrap,
-            {marginLeft: wp2(3), marginVertical: hp2(1)},
+            // {marginLeft: wp2(3), marginVertical: hp2(1)},
           ]}>
           <Image
             source={IMAGES.randomProfile}
@@ -403,6 +405,7 @@ const newsfeed = () =>{
             style={{marginHorizontal: wp2(4)}}
           />
           <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+          </View>
 
         <View
           style={{
@@ -415,7 +418,7 @@ const newsfeed = () =>{
             return(
               <TouchableOpacity
               key={index}
-            onPress={() => props.navigation.navigate('imageViewScreen')}
+            onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer2}>
             <Image
               //source={IMAGES.randomPic}
