@@ -48,7 +48,7 @@ export default function SearchComp(props) {
           //source={IMAGES.lookbook}
           source={props?.data?.user?.profile_image!==null?{uri:props?.data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
       <Text style={styles.text}>{props?.data?.user?.name}</Text>

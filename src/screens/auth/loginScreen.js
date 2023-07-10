@@ -108,7 +108,7 @@ export default function LoginScreen(props) {
         });
 
       }else{
-        setError('Please remove space from username!')
+        setError('Remove spaces from username/email')
         setShowError(true);
         setTimeout(() => {
           setShowError(false);

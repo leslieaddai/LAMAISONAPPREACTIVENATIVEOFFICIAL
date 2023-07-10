@@ -428,8 +428,9 @@ export default function EditorProfileScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 2,
     backgroundColor: COLORS.appBackground,
+    marginBottom:Platform.OS==="ios"?hp(-10):0
   },
   editorProfile: {
     width: wp2(100),

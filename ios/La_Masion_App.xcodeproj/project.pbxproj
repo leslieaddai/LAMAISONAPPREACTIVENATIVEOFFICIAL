@@ -14,6 +14,9 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-La_Masion_App-La_Masion_AppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-La_Masion_App-La_Masion_AppTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		A9521BD82A59A3FA00C34E95 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD42A59A3FA00C34E95 /* FBSDKCoreKit.framework */; };
+		A9521BD92A59A3FA00C34E95 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD52A59A3FA00C34E95 /* FBSDKShareKit.framework */; };
+		A9521BDB2A59A3FA00C34E95 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +46,10 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-La_Masion_App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-La_Masion_App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = La_Masion_App/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; path = "Target Support Files/Pods-La_Masion_App-La_Masion_AppTests/Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; sourceTree = "<group>"; };
+		A9521BD42A59A3FA00C34E95 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../../Downloads/facebook-ios-sdk-current/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		A9521BD52A59A3FA00C34E95 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = "../../../../Downloads/facebook-ios-sdk-current/FBSDKShareKit.framework"; sourceTree = "<group>"; };
+		A9521BD62A59A3FA00C34E95 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = "../../../../Downloads/facebook-ios-sdk-current/Bolts.framework"; sourceTree = "<group>"; };
+		A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../../Downloads/facebook-ios-sdk-current/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -59,6 +66,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9521BD82A59A3FA00C34E95 /* FBSDKCoreKit.framework in Frameworks */,
+				A9521BD92A59A3FA00C34E95 /* FBSDKShareKit.framework in Frameworks */,
+				A9521BDB2A59A3FA00C34E95 /* FBSDKLoginKit.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-La_Masion_App.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +109,10 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A9521BD62A59A3FA00C34E95 /* Bolts.framework */,
+				A9521BD42A59A3FA00C34E95 /* FBSDKCoreKit.framework */,
+				A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */,
+				A9521BD52A59A3FA00C34E95 /* FBSDKShareKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-La_Masion_App.a */,
 				19F6CBCC0A4E27FBF8BF4A61 /* libPods-La_Masion_App-La_Masion_AppTests.a */,
@@ -191,6 +205,8 @@
 			dependencies = (
 			);
 			name = La_Masion_App;
+			packageProductDependencies = (
+			);
 			productName = La_Masion_App;
 			productReference = 13B07F961A680F5B00A75B9A /* La_Masion_App.app */;
 			productType = "com.apple.product-type.application";
@@ -221,6 +237,8 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
+			packageReferences = (
+			);
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -520,6 +538,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -549,6 +568,7 @@
 				PRODUCT_NAME = La_Masion_App;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
+				SYSTEM_FRAMEWORK_SEARCH_PATHS = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

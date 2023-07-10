@@ -1285,6 +1285,6 @@ const styles = StyleSheet.create({
     backgroundColor:'#0F2ABA',
     position:'absolute',
     right:wp2(2),
-    top:wp2(1),
+    top:Platform.OS=='android'?wp2(2):wp2(1),
   },
 });

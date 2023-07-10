@@ -46,6 +46,7 @@ import {
   StylesUrl,
   ProductUploadUrl,
   ProductImageUpdate,
+  GetBrandShippingInfo,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
@@ -54,6 +55,9 @@ import {SkypeIndicator} from 'react-native-indicators';
 import LoaderComp from '../../components/loaderComp';
 
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { BottomSheet } from 'react-native-btr';
+import Icons from '../../theme/icons';
+import { FlatList } from 'react-native-gesture-handler';
 
 export default function ReuploadScreen(props) {
   const scrollX = new Animated.Value(0);
@@ -62,19 +66,24 @@ export default function ReuploadScreen(props) {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [data, setData] = useState([]);
+  const [shippingData, setShippingData] = useState('');
   const user = useSelector(state => state?.userData);
-
+  const [regions, setRegions] = useState([]);
+  const [isOpenedShipping, setIsOpenedShipping] = useState(false);
   const [selectedImage, setSelectedImage] = useState([]);
-
+  const routeitem = props?.route?.params?.data
+  const [visible, setVisible] = useState(false);
   const [stateChange, setStateChange] = useState({
-    productName: props?.route?.params?.data?.name,
-    pieces: props?.route?.params?.data?.piece?.piece_name,
-    piece_id: props?.route?.params?.data?.piece_id,
-    description: props?.route?.params?.data?.description,
-    price: props?.route?.params?.data?.price,
-    style_id: props?.route?.params?.data?.style?.id,
-    category: props?.route?.params?.data?.category_id,
+    productName: routeitem?.name,
+    pieces: routeitem?.piece?.piece_name,
+    piece_id: routeitem?.piece_id,
+    description: routeitem?.description,
+    price: routeitem?.price,
+    style_id: routeitem?.style?.id,
+    category: routeitem?.category_id,
   });
+
+  
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {
     productName,
@@ -105,7 +114,13 @@ export default function ReuploadScreen(props) {
   const [selectedText, setSelectedText] = useState(
     props?.route?.params?.data?.style?.name,
   );
+  
 
+  useEffect(()=>{            
+    if(isOpenedShipping){
+      uibottomesheetvisiblity(true)
+    }
+  },[isOpenedShipping])
   useEffect(() => {
     let tempArr = [];
     props?.route?.params?.data?.product_variations?.map(item => {
@@ -147,6 +162,7 @@ export default function ReuploadScreen(props) {
         //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
+      getShippingInfo()
   }, []);
 
   const goBackFunction = () => {
@@ -160,7 +176,14 @@ export default function ReuploadScreen(props) {
       setConfirmButton(false);
     }
   };
-
+  const uibottomesheetvisiblity = Bool => {
+    setVisible(Bool);
+  };
+  const toggleBottomNavigationView = () => {
+    setVisible(!visible);
+    uibottomesheetvisiblity(!visible);
+    setIsOpenedShipping(false)
+  };
   const productDetails = () => {
     if (
       stateChange?.productName !== '' &&
@@ -174,7 +197,37 @@ export default function ReuploadScreen(props) {
       errorMessage('Please fill all details!');
     }
   };
-
+  const getShippingInfo = () => {
+    axios
+      .get(GetBrandShippingInfo, {
+        headers: {Authorization: `Bearer ${user.token}`},
+      })
+      .then(async function (res) {
+        console.log("skjjk",res?.data);
+        if (res?.data?.data.length > 0) {
+          // setHaveShippingInfo(true);
+          setShippingData(res?.data?.data);
+          //console.log('this is true')
+        } else {
+          // setHaveShippingInfo(false);
+          setShippingData('');
+          //console.log('this is false')
+        }
+      })
+      .catch(function (error) {
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  };
+  const addRegions = (item) => {
+    regions.some(e => e.regionId === item?.shipping_id)
+      ? setRegions(regions.filter(e => e.regionId !== item?.shipping_id))
+      : setRegions([
+          ...regions,
+          {regionName: item?.shipping?.name, regionId: item?.shipping_id},
+        ]);
+    console.log(regions);
+  };
   const verifyQuantity = () => {
     let tempDuplicate = quantity.filter(
       (v, i, a) =>
@@ -536,6 +589,7 @@ export default function ReuploadScreen(props) {
             {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
          <Text style={styles.previewTxt}>colour</Text>
         </View> */}
+          
             <View
               style={[
                 styles.inputBox,
@@ -599,6 +653,36 @@ export default function ReuploadScreen(props) {
                 onChangeText={val => updateState({description: val})}
               />
             </View>
+
+            <TouchableOpacity
+              onPress={() =>
+                isOpenedShipping
+                  ? setIsOpenedShipping(false)
+                  : setIsOpenedShipping(true)
+              }
+              style={[
+                styles.inputBox,
+                {
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingHorizontal: wp2(2),
+                  justifyContent: 'space-between',
+                },
+              ]}>
+              {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>SELECT SHIPPING DETAILS</Text> */}
+              <Text style={[styles.selectTxt,{width:wp2(70)}]}>
+                {regions.length !== 0
+                  ? regions.map((item, index) => item?.regionName + ' ')
+                  : 'SELECT SHIPPING DETAILS'}
+              </Text>
+              <View>
+                <ICONS.FontAwesome
+                  name={isOpenedShipping ? 'chevron-up' : 'chevron-down'}
+                  color={'#A1A1A1'}
+                  size={22}
+                />
+              </View>
+            </TouchableOpacity>
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.txtInput}
@@ -674,6 +758,51 @@ export default function ReuploadScreen(props) {
             </TouchableOpacity>
           </KeyboardAwareScrollView>
         )}
+        <BottomSheet
+        visible={visible}
+        onBackButtonPress={toggleBottomNavigationView}
+        onBackdropPress={toggleBottomNavigationView}
+        >
+           <View style={styles.bottomcontainer}>
+        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
+        <View style={[styles.bottomstyleBox]}>
+          <FlatList
+          data={shippingData}
+          renderItem={({item,index})=>{
+            console.log(item)
+            return(
+              <TouchableOpacity
+                     onPress={() => {
+                      uibottomesheetvisiblity(false)
+                      setIsOpenedShipping(false)
+                        addRegions(item)
+                    }}
+                     key={index}
+                     style={styles.bottomitemWrap}>
+                     <Text style={styles.bottomitemTxt}>{item?.shipping?.name}</Text>
+                     <Icons.AntDesign
+                       name={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'checkcircle'
+                           : 'checkcircleo'
+                       }
+                       size={24}
+                       color={
+                         regions.some(e => e.regionId === item?.shipping_id)
+                           ? 'black'
+                           : 'lightgray'
+                       }
+                       style={{position: 'absolute', right: 10}}
+                     />
+                   </TouchableOpacity>
+            )
+          }}
+          />
+              </View>
+        </ScrollView>
+      </View>
+
+          </BottomSheet>
       </SafeAreaView>
     </>
   );
@@ -683,6 +812,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
+  },
+  selectTxt: {
+    color: 'black', 
+    fontWeight: '700', 
+    fontSize: rfv(13)
   },
   headWrap: {
     width: wp2(100),
@@ -798,4 +932,74 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   selectedTxt: {color: 'black', fontWeight: '700', fontSize: rfv(13)},
+
+  bottomcontainer: {
+    width:wp('100'),
+    flexDirection: 'column',
+    backgroundColor: '#D3D3D3',
+    borderTopRightRadius: 16,
+    borderTopLeftRadius: 16,
+  },
+  bottomText: {
+    fontSize: 15,
+    fontWeight: 'bold',
+    padding: 2,
+  },
+  bottomTextInput: {
+    fontSize: 14,
+  },
+  bottomButton: {
+    backgroundColor: 'white',
+    borderColor: 'black',
+    shadowRadius: 12,
+    borderRadius: 12,
+    width: 100,
+    shadowOpacity: 0.4,
+    shadowOffset: {height: 0, width: 1},
+    shadowColor: 'grey',
+  },
+  bottomCardView:{
+    width:wp('95'),
+    height:hp('6'),
+    marginVertical:hp('1'),
+    flexDirection:'row',
+    alignItems:'center',
+    paddingHorizontal:wp('4'),
+    borderRadius:10,
+    backgroundColor:'white'
+  },
+  bottomitemTxt: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: rfv(13),
+    position: 'absolute',
+    left: 10,
+  },
+  bottomitemWrap: {
+    flexDirection: 'row',
+    width: wp(90),
+    height: hp(6),
+    alignSelf:"center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(2),
+    overflow: 'hidden',
+    backgroundColor:'white',
+    marginVertical:hp(1)
+  },
+  bottomstyleBox: {
+    width: wp(100),
+    backgroundColor: '#D3D3D3',
+    borderRadius: wp(4),
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+    elevation: 8,
+    overflow: 'hidden',
+    alignSelf: 'center',
+  },
 });

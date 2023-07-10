@@ -76,7 +76,7 @@ export default function SelectSizes(props) {
           }}
       >
         <Text style={{color: 'black'}}>{text?.size?.size}</Text>
-        <Text style={[styles.quantityTxt,{color:text.quantity<5?'#E81717':'black'}]}>{text?.quantity + ' remaining!'}</Text>
+        <Text style={[styles.quantityTxt,{color:text.quantity<5?'#E81717':'black'}]}>{text?.quantity== 0? 'Out of stock' :text?.quantity + ' remaining!'}</Text>
 
         <TouchableOpacity
         disabled={text?.quantity < 1 ? true : false}

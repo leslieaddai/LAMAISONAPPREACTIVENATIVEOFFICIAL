@@ -31,17 +31,41 @@ import {
   FONTS,
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export function ImgComp(props) {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.media?.[0]?.original_url}]}]})} style={styles.imageContainer}>
+      {loading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
+        {props?.path?.item?.media?.[0]?.original_url&&(
       <Image
         //source={IMAGES.randomPic}
-        source={{uri: props?.path?.item?.media?.[0]?.original_url}}
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+        source={{uri: props?.path?.item?.media?.[0]?.original_url}}
       />
+        )}
     </TouchableOpacity>
   );
 }

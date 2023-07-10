@@ -96,7 +96,17 @@ export default function CheckoutScreen(props) {
 
   const [total, setTotal] = useState(0);
   const [commission, setCommission] = useState(15);
-
+  useEffect(()=>{
+    if(loading){
+    const parent = props.navigation.setOptions({
+      tabBarStyle: { display: 'none' },
+    });}
+    else {
+      const parent = props.navigation.setOptions({
+        tabBarStyle: { display: 'flex' },
+      });
+    }
+  },[loading])
   useEffect(() => {
     getAllRegions();
   }, []);
@@ -224,10 +234,23 @@ export default function CheckoutScreen(props) {
       setContinueButton('confirm')
     }
   };
+  function constainalphabet(str) {
+    return (/^[A-Za-z]+$/).test(str);
+  }
+  function emailvalidation(str){
+    return/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(str)
+  }
 
   const onContinue = () => {
 
-  if( (stateChange.address_1 !== '' && stateChange.address_1 !== null) && (stateChange.city !== '' && stateChange.city !== null) && (stateChange.region!== '' && stateChange.region!== null) && (stateChange.country !== '' && stateChange.country !== null) && (stateChange.postcode !== '' && stateChange.postcode !== null)){
+  if( 
+  (stateChange.address_1 !== '' && stateChange.address_1 !== null) && 
+  (stateChange.city !== '' && stateChange.city !== null) && 
+  (stateChange.region!== '' && stateChange.region!== null) && 
+  (stateChange.country !== '' && stateChange.country !== null) && 
+  (stateChange.postcode !== '' && stateChange.postcode !== null)
+  ){
+    if(constainalphabet(stateChange.city)){
     //setContinueButton('confirm')
     let obj = {
       region:stateChange?.region,
@@ -245,15 +268,34 @@ export default function CheckoutScreen(props) {
       errorMessage(error?.response?.data?.message)
     })
   }else{
+    errorMessage('Invalid city name')
+  }
+  }else{
     errorMessage('Please fill all fields!')
   }
 
   }
 
   const onConfirm = () => {
+    if((stateChange.email !== '' && stateChange.email !== null) &&
+     (stateChange.name !== '' && stateChange.name !== null) && 
+     (stateChange.card !== '' && stateChange.card !== null) && 
+     (stateChange.expiry !== '' && stateChange.expiry !== null) && 
+     (stateChange.cvv !== '' && stateChange.cvv !== null))
+     {
+      console.log(emailvalidation)
+      if(emailvalidation(email)){
 
-    if((stateChange.email !== '' && stateChange.email !== null) && (stateChange.name !== '' && stateChange.name !== null) && (stateChange.card !== '' && stateChange.card !== null) && (stateChange.expiry !== '' && stateChange.expiry !== null) && (stateChange.cvv !== '' && stateChange.cvv !== null)){
-      setContinueButton('purchase')
+      
+      if(cvv.length>=3){ 
+        setContinueButton('purchase')
+      }else{
+      errorMessage('CVV should have at least three numbers.') 
+      }
+    }
+    else{
+      errorMessage('Please enter correct email')
+    }
     }else{
       errorMessage('Please fill all fields!')
     }
@@ -510,11 +552,7 @@ export default function CheckoutScreen(props) {
          <View style={styles.itemArea}>
            <Text style={styles.text}>{item?.product?.name}</Text>
 
-           <View
-             style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-             <Text style={styles.text}>price</Text>
-             <Text style={styles.text}>£{item?.product?.price}</Text>
-           </View>
+           
 
            <View style={{flexDirection:'row',alignItems:'center'}}>
          <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
@@ -522,7 +560,11 @@ export default function CheckoutScreen(props) {
          </View>
 
          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.qty}</Text>
-
+         <View
+             style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+             <Text style={styles.text}>price</Text>
+             <Text style={styles.text}>£{item?.product?.price}</Text>
+           </View>
            {continueButton === 'purchase' && 
            <View
            style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -566,7 +608,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Commission {commission}%</Text>
-         <Text style={styles.text}>£{total*(commission/100)}</Text>
+         <Text style={styles.text}>£{total*(commission/100).toFixed(3)}</Text>
        </View>
 
        <View
@@ -585,6 +627,17 @@ export default function CheckoutScreen(props) {
 
        {continueButton == 'confirm' ? (
          <View style={styles.detailInputArea}>
+          <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={stateChange.email}
              onChangeText={val => updateState({email: val})}  />
@@ -621,6 +674,17 @@ export default function CheckoutScreen(props) {
            {textBox('COUNTRY')}
            {textBox('CITY')}
            {textBox('POSTCODE')} */}
+           <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
            <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={stateChange.address_1}
              onChangeText={val => updateState({address_1: val})}  />
@@ -716,7 +780,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-         {isOpenedCountries && countriesData.length !== 0 && (
+         {/* {isOpenedCountries && countriesData.length !== 0 && (
            <View style={[styles.styleBox]}>
              {countriesData?.map((item, index) => (
                <TouchableOpacity
@@ -739,7 +803,7 @@ export default function CheckoutScreen(props) {
                </TouchableOpacity>
              ))}
            </View>
-         )}
+         )} */}
 
      {/* <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'COUNTRY'}  placeholderTextColor={'grey'}  />
@@ -758,6 +822,17 @@ export default function CheckoutScreen(props) {
            {textBox('CITY')}
            {textBox('COUNTRY')}
            {textBox('POSTCODE')} */}
+           <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{stateChange.address_1}</Text>
@@ -887,7 +962,7 @@ export default function CheckoutScreen(props) {
 
          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.Quantity}</Text>
 
-           {continueButton === 'purchase' && 
+           {continueButton === 'purchase' &&
            <View
            style={{flexDirection: 'row', justifyContent: 'space-between'}}>
            <Text style={styles.text}>Shipping</Text>

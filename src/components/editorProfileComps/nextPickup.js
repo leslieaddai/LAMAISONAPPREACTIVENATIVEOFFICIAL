@@ -32,10 +32,15 @@ import {
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export function ImgComp(props) {
   const user = useSelector(state => state.userData);
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity 
     onPress={() => user?.userData?.role?.[0]?.id!==3?
@@ -45,14 +50,33 @@ export function ImgComp(props) {
       }):navigation.navigate('imageViewScreen',{item:props?.path?.item?.product?.product_images})
     }
      style={styles.imageContainer}>
+       {loading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
+      {props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url&&(
       <Image
         //source={IMAGES.randomPic}
+        style={{width: '100%', height: '100%'}}
+        resizeMode="cover"
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
         source={{
           uri: props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url,
         }}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
       />
+      )}
     </TouchableOpacity>
   );
 }

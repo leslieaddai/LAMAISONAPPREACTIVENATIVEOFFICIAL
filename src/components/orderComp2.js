@@ -44,7 +44,7 @@ export default function OrderComp2(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
-
+  console.log("asld",props?.data.order)
   return (
     <View style={styles.container}>
       <View style={styles.imgWrap}>
@@ -56,11 +56,15 @@ export default function OrderComp2(props) {
         />
       </View>
       <View style={{marginLeft: wp2(3)}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',width:wp2(70)}}>
+          <Text>Orderno</Text>
         <TouchableOpacity onPress={()=>alert('hello.')}>
         <Text style={{color: '#065521', fontWeight: '600', fontSize: rfv(14)}}>
-          Delivered
+          {props?.data?.status?.status}
         </Text>
         </TouchableOpacity>
+        </View>
+
         <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
       </View>
     </View>
