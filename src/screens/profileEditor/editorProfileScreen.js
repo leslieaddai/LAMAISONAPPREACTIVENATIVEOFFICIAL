@@ -398,7 +398,7 @@ export default function EditorProfileScreen(props) {
 
             <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: hp2(12)}}>
+              contentContainerStyle={{paddingBottom: hp2(2)}}>
               <Text style={styles.favBrandsTxt}>FAVOURITE BRANDS</Text>
              
               {data?.fav_brands?.length!==0?(
@@ -428,9 +428,9 @@ export default function EditorProfileScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
+    flex: 1,
     backgroundColor: COLORS.appBackground,
-    marginBottom:Platform.OS==="ios"?hp(-10):0
+    //marginBottom:Platform.OS==="ios"?hp(-10):0
   },
   editorProfile: {
     width: wp2(100),

@@ -194,12 +194,13 @@ axios
       </TouchableOpacity>
       <View style={styles.detailsContainer}>
         <Text style={styles.titleTxt}>{props?.data?.product?.name}</Text>
+        <View style={{flexDirection:'row',alignItems:'center',marginVertical:hp2(1)}}>
+          <View style={{width:wp2(9),height:wp2(9),backgroundColor:props?.data?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {props?.data?.size?.size}</Text>
+          </View>
         <Text style={styles.priceTxt}>£{props?.data?.product?.price}</Text>
         
-        <View style={{flexDirection:'row',alignItems:'center',marginVertical:hp2(2)}}>
-          <View style={{width:wp2(9),height:wp2(9),backgroundColor:props?.data?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{props?.data?.size?.size}</Text>
-          </View>
+        
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           {loading2?(
@@ -236,12 +237,13 @@ axios
       </TouchableOpacity>
       <View style={styles.detailsContainer}>
         <Text style={styles.titleTxt}>{props?.data?.data?.name}</Text>
+        <View style={{flexDirection:'row',alignItems:'center',marginVertical:hp2(1)}}>
+          <View style={{width:wp2(9),height:wp2(9),backgroundColor:props?.data?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {props?.data?.sizeId?.size?.size}</Text>
+          </View>
         <Text style={styles.priceTxt}>£{props?.data?.data?.price}</Text>
         
-        <View style={{flexDirection:'row',alignItems:'center',marginVertical:hp2(2)}}>
-          <View style={{width:wp2(9),height:wp2(9),backgroundColor:props?.data?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{props?.data?.sizeId?.size?.size}</Text>
-          </View>
+      
 
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text style={styles.quantityTxt}>{props?.data?.Quantity}</Text>

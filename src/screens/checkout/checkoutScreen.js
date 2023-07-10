@@ -61,6 +61,7 @@ export default function CheckoutScreen(props) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [loadingAddress, setLoadingAddress] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
@@ -101,11 +102,11 @@ export default function CheckoutScreen(props) {
     const parent = props.navigation.setOptions({
       tabBarStyle: { display: 'none' },
     });}
-    else {
-      const parent = props.navigation.setOptions({
-        tabBarStyle: { display: 'flex' },
-      });
-    }
+    // else {
+    //   const parent = props.navigation.setOptions({
+    //     tabBarStyle: { display: 'flex' },
+    //   });
+    // }
   },[loading])
   useEffect(() => {
     getAllRegions();
@@ -114,6 +115,7 @@ export default function CheckoutScreen(props) {
   useEffect(() => {
     if(user?.token!==''){
       //setLoading(true);
+      setLoadingAddress(true);
 
       axios
         .get(GetShippingAddress, {
@@ -145,10 +147,12 @@ export default function CheckoutScreen(props) {
             setSelectedCountry(res?.data?.data?.country?.name);
           }
           //setLoading(false);
+          setLoadingAddress(false);
         })
         .catch(function (error) {
           console.log(error.response.data);
           //setLoading(false);
+          setLoadingAddress(false);
           //errorMessage('Something went wrong!');
           errorMessage(errorHandler(error))
         });
@@ -527,28 +531,82 @@ export default function CheckoutScreen(props) {
         <Text style={styles.checkout}>Check Out</Text>
         <ICONS.Entypo name="lock" size={30} color="black" />
       </View>
-     {user?.token!==''?(
+     {loadingAddress ? (
+      <View
+      style={{
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: hp2(6),
+      }}>
+      <SkypeIndicator color={'black'} />
+    </View>
+     ) : (
+      <>
+      {user?.token!==''?(
        <KeyboardAwareScrollView
        showsVerticalScrollIndicator={false}
        contentContainerStyle={{paddingTop: hp2(2), paddingBottom: hp2(12)}}>
        <View style={styles.checkoutWrap}>
        <FlatList
            horizontal
+          
            showsHorizontalScrollIndicator={true}
            pagingEnabled
            data={props?.route?.params?.data}
            renderItem={({item, index}) => {
              return (
                <View style={styles.dataWrap}>
-             <View style={styles.productImage}>
+             
+             {/* <View style={styles.productImage}>
                <Image
                  //source={IMAGES.vinDiesel}
                  source={{uri:item?.product?.product_images[0]?.image[0]?.original_url}}
                  style={{width: '100%', height: '100%'}}
                  resizeMode="cover"
                />
+             </View> */}
+
+             <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
+             <Animated.ScrollView
+        horizontal
+        pagingEnabled
+        
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: true},
+        )}>
+          {item?.product?.product_images[0]?.image?.map((item,index)=>{
+            return(
+          <View key={index} style={styles.productImage}>
+          <Image
+            source={{uri:item?.original_url}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          />
+        </View>
+          )
+          })}
+      </Animated.ScrollView>
+     {item?.product?.product_images[0]?.image?.length>1 && (
+       <View
+       style={{
+         width: wp2(36),
+         position: 'absolute',
+         bottom: hp2(1),
+         zIndex: 999,
+       }}>
+       <RNAnimatedScrollIndicators
+         numberOfCards={item?.product?.product_images[0]?.image?.length}
+         scrollWidth={wp2(36)}
+         activeColor={'#707070'}
+         inActiveColor={'#D9D9D9'}
+         scrollAnimatedValue={scrollX}
+       />
+     </View>
+     )}
              </View>
-             
+     
          <View style={styles.itemArea}>
            <Text style={styles.text}>{item?.product?.name}</Text>
 
@@ -556,7 +614,7 @@ export default function CheckoutScreen(props) {
 
            <View style={{flexDirection:'row',alignItems:'center'}}>
          <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{item?.size?.size}</Text>
+         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {item?.size?.size}</Text>
          </View>
 
          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.qty}</Text>
@@ -926,41 +984,90 @@ export default function CheckoutScreen(props) {
      </KeyboardAwareScrollView>
      ):(
        <KeyboardAwareScrollView
+     
        showsVerticalScrollIndicator={false}
        contentContainerStyle={{paddingTop: hp2(2), paddingBottom: hp2(12)}}>
        <View style={styles.checkoutWrap}>
        <FlatList
+     
            horizontal
            showsHorizontalScrollIndicator={true}
            pagingEnabled
+           
            data={products}
            renderItem={({item, index}) => {
              return (
                <View style={styles.dataWrap}>
-             <View style={styles.productImage}>
+             {/* <View style={styles.productImage}>
                <Image
                  //source={IMAGES.vinDiesel}
                  source={{uri:item?.data?.product_images[0]?.image[0]?.original_url}}
                  style={{width: '100%', height: '100%'}}
                  resizeMode="cover"
                />
+             </View> */}
+
+<View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
+      <Animated.ScrollView
+        horizontal
+        
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: true},
+        )}>
+          {item?.data?.product_images[0]?.image?.map((item,index)=>{
+            return(
+          <View key={index} style={styles.productImage}>
+          <Image
+            source={{uri:item?.original_url}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          />
+        </View>
+          )
+          })}
+      </Animated.ScrollView>
+      
+     {item?.data?.product_images[0]?.image?.length>1 && (
+       <View
+       style={{
+         width: wp2(36),
+         position: 'absolute',
+         bottom: hp2(1),
+         zIndex: 999,
+       }}>
+       <RNAnimatedScrollIndicators
+         numberOfCards={item?.data?.product_images[0]?.image?.length}
+         scrollWidth={wp2(36)}
+         activeColor={'#707070'}
+         inActiveColor={'#D9D9D9'}
+         scrollAnimatedValue={scrollX}
+       />
+     </View>
+     )}
              </View>
+
              
          <View style={styles.itemArea}>
            <Text style={styles.text}>{item?.data?.name}</Text>
 
+           <View style={{flexDirection:'row',alignItems:'center'}}>
+         <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {item?.sizeId?.size?.size}</Text>
+         </View>
+         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.Quantity}</Text>
+           
            <View
              style={{flexDirection: 'row', justifyContent: 'space-between'}}>
              <Text style={styles.text}>price</Text>
              <Text style={styles.text}>£{item?.data?.price}</Text>
            </View>
 
-           <View style={{flexDirection:'row',alignItems:'center'}}>
-         <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{item?.sizeId?.size?.size}</Text>
-         </View>
+           
 
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.Quantity}</Text>
+         
 
            {continueButton === 'purchase' &&
            <View
@@ -1024,6 +1131,17 @@ export default function CheckoutScreen(props) {
 
        {continueButton == 'confirm' ? (
          <View style={styles.detailInputArea}>
+          <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={stateChange.email}
              onChangeText={val => updateState({email: val})}  />
@@ -1060,6 +1178,18 @@ export default function CheckoutScreen(props) {
            {textBox('COUNTRY')}
            {textBox('CITY')}
            {textBox('POSTCODE')} */}
+           <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
+
            <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={stateChange.address_1}
              onChangeText={val => updateState({address_1: val})}  />
@@ -1172,6 +1302,17 @@ export default function CheckoutScreen(props) {
            {textBox('CITY')}
            {textBox('COUNTRY')}
            {textBox('POSTCODE')} */}
+           <View
+         style={{
+           flexDirection: 'row',
+           justifyContent: 'space-between',
+           paddingLeft: wp2(39),
+           paddingRight: wp2(2),
+           marginVertical: hp2(1),
+         }}>
+         <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
+       </View>
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{stateChange.address_1}</Text>
@@ -1263,6 +1404,8 @@ export default function CheckoutScreen(props) {
          </Text>
        </TouchableOpacity>
      </KeyboardAwareScrollView>
+     )}
+      </>
      )}
       {/* <BottomComp /> */}
     </View>

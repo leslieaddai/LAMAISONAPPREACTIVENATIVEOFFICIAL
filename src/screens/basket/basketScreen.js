@@ -238,6 +238,10 @@ export default function BasketScreen(props) {
                 <Text style={{color: 'black', textTransform: 'uppercase'}}>
                   {data[0]?.product?.name}
                 </Text>
+                <View style={{flexDirection:'row',alignItems:'center',marginTop:hp2(4)}}>
+                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {data[0]?.size?.size}</Text>
+                </View>
                 <Text
                   style={{
                     color: 'black',
@@ -247,10 +251,7 @@ export default function BasketScreen(props) {
                   £{data[0]?.product?.price}
                 </Text>
       
-                <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
-                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{data[0]?.size?.size}</Text>
-                </View>
+                
       
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {loading2 ? (
@@ -322,6 +323,10 @@ export default function BasketScreen(props) {
                 <Text style={{color: 'black', textTransform: 'uppercase'}}>
                   {products[0]?.data?.name}
                 </Text>
+                <View style={{flexDirection:'row',alignItems:'center',marginTop:hp2(4)}}>
+                <View style={{width:wp2(9),height:wp2(9),backgroundColor:products[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {products[0]?.sizeId?.size?.size}</Text>
+                </View>
                 <Text
                   style={{
                     color: 'black',
@@ -331,10 +336,7 @@ export default function BasketScreen(props) {
                   £{products[0]?.data?.price}
                 </Text>
       
-                <View style={{flexDirection:'row',alignItems:'center',marginBottom:hp2(4)}}>
-                <View style={{width:wp2(9),height:wp2(9),backgroundColor:products[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>{products[0]?.sizeId?.size?.size}</Text>
-                </View>
+
       
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text
