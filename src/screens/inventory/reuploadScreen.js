@@ -11,6 +11,7 @@ import {
   Platform,
   Animated,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -358,43 +359,54 @@ export default function ReuploadScreen(props) {
         const type = match ? `image/${match[1]}` : `image`;
 
         var array = [...selectedImage];
-        if (id !== -1) {
-          setLoading2(true);
-
-          var formdata = new FormData();
-
-          formdata.append('product_image_id', array?.[id]?.id);
-          formdata.append('image', {uri, name: filename, type});
-          formdata.append('product_id', props?.route?.params?.data?.id);
-
-          let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: ProductImageUpdate,
-            headers: {
-              Authorization: `Bearer ${user.token}`,
-              Accept: 'application/json',
-              'Content-Type': 'multipart/form-data',
-            },
-            data: formdata,
-          };
-
-          axios
-            .request(config)
-            .then(async function (res) {
-              console.log(res.data);
-              array[id] = {uri, name: filename, type, id: res?.data?.data?.id};
-              setSelectedImage(array);
-              setLoading2(false);
-              successMessage('Image Updated');
-            })
-            .catch(function (error) {
-              console.log(error.response.data);
-              setLoading2(false);
-              //errorMessage('Image Update Failed');
-              errorMessage(errorHandler(error))
-            });
-        }
+        Alert.alert("","Are you sure you want to update this image",
+        [
+          {
+            text:"Cancel"
+          },{
+            text:"Ok",
+            onPress: ()=>{
+              if (id !== -1) {
+                setLoading2(true);
+      
+                var formdata = new FormData();
+      
+                formdata.append('product_image_id', array?.[id]?.id);
+                formdata.append('image', {uri, name: filename, type});
+                formdata.append('product_id', props?.route?.params?.data?.id);
+      
+                let config = {
+                  method: 'post',
+                  maxBodyLength: Infinity,
+                  url: ProductImageUpdate,
+                  headers: {
+                    Authorization: `Bearer ${user.token}`,
+                    Accept: 'application/json',
+                    'Content-Type': 'multipart/form-data',
+                  },
+                  data: formdata,
+                };
+      
+                axios
+                  .request(config)
+                  .then(async function (res) {
+                    console.log(res.data);
+                    array[id] = {uri, name: filename, type, id: res?.data?.data?.id};
+                    setSelectedImage(array);
+                    setLoading2(false);
+                    successMessage('Image Updated');
+                  })
+                  .catch(function (error) {
+                    console.log(error.response.data);
+                    setLoading2(false);
+                    //errorMessage('Image Update Failed');
+                    errorMessage(errorHandler(error))
+                  });
+              }
+            }
+          }
+        ])
+        
       }
     };
 

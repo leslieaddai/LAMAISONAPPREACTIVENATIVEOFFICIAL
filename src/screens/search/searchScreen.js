@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -44,6 +44,7 @@ import {SearchUrl,EditorSearch} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import { debounce } from 'lodash'
 
 export default function SearchScreen({navigation, route}) {
   const [selected, setSelected] = useState('brands');
@@ -130,6 +131,18 @@ export default function SearchScreen({navigation, route}) {
       });
   };
 
+  const debouncedSearch = debounce((searchTerm) => {
+    setText(text)
+    setData([]);
+                  setDataEditor([]);
+                  getSearchResults('1');
+                  getEditorResults();
+    console.log(searchTerm)
+  }, 500);
+  const handleInputChange = (text) => {
+    debouncedSearch(text);
+  };
+  
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
@@ -145,9 +158,8 @@ export default function SearchScreen({navigation, route}) {
               <TextInput
                 style={styles.textBoxInput}
                 value={text}
-                onChangeText={value => {
-                  setText(value);
-                }}
+                  onChangeText={(val)=>{setText(val)}}
+              
                 onSubmitEditing={() => {
                   //console.log('submited', text);
                   setData([]);

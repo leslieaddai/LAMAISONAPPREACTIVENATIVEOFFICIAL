@@ -31,11 +31,17 @@ import {
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
+import {SkypeIndicator} from 'react-native-indicators';
+
 
 export default function Popular(props) {
   console.log(props?.data);
   const navigation = useNavigation();
   const user = useSelector(state => state.userData);
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity
       onPress={() => user?.userData?.role?.[0]?.id!==3?
@@ -56,14 +62,31 @@ export default function Popular(props) {
       style={styles.container}>
       <Text style={{color: 'black', marginLeft: wp2(3)}}>{props?.no + 1}</Text>
       <View style={styles.productImage}>
+      {loading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
         <Image
           //source={IMAGES.randomPic}
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+        style={{width: '100%', height: '100%'}}
+        resizeMode="cover"
           source={{
             uri: props?.data?.product?.product_images?.[0]?.image?.[0]
               ?.original_url,
           }}
-          style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
         />
       </View>
       <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>

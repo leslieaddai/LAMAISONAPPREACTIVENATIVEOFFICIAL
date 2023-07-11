@@ -67,7 +67,7 @@ export default function ImageViewScreen(props) {
             <Image
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
+              resizeMode="contain"
             />
           </View>
           )
