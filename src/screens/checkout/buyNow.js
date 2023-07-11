@@ -245,12 +245,16 @@ export default function BuyNow(props) {
     axios
     .post(ShippingAvailability,{region:stateChange?.region,product_id:[props?.route?.params?.data?.id]})
     .then(async function(res){
-      console.log(res?.data)
-      setContinueButton('confirm')
+      // console.log("error check",res?.data)
+      if(res?.data?.status){
+        setContinueButton('confirm')
+      }else{
+        errorMessage(String(Object.values(res?.data['message'])[0]))
+      }
     })
     .catch(function (error) {
       console.log(error?.response?.data)
-      //errorMessage(errorHandler(error))
+      // errorMessage(errorHandler(error))
       errorMessage(error?.response?.data?.message)
     })
    }else{

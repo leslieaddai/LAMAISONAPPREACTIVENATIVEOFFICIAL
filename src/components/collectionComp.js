@@ -39,7 +39,7 @@ export default function CollectionComp(props) {
         <Image
           source={props?.uri}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </TouchableOpacity>
     </View>

@@ -266,7 +266,11 @@ export default function CheckoutScreen(props) {
     .post(ShippingAvailability,obj)
     .then(async function(res){
       console.log(res?.data)
-      setContinueButton('confirm')
+      if(res?.data?.status){
+        setContinueButton('confirm')
+      }else{
+        errorMessage(String(Object.values(res?.data['message'])[0]))
+      }
     })
     .catch(function (error) {
       console.log(error?.response?.data)
@@ -808,34 +812,6 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-         {/* {isOpenedRegions && (
-           <View style={[styles.styleBox]}>
-             {regionsData?.map((item, index) => (
-               <TouchableOpacity
-                 onPress={() => {
-                   setSelectedRegion(item?.name);
-                   updateState({region: Number(item?.id)});
-                   setIsOpenedRegions(false);
-                   setSelectedCountry('SELECT COUNTRY');
-                   updateState({country: null});
-                   getAllCountries(item?.code);
-                 }}
-                 key={index}
-                 style={styles.itemWrap}>
-                 <Text style={styles.itemTxt}>{item?.name}</Text>
-                 {selectedRegion === item?.name && (
-                   <ICONS.Entypo
-                     name="check"
-                     size={24}
-                     color="black"
-                     style={{position: 'absolute', right: 10}}
-                   />
-                 )}
-               </TouchableOpacity>
-             ))}
-           </View>
-         )} */}
-
          <TouchableOpacity
            disabled={selectedRegion === 'SELECT REGION' ? true : false}
            onPress={() =>
@@ -861,36 +837,6 @@ export default function CheckoutScreen(props) {
              />
            </View>
          </TouchableOpacity>
-
-         {/* {isOpenedCountries && countriesData.length !== 0 && (
-           <View style={[styles.styleBox]}>
-             {countriesData?.map((item, index) => (
-               <TouchableOpacity
-                 onPress={() => {
-                   setSelectedCountry(item?.name);
-                   updateState({country: Number(item?.country_id)});
-                   setIsOpenedCountries(false);
-                 }}
-                 key={index}
-                 style={styles.itemWrap}>
-                 <Text style={styles.itemTxt}>{item?.name}</Text>
-                 {selectedCountry === item?.name && (
-                   <ICONS.Entypo
-                     name="check"
-                     size={24}
-                     color="black"
-                     style={{position: 'absolute', right: 10}}
-                   />
-                 )}
-               </TouchableOpacity>
-             ))}
-           </View>
-         )} */}
-
-     {/* <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'COUNTRY'}  placeholderTextColor={'grey'}  />
-     </View> */}
-     
      <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={stateChange.postcode}
              onChangeText={val => updateState({postcode: val})} maxLength={10} />
@@ -904,17 +850,6 @@ export default function CheckoutScreen(props) {
            {textBox('CITY')}
            {textBox('COUNTRY')}
            {textBox('POSTCODE')} */}
-           <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(39),
-           paddingRight: wp2(2),
-           marginVertical: hp2(1),
-         }}>
-         <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
-       </View>
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{stateChange.address_1}</Text>
@@ -1157,7 +1092,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Commission {commission}%</Text>
-         <Text style={styles.text}>£{total*(commission/100)}</Text>
+         <Text style={styles.text}>£{total*(commission/100).toFixed(3)}</Text>
        </View>
 
        <View

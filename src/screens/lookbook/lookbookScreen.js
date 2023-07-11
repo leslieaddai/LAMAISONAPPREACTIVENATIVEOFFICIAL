@@ -130,7 +130,7 @@ export default function LookbookScreen(props) {
                   <Image
                     source={{uri: allStates[0]?.media[0]?.original_url}}
                     style={{width: '100%', height: '100%'}}
-                    resizeMode="cover"
+                    resizeMode="contain"
                   />
                 </TouchableOpacity>
               ) : (
