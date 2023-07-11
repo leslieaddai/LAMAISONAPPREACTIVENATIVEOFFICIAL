@@ -181,6 +181,22 @@ export default function BuyNow(props) {
     }
   },[stateChange?.region])
 
+  useEffect(()=>{            
+    if(isOpenedRegions){
+      setModalData(regionsData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedRegions])
+
+  useEffect(()=>{            
+    if(isOpenedCountries){
+      setModalData(countriesData)
+      uibottomesheetvisiblity(true)
+
+    }
+  },[isOpenedCountries])
+
   const getAllRegions = () => {
     axios
       .get(GetRegionsAll)
@@ -454,22 +470,6 @@ export default function BuyNow(props) {
     setVisible(Bool);
   };
 
-  useEffect(()=>{            
-    if(isOpenedRegions){
-      setModalData(regionsData)
-      uibottomesheetvisiblity(true)
-
-    }
-  },[isOpenedRegions])
-
-  useEffect(()=>{            
-    if(isOpenedCountries){
-      setModalData(countriesData)
-      uibottomesheetvisiblity(true)
-
-    }
-  },[isOpenedCountries])
-
   const SelectRegion = (Bool,regionname, regionid,regioncode)=>{
     setSelectedRegion(regionname);
     updateState({region: Number(regionid)});
@@ -485,6 +485,7 @@ export default function BuyNow(props) {
     updateState({country: Number(countryid)});
     setIsOpenedCountries(Bool)
   }
+
   return (
     <>
      <View style={{position: 'absolute', zIndex: 999}}>

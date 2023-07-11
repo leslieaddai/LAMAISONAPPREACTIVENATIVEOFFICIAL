@@ -125,7 +125,7 @@ export default function AnalyticsScreen(props) {
         </View>
 
         <View style={styles.box2}>
-        <Text style={[styles.textOne, {fontSize: rfv(18)}]}>{data?.revenue?.[0]?.revenue}</Text>
+        <Text style={[styles.textOne, {fontSize: rfv(18)}]}>{data?.revenue?.[0]?.revenue === null ? '0' : data?.revenue?.[0]?.revenue}</Text>
           <Text style={styles.textTwo}>REVENUE</Text>
         </View>
 

@@ -162,7 +162,7 @@ export default function ShippingLocation(props) {
                       key={index}
                       data={item}
                       state={{getAllRegions}}
-                      disable={item?.name === 'Asia' ? false : true}
+                      //disable={item?.name === 'Asia' ? false : false}
                     />
                   );
                 })}

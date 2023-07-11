@@ -143,19 +143,20 @@ export default function ShippingComp(props) {
           </View>
         </View>
       ) : null}
-      <View style={styles.optionWrap}>
+      <TouchableOpacity 
+       //disabled={props?.disable}
+       onPress={() => setShow(true)}
+       style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{props?.data?.name}</Text>
-        <TouchableOpacity
-          disabled={props?.disable}
-          onPress={() => setShow(true)}
+        <View
           style={[
             styles.circle,
             {
               backgroundColor:
                 props?.data?.shipping_brand !== null ? 'black' : '#D9D9D9',
             },
-          ]}></TouchableOpacity>
-      </View>
+          ]}></View>
+      </TouchableOpacity>
     </>
   );
 }
