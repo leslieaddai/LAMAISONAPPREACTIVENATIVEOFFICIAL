@@ -107,11 +107,11 @@ export default function BuyNow(props) {
     const parent = props.navigation.setOptions({
       tabBarStyle: { display: 'none' },
     });}
-    // else {
-    //   const parent = props.navigation.setOptions({
-    //     tabBarStyle: { display: 'flex' },
-    //   });
-    // }
+    else {
+      const parent = props.navigation.setOptions({
+        tabBarStyle: { display: 'flex', width: wp2(100),height: Platform.OS==='ios'?hp2(10):hp2(8),backgroundColor: 'white',},
+      });
+    }
   },[loading])
 
   useEffect(() => {
@@ -555,7 +555,8 @@ export default function BuyNow(props) {
        <RNAnimatedScrollIndicators
          numberOfCards={props?.route?.params?.data?.product_images[0]?.image?.length}
          scrollWidth={wp2(36)}
-         activeColor={'#707070'}
+         //activeColor={'#707070'}
+         activeColor={'#D9D9D9'}
          inActiveColor={'#D9D9D9'}
          scrollAnimatedValue={scrollX}
        />

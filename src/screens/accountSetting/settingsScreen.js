@@ -168,6 +168,11 @@ useEffect(()=>{
   const parent = props.navigation.setOptions({
     tabBarStyle: { display: 'none' },
   });}
+  else{
+    const parent = props.navigation.setOptions({
+      tabBarStyle: { display: 'flex', width: wp2(100),height: Platform.OS==='ios'?hp2(10):hp2(8),backgroundColor: 'white',},
+    });
+  }
 },[loading])
   return (
     <>

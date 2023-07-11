@@ -114,7 +114,9 @@ export default function NotificationComp(props) {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}}  onPress={() =>
+      {props?.type === 'follow' ? (
+        <>
+        <TouchableOpacity style={{flexDirection:'row',alignItems:'center'}}  onPress={() =>
           props?.user?.roles?.[0]?.id === 2
             ? navigation.navigate('editorProfileScreen', {
                 userData: {
@@ -139,8 +141,6 @@ export default function NotificationComp(props) {
             <View
         style={styles.imgWrap}>
         <Image
-          //source={IMAGES.randomProfile}
-          //source={{uri: props?.user?.profile_image?.original_url}}
           source={props?.user?.profile_image!==null?{uri: props?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
@@ -148,21 +148,17 @@ export default function NotificationComp(props) {
       </View>
       <View
         style={{
-          width: wp2(props?.type === 'follow' ? 50 : 60),
+          width: wp2(50),
           paddingHorizontal: wp2(3),
         }}>
         <Text style={{color: 'black', marginBottom: 4}}>
-          {props?.type === 'follow'
-            ? `${props?.user?.username} started following you`
-            : props?.type === 'share' ? `${props?.user?.username} shared your ${props?.product?.name}` : 
-        props?.type ==='like' ? `${props?.user?.username} liked your ${props?.product?.name}`:''}
+          {props?.user?.username} started following you
         </Text>
         <Text style={{color: 'black'}}>{moment(props?.date).fromNow()}</Text>
       </View>
 
       </TouchableOpacity>
-      {props?.type === 'follow' ? (
-        <TouchableOpacity
+      <TouchableOpacity
           disabled={loadingFollow}
           onPress={() => {
             if (!follow) {
@@ -184,24 +180,49 @@ export default function NotificationComp(props) {
             </Text>
           )}
         </TouchableOpacity>
+        </>
       ) : (
-        <TouchableOpacity
-          onPress={() => user?.userData?.role?.[0]?.id!==3?
+       <>
+        <TouchableOpacity  
+        onPress={() => user?.userData?.role?.[0]?.id!==3?
             navigation.navigate('dressingRoomScreen', {
               data: {product: {id: props?.product?.id}},
             }):navigation.navigate('imageViewScreen',{item:props?.product?.product_images})
-          }
-          style={styles.imgWrap}>
-          <Image
-            //source={IMAGES.randomProfile}
+          } 
+        style={{flexDirection:'row',alignItems:'center'}} 
+        >
+        <View
+        style={styles.imgWrap}>
+        <Image
+          source={props?.user?.profile_image!==null?{uri: props?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="contain"
+        />
+      </View>
+      <View
+        style={{
+          width: wp2(60),
+          paddingHorizontal: wp2(3),
+        }}>
+        <Text style={{color: 'black', marginBottom: 4}}>
+          {props?.type === 'share' ? `${props?.user?.username} shared your ${props?.product?.name}` : 
+        props?.type ==='like' ? `${props?.user?.username} liked your ${props?.product?.name}`:
+        props?.type ==='wishlist' ? `${props?.user?.username} added ${props?.product?.name} to their wishlist` : ''}
+        </Text>
+        <Text style={{color: 'black'}}>{moment(props?.date).fromNow()}</Text>
+      </View>
+      <View style={styles.imgWrap}>
+      <Image
             source={{
               uri: props?.product?.product_images?.[0]?.image?.[0]
                 ?.original_url,
             }}
             style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </TouchableOpacity>
+            resizeMode="contain"
+      />
+      </View>
+      </TouchableOpacity>
+       </>
       )}
     </View>
   );
@@ -217,18 +238,19 @@ const styles = StyleSheet.create({
     marginVertical: hp2(1),
   },
   imgWrap: {
+    backgroundColor:'white',
     width: wp2(16),
     height: wp2(18),
     overflow: 'hidden',
     borderRadius: wp2(4),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
+    // elevation: 3,
   },
   followBTN: {
     width: wp2(28),

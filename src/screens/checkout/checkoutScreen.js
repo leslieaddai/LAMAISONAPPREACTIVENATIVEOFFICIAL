@@ -57,6 +57,8 @@ import {BottomSheet} from 'react-native-btr';
 import {SkypeIndicator} from 'react-native-indicators';
 import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 
+import { ScrollView as GestureHandlerScrollView } from 'react-native-gesture-handler'
+
 export default function CheckoutScreen(props) {
 
   const dispatch = useDispatch();
@@ -102,11 +104,11 @@ export default function CheckoutScreen(props) {
     const parent = props.navigation.setOptions({
       tabBarStyle: { display: 'none' },
     });}
-    // else {
-    //   const parent = props.navigation.setOptions({
-    //     tabBarStyle: { display: 'flex' },
-    //   });
-    // }
+    else {
+      const parent = props.navigation.setOptions({
+        tabBarStyle: { display: 'flex', width: wp2(100),height: Platform.OS==='ios'?hp2(10):hp2(8),backgroundColor: 'white',},
+      });
+    }
   },[loading])
   useEffect(() => {
     getAllRegions();
@@ -567,7 +569,7 @@ export default function CheckoutScreen(props) {
              </View> */}
 
              <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
-             <Animated.ScrollView
+             {/* <Animated.ScrollView
         horizontal
         pagingEnabled
         
@@ -587,7 +589,28 @@ export default function CheckoutScreen(props) {
         </View>
           )
           })}
-      </Animated.ScrollView>
+      </Animated.ScrollView> */}
+
+      <GestureHandlerScrollView
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+      >
+
+         {item?.product?.product_images[0]?.image?.map((item,index)=>{
+            return(
+          <View key={index} style={styles.productImage}>
+          <Image
+            source={{uri:item?.original_url}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          />
+        </View>
+          )
+          })}
+
+      </GestureHandlerScrollView>
+
      {item?.product?.product_images[0]?.image?.length>1 && (
        <View
        style={{
@@ -599,7 +622,8 @@ export default function CheckoutScreen(props) {
        <RNAnimatedScrollIndicators
          numberOfCards={item?.product?.product_images[0]?.image?.length}
          scrollWidth={wp2(36)}
-         activeColor={'#707070'}
+         //activeColor={'#707070'}
+         activeColor={'#D9D9D9'}
          inActiveColor={'#D9D9D9'}
          scrollAnimatedValue={scrollX}
        />
@@ -1008,7 +1032,7 @@ export default function CheckoutScreen(props) {
              </View> */}
 
 <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
-      <Animated.ScrollView
+      {/* <Animated.ScrollView
         horizontal
         
         pagingEnabled
@@ -1028,7 +1052,27 @@ export default function CheckoutScreen(props) {
         </View>
           )
           })}
-      </Animated.ScrollView>
+      </Animated.ScrollView> */}
+
+      <GestureHandlerScrollView
+      horizontal
+      pagingEnabled
+      showsHorizontalScrollIndicator={false}
+     >
+
+        {item?.data?.product_images[0]?.image?.map((item,index)=>{
+            return(
+          <View key={index} style={styles.productImage}>
+          <Image
+            source={{uri:item?.original_url}}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="cover"
+          />
+        </View>
+          )
+          })}
+
+      </GestureHandlerScrollView>
       
      {item?.data?.product_images[0]?.image?.length>1 && (
        <View
@@ -1041,7 +1085,8 @@ export default function CheckoutScreen(props) {
        <RNAnimatedScrollIndicators
          numberOfCards={item?.data?.product_images[0]?.image?.length}
          scrollWidth={wp2(36)}
-         activeColor={'#707070'}
+         //activeColor={'#707070'}
+         activeColor={'#D9D9D9'}
          inActiveColor={'#D9D9D9'}
          scrollAnimatedValue={scrollX}
        />

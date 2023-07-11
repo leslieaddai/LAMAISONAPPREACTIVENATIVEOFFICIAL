@@ -102,7 +102,7 @@ export default function FollowComp(props) {
                 : props?.data?.item?.followings?.profile_image?.original_url,
           }:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
       <Text style={styles.text}>

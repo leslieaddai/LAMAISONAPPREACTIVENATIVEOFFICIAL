@@ -47,7 +47,7 @@ export default function BrandComp(props) {
         //source={IMAGES.randomPic}
         source={props?.data?.profile_image!==null?{uri:props?.data?.profile_image?.original_url}:IMAGES.profileIcon3}
         style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
+        resizeMode="contain"
       />
     </TouchableOpacity>
   );
@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: wp2(6),
     marginHorizontal: wp2(1),
+    marginVertical: hp2(0.5),
+    backgroundColor:'white',
 
     shadowColor: '#000',
     shadowOffset: {
@@ -68,6 +70,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 3,
   },
 });

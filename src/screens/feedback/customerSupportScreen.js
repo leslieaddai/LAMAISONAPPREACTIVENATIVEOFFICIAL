@@ -88,15 +88,15 @@ export default function CustomerSupportScreen(props) {
 
   const options = text => {
     return (
-      <View style={styles.optionWrap}>
+      <TouchableOpacity onPress={() => setSelected(text)} style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{text}</Text>
-        <TouchableOpacity
-          onPress={() => setSelected(text)}
+        <View
+          
           style={[
             styles.circle,
             {backgroundColor: selected == text ? 'black' : '#D9D9D9'},
-          ]}></TouchableOpacity>
-      </View>
+          ]}></View>
+      </TouchableOpacity>
     );
   };
   return (
