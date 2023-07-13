@@ -433,7 +433,7 @@ export default function BrandProfileScreen(props) {
 
             <ScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: hp2(12)}}>
+              contentContainerStyle={{paddingBottom: hp2(2)}}>
               <Text style={styles.popularTxt}>POPULAR</Text>
               {data?.popular_products?.length!==0? data?.popular_products?.map((item, index) => {
                 return <Popular key={index} data={item} no={index} />;

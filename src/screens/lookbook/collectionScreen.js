@@ -38,16 +38,37 @@ import CollectionItemsComp from '../../components/collectionItemsComp';
 export default function CollectionScreen({navigation, route}) {
   items = route.params;
   //console.log(items)
+  const [showDelete, setShowDelete] = useState(false);
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.headWrap}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{position: 'absolute', left: wp2(4)}}>
+            style={{position: 'absolute', left: wp2(4)}}
+            >
             <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
           <Text style={styles.collectionText}>COLLECTION</Text>
+          <TouchableOpacity
+          style={{position: 'absolute', right: wp2(4)}}
+        onPress={() => {
+          showDelete ? setShowDelete(false) : setShowDelete(true);
+        }}>
+        {showDelete ? (
+          <View style={styles.deleteButton}>
+            <Text style={{color: 'black',fontSize:rfv(8),}}>Delete Collection</Text>
+            <ICONS.Ionicons name="ios-trash-bin" size={14} color="red" />
+          </View>
+        ) : (
+          <ICONS.Ionicons
+            name="menu-outline"
+            size={30}
+            color="black"
+            //style={{marginLeft: wp2(68)}}
+          />
+        )}
+      </TouchableOpacity>
         </View>
         <Text style={styles.text}>{items?.collectionname}</Text>
         <FlatList
@@ -90,7 +111,7 @@ const styles = StyleSheet.create({
   collectionText: {
     color: 'black',
     fontWeight: '700',
-    fontSize: rfv(24),
+    fontSize: rfv(14),
   },
   text: {
     color: 'black',
@@ -104,5 +125,24 @@ const styles = StyleSheet.create({
     paddingTop: hp2(2),
     paddingBottom: hp2(12),
     //justifyContent:'space-between',
+  },
+  deleteButton: {
+    width: wp2(28),
+    height: hp2(4),
+    backgroundColor: '#D9D9D9',
+    borderRadius: wp2(4),
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row',
+    //marginLeft: wp2(44),
+
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });

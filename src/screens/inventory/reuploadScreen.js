@@ -72,7 +72,9 @@ export default function ReuploadScreen(props) {
   const [regions, setRegions] = useState([]);
   const [isOpenedShipping, setIsOpenedShipping] = useState(false);
   const [selectedImage, setSelectedImage] = useState([]);
+
   const routeitem = props?.route?.params?.data
+  
   const [visible, setVisible] = useState(false);
   const [stateChange, setStateChange] = useState({
     productName: routeitem?.name,
@@ -191,7 +193,8 @@ export default function ReuploadScreen(props) {
       stateChange?.pieces !== '' &&
       stateChange?.description !== '' &&
       stateChange?.price !== '' &&
-      selectedText !== 'SELECT STYLE'
+      selectedText !== 'SELECT STYLE' &&
+      regions.length !== 0
     ) {
       setShowQuantity(true);
     } else {
@@ -201,11 +204,11 @@ export default function ReuploadScreen(props) {
   const getShippingInfo = () => {
     axios
       .get(GetBrandShippingInfo, {
-        headers: {Authorization: `Bearer ${user.token}`},
+        headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
         console.log("skjjk",res?.data);
-        if (res?.data?.data.length > 0) {
+        if (res?.data?.data?.length > 0) {
           // setHaveShippingInfo(true);
           setShippingData(res?.data?.data);
           //console.log('this is true')
@@ -221,8 +224,8 @@ export default function ReuploadScreen(props) {
       });
   };
   const addRegions = (item) => {
-    regions.some(e => e.regionId === item?.shipping_id)
-      ? setRegions(regions.filter(e => e.regionId !== item?.shipping_id))
+    regions?.some(e => e?.regionId === item?.shipping_id)
+      ? setRegions(regions?.filter(e => e?.regionId !== item?.shipping_id))
       : setRegions([
           ...regions,
           {regionName: item?.shipping?.name, regionId: item?.shipping_id},
@@ -312,6 +315,10 @@ export default function ReuploadScreen(props) {
     formdata.append('piece_id', stateChange?.piece_id);
     formdata.append('style', String(stateChange?.style_id));
     formdata.append('status', 1);
+
+    regions.map((item, index) => {
+      formdata.append('regions[]', item?.regionId);
+    });
 
     let config = {
       method: 'post',
@@ -591,6 +598,15 @@ export default function ReuploadScreen(props) {
             {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
          <Text style={styles.previewTxt}>free shipping to all regions</Text>
         </View> */}
+        <View
+              style={[
+                styles.inputBox,
+                {justifyContent: 'center', paddingHorizontal: wp2(2)},
+              ]}>
+              <Text style={styles.selectTxt}>
+                {regions.map((item, index) => item?.regionName + ' ')}
+              </Text>
+            </View>
             <View
               style={[
                 styles.inputBox,

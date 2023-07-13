@@ -49,7 +49,7 @@ export default function CollectionItemsComp(props) {
         <Image
           source={props.uri}
           style={{width: '100%', height: '100%'}}
-          resizeMode="cover"
+          resizeMode="contain"
         />
       </View>
       <Text style={{color: 'black', textAlign: 'center', fontSize: rfv(11)}}>

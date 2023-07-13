@@ -93,7 +93,8 @@ export default function PostCompListView(props) {
     </View>
 
     <TouchableOpacity
-      onPress={() => navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
+      //onPress={() => navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
+      onPress={() => navigation.navigate('imageView',{item:props?.data})}
       style={styles.imageContainer}>
       <Image
         //source={IMAGES.randomPic}

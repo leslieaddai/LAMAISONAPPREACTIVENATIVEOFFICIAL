@@ -63,6 +63,7 @@ import Sizes from "../screens/imageUploadLookbook/sizes";
 import SelectColor from "../screens/dressingRoom/color";
 import SelectSizes from "../screens/dressingRoom/size";
 import VerifyAccountScreen from "../screens/auth/verifyAccountScreen";
+import ImageView from "../screens/home/imageView";
 
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
 // import { BottomNavigation } from "./BottomNavigator";
@@ -181,6 +182,7 @@ export const guestScreens = [
   {name:'selectColor',component:SelectColor},
   {name:'selectSizes',component:SelectSizes},
   {name:"verifyAccountScreen", component:VerifyAccountScreen},
+  {name:'imageView',component:ImageView},
 ]
 
 export const brandScreens = [
@@ -240,6 +242,7 @@ export const brandScreens = [
 
     {name:'selectColor',component:SelectColor},
     {name:'selectSizes',component:SelectSizes},
+    {name:'imageView',component:ImageView},
 ]
 
 export const editorScreens = [
@@ -302,4 +305,5 @@ export const editorScreens = [
 
    {name:'selectColor',component:SelectColor},
    {name:'selectSizes',component:SelectSizes},
+   {name:'imageView',component:ImageView},
 ]

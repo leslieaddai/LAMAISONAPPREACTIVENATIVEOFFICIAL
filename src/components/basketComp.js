@@ -49,6 +49,7 @@ export default function BasketComp(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
+  const [count, setCount] = useState(Number(props?.data?.qty));
 
   const onIncreament = (indexVal) => {
     props?.data?.data?.product_variations?.map((item,index)=>{
@@ -105,7 +106,8 @@ export default function BasketComp(props) {
       .then(async function (res) {
         console.log(res.data);
         //getBasket()
-        props?.basket?.getBasket();
+        //props?.basket?.getBasket();
+        setCount(count+1)
         setLoading2(false);
       })
       .catch(function (error) {
@@ -117,7 +119,8 @@ export default function BasketComp(props) {
 }
 
 const onDecreamentEditor = (basketId) => {
-if(props?.data?.qty<2){
+//if(props?.data?.qty<2){
+  if(count<2){
 Alert.alert(
   'Confirmation',
   'Do you want to remove this product from your basket?',
@@ -165,7 +168,8 @@ axios
   .then(async function (res) {
     console.log(res.data);
     //getBasket()
-    props?.basket?.getBasket();
+    //props?.basket?.getBasket();
+    setCount(count-1);
     setLoading2(false);
   })
   .catch(function (error) {
@@ -208,12 +212,15 @@ axios
                 <SkypeIndicator size={20} style={{position:'absolute'}} color={'black'} />
               
           ):(
-            <Text style={[styles.quantityTxt,{position:'absolute',}]}>{props?.data?.qty}</Text>
+            <Text style={[styles.quantityTxt,{position:'absolute',}]}>
+              {/* {props?.data?.qty} */}
+              {count}
+              </Text>
           )}
-          <TouchableOpacity onPress={()=>onIncreamentEditor(props?.data?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>
+          <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(props?.data?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>
             <ICONS.Entypo name="plus" size={30} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>onDecreamentEditor(props?.data?.id)}
+          <TouchableOpacity disabled={loading2} onPress={()=>onDecreamentEditor(props?.data?.id)}
             style={[
               styles.button,
               {backgroundColor: 'white', borderColor: 'black'},

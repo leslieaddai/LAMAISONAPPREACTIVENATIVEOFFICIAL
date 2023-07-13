@@ -52,6 +52,7 @@ export default function BasketScreen(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
+  const [count, setCount] = useState();
 
   useEffect(() => {
    user?.token!=='' && getBasket()
@@ -65,12 +66,13 @@ export default function BasketScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
-        setData(res.data.data);
+        console.log(res?.data);
+        setData(res?.data?.data);
+        setCount(res?.data?.data?.[0]?.qty);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
         setLoading(false);
         //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
@@ -101,7 +103,8 @@ export default function BasketScreen(props) {
             })
             .then(async function (res) {
               console.log(res.data);
-              getBasket()
+              //getBasket()
+              setCount(count+1)
               setLoading2(false);
             })
             .catch(function (error) {
@@ -113,7 +116,8 @@ export default function BasketScreen(props) {
   }
 
   const onDecreamentEditor = (basketId) => {
-    if(data[0]?.qty<2){
+    // if(data[0]?.qty<2){
+      if(count<2){
       Alert.alert(
         'Confirmation',
         'Do you want to remove this product from your basket?',
@@ -159,7 +163,8 @@ export default function BasketScreen(props) {
         })
         .then(async function (res) {
           console.log(res.data);
-          getBasket()
+          //getBasket()
+          setCount(count-1);
           setLoading2(false);
         })
         .catch(function (error) {
@@ -266,7 +271,8 @@ export default function BasketScreen(props) {
                       //marginRight: wp2(4),
                       position:'absolute',
                     }}>
-                    {data[0]?.qty}
+                    {/* {data[0]?.qty} */}
+                    {count}
                   </Text>
                   )}
                   <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(data[0]?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>

@@ -415,7 +415,9 @@ export default function EditorProfileScreen(props) {
 
               <Wardrobe user={props?.route?.params?.userData} />
 
-              <NextPickup data={data} />
+              {props?.route?.params?.userData?.userData?.id === user?.userData?.id && (
+                  <NextPickup data={data} />
+              )}
             </ScrollView>
 
             {/* <BottomComp /> */}
