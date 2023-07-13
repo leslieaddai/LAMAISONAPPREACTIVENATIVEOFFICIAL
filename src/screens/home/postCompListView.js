@@ -92,17 +92,24 @@ export default function PostCompListView(props) {
       </TouchableOpacity>
     </View>
 
-    <TouchableOpacity
-      //onPress={() => navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
-      onPress={() => navigation.navigate('imageView',{item:props?.data})}
-      style={styles.imageContainer}>
-      <Image
-        //source={IMAGES.randomPic}
-        source={{uri:props?.data?.product_images?.[0]?.image?.[0]?.original_url}}
-        style={{width: '100%', height: '100%'}}
-        resizeMode="cover"
-      />
-    </TouchableOpacity>
+    <FlatList data={props?.data?.product_images?.[0]?.image} horizontal pagingEnabled showsHorizontalScrollIndicator={false}
+    renderItem={({item,index}) => {
+      return (
+        <TouchableOpacity key={index}
+        //onPress={() => navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
+        onPress={() => navigation.navigate('imageView',{item:props?.data,indexValue:index})}
+        style={styles.imageContainer}>
+        <Image
+          //source={IMAGES.randomPic}
+          //source={{uri:props?.data?.product_images?.[0]?.image?.[0]?.original_url}}
+          source={{uri:item?.original_url}}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+      );
+    }}
+    />
 
     <View style={styles.iconWrap}>
       <TouchableOpacity

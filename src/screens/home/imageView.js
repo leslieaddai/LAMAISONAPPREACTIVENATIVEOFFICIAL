@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -11,6 +11,7 @@ import {
   ImageBackground,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -37,8 +38,22 @@ import {
 export default function ImageView(props) {
 
   itemdata = props?.route?.params?.item
+  itemindex = props?.route?.params?.indexValue
   console.log(itemdata)
+
+  // const ref = useRef();
+
+  // const scrollToIndex = index => {
+  //   ref?.current?.scrollToIndex({
+  //     animated:true,
+  //     index:index,
+  //   });
+  // }
  
+  // useEffect(()=>{
+  //   scrollToIndex(1);
+  // },[])
+
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
@@ -51,23 +66,28 @@ export default function ImageView(props) {
         }}>
         <ICONS.AntDesign name="left" size={24} color="black" />
       </TouchableOpacity>
-      <ScrollView
+      <FlatList
+        //ref={ref}
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        >
-          {itemdata?.product_images?.[0]?.image?.map((item,index)=>{
-            return(
+        data={itemdata?.product_images?.[0]?.image}
+        getItemLayout={(data, index) => (
+          {length: wp2(100), offset: wp2(100) * index, index}
+        )}
+        initialScrollIndex={itemindex}
+        renderItem={({item,index})=>{
+          return(
             <View key={index} style={{width: wp2(100), height: hp2(100)}}>
             <Image
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
-          </View>
+            </View>
           )
-          })}
-      </ScrollView>
+        }}
+        />
       <View
        style={styles.toolBar}>
        <TouchableOpacity>
