@@ -57,6 +57,7 @@ export default function SearchScreen({navigation, route}) {
   const [loading2, setLoading2] = useState(false);
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
+  const [previouspage,setPreviouspage] = useState()
   const user = useSelector(state => state.userData);
 
   const [loadingComp, setLoadingComp] = useState(false);
@@ -69,14 +70,20 @@ export default function SearchScreen({navigation, route}) {
   const region = useSelector(state => state.Continent);
 
   useEffect(() => {
-    getSearchResults('1');
+    getSearchResults('','1');
     getEditorResults();
   }, []);
+  useEffect(()=>{
+    if(text==''){
+      getSearchResults('','1');
+      getEditorResults('');
+    }
+  },[text])
 
-  const getEditorResults = () => {
+  const getEditorResults = (searchtext) => {
     setLoading2(true);
     axios
-      .post(EditorSearch,{keyword:text})
+      .post(EditorSearch,{keyword:searchtext})
       .then(async function (res) {
         console.log(res?.data);
         setDataEditor(res?.data?.data)
@@ -90,11 +97,12 @@ export default function SearchScreen({navigation, route}) {
       });
   }
 
-  const getSearchResults = page_no => {
+  const getSearchResults = (searchtext,page_no) => {
+    setPreviouspage(page_no)
     setLoading(true);
 
     let obj = {
-      keyword: text,
+      keyword: searchtext,
       price_range: Price,
     };
 
@@ -117,11 +125,18 @@ export default function SearchScreen({navigation, route}) {
     axios
       .post(SearchUrl + page_no, obj)
       .then(async function (res) {
-        console.log(res?.data);
+        // console.log(res?.data);
+        if(previouspage == res?.data?.current_page){
+        setData([...res?.data?.data]);
+        setPage(res?.data?.next_page_url);
+        setPageNo(res?.data?.current_page);
+        setLoading(false);
+      }else{
         setData(prev => [...prev, ...res?.data?.data]);
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
         setLoading(false);
+      }
       })
       .catch(function (error) {
         console.log(error.response.data);
@@ -132,16 +147,21 @@ export default function SearchScreen({navigation, route}) {
   };
 
   const debouncedSearch = debounce((searchTerm) => {
-    setText(text)
-    setData([]);
+                setData([]);
                   setDataEditor([]);
-                  getSearchResults('1');
-                  getEditorResults();
+                  getSearchResults(searchTerm,'1');
+                  getEditorResults(searchTerm);
     console.log(searchTerm)
   }, 500);
-  const handleInputChange = (text) => {
-    debouncedSearch(text);
-  };
+  let typingTimeout = null;
+const handleInputChange = (text) => {
+  setText(text)
+  clearTimeout(typingTimeout); // Clear any previous typing timeout
+
+  typingTimeout = setTimeout(() => {
+    debouncedSearch(text); // Call the debounced search function after typing delay
+  }, 500);
+}
   
   return (
     <>
@@ -158,15 +178,15 @@ export default function SearchScreen({navigation, route}) {
               <TextInput
                 style={styles.textBoxInput}
                 value={text}
-                  onChangeText={(val)=>{setText(val)}}
+                  onChangeText={handleInputChange}
               
-                onSubmitEditing={() => {
-                  //console.log('submited', text);
-                  setData([]);
-                  setDataEditor([]);
-                  getSearchResults('1');
-                  getEditorResults();
-                }}
+                // onSubmitEditing={() => {
+                //   //console.log('submited', text);
+                //   setData([]);
+                //   setDataEditor([]);
+                //   getSearchResults('1');
+                //   getEditorResults();
+                // }}
                 placeholderTextColor={'grey'}
                 returnKeyLabel="done"
                 returnKeyType="done"

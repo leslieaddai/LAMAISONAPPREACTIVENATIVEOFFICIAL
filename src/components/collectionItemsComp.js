@@ -30,12 +30,17 @@ import {
   FONTS,
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import {SkypeIndicator} from 'react-native-indicators';
 import {useDispatch, useSelector} from 'react-redux';
 
 export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
   console.log(props);
   const user = useSelector(state => state.userData);
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity
       onPress={() => user?.userData?.role?.[0]?.id!==3?
@@ -46,7 +51,24 @@ export default function CollectionItemsComp(props) {
       }
       style={styles.imageContainer}>
       <View style={{height: hp2(18), overflow: 'hidden'}}>
+      {loading?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
         <Image
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={props.uri}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"

@@ -18,9 +18,14 @@ import {
 } from 'react-native-responsive-fontsize';
 import {wp2, hp2} from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function CollectionComp(props) {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <View>
       <View style={{width: wp2(54), alignItems: 'center'}}>
@@ -36,7 +41,24 @@ export default function CollectionComp(props) {
           })
         }
         style={styles.imageContainer}>
+          {loading?
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf:'center'
+          }}>
+        <SkypeIndicator
+        color={'black'}
+      /> 
+      </View>
+      :
+      undefined
+          }
         <Image
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={props?.uri}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"

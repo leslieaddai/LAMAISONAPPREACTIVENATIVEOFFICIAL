@@ -79,6 +79,10 @@ export default function DressingRoomScreen(props) {
   const [sizeId, setSizeId] = useState(null);
 
   const [appNotice, setAppNotice] = useState(null);
+  const [loadingimag, setLoadingImage] = useState(false)
+  const onloading = (value,label)=>{
+    setLoadingImage(value)
+  }
 
   //console.log(props?.route?.params)
 
@@ -754,7 +758,24 @@ export default function DressingRoomScreen(props) {
                       })
                     }
                     style={[styles.brandImage,{backgroundColor:'white'}]}>
+                      {loadingimag?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                     <Image
+                    progressiveRenderingEnabled={true}
+                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                    onLoad={()=>onloading(false,"onLoad")}
+                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                       //source={IMAGES.randomPic}
                       source={data?.user?.profile_image!==null?{uri: data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
                       style={{width: '100%', height: '100%'}}
@@ -824,7 +845,24 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
                       ]}>
+                        {loadingimag?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                       <Image
+                      progressiveRenderingEnabled={true}
+                      onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                      onLoad={()=>onloading(false,"onLoad")}
+                      onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                         //source={IMAGES.randomPic}
                         source={{
                           uri: data?.product_images?.[0]?.image?.[0]
@@ -951,8 +989,25 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
+                        {loadingimag?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                       <Image
                         //source={IMAGES.randomPic}
+                        progressiveRenderingEnabled={true}
+                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                    onLoad={()=>onloading(false,"onLoad")}
+                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -982,8 +1037,25 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
+                        {loadingimag?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                       <Image
                         //source={IMAGES.vinDiesel}
+                        progressiveRenderingEnabled={true}
+                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                    onLoad={()=>onloading(false,"onLoad")}
+                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -1017,8 +1089,25 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
+                        {loadingimag?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                       <Image
                         //source={IMAGES.randomPic}
+                        progressiveRenderingEnabled={true}
+                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                    onLoad={()=>onloading(false,"onLoad")}
+                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1

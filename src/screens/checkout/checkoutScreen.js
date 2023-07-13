@@ -733,8 +733,8 @@ export default function CheckoutScreen(props) {
              onChangeText={val => updateState({name: val})}/>
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={stateChange.card}
-             onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={19}/>
+       <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={card}
+             onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={16}/>
      </View>
        <View
          style={{
@@ -744,8 +744,11 @@ export default function CheckoutScreen(props) {
            width: wp2(80),
          }}>
          <View style={[styles.inputBox, {width: wp2(48)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={stateChange.expiry}
-             onChangeText={val => updateState({expiry: val})} />
+           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry}
+             onChangeText={text => 
+             updateState({expiry: text.length === 3 && !text.includes("/")
+             ? `${text.substring(0, 2)}/${text.substring(2)}`
+             : text})} />
          </View>
          <View style={[styles.inputBox, {width: wp2(28)}]}>
            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={stateChange.cvv}
@@ -1143,7 +1146,10 @@ export default function CheckoutScreen(props) {
          }}>
          <View style={[styles.inputBox, {width: wp2(48)}]}>
            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={stateChange.expiry}
-             onChangeText={val => updateState({expiry: val})} />
+             onChangeText={text => 
+              updateState({expiry: text.length === 3 && !text.includes("/")
+             ? `${text.substring(0, 2)}/${text.substring(2)}`
+             : text})} />
          </View>
          <View style={[styles.inputBox, {width: wp2(28)}]}>
            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={stateChange.cvv}

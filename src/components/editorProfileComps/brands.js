@@ -30,9 +30,14 @@ import {
   FONTS,
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('brandProfileScreen',{
@@ -43,8 +48,25 @@ export default function BrandComp(props) {
         },
       })}
       style={styles.brandImage}>
+        {loading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
       <Image
         //source={IMAGES.randomPic}
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
         source={props?.data?.profile_image!==null?{uri:props?.data?.profile_image?.original_url}:IMAGES.profileIcon3}
         style={{width: '100%', height: '100%'}}
         resizeMode="contain"

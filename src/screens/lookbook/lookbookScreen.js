@@ -54,6 +54,10 @@ export default function LookbookScreen(props) {
   //const {token} = useSelector(state => state.userData);
   const [allStates, setAllStates] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   // const {GetcollectionLoading} = allLoading;
 
   // const {Getcollectiontate} = allStates;
@@ -127,7 +131,24 @@ export default function LookbookScreen(props) {
                     })
                   }
                   style={styles.imageContainer}>
+                    {loading?
+                    <View style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      alignSelf:'center'
+                    }}>
+                  <SkypeIndicator
+                  color={'black'}
+                /> 
+                </View>
+                :
+                undefined
+                    }
                   <Image
+                    progressiveRenderingEnabled={true}
+                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                    onLoad={()=>onloading(false,"onLoad")}
+                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                     source={{uri: allStates[0]?.media[0]?.original_url}}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="contain"
