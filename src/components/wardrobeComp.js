@@ -52,6 +52,10 @@ export default function WardrobeComp(props) {
   //console.log(props);
   const [heart, setHeart] = useState(props?.data?.is_liked);
   const [share, setShare] = useState(props?.data?.is_share);
+  const [loadingImage, setLoadingImage] = useState(false)
+  const onloading = (value,label)=>{
+    setLoadingImage(value)
+  }
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.userData);
@@ -135,8 +139,25 @@ export default function WardrobeComp(props) {
         }):navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_image}]}]})
       }
       style={styles.imageContainer}>
+        {loadingImage?
+                <View style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  alignSelf:'center'
+                }}>
+              <SkypeIndicator
+              color={'black'}
+            /> 
+            </View>
+            :
+            undefined
+                }
       <Image
         //source={IMAGES.lookbook}
+        progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
         source={{uri: props?.data?.product_image}}
         style={{width: '100%', height: '80%'}}
         resizeMode="cover"

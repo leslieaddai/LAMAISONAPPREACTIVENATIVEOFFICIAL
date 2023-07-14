@@ -53,6 +53,10 @@ export default function HomeScreen(props) {
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
+  const [loadingImage, setLoadingImage] = useState(false)
+  const [postcomloading,setPostcomploading] = useState(false)
+  const[productcomploading,setProductcomploading] =useState(false)
+  const [prod2comploading,setProd2comploading] = useState(false)
 
   useEffect(() => {
     setLoading(true);
@@ -301,6 +305,9 @@ const newsfeed = () =>{
   };
 
   const postComp = (data) => {
+    const onloading = (value,label)=>{
+      setPostcomploading(value)
+    }
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -324,8 +331,25 @@ const newsfeed = () =>{
         <TouchableOpacity
           onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
           style={styles.imageContainer}>
+            {postcomloading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
           <Image
             //source={IMAGES.randomPic}
+            progressiveRenderingEnabled={true}
+            onLoadStart={()=>{onloading(true,"onLoadStart")}}
+            onLoad={()=>onloading(false,"onLoad")}
+            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
             source={{uri:data?.product_images?.[0]?.image?.[0]?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
@@ -336,6 +360,9 @@ const newsfeed = () =>{
   };
 
   const productComp = (data) => {
+    const onloading = (value,label)=>{
+      setProductcomploading(value)
+    }
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -367,7 +394,24 @@ const newsfeed = () =>{
               key={index}
             onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer}>
+               {productcomploading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
             <Image
+            progressiveRenderingEnabled={true}
+            onLoadStart={()=>{onloading(true,"onLoadStart")}}
+            onLoad={()=>onloading(false,"onLoad")}
+            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
               //source={IMAGES.randomPic}
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
@@ -382,6 +426,9 @@ const newsfeed = () =>{
   };
 
   const productComp2 = (data) => {
+    const onloading = (value,label)=>{
+      setProd2comploading(value)
+    }
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -420,8 +467,25 @@ const newsfeed = () =>{
               key={index}
             onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer2}>
+              {prod2comploading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
             <Image
               //source={IMAGES.randomPic}
+            progressiveRenderingEnabled={true}
+            onLoadStart={()=>{onloading(true,"onLoadStart")}}
+            onLoad={()=>onloading(false,"onLoad")}
+            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"

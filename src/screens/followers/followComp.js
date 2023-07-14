@@ -30,9 +30,13 @@ import {
   FONTS,
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
-
+import {SkypeIndicator} from 'react-native-indicators';
 export default function FollowComp(props) {
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   //console.log(props?.data)
   //console.log(props?.list)
 
@@ -93,8 +97,25 @@ export default function FollowComp(props) {
   return (
     <TouchableOpacity onPress={navigateScreen} style={styles.container}>
       <View style={styles.imageContainer}>
+      {loading?
+        <View style={{
+          alignItems: 'center',
+          justifyContent: 'center',
+          alignSelf:'center'
+        }}>
+      <SkypeIndicator
+      color={'black'}
+    /> 
+    </View>
+    :
+    undefined
+        }
         <Image
           //source={IMAGES.lookbook}
+          progressiveRenderingEnabled={true}
+        onLoadStart={()=>{onloading(true,"onLoadStart")}}
+        onLoad={()=>onloading(false,"onLoad")}
+        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={props?.data?.item?.followers?.profile_image!==null && props?.data?.item?.followings?.profile_image!==null ?{
             uri:
               props?.list === 'follower'

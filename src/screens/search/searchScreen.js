@@ -156,10 +156,10 @@ export default function SearchScreen({navigation, route}) {
   let typingTimeout = null;
 const handleInputChange = (text) => {
   setText(text)
-  clearTimeout(typingTimeout); // Clear any previous typing timeout
+  clearTimeout(typingTimeout); 
 
   typingTimeout = setTimeout(() => {
-    debouncedSearch(text); // Call the debounced search function after typing delay
+    debouncedSearch(text); 
   }, 500);
 }
   
