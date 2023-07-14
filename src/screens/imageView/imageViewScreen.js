@@ -11,6 +11,7 @@ import {
   ImageBackground,
   Platform,
   SafeAreaView,
+  FlatList,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -38,7 +39,9 @@ import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators'
 export default function ImageViewScreen(props) {
   const scrollX = new Animated.Value(0);
   itemdata = props?.route?.params?.item
+  itemindex = props?.route?.params?.indexValue === undefined ? null : props?.route?.params?.indexValue
   console.log(itemdata)
+  console.log(itemindex)
  
   return (
     <SafeAreaView style={{flex:1}}>
@@ -52,7 +55,8 @@ export default function ImageViewScreen(props) {
         }}>
         <ICONS.AntDesign name="left" size={24} color="black" />
       </TouchableOpacity>
-      <Animated.ScrollView
+      {itemindex === null ? (
+        <Animated.ScrollView
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
@@ -73,6 +77,34 @@ export default function ImageViewScreen(props) {
           )
           })}
       </Animated.ScrollView>
+      ) : (
+        <Animated.FlatList
+        horizontal
+        pagingEnabled
+        showsHorizontalScrollIndicator={false}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {x: scrollX}}}],
+          {useNativeDriver: true},
+        )}
+        data={itemdata?.[0]?.image}
+        getItemLayout={(data, index) => (
+          {length: wp2(100), offset: wp2(100) * index, index}
+        )}
+        initialScrollIndex={itemindex}
+        renderItem={({item,index})=>{
+          return(
+            <View key={index} style={{width: wp2(100), height: hp2(100)}}>
+            <Image
+              source={{uri:item?.original_url}}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </View>
+          )
+        }}
+        >
+      </Animated.FlatList>
+      )}
      {itemdata[0]?.image?.length>1 && (
        <View
        style={{

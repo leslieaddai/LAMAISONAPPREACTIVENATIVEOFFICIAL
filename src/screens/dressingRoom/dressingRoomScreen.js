@@ -839,7 +839,8 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                       onPress={() =>
-                        props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})
+                        //props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})
+                        props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:0})
                       }
                       style={[
                         styles.brandImage,
@@ -979,9 +980,14 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                      onPress={() =>
-                      props.navigation.navigate('imageViewScreen',{item:
-                        data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0] ?.original_url}]}]
-                        : data?.product_images?.[0]?.image.length >= 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
+                      // props.navigation.navigate('imageViewScreen',{item:
+                      //   data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0] ?.original_url}]}]
+                      //   : data?.product_images?.[0]?.image.length >= 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
+                      //   : null,
+                      // })
+                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
+                        data?.product_images?.[0]?.image.length === 1 ? 0
+                        : data?.product_images?.[0]?.image.length >= 2 ? 1
                         : null,
                       })
                     }
@@ -1026,10 +1032,16 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                     onPress={() =>
-                      props.navigation.navigate('imageViewScreen',{item:
-                        data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                        : data?.product_images?.[0]?.image.length === 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                         : data?.product_images?.[0]?.image.length >= 3 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[2]?.original_url}]}]
+                      // props.navigation.navigate('imageViewScreen',{item:
+                      //   data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                      //   : data?.product_images?.[0]?.image.length === 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                      //    : data?.product_images?.[0]?.image.length >= 3 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[2]?.original_url}]}]
+                      //      : null,
+                      // })
+                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
+                        data?.product_images?.[0]?.image.length === 1 ? 0
+                        : data?.product_images?.[0]?.image.length === 2 ? 0
+                         : data?.product_images?.[0]?.image.length >= 3 ? 2
                            : null,
                       })
                     }
@@ -1077,11 +1089,18 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                     onPress={() =>
-                      props.navigation.navigate('imageViewScreen',{item:
-                        data?.product_images?.[0]?.image.length === 1? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                          : data?.product_images?.[0]?.image.length === 2? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
-                           : data?.product_images?.[0]?.image.length === 3? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                              : data?.product_images?.[0]?.image.length === 4? [{image:[{original_url:data?.product_images?.[0]?.image?.[3]?.original_url}]}]
+                      // props.navigation.navigate('imageViewScreen',{item:
+                      //   data?.product_images?.[0]?.image.length === 1? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                      //     : data?.product_images?.[0]?.image.length === 2? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
+                      //      : data?.product_images?.[0]?.image.length === 3? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
+                      //         : data?.product_images?.[0]?.image.length === 4? [{image:[{original_url:data?.product_images?.[0]?.image?.[3]?.original_url}]}]
+                      //         : null,
+                      // })
+                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
+                        data?.product_images?.[0]?.image.length === 1? 0
+                          : data?.product_images?.[0]?.image.length === 2? 1
+                           : data?.product_images?.[0]?.image.length === 3? 0
+                              : data?.product_images?.[0]?.image.length === 4? 3
                               : null,
                       })
                     }
