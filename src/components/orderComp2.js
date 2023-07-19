@@ -57,10 +57,10 @@ export default function OrderComp2(props) {
       </View>
       <View style={{marginLeft: wp2(3)}}>
         <View style={{flexDirection:'row',justifyContent:'space-between',width:wp2(70)}}>
-          <Text>Orderno</Text>
-        <TouchableOpacity onPress={()=>alert('hello.')}>
+        <Text>{props?.data?.order_number}</Text>
+        <TouchableOpacity onPress={props.onpress}>
         <Text style={{color: '#065521', fontWeight: '600', fontSize: rfv(14)}}>
-          {props?.data?.status?.status}
+          {`Details->`}
         </Text>
         </TouchableOpacity>
         </View>

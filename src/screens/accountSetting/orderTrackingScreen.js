@@ -225,13 +225,13 @@ export default function OrderTrackingScreen(props) {
              {data?.map((item2,index2)=>{
                if(moment(item2?.created_at).format('MM/YY') === item){
                  return(
-                   <>
-                   {item2?.order?.[0]?.vendor_order_details?.map((item3,index3)=>{
-                     return(
-                       <OrderComp2 data={item3} key={index3} />
-                     )
-                   })}
-                   </>
+                  <>
+                  {item2?.order.map((item3,index3)=>{
+                    return(
+                      <OrderComp2 data={item3} key={index3} onpress={()=>{props.navigation.navigate('OrderDetails',{item:item3.vendor_order_details})}}/>
+                    )
+                  })}
+                  </>
                  )
                }
              })}

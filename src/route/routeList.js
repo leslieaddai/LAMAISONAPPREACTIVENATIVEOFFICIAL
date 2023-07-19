@@ -66,7 +66,8 @@ import VerifyAccountScreen from "../screens/auth/verifyAccountScreen";
 import ImageView from "../screens/home/imageView";
 
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
-// import { BottomNavigation } from "./BottomNavigator";
+ import OrderDetails from "../screens/OrderDetailedScreen/OrderDetails";
+ // import { BottomNavigation } from "./BottomNavigator";
 
 export const stackRouteList = [
     {name:'homeScreen',component:HomeScreen},//
@@ -243,6 +244,7 @@ export const brandScreens = [
     {name:'selectColor',component:SelectColor},
     {name:'selectSizes',component:SelectSizes},
     {name:'imageView',component:ImageView},
+    {name:'OrderDetails',component:OrderDetails}
 ]
 
 export const editorScreens = [
