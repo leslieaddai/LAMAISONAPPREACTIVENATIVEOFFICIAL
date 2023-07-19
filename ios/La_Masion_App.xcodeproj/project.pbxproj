@@ -576,9 +576,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.reactjs.native.example.--PRODUCT-NAME-rfc1034identifier-";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.reactjs.native.example.La-Masion-AppTests";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.reactjs.native.example.La-Masion-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/La_Masion_App.app/La_Masion_App";
 			};
@@ -603,9 +601,7 @@
 					"-lc++",
 					"$(inherited)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.reactjs.native.example.--PRODUCT-NAME-rfc1034identifier-";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=iphoneos*]" = "com.reactjs.native.example.La-Masion-AppTests";
-				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "com.reactjs.native.example.La-Masion-AppTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/La_Masion_App.app/La_Masion_App";
 			};

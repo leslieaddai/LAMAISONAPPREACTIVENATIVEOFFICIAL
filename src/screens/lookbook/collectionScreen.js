@@ -10,6 +10,7 @@ import {
   Platform,
   FlatList,
   SafeAreaView,
+  Alert,
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -35,10 +36,41 @@ import {
 import BottomComp from '../../components/bottomComp';
 import CollectionItemsComp from '../../components/collectionItemsComp';
 
+import {useDispatch, useSelector} from 'react-redux';
+
 export default function CollectionScreen({navigation, route}) {
   items = route.params;
+  const user = useSelector(state => state.userData);
   //console.log(items)
   const [showDelete, setShowDelete] = useState(false);
+
+  const onDeleteCollection = () => {
+    //showDelete ? setShowDelete(false) : setShowDelete(true);
+
+    if(showDelete){
+      Alert.alert('Confirmation', 'Do you want to delete?', [
+        {
+          text: 'No',
+          onPress: () => {
+            console.log('No Pressed')
+            setShowDelete(false)
+          },
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            setShowDelete(false)
+          },
+        },
+      ]);
+
+    }else{
+      setShowDelete(true);
+    }
+    
+  }
+
   return (
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
@@ -50,25 +82,25 @@ export default function CollectionScreen({navigation, route}) {
             <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
           <Text style={styles.collectionText}>COLLECTION</Text>
-          <TouchableOpacity
-          style={{position: 'absolute', right: wp2(4)}}
-        onPress={() => {
-          showDelete ? setShowDelete(false) : setShowDelete(true);
-        }}>
-        {showDelete ? (
-          <View style={styles.deleteButton}>
-            <Text style={{color: 'black',fontSize:rfv(8),}}>Delete Collection</Text>
-            <ICONS.Ionicons name="ios-trash-bin" size={14} color="red" />
-          </View>
-        ) : (
-          <ICONS.Ionicons
-            name="menu-outline"
-            size={30}
-            color="black"
-            //style={{marginLeft: wp2(68)}}
-          />
-        )}
-      </TouchableOpacity>
+          {items?.user?.userData?.id === user?.userData?.id && (
+            <TouchableOpacity
+            style={{position: 'absolute', right: wp2(4)}}
+          onPress={() => onDeleteCollection()}>
+          {showDelete ? (
+            <View style={styles.deleteButton}>
+              <Text style={{color: 'black',fontSize:rfv(8),}}>Delete Collection</Text>
+              <ICONS.Ionicons name="ios-trash-bin" size={14} color="red" />
+            </View>
+          ) : (
+            <ICONS.Ionicons
+              name="menu-outline"
+              size={30}
+              color="black"
+              //style={{marginLeft: wp2(68)}}
+            />
+          )}
+        </TouchableOpacity>
+          )}
         </View>
         <Text style={styles.text}>{items?.collectionname}</Text>
         <FlatList

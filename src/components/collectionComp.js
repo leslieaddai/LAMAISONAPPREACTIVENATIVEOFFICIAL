@@ -23,6 +23,7 @@ import {SkypeIndicator} from 'react-native-indicators';
 export default function CollectionComp(props) {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false)
+  const user2 = props?.user;
   const onloading = (value,label)=>{
     setLoading(value)
   }
@@ -37,6 +38,7 @@ export default function CollectionComp(props) {
           navigation.navigate('collectionScreen', {
             collection: props?.itemscollection,
             collectionname: props?.name,
+            user:user2,
             // ,userData:props?.userData
           })
         }
