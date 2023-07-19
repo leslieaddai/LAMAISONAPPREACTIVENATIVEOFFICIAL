@@ -2,9 +2,13 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>keychain-access-groups</key>
+	<key>aps-environment</key>
+	<string>development</string>
+	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.reactjs.native.example.--PRODUCT-NAME-rfc1034identifier-</string>
+		<string>group.com.reactjs.native.example.La-Masion-App.onesignal</string>
 	</array>
+	<key>keychain-access-groups</key>
+	<array/>
 </dict>
 </plist>
