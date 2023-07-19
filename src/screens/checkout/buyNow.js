@@ -63,6 +63,7 @@ export default function BuyNow(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
+  const [loadingContinue, setLoadingContinue] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
@@ -258,10 +259,12 @@ export default function BuyNow(props) {
   if( (stateChange.address_1 !== '' && stateChange.address_1 !== null) && (stateChange.city !== '' && stateChange.city !== null) && (stateChange.region!== '' && stateChange.region!== null) && (stateChange.country !== '' && stateChange.country !== null) && (stateChange.postcode !== '' && stateChange.postcode !== null)){
     //setContinueButton('confirm')
    if(constainalphabet(stateChange?.city)){
+    setLoadingContinue(true);
     axios
     .post(ShippingAvailability,{region:stateChange?.region,product_id:[props?.route?.params?.data?.id]})
     .then(async function(res){
       // console.log("error check",res?.data)
+      setLoadingContinue(false);
       if(res?.data?.status){
         setContinueButton('confirm')
       }else{
@@ -270,6 +273,7 @@ export default function BuyNow(props) {
     })
     .catch(function (error) {
       console.log(error?.response?.data)
+      setLoadingContinue(false);
       // errorMessage(errorHandler(error))
       errorMessage(error?.response?.data?.message)
     })
@@ -927,6 +931,7 @@ export default function BuyNow(props) {
         )}
  
         <TouchableOpacity
+        disabled={loadingContinue}
           onPress={() => {
             continueButton == 'continue'
             ? onContinue()
@@ -935,13 +940,17 @@ export default function BuyNow(props) {
             :  createOrder();
           }}
           style={styles.button}>
-          <Text style={styles.buttonText}>
-            {continueButton == 'continue'
-              ? 'CONTINUE'
-              : continueButton == 'confirm'
-              ? 'CONFIRM'
-              : 'PURCHASE'}
-          </Text>
+            {loadingContinue ? (
+              <SkypeIndicator color={'white'} />
+            ) : (
+              <Text style={styles.buttonText}>
+              {continueButton == 'continue'
+                ? 'CONTINUE'
+                : continueButton == 'confirm'
+                ? 'CONFIRM'
+                : 'PURCHASE'}
+            </Text>
+            )}
         </TouchableOpacity>
       </KeyboardAwareScrollView>
       )}

@@ -64,6 +64,7 @@ export default function CheckoutScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
+  const [loadingContinue, setLoadingContinue] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
@@ -258,6 +259,7 @@ export default function CheckoutScreen(props) {
   ){
     if(constainalphabet(stateChange.city)){
     //setContinueButton('confirm')
+    setLoadingContinue(true);
     let obj = {
       region:stateChange?.region,
       product_id:user?.token!==''?props?.route?.params?.data?.map((item,index)=>{return(item?.product_id)}):products?.map((item,index)=>{return(item?.data?.id)}),
@@ -266,6 +268,7 @@ export default function CheckoutScreen(props) {
     .post(ShippingAvailability,obj)
     .then(async function(res){
       console.log(res?.data)
+      setLoadingContinue(false);
       if(res?.data?.status){
         setContinueButton('confirm')
       }else{
@@ -274,6 +277,7 @@ export default function CheckoutScreen(props) {
     })
     .catch(function (error) {
       console.log(error?.response?.data)
+      setLoadingContinue(false);
       //errorMessage(errorHandler(error))
       errorMessage(error?.response?.data?.message)
     })
@@ -927,6 +931,7 @@ export default function CheckoutScreen(props) {
        )}
 
        <TouchableOpacity
+       disabled={loadingContinue}
          onPress={() => {
            continueButton == 'continue'
            ? onContinue()
@@ -935,13 +940,17 @@ export default function CheckoutScreen(props) {
            :  createEditorOrder();
          }}
          style={styles.button}>
-         <Text style={styles.buttonText}>
+          {loadingContinue ? (
+            <SkypeIndicator color={'white'} />
+          ) : (
+            <Text style={styles.buttonText}>
            {continueButton == 'continue'
              ? 'CONTINUE'
              : continueButton == 'confirm'
              ? 'CONFIRM'
              : 'PURCHASE'}
          </Text>
+          )}
        </TouchableOpacity>
      </KeyboardAwareScrollView>
      ):(
@@ -1373,6 +1382,7 @@ export default function CheckoutScreen(props) {
        )}
 
        <TouchableOpacity
+       disabled={loadingContinue}
          onPress={() => {
            continueButton == 'continue'
            ? onContinue()
@@ -1381,13 +1391,17 @@ export default function CheckoutScreen(props) {
            :  createGuestOrder();
          }}
          style={styles.button}>
-         <Text style={styles.buttonText}>
+          {loadingContinue ? (
+            <SkypeIndicator color={'white'} />
+          ) : (
+            <Text style={styles.buttonText}>
            {continueButton == 'continue'
              ? 'CONTINUE'
              : continueButton == 'confirm'
              ? 'CONFIRM'
              : 'PURCHASE'}
          </Text>
+          )}
        </TouchableOpacity>
      </KeyboardAwareScrollView>
      )}

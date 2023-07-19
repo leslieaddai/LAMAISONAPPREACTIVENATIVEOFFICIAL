@@ -128,6 +128,7 @@ export default function LookbookScreen(props) {
                     props.navigation.navigate('collectionScreen', {
                       collection: allStates[0].collection_products,
                       collectionname: allStates[0]?.name,
+                      user:user2,
                     })
                   }
                   style={styles.imageContainer}>
@@ -175,6 +176,7 @@ export default function LookbookScreen(props) {
                             name={item?.name}
                             itemscollection={item?.collection_products}
                             uri={{uri: item?.media[0]?.original_url}}
+                            user={user2}
                             //userData={item?.user}
                           />
                         )}
