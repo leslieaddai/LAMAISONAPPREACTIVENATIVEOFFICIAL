@@ -45,6 +45,7 @@ export default function OrderComp2(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   console.log("asld",props?.data.order)
+  //console.log("asld array",props?.orderStatus)
   return (
     <View style={styles.container}>
       <View style={styles.imgWrap}>

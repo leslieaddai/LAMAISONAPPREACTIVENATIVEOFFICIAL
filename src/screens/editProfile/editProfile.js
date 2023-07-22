@@ -252,6 +252,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     alignItems:'center',
     justifyContent:'center',
+    backgroundColor:'white',
 
     shadowColor: '#000',
     shadowOffset: {

@@ -40,7 +40,7 @@ import OrderComp2 from '../../components/orderComp2';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {GetBrandOrders,GetOrdersByEditorAndGuest} from '../../config/Urls';
+import {GetBrandOrders,GetOrdersByEditorAndGuest,OrderStatus} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -51,6 +51,7 @@ export default function OrderTrackingScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [orderStatus, setOrderStatus] = useState([]);
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
 
@@ -61,10 +62,31 @@ export default function OrderTrackingScreen(props) {
   const [filterDates, setFilterDates] = useState([]);
 
   useEffect(() => {
-    user?.token!==null && user?.userData?.role?.[0]?.id === 3 && getOrdersByBrand('1');
+    user?.token!==null && user?.userData?.role?.[0]?.id === 3 && getOrderStatus();
     user?.token!==null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
     user?.token===null && getOrdersByGuest('1');
   }, []);
+
+  const getOrderStatus = () => {
+    setLoading(true);
+
+    axios
+      .get(OrderStatus,{
+        headers:{Authorization:`Bearer ${user?.token}`}
+      })
+      .then(async function (res) {
+        console.log(res?.data);
+        setOrderStatus(res?.data?.data)
+        getOrdersByBrand('1')
+        //setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error?.response?.data);
+        setLoading(false);
+        //errorMessage('Something went wrong!');
+        errorMessage(errorHandler(error))
+      });
+  }
 
   const getOrdersByBrand = page_no => {
     setLoading(true);
@@ -114,7 +136,7 @@ export default function OrderTrackingScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
         setLoading(false);
         //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
@@ -149,7 +171,7 @@ export default function OrderTrackingScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
         setLoading(false);
         //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
@@ -184,7 +206,7 @@ export default function OrderTrackingScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(error?.response?.data);
         setLoading(false);
         //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
@@ -228,7 +250,7 @@ export default function OrderTrackingScreen(props) {
                   <>
                   {item2?.order.map((item3,index3)=>{
                     return(
-                      <OrderComp2 data={item3} key={index3} onpress={()=>{props.navigation.navigate('OrderDetails',{item:item3.vendor_order_details})}}/>
+                      <OrderComp2 orderStatus={orderStatus} data={item3} key={index3} onpress={()=>{props.navigation.navigate('OrderDetails',{item:item3.vendor_order_details,orderStatus:orderStatus})}}/>
                     )
                   })}
                   </>
