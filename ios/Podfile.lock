@@ -516,6 +516,8 @@ PODS:
     - RCTTypeSafety
     - React-Core
     - ReactCommon/turbomodule/core
+  - react-native-webview (13.2.3):
+    - React-Core
   - React-perflogger (0.71.3)
   - React-RCTActionSheet (0.71.3):
     - React-Core/RCTActionSheetHeaders (= 0.71.3)
@@ -664,6 +666,27 @@ PODS:
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
   - SocketRocket (0.6.0)
+  - Stripe (22.8.4):
+    - Stripe/Stripe3DS2 (= 22.8.4)
+    - StripeApplePay (= 22.8.4)
+    - StripeCore (= 22.8.4)
+    - StripeUICore (= 22.8.4)
+  - stripe-react-native (0.19.0):
+    - React-Core
+    - Stripe (~> 22.8.1)
+    - StripeFinancialConnections (~> 22.8.1)
+  - Stripe/Stripe3DS2 (22.8.4):
+    - StripeApplePay (= 22.8.4)
+    - StripeCore (= 22.8.4)
+    - StripeUICore (= 22.8.4)
+  - StripeApplePay (22.8.4):
+    - StripeCore (= 22.8.4)
+  - StripeCore (22.8.4)
+  - StripeFinancialConnections (22.8.4):
+    - StripeCore (= 22.8.4)
+    - StripeUICore (= 22.8.4)
+  - StripeUICore (22.8.4):
+    - StripeCore (= 22.8.4)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -700,7 +723,6 @@ DEPENDENCIES:
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - OneSignalXCFramework (< 4.0, >= 3.0)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -727,6 +749,7 @@ DEPENDENCIES:
   - react-native-onesignal (from `../node_modules/react-native-onesignal`)
   - react-native-render-html (from `../node_modules/react-native-render-html`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-webview (from `../node_modules/react-native-webview`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -752,6 +775,7 @@ DEPENDENCIES:
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - "stripe-react-native (from `../node_modules/@stripe/stripe-react-native`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -795,6 +819,11 @@ SPEC REPOS:
     - SDWebImage
     - SDWebImageWebPCoder
     - SocketRocket
+    - Stripe
+    - StripeApplePay
+    - StripeCore
+    - StripeFinancialConnections
+    - StripeUICore
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -856,6 +885,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-render-html"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-webview:
+    :path: "../node_modules/react-native-webview"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -906,6 +937,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-screens"
   RNVectorIcons:
     :path: "../node_modules/react-native-vector-icons"
+  stripe-react-native:
+    :path: "../node_modules/@stripe/stripe-react-native"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -975,6 +1008,7 @@ SPEC CHECKSUMS:
   react-native-onesignal: 7bd44dbd031d8d57110c0203836ffc37ddead526
   react-native-render-html: 984dfe2294163d04bf5fe25d7c9f122e60e05ebe
   react-native-safe-area-context: 39c2d8be3328df5d437ac1700f4f3a4f75716acc
+  react-native-webview: b85dfe0bf95bef83e82fc354d6987c80fed5e7ad
   React-perflogger: af8a3d31546077f42d729b949925cc4549f14def
   React-RCTActionSheet: 57cc5adfefbaaf0aae2cf7e10bccd746f2903673
   React-RCTAnimation: 11c61e94da700c4dc915cf134513764d87fc5e2b
@@ -1003,9 +1037,15 @@ SPEC CHECKSUMS:
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
   SocketRocket: fccef3f9c5cedea1353a9ef6ada904fde10d6608
+  Stripe: 59f6659e8ea413def19c97c57e23f5ec6ea48cf8
+  stripe-react-native: 0e50141806454839806143db5ce514a0cddd4d12
+  StripeApplePay: 6e9aebd3d248464836e9fbdaef6e5fb1817d56a6
+  StripeCore: 193f27552fb98108ebfe0df11651fe5f38948305
+  StripeFinancialConnections: 955c345ada7d0dff1a9bd15c4ebc97eacce4ac75
+  StripeUICore: 6a5bbea0164d63bd91000f001903e7901859e1a4
   Yoga: 5ed1699acbba8863755998a4245daa200ff3817b
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0efd5790b6d0e5e49567d08d99178d15981c8a36
+PODFILE CHECKSUM: 94f2318275e45644a8a1126910c8788d23a46b6f
 
 COCOAPODS: 1.12.0

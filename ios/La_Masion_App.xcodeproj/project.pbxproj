@@ -72,6 +72,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-La_Masion_App.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-La_Masion_App.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = La_Masion_App/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; path = "Target Support Files/Pods-La_Masion_App-La_Masion_AppTests/Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; sourceTree = "<group>"; };
+		8BA9E5112A6E992E00A334B7 /* hermes.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = hermes.xcframework; path = "Pods/hermes-engine/destroot/Library/Frameworks/universal/hermes.xcframework"; sourceTree = "<group>"; };
 		8BC81B2B2A600B1700EAB448 /* La_Masion_App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = La_Masion_App.entitlements; path = La_Masion_App/La_Masion_App.entitlements; sourceTree = "<group>"; };
 		A916BFB12A680D590042DFF4 /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A916BFB32A680D5A0042DFF4 /* NotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -148,6 +149,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				8BA9E5112A6E992E00A334B7 /* hermes.xcframework */,
 				A9521BD62A59A3FA00C34E95 /* Bolts.framework */,
 				A9521BD42A59A3FA00C34E95 /* FBSDKCoreKit.framework */,
 				A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */,
@@ -830,7 +832,7 @@
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -871,7 +873,7 @@
 				INFOPLIST_FILE = OneSignalNotificationServiceExtension/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = OneSignalNotificationServiceExtension;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

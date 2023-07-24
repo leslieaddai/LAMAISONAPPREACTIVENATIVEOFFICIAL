@@ -162,7 +162,7 @@ axios.request(config)
              </View>
        </TouchableOpacity>
       ) : (
-        <TouchableOpacity onPress={()=>props.navigation.navigate(navScreen)} style={styles.filters}>
+        <TouchableOpacity disabled={name == 'USERNAME' || name == 'EMAIL' || name == 'BRAND NAME' ? true : false} onPress={()=>props.navigation.navigate(navScreen)} style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
       
           {name == 'ABOUT' ? (
@@ -170,7 +170,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>XXXXXXXXXX</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name : 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>
@@ -198,6 +198,11 @@ axios.request(config)
       {user?.userData?.role?.[0]?.id === 3 && (
         <>
         {settingOptions('ABOUT', 'about')}
+        </>
+      )}
+       {user?.userData?.role?.[0]?.id === 3 && (
+        <>
+        {settingOptions('BRAND NAME', 'name')}
         </>
       )}
       {settingOptions('USERNAME', 'username')}

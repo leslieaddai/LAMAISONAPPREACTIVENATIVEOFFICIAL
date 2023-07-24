@@ -69,6 +69,10 @@ export default function BasketScreen(props) {
         console.log(res?.data);
         setData(res?.data?.data);
         setCount(res?.data?.data?.[0]?.qty);
+        dispatch({
+          type: types.CartCount,
+          payload: res?.data?.data?.length,
+        });
         setLoading(false);
       })
       .catch(function (error) {
