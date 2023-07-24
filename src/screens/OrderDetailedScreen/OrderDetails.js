@@ -1,21 +1,40 @@
 import { Image, SafeAreaView, Text, View } from 'react-native'
-import React from 'react'
+import React,{useState} from 'react'
 import styles from './Styles'
 import { hp2, wp2 } from '../../theme'
 import { FlatList } from 'react-native-gesture-handler'
 import OrderDetailscomp from '../../components/OrderDetailsComp/OrderDetailscomp'
+import LoaderComp from '../../components/loaderComp'
 const OrderDetails = ({navigation,route}) => {
+  const [orderData,setOrderData]=useState(route?.params?.item);
     const {item} = route.params
+    const {orderStatus} = route.params
+
+    const onChangeOrderStatus = (indexNo,newStatus) => {
+      //console.log(indexNo,newStatus);
+      let tempArr = orderData;
+      tempArr[indexNo].status.status=newStatus;
+      setOrderData(tempArr);
+    }
+    //console.log(orderStatus)
+    const [loadingStatusChange, setLoadingStatusChange] = useState(false);
   return (
+    <>
+        <View style={{position: 'absolute', zIndex: 999}}>
+        {loadingStatusChange && <LoaderComp />}
+      </View>
+    
     <SafeAreaView style={{flex: 1}}>
     <View style={styles.container}>
       <Text style={styles.orderText}>Order Details</Text>
       <FlatList
-      data={item}
-      renderItem={({item})=>{
+      data={orderData}
+      renderItem={({item,index})=>{
         return(
         <View style={styles.ConatinerView}>
             <OrderDetailscomp
+            key={index}
+            indexValue={index}
             uri={item?.product?.product_images[0]?.image[0]?.original_url}
             productname={item?.product?.name}
             description={item?.product?.description}
@@ -24,7 +43,11 @@ const OrderDetails = ({navigation,route}) => {
             colourcode={item?.color?.color_code}
             price={item?.price}
             status={item?.status.status}
-            onpress={()=>{console.log(item.product_id)}}
+            orderStatus={orderStatus}
+            // orderId={item?.order_id}
+            orderId={item?.id}
+            loaderState={{loadingStatusChange,setLoadingStatusChange,onChangeOrderStatus}}
+            //onpress={()=>{console.log(item.product_id)}}
             />
       </View>
         )
@@ -33,6 +56,8 @@ const OrderDetails = ({navigation,route}) => {
       
       </View>
       </SafeAreaView>
+
+      </>
   )
 }
 
