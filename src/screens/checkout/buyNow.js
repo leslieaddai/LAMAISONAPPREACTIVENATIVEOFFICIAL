@@ -192,8 +192,10 @@ export default function BuyNow(props) {
 
   useEffect(()=>{            
     if(isOpenedCountries){
-      setModalData(countriesData)
-      uibottomesheetvisiblity(true)
+      setTimeout(() => {
+        uibottomesheetvisiblity(true)
+        setModalData(countriesData)
+        }, 1000);
 
     }
   },[isOpenedCountries])

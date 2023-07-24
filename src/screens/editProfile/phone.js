@@ -33,23 +33,8 @@ import {
 } from '../../theme';
 
 export default function Phone(props) {
-    const textBox = (placeText) => {
-        return(
-            <View style={styles.inputBox}>
-            <TextInput
-              style={{
-                flex: 1,
-                color: 'black',
-                paddingHorizontal: wp2(2),
-                fontSize: rfv(13),
-                fontWeight: '700',
-              }}
-              placeholder={placeText}
-              placeholderTextColor={'grey'}
-            />
-          </View>
-        )
-    }
+    const [prevnumber,setPrevNumber] = useState('')
+    const [newnumber,setNewNumber] = useState('')
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
@@ -60,8 +45,38 @@ export default function Phone(props) {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
-     {textBox('CURRENT PHONE NUMBER')}
-     {textBox('NEW PHONE NUMBER')}
+      <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              placeholder={'CURRENT PHONE NUMBER'}
+              onChangeText={(e)=>{setPrevNumber(e)}}
+              value={prevnumber}
+              keyboardType={"number-pad"}
+              placeholderTextColor={'grey'}
+              maxLength={11}
+            />
+          </View>
+          <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              maxLength={11}
+              placeholder={'NEW PHONE NUMBER'}
+              keyboardType={"number-pad"}
+              placeholderTextColor={'grey'}
+            />
+          </View>
         <TouchableOpacity
           style={styles.button}>
           <Text style={styles.buttonText}>CONFIRM</Text>

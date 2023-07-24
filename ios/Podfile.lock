@@ -700,7 +700,6 @@ DEPENDENCIES:
   - GoogleUtilities
   - hermes-engine (from `../node_modules/react-native/sdks/hermes-engine/hermes-engine.podspec`)
   - libevent (~> 2.1.12)
-  - OneSignalXCFramework (< 4.0, >= 3.0)
   - OpenSSL-Universal (= 1.1.1100)
   - RCT-Folly (from `../node_modules/react-native/third-party-podspecs/RCT-Folly.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
@@ -996,7 +995,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 55fd07310abde3fa2f3a6568f6d3ef590383d241
   RNGestureHandler: 071d7a9ad81e8b83fe7663b303d132406a7d8f39
   RNGoogleSignin: 22e468a9474dbcb8618d8847205ad4f0b2575d13
-  RNPermissions: fc1ff3d0e0a96ba2332282be063358f5f97e3462
+  RNPermissions: 215c54462104b3925b412b0fb3c9c497b21c358b
   RNReanimated: f0dd6b881808e635ef0673f89642937d6c141314
   RNScreens: 218801c16a2782546d30bd2026bb625c0302d70f
   RNVectorIcons: fcc2f6cb32f5735b586e66d14103a74ce6ad61f8
@@ -1006,6 +1005,6 @@ SPEC CHECKSUMS:
   Yoga: 5ed1699acbba8863755998a4245daa200ff3817b
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 0efd5790b6d0e5e49567d08d99178d15981c8a36
+PODFILE CHECKSUM: 94f2318275e45644a8a1126910c8788d23a46b6f
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1

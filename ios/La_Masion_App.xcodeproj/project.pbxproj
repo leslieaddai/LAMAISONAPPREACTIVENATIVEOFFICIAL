@@ -17,8 +17,6 @@
 		A916BFB42A680D5A0042DFF4 /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A916BFB32A680D5A0042DFF4 /* NotificationService.swift */; };
 		A916BFB82A680D5A0042DFF4 /* OneSignalNotificationServiceExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A916BFB12A680D590042DFF4 /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A9521BD82A59A3FA00C34E95 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD42A59A3FA00C34E95 /* FBSDKCoreKit.framework */; };
-		A9521BD92A59A3FA00C34E95 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD52A59A3FA00C34E95 /* FBSDKShareKit.framework */; };
-		A9521BDB2A59A3FA00C34E95 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,8 +96,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A9521BD82A59A3FA00C34E95 /* FBSDKCoreKit.framework in Frameworks */,
-				A9521BD92A59A3FA00C34E95 /* FBSDKShareKit.framework in Frameworks */,
-				A9521BDB2A59A3FA00C34E95 /* FBSDKLoginKit.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-La_Masion_App.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

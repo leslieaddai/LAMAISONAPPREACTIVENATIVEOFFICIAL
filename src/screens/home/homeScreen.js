@@ -44,7 +44,7 @@ import {Popular,Newsfeed} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
-
+import OneSignal from 'react-native-onesignal';
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -101,165 +101,6 @@ export default function HomeScreen(props) {
       });
   };
 
-
-  //const showSplash = useSelector(state => state.Splash.showSplash)
-  //const showWelcome = useSelector(state => state.Splash.showWelcome)
-
-  //const [showSplash,setShowSplash]=useState(true);
-  //const [showWelcome,setShowWelcome]=useState(true);
-  //const splashState = useSelector(state => state.Splash)
-  //const [splashState,setSplashState]=useState(useSelector(state => state.Splash))
-  //console.log(showSplash);
-  //console.log(showWelcome);
-  //console.log(splashState);
-
-  // useEffect(()=>{
-  //   setTimeout(()=>{
-  //     dispatch({
-  //       type: types.HideSplash
-  //     });
-  //   },5000)
-  // },[])
-
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => {
-  //     dispatch({
-  //       type: types.HideSplash
-  //     });
-  //   }, 3000);
-
-  //   return () => {
-  //     // clears timeout before running the new effect
-  //     clearTimeout(timeout);
-  //   };
-  //   RunThis();
-  // }, []);
-
-  // const RunThis = () => {
-  //   setTimeout(()=>{
-  //     dispatch({
-  //       type: types.HideSplash
-  //     });
-
-  //     setTimeout(()=>{
-  //       dispatch({
-  //         type: types.HideWelcome
-  //       });
-  //     },3000)
-
-  //   },3000)
-
-  // }
-
-  // useEffect(()=>{
-  //   if(showSplash && user.token){
-  //     setTimeout(()=>{
-  //       // dispatch({
-  //       //   type: types.HideSplash
-  //       // });
-  //       setShowSplash(false);
-  //     },3000)
-  //   }
-
-  //   if(showWelcome && user.token){
-  //     setTimeout(()=>{
-  //       // dispatch({
-  //       //   type: types.HideWelcome
-  //       // });
-  //       setShowWelcome(false);
-  //     },6000)
-  //   }
-  // },[])
-
-  // const brandComp = (nav) => {
-  //     return(
-  //        <View style={{marginVertical:hp2(2)}}>
-  //        {nav?(
-  //          <TouchableOpacity onPress={()=>props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:9}}})} style={styles.brandImage}>
-  //          <Image
-  //            source={IMAGES.randomPic}
-  //            style={{width: '100%', height: '100%'}}
-  //            resizeMode="cover"
-  //          />
-  //        </TouchableOpacity>
-  //        ):(
-  //          <View style={styles.brandImage}>
-  //          <Image
-  //            source={IMAGES.randomPic}
-  //            style={{width: '100%', height: '100%'}}
-  //            resizeMode="cover"
-  //          />
-  //        </View>
-  //        )}
-  //        </View>
-  //     )
-  // }
-
-//   <ScrollView
-// showsVerticalScrollIndicator={false}
-// contentContainerStyle={{paddingBottom: hp2(2)}}>
-// {/* {postComp()} */}
-
-// <Text style={styles.text}>Popular Brands</Text>
-// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-//   {/* {brandComp('brandProfileScreen')} */}
-//   {popularData?.brands?.map((item,index)=>{
-//     return(
-//       <>
-//       {brandComp(item)}
-//       </>
-//     )
-//   })}
-// </ScrollView>
-
-// {/* {productComp()} */}
-
-// <Text style={styles.text}>Popular Pieces</Text>
-// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-//   {/* {brandComp('dressingRoomScreen')} */}
-//   {popularData?.pieces?.map((item,index)=>{
-//     return(
-//       <>
-//       {pieceComp(item)}
-//       </>
-//     )
-//   })}
-// </ScrollView>
-
-// {/* {productComp2()} */}
-
-// <Text style={styles.text}>Popular Colour</Text>
-// <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-//   {/* {brandComp('dressingRoomScreen')} */}  
-//   {popularData?.colors?.map((item,index)=>{
-//     return(
-//       <>
-//       {colorComp(item)}
-//       </>
-//     )
-//   })}
-// </ScrollView>
-
-// {/* {productComp2()} */}
-// </ScrollView>
-
-const newsfeed = () =>{
-  let config = {
-    method: 'get',
-    maxBodyLength: Infinity,
-    url: 'https://lamaison.clickysoft.net/api/v1/news-feed',
-    headers: { 
-      'Authorization': 'Bearer 831|YHYYF5RFrYJ3TcumBaWoi4qLxEvWo8ATftCPhkvQ',
-    }
-  }
-  axios.request(config)
-.then((response) => {
-  console.log(JSON.stringify(response.data));
-})
-.catch((error) => {
-  console.log(error);
-});
-}
   const brandComp = data => {
     return (
       <View style={{marginVertical: hp2(2)}}>
@@ -293,12 +134,6 @@ const newsfeed = () =>{
         <View
           style={[styles.brandImage,{backgroundColor:'lightgray',alignItems:'center',justifyContent:'center',}]}>
             <Text style={{fontSize:rfv(14),color:'black'}} >{data?.piece?.piece_name}</Text>
-          {/* <Image
-            //source={IMAGES.randomPic}
-            source={{uri:`https://placehold.jp/000000/300x300.png?text=${data?.piece?.piece_name}`}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          /> */}
         </View>
       </View>
     );
@@ -499,28 +334,42 @@ const newsfeed = () =>{
     );
   };
 
-  // if(showSplash && user.token){
-  //   return(
-  //     <SplashScreen/>
-  //   )
-  // }
+  useEffect(()=>{
+    typeof OneSignal.setNotificationOpenedHandler == 'function'
+    && OneSignal.setNotificationOpenedHandler((nitificationresponse)=>{
+      const { notification } = nitificationresponse;
+        if (notification) {
+          console.log("notification",notification)
+          const { additionalData = null } = notification;
+          if (additionalData) {
+            // const { signal_id } = additionalData;
+            // dispatch({
+            //   type: types.signalid,
+            //   payload: signal_id,
+            // });
+            console.log("additionalData",additionalData)
+            // navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: 'NotificationSignal'}],
+            // })
+          }
+          else{
+            console.log("notifiction cheking")
+            // navigation.reset({
+            //   index: 0,
+            //   routes: [{ name: 'Home'}],
+            // })
+          }
+        }
+      })
 
-  // if(showWelcome && user.token){
-  //   return(
-  //     <WelcomeScreen/>
-  //   )
-  // }
+  },[])
+
 
   return (
-    //<SafeAreaView style={{flex:1}}>
     <View style={styles.container}>
       <SafeAreaView></SafeAreaView>
       <View style={styles.logoWrap}>
-        {/* <Image
-          source={IMAGES.logo}
-          style={{width: '100%', height: '100%'}}
-          resizeMode="contain"
-        /> */}
         <Text style={{fontSize: rfv(18), color: 'gray'}}>LA MAISON APP</Text>
       </View>
       <View style={styles.iconContainer}>
@@ -822,9 +671,7 @@ const newsfeed = () =>{
         </>
       )}
 
-      {/* <BottomComp /> */}
     </View>
-    //</SafeAreaView>
   );
 }
 

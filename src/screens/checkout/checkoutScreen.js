@@ -204,7 +204,7 @@ export default function CheckoutScreen(props) {
         //setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(31,error.response.data);
         //setLoading(false);
         //errorMessage('Something went wrong to get regions list!');
         errorMessage(errorHandler(error))
@@ -242,7 +242,7 @@ export default function CheckoutScreen(props) {
     }
   };
   function constainalphabet(str) {
-    return (/^[A-Za-z]+$/).test(str);
+    return (/^[A-Za-z ]+$/).test(str);
   }
   function emailvalidation(str){
     return/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(str)
@@ -251,13 +251,13 @@ export default function CheckoutScreen(props) {
   const onContinue = () => {
 
   if( 
-  (stateChange.address_1 !== '' && stateChange.address_1 !== null) && 
-  (stateChange.city !== '' && stateChange.city !== null) && 
-  (stateChange.region!== '' && stateChange.region!== null) && 
-  (stateChange.country !== '' && stateChange.country !== null) && 
-  (stateChange.postcode !== '' && stateChange.postcode !== null)
+  (address_1 !== '' && address_1 !== null) && 
+  (city !== '' && city !== null) && 
+  (region!== '' && region!== null) && 
+  (country !== '' && country !== null) && 
+  (postcode !== '' && postcode !== null)
   ){
-    if(constainalphabet(stateChange.city)){
+    if(constainalphabet(city)){
     //setContinueButton('confirm')
     setLoadingContinue(true);
     let obj = {
@@ -291,11 +291,11 @@ export default function CheckoutScreen(props) {
   }
 
   const onConfirm = () => {
-    if((stateChange.email !== '' && stateChange.email !== null) &&
-     (stateChange.name !== '' && stateChange.name !== null) && 
-     (stateChange.card !== '' && stateChange.card !== null) && 
-     (stateChange.expiry !== '' && stateChange.expiry !== null) && 
-     (stateChange.cvv !== '' && stateChange.cvv !== null))
+    if((email !== '' && email !== null) &&
+     (name !== '' && name !== null) && 
+     (card !== '' && card !== null) && 
+     (expiry !== '' && expiry !== null) && 
+     (cvv !== '' && cvv !== null))
      {
       console.log(emailvalidation)
       if(emailvalidation(email)){
@@ -344,17 +344,17 @@ export default function CheckoutScreen(props) {
     formdata.append('device_id', guestUser?.device_id);
     formdata.append('status_id', 3);
     formdata.append('payment_method', 'stripe');
-    formdata.append('address1', stateChange.address_1);
-    formdata.append('address2', stateChange.address_2);
-    formdata.append('region', stateChange.region);
-    formdata.append('city', stateChange.city);
-    formdata.append('country', stateChange.country);
-    formdata.append('post_code', stateChange.postcode);
-    formdata.append('email', stateChange.email);
-    formdata.append('title', stateChange.name);
-    formdata.append('acc_number', stateChange.card);
-    formdata.append('expiry', stateChange.expiry);
-    formdata.append('cvv', stateChange.cvv);
+    formdata.append('address1', address_1);
+    formdata.append('address2', address_2);
+    formdata.append('region', region);
+    formdata.append('city', city);
+    formdata.append('country', country);
+    formdata.append('post_code', postcode);
+    formdata.append('email', email);
+    formdata.append('title', name);
+    formdata.append('acc_number', card);
+    formdata.append('expiry', expiry);
+    formdata.append('cvv', cvv);
 
     let config = {
       method: 'post',
@@ -401,17 +401,17 @@ export default function CheckoutScreen(props) {
     formdata.append('user_id', user?.userData?.id);
     formdata.append('status_id', 3);
     formdata.append('payment_method', 'stripe');
-    formdata.append('address1', stateChange.address_1);
-    formdata.append('address2', stateChange.address_2);
-    formdata.append('region', stateChange.region);
-    formdata.append('city', stateChange.city);
-    formdata.append('country', stateChange.country);
-    formdata.append('post_code', stateChange.postcode);
-    formdata.append('email', stateChange.email);
-    formdata.append('title', stateChange.name);
-    formdata.append('acc_number', stateChange.card);
-    formdata.append('expiry', stateChange.expiry);
-    formdata.append('cvv', stateChange.cvv);
+    formdata.append('address1', address_1);
+    formdata.append('address2', address_2);
+    formdata.append('region', region);
+    formdata.append('city', city);
+    formdata.append('country', country);
+    formdata.append('post_code', postcode);
+    formdata.append('email', email);
+    formdata.append('title', name);
+    formdata.append('acc_number', card);
+    formdata.append('expiry', expiry);
+    formdata.append('cvv', cvv);
 
     let config = {
       method: 'post',
@@ -473,9 +473,10 @@ export default function CheckoutScreen(props) {
 
   useEffect(()=>{            
     if(isOpenedCountries){
-      setModalData(countriesData)
+      setTimeout(() => {
       uibottomesheetvisiblity(true)
-
+      setModalData(countriesData)
+      }, 1000);
     }
   },[isOpenedCountries])
 
@@ -729,11 +730,11 @@ export default function CheckoutScreen(props) {
          <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
        </View>
             <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={stateChange.email}
+       <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
              onChangeText={val => updateState({email: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={stateChange.name}
+       <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={name}
              onChangeText={val => updateState({name: val})}/>
      </View>
      <View style={styles.inputBox}>
@@ -755,7 +756,7 @@ export default function CheckoutScreen(props) {
              : text})} />
          </View>
          <View style={[styles.inputBox, {width: wp2(28)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={stateChange.cvv}
+           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={cvv}
              onChangeText={val => updateState({cvv: val})}/>
          </View>
        </View>
@@ -779,15 +780,15 @@ export default function CheckoutScreen(props) {
          <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
        </View>
            <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={stateChange.address_1}
+       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}
              onChangeText={val => updateState({address_1: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2'}  placeholderTextColor={'grey'} value={stateChange.address_2}
+       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2 (Optional)'}  placeholderTextColor={'grey'} value={address_2}
              onChangeText={val => updateState({address_2: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={stateChange.city}
+       <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={city}
              onChangeText={val => updateState({city: val})} />
      </View>
 
@@ -845,7 +846,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={stateChange.postcode}
+       <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={postcode}
              onChangeText={val => updateState({postcode: val})} maxLength={10} />
      </View>
          </View> 
@@ -859,13 +860,13 @@ export default function CheckoutScreen(props) {
            {textBox('POSTCODE')} */}
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.address_1}</Text>
+       <Text style={styles.selectedTxt}>{address_1}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.address_2}</Text>
+       <Text style={styles.selectedTxt}>{address_2}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.city}</Text>
+       <Text style={styles.selectedTxt}>{city}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{selectedRegion}</Text>
@@ -874,19 +875,19 @@ export default function CheckoutScreen(props) {
        <Text style={styles.selectedTxt}>{selectedCountry}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.postcode}</Text>
+       <Text style={styles.selectedTxt}>{postcode}</Text>
      </View>
            </View>
            <View style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
              {/* {textBox2()} */}
              <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.email}</Text>
+       <Text style={styles.selectedTxt}>{email}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.name}</Text>
+       <Text style={styles.selectedTxt}>{name}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.card}</Text>
+       <Text style={styles.selectedTxt}>{card}</Text>
      </View>
        <View
          style={{
@@ -896,10 +897,10 @@ export default function CheckoutScreen(props) {
            width: wp2(80),
          }}>
         <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2),width:wp2(48)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.expiry}</Text>
+       <Text style={styles.selectedTxt}>{expiry}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2),width:wp2(28)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.cvv}</Text>
+       <Text style={styles.selectedTxt}>{cvv}</Text>
      </View>
        </View>
            </View>
@@ -1135,15 +1136,15 @@ export default function CheckoutScreen(props) {
          <Text style={styles.text}>£{total+(total*(commission/100))}</Text>
        </View>
             <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={stateChange.email}
+       <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
              onChangeText={val => updateState({email: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={stateChange.name}
+       <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={name}
              onChangeText={val => updateState({name: val})}/>
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={stateChange.card}
+       <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={card}
              onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={19}/>
      </View>
        <View
@@ -1154,14 +1155,14 @@ export default function CheckoutScreen(props) {
            width: wp2(80),
          }}>
          <View style={[styles.inputBox, {width: wp2(48)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={stateChange.expiry}
+           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry}
              onChangeText={text => 
               updateState({expiry: text.length === 3 && !text.includes("/")
              ? `${text.substring(0, 2)}/${text.substring(2)}`
              : text})} />
          </View>
          <View style={[styles.inputBox, {width: wp2(28)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={stateChange.cvv}
+           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={cvv}
              onChangeText={val => updateState({cvv: val})}/>
          </View>
        </View>
@@ -1186,15 +1187,15 @@ export default function CheckoutScreen(props) {
        </View>
 
            <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={stateChange.address_1}
+       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}
              onChangeText={val => updateState({address_1: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2'}  placeholderTextColor={'grey'} value={stateChange.address_2}
+       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2'}  placeholderTextColor={'grey'} value={address_2}
              onChangeText={val => updateState({address_2: val})}  />
      </View>
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={stateChange.city}
+       <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={city}
              onChangeText={val => updateState({city: val})} />
      </View>
 
@@ -1285,7 +1286,7 @@ export default function CheckoutScreen(props) {
      </View> */}
      
      <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={stateChange.postcode}
+       <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={postcode}
              onChangeText={val => updateState({postcode: val})} maxLength={10} />
      </View>
          </View> 
@@ -1310,13 +1311,13 @@ export default function CheckoutScreen(props) {
        </View>
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.address_1}</Text>
+       <Text style={styles.selectedTxt}>{address_1}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.address_2}</Text>
+       <Text style={styles.selectedTxt}>{address_2}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.city}</Text>
+       <Text style={styles.selectedTxt}>{city}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{selectedRegion}</Text>
@@ -1325,19 +1326,19 @@ export default function CheckoutScreen(props) {
        <Text style={styles.selectedTxt}>{selectedCountry}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.postcode}</Text>
+       <Text style={styles.selectedTxt}>{postcode}</Text>
      </View>
            </View>
            <View style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
              {/* {textBox2()} */}
              <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.email}</Text>
+       <Text style={styles.selectedTxt}>{email}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.name}</Text>
+       <Text style={styles.selectedTxt}>{name}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.card}</Text>
+       <Text style={styles.selectedTxt}>{card}</Text>
      </View>
        <View
          style={{
@@ -1347,10 +1348,10 @@ export default function CheckoutScreen(props) {
            width: wp2(80),
          }}>
         <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2),width:wp2(48)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.expiry}</Text>
+       <Text style={styles.selectedTxt}>{expiry}</Text>
      </View>
      <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2),width:wp2(28)}]}>
-       <Text style={styles.selectedTxt}>{stateChange.cvv}</Text>
+       <Text style={styles.selectedTxt}>{cvv}</Text>
      </View>
        </View>
            </View>

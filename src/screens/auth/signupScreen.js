@@ -25,7 +25,7 @@ export default function SignupScreen(props) {
   const [email, setEmail] = useState('');
 
   useEffect(() => {
-    Settings.setAppID('6305325462877732')
+    // Settings.setAppID('6305325462877732')
     GoogleSignin.configure({
       scopes: ['email'],
       webClientId:
@@ -53,7 +53,7 @@ export default function SignupScreen(props) {
 
     // Once signed in, get the users AccesToken
     const data = await AccessToken.getCurrentAccessToken();
-    console.log("result", result)
+    console.log("result", result,data)
     if (!data) {
       throw 'Something went wrong obtaining access token';
     }

@@ -36,6 +36,8 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>FacebookAppID</key>
 	<string>6305325462877732</string>
+	<key>FacebookClientToken</key>
+	<string>559c13747c52b12d7f8da754fab85bd1</string>
 	<key>FacebookDisplayName</key>
 	<string>Lamaison</string>
 	<key>LSApplicationQueriesSchemes</key>
