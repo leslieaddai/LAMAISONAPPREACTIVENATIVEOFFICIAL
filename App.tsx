@@ -15,6 +15,8 @@ import AppNavigatior from './src/route'
 
 import OneSignal from 'react-native-onesignal';
 
+import { StripeProvider } from '@stripe/stripe-react-native';
+
 //Geolocation.setRNConfiguration({skipPermissionRequests: true});
 
 const App = () => {
@@ -219,7 +221,10 @@ OneSignal.setNotificationOpenedHandler(notification => {
   },[])
   
   return (
-        <Provider store={store}>
+<StripeProvider 
+publishableKey="pk_test_51M5W9vIM397QIZ0dUbeanZ7eh3Nr3Dj2IoAME2VdO0SgosRvWEjvuFve4TqjGfGiTD0ujvnez33CIgVImHqxMCIw00ghLGR6Lz"
+>
+<Provider store={store}>
         <PersistGate persistor={persistor}>
       
         <AppNavigatior/>
@@ -229,6 +234,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
         <FlashMessage position="top" />
 
         </Provider>
+</StripeProvider>
   )
 }
 
