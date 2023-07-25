@@ -85,7 +85,6 @@ export default function ShippingComp(props) {
         })
         .catch(function (error) {
           setLoading(false);
-          //errorMessage('Something went wrong!');
           errorMessage(errorHandler(error))
         });
     } else {

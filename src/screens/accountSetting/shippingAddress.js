@@ -107,7 +107,6 @@ export default function ShippingAddress(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -142,8 +141,6 @@ export default function ShippingAddress(props) {
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        //errorMessage('Something went wrong!')
-        //errorMessage(error.response.data.message);
         errorMessage(errorHandler(error))
       });
   };
@@ -161,10 +158,7 @@ export default function ShippingAddress(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        //setLoading(false);
-        //errorMessage('Something went wrong to get regions list!');
         errorMessage(errorHandler(error))
-        //errorMessage(error.response.data.message)
       });
   };
 
@@ -197,10 +191,7 @@ export default function ShippingAddress(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        //setLoading(false);
-        //errorMessage('Something went wrong to get countries list!');
         errorMessage(errorHandler(error))
-        //errorMessage(error.response.data.message)
       });
   };
 

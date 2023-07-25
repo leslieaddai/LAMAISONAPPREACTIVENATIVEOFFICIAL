@@ -49,8 +49,6 @@ import { useNavigation } from '@react-navigation/native';
 export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  //const user = useSelector(state => state.userData)
-  //console.log(props?.route?.params?.user)
 
   const dispatch = useDispatch();
 
@@ -135,9 +133,7 @@ export default function SettingsScreen(props) {
               .catch(function (error) {
                 console.log(error.response.data);
                 setLoading(false);
-                //errorMessage('Logout Failed');
                 errorMessage(errorHandler(error))
-                //errorMessage(errorHandler(error))
               });
 
             // props.navigation.reset({

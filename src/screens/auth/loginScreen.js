@@ -82,7 +82,6 @@ export default function LoginScreen(props) {
           console.log('login response', res.data.user.basket_count);
           setLoading(false);
           if (res.data.user.email_verified === false) {
-            //setError('Please verify your email');
             props.navigation.navigate('verifyAccountScreen');
             errorMessage('Please verify your email');
           } else {

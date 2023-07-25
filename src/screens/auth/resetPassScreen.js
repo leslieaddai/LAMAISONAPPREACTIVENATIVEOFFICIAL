@@ -120,10 +120,7 @@ export default function ResetPassScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          //errorMessage('Something Went Wrong!')
-          //errorMessage(error.response.data.message);
           errorMessage(errorHandler(error))
-          //errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please Enter Email Address');
@@ -152,10 +149,7 @@ export default function ResetPassScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          //errorMessage('Something Went Wrong!')
-          //errorMessage(error?.response?.data?.errors?.password_reset_code[0]);
           errorMessage(errorHandler(error))
-          //errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please Enter Verification Code');
@@ -283,7 +277,6 @@ export default function ResetPassScreen(props) {
         {loading && <LoaderComp />}
       </View>
       <SafeAreaView style={styles.container}>
-        {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}> */}
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           resetPasswordComp()
