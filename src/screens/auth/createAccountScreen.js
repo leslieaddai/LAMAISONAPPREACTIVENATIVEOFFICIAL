@@ -124,60 +124,39 @@ const CreateAccountScreen = props => {
                       );
                     })
                     .catch(function (error) {
-                      // console.log(error.response.data.errors);
                       setLoading(false);
-                      // errorMessage('Something went wrong')
                       errorMessage(errorHandler(error))
-
-                      //errorMessage(errorHandler(error))
                     });
-
-                  //props.signup(obj, (res) => console.log(res))
-
-                  //props.navigation.navigate('loginScreen')
                 } else {
                   errorMessage('Please accept our Terms and Condition');
                 }
               } else {
-                //alert('Confirm password not matched')
                 errorMessage('Confirm password not matched');
               }
             } else {
-              //alert('Password must include at least 1 special character')
               errorMessage(
                 'Password must include at least 1 special character',
               );
             }
           } else {
-            //alert('Password must include at least 1 Numerical character')
             errorMessage(
               'Password must include at least 1 Numerical character',
             );
           }
         } else {
-          //alert('Password must be at least 8 characters')
           errorMessage('Password must be at least 8 characters');
         }
       } else {
-        //alert("Username must contain at least 6 characters");
         errorMessage('Username must contain at least 6 characters');
       }
     }else{
       errorMessage('Please remove space from username!')
     }  
     } else {
-      //alert('Please fill all details')
       errorMessage('Please fill all details');
     }
   };
 
-  // if(loading){
-  //   return(
-  //     <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-  //     <SkypeIndicator color={'black'} />
-  //     </View>
-  //   )
-  // }
 
   return (
     <>

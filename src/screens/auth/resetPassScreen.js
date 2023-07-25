@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState,useRef,useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -48,7 +48,37 @@ import {SkypeIndicator} from 'react-native-indicators';
 import LoaderComp from '../../components/loaderComp';
 
 import Animated, {FadeInUp, FadeOutUp, Layout} from 'react-native-reanimated';
+import CountDown from 'react-native-countdown-component';
+const CountdownContainer = () => {
+  const initialCountdown = 20; // You can set any initial countdown time here
+  const [countdown, setCountdown] = useState(initialCountdown);
+  useEffect(() => {
+    if (countdown > 0) {
+      // If the countdown is greater than 0, start the countdown
+      const timer = setTimeout(() => {
+        setCountdown(countdown - 1); // Update the countdown every second
+      }, 1000);
 
+      // Clean up the timer when the component unmounts or countdown changes
+      return () => clearTimeout(timer);
+    } else {
+      // When countdown reaches 0, reset it to a new value (e.g., 30 seconds) here:
+      const newCountdown = 30;
+      setCountdown(newCountdown);
+    }
+  }, [countdown]);
+  return (
+    <CountDown
+      until={countdown}
+      onPress={() => {alert('hello')}}
+      timeToShow={['M', 'S']}
+      digitStyle={{backgroundColor: '#FFF'}}
+      digitTxtStyle={{color: '#1CC625'}}
+      timeLabels={{m: 'MM', s: 'SS'}}
+      size={20}
+    />
+  );
+};
 export default function ResetPassScreen(props) {
   const special = /[!@#\$%\^\&*\)\(+=._-]/g;
   const numeric = /[0-9]/;
@@ -90,10 +120,7 @@ export default function ResetPassScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          //errorMessage('Something Went Wrong!')
-          //errorMessage(error.response.data.message);
           errorMessage(errorHandler(error))
-          //errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please Enter Email Address');
@@ -122,10 +149,7 @@ export default function ResetPassScreen(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading(false);
-          //errorMessage('Something Went Wrong!')
-          //errorMessage(error?.response?.data?.errors?.password_reset_code[0]);
           errorMessage(errorHandler(error))
-          //errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please Enter Verification Code');
@@ -253,7 +277,6 @@ export default function ResetPassScreen(props) {
         {loading && <LoaderComp />}
       </View>
       <SafeAreaView style={styles.container}>
-        {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4),flexGrow:1}}> */}
         <Text style={styles.resetText}>Reset Password</Text>
         {showReset ? (
           resetPasswordComp()
@@ -271,7 +294,11 @@ export default function ResetPassScreen(props) {
                 onChangeText={val => setCode(val)}
                 keyboardType={'number-pad'}
               />
-            </Animated.View>
+            </Animated.View> 
+                  {/* <TouchableOpacity onPress={()=>{onVerifyCode()}} style={styles.button}>
+              <Text style={styles.buttonText}>Resend Code</Text>
+            </TouchableOpacity> */}
+            {/* <CountdownContainer/> */}
             <TouchableOpacity onPress={onVerifyCode} style={styles.button}>
               <Text style={styles.buttonText}>Verify Code</Text>
             </TouchableOpacity>

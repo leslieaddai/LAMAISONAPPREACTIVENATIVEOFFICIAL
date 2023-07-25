@@ -113,7 +113,7 @@ export default function ListViewScreen(props) {
           <SkypeIndicator color={'black'} />
         </View>
       )}
-
+      {feedData.length>0?
         <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingVertical:hp2(2)}}
@@ -128,7 +128,9 @@ export default function ListViewScreen(props) {
               );
             }}
           />
-
+          :
+          <Text style={{color:'black',alignSelf:'center'}}>No Data Available</Text>
+          }
           {loading && feedData?.length !== 0 && (
             <View
               style={{

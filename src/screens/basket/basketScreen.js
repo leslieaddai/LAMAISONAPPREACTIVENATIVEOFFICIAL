@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  TextInput,
   ScrollView,
   Platform,
   SafeAreaView,
@@ -13,33 +12,21 @@ import {
   Alert,
 } from 'react-native';
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
   RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
 import {
-  IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
   hp2,
-  getFont,
-  FONTS,
 } from '../../theme';
-import BottomComp from '../../components/bottomComp';
 import BasketComp from '../../components/basketComp';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {GetUserBasket,BasketQuantityIncreamentDecreament} from '../../config/Urls';
+import {GetUserBasket,BasketQuantityIncreamentDecreament, EditorDecrementbasket} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -78,14 +65,16 @@ export default function BasketScreen(props) {
       .catch(function (error) {
         console.log(error?.response?.data);
         setLoading(false);
-        //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
   }
 
   const onIncreament = (indexVal) => {
     products[0].data?.product_variations?.map((item,index)=>{
-      if(item?.size_id === products[0].sizeId?.size_id && item?.color_id === products[0].colorId?.id){
+      if(
+        item?.size_id === products[0].sizeId?.size_id && 
+        item?.color_id === products[0].colorId?.id
+        ){
         if(item?.quantity > products[0].Quantity){
           dispatch({
             type: types.IncreamentQuantity,
@@ -100,7 +89,6 @@ export default function BasketScreen(props) {
 
   const onIncreamentEditor = (basketId) => {
           setLoading2(true);
-
           axios
             .post(BasketQuantityIncreamentDecreament,{basket_id:basketId,type:'increment'}, {
               headers: {Authorization: `Bearer ${user?.token}`},
@@ -117,13 +105,11 @@ export default function BasketScreen(props) {
             .catch(function (error) {
               console.log(error.response.data);
               setLoading2(false);
-              //errorMessage('Something went wrong!');
               errorMessage(errorHandler(error))
             });
   }
 
   const onDecreamentEditor = (basketId) => {
-    // if(data[0]?.qty<2){
       if(count<2){
       Alert.alert(
         'Confirmation',
@@ -140,7 +126,7 @@ export default function BasketScreen(props) {
               setLoading2(true);
 
               axios
-                .delete(`https://lamaison.clickysoft.net/api/v1/baskets/${basketId}`, {
+                .delete(`${EditorDecrementbasket}${basketId}`, {
                   headers: {Authorization: `Bearer ${user?.token}`},
                 })
                 .then(async function (res) { 
@@ -154,7 +140,6 @@ export default function BasketScreen(props) {
                 .catch(function (error) {
                   console.log(error.response.data);
                   setLoading2(false);
-                  //errorMessage('Something went wrong!');
                   errorMessage(errorHandler(error))
                 });
             },
@@ -236,26 +221,47 @@ export default function BasketScreen(props) {
           <SkypeIndicator color={'black'} />
         </View>
       ) : !loading && data?.length === 0 ? (
-        <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>There are no product added in basket</Text></View>
+        <View style={{
+          alignItems:'center',
+          justifyContent:'center',
+          flex:1,}}>
+          <Text>There are no product added in basket</Text>
+          </View>
       ) : (
         <>
               {data?.length!==0 && 
-              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen',{item:data[0]?.product?.product_images})} style={styles.imageWrap}>
+              <View style={{
+                flexDirection: 'row', 
+                alignSelf: 'center'}}>
+              <TouchableOpacity 
+              onPress={()=>props.navigation.navigate('imageViewScreen',{item:data[0]?.product?.product_images})} 
+              style={styles.imageWrap}>
                 <Image
-                  //source={IMAGES.randomPic}
                   source={{uri:data[0]?.product?.product_images[0]?.image[0]?.original_url}}
                   style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
                 />
               </TouchableOpacity>
               <View style={styles.detailsContainer}>
-                <Text style={{color: 'black', textTransform: 'uppercase'}}>
+                <Text style={{
+                  color: 'black', 
+                  textTransform: 'uppercase'
+                  }}>
                   {data[0]?.product?.name}
                 </Text>
                 <View style={{flexDirection:'row',alignItems:'center',marginTop:hp2(4)}}>
-                <View style={{width:wp2(9),height:wp2(9),backgroundColor:data[0]?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {data[0]?.size?.size}</Text>
+                <View style={{
+                  width:wp2(9),
+                  height:wp2(9),
+                  backgroundColor:data[0]?.color?.color_code,
+                  borderRadius:wp2(2),
+                  borderWidth:1
+                  }}></View>
+                <Text style={{
+                  color:'black',
+                  fontSize:rfv(12),
+                  fontWeight:'bold',
+                  marginLeft:wp2(2)}}>SIZE : {data[0]?.size?.size}</Text>
                 </View>
                 <Text
                   style={{
@@ -264,10 +270,7 @@ export default function BasketScreen(props) {
                     marginVertical: hp2(4),
                   }}>
                   £{data[0]?.product?.price}
-                </Text>
-      
-                
-      
+                </Text>      
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   {loading2 ? (
                     <SkypeIndicator size={20} style={{position:'absolute'}} color={'black'} />
@@ -278,22 +281,35 @@ export default function BasketScreen(props) {
                       textTransform: 'uppercase',
                       fontWeight: '700',
                       fontSize: rfv(20),
-                      //marginRight: wp2(4),
                       position:'absolute',
                     }}>
-                    {/* {data[0]?.qty} */}
                     {count}
                   </Text>
                   )}
-                  <TouchableOpacity disabled={loading2} onPress={()=>onIncreamentEditor(data[0]?.id)} style={[styles.button,{marginLeft:wp2(8)}]}>
-                    <ICONS.Entypo name="plus" size={30} color="white" />
+                  <TouchableOpacity 
+                  disabled={loading2} 
+                  onPress={()=>onIncreamentEditor(data[0]?.id)} 
+                  style={[styles.button,
+                  {marginLeft:wp2(8)}]}>
+                    <ICONS.Entypo 
+                    name="plus" 
+                    size={30} 
+                    color="white"/>
                   </TouchableOpacity>
-                  <TouchableOpacity disabled={loading2} onPress={()=>onDecreamentEditor(data[0]?.id)}
+                  <TouchableOpacity 
+                  disabled={loading2} 
+                  onPress={()=>onDecreamentEditor(data[0]?.id)}
                     style={[
                       styles.button,
-                      {backgroundColor: 'white', borderColor: 'black',},
+                        {
+                        backgroundColor: 'white',
+                         borderColor: 'black',
+                        },
                     ]}>
-                    <ICONS.Entypo name="minus" size={30} color="black" />
+                    <ICONS.Entypo 
+                    name="minus" 
+                    size={30} 
+                    color="black"/>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -327,7 +343,9 @@ export default function BasketScreen(props) {
       
               {products?.length!==0 ? 
               <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-              <TouchableOpacity onPress={()=>props.navigation.navigate('imageViewScreen',{item:products[0]?.data?.product_images})} style={styles.imageWrap}>
+              <TouchableOpacity 
+              onPress={()=>props.navigation.navigate('imageViewScreen',{item:products[0]?.data?.product_images})} 
+              style={styles.imageWrap}>
                 <Image
                   //source={IMAGES.randomPic}
                   source={{uri:products[0]?.data?.product_images[0].image[0]?.original_url}}
@@ -340,8 +358,17 @@ export default function BasketScreen(props) {
                   {products[0]?.data?.name}
                 </Text>
                 <View style={{flexDirection:'row',alignItems:'center',marginTop:hp2(4)}}>
-                <View style={{width:wp2(9),height:wp2(9),backgroundColor:products[0]?.colorId?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-                <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {products[0]?.sizeId?.size?.size}</Text>
+                <View style={{
+                  width:wp2(9),
+                  height:wp2(9),
+                  backgroundColor:products[0]?.colorId?.color_code,
+                  borderRadius:wp2(2),
+                  borderWidth:1}}></View>
+                <Text style={{
+                  color:'black',
+                  fontSize:rfv(12),
+                  fontWeight:'bold',
+                  marginLeft:wp2(2)}}>SIZE : {products[0]?.sizeId?.size?.size}</Text>
                 </View>
                 <Text
                   style={{
@@ -351,9 +378,6 @@ export default function BasketScreen(props) {
                   }}>
                   £{products[0]?.data?.price}
                 </Text>
-      
-
-      
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                   <Text
                     style={{
@@ -378,7 +402,14 @@ export default function BasketScreen(props) {
                 </View>
               </View>
             </View>
-            : <View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>There are no product added in basket</Text></View>}
+            : 
+            <View style={{
+              alignItems:'center',
+              justifyContent:'center',
+              flex:1,}}>
+                <Text>There are no product added in basket</Text>
+                </View>
+                }
           
                 <FlatList
                   showsVerticalScrollIndicator={false}
@@ -387,16 +418,15 @@ export default function BasketScreen(props) {
                     return index!== 0 && <BasketComp data={item} index={index} /> ;
                   }}
                 />
-      
              {products?.length!==0 && 
-              <TouchableOpacity onPress={() => props.navigation.navigate('checkoutScreen')} style={styles.checkoutButton}>
+              <TouchableOpacity 
+              onPress={() => props.navigation.navigate('checkoutScreen')} 
+              style={styles.checkoutButton}>
               <Text style={styles.buttonText}>CHECKOUT</Text>
             </TouchableOpacity>
             }
-      
             </ScrollView>
       )}
-      {/* <BottomComp /> */}
     </View>
     </SafeAreaView>
   );

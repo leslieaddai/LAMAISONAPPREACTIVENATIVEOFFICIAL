@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Text,
   TextInput,
@@ -11,47 +10,77 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
   RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
 import {
-  IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
   hp2,
-  getFont,
-  FONTS,
 } from '../../theme';
+import axios from 'react-native-axios';
+import { ChnagePhone, GetPhone } from '../../config/Urls';
+import { useSelector} from 'react-redux';
+import { successMessage } from '../../config/NotificationMessage';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function Phone(props) {
-    const textBox = (placeText) => {
-        return(
-            <View style={styles.inputBox}>
-            <TextInput
-              style={{
-                flex: 1,
-                color: 'black',
-                paddingHorizontal: wp2(2),
-                fontSize: rfv(13),
-                fontWeight: '700',
-              }}
-              placeholder={placeText}
-              placeholderTextColor={'grey'}
-            />
-          </View>
-        )
+  const [loading, setLoading] = useState(false);
+  const user = useSelector(state => state.userData);
+    const [prevnumber,setPrevNumber] = useState('')
+    const [newnumber,setNewNumber] = useState('')
+    useEffect(()=>{
+      GetPhoneNumber()
+    },[])
+    const GetPhoneNumber = ()=>{
+      axios
+      .get(GetPhone, {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        setPrevNumber(res.data.data)
+      })
+      .catch(function (error) {
+        console.log("error",error.response.data)
+      });
+    }
+    const ChangePhoneNumber = () =>{
+      setLoading(true);
+      axios
+      .post(ChnagePhone,
+        {phone:newnumber},
+      {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        console.log("res",res.data)
+        setLoading(false);
+        successMessage("Phone Number Update Successfully")
+        props.navigation.navigate('editProfile')
+
+      })
+      .catch(function (error) {
+        setLoading(false);
+        console.log("error",error.response.data)
+      });
     }
   return (
+
     <SafeAreaView style={styles.container}>
+      <View style={{position: 'absolute', zIndex: 999}}>
+      {loading &&
+      <SkypeIndicator
+      style={{
+        width: wp2(100),
+        height: hp2(100),
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+      }}
+      color={'black'}
+    />}
+      </View>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -60,10 +89,44 @@ export default function Phone(props) {
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(4)}}>
-     {textBox('CURRENT PHONE NUMBER')}
-     {textBox('NEW PHONE NUMBER')}
+      <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              editable={false}
+              placeholder={'CURRENT PHONE NUMBER'}
+              onChangeText={(e)=>{setPrevNumber(e)}}
+              value={prevnumber}
+              keyboardType={"number-pad"}
+              placeholderTextColor={'grey'}
+              maxLength={11}
+            />
+          </View>
+          <View style={styles.inputBox}>
+            <TextInput
+              style={{
+                flex: 1,
+                color: 'black',
+                paddingHorizontal: wp2(2),
+                fontSize: rfv(13),
+                fontWeight: '700',
+              }}
+              maxLength={11}
+              placeholder={'NEW PHONE NUMBER'}
+              keyboardType={"number-pad"}
+              placeholderTextColor={'grey'}
+              value={newnumber}
+              onChangeText={(e)=>{setNewNumber(e)}}
+            />
+          </View>
         <TouchableOpacity
-          style={styles.button}>
+          style={styles.button}
+          onPress={()=>{ChangePhoneNumber()}}>
           <Text style={styles.buttonText}>CONFIRM</Text>
         </TouchableOpacity>
       </ScrollView>

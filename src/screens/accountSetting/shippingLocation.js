@@ -76,7 +76,6 @@ export default function ShippingLocation(props) {
       })
       .catch(function (error) {
         setLoading(false);
-        //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
   };
@@ -108,7 +107,6 @@ export default function ShippingLocation(props) {
         .catch(function (error) {
           console.log(error.response.data);
           setLoading2(false);
-          //errorMessage('Something went wrong!');
           errorMessage(errorHandler(error))
         });
     } else {
