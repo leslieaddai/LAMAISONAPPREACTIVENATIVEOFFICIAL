@@ -40,7 +40,6 @@ import {connect} from 'react-redux';
 import {signup} from '../../store/actions/authAction';
 import {message} from '../../store/message';
 import DatePicker from 'react-native-date-picker';
-import WebView from 'react-native-webview';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -70,7 +69,6 @@ const CreateAccountScreen = props => {
   const [checkBox, setCheckBox] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
 
   console.log(special.test(Newpassword));
   
@@ -81,55 +79,6 @@ const CreateAccountScreen = props => {
 
   function containsWhitespace(str) {
     return /\s/.test(str);
-  }
-
-  const onStripeConnect = () => {
-    if(props?.route?.params?.user=='editor'){
-      onCreate();
-    }else{
-
-      // axios
-      //   .post('https://api.stripe.com/v1/accounts', 'type=express&capabilities[card_payments][requested]=true&capabilities[transfers][requested]=true',
-      //   {
-      //     headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-      //     // params:{type:'express',capabilities: {card_payments: { requested: true },transfers: { requested: true }}}
-      //   })
-      //   .then(async function (res) {
-      //     console.log(res?.data?.capabilities);
-
-      //     axios
-      //     .post('https://api.stripe.com/v1/account_links', null,
-      //     {
-      //       headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-      //       params:{account:res?.data?.id,refresh_url: "https://www.facebook.com",return_url: "https://www.google.com",type: "account_onboarding"}
-      //     })
-      //     .then(async function (res) {
-      //       console.log(res?.data);
-      //       await Linking.openURL(res?.data?.url);
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error?.response?.data);
-      //     });
-
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error?.response?.data);
-      //   });
-      axios
-      .post('https://api.stripe.com/v1/account_links', null,
-      {
-        headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-        params:{account:'acct_1NWEl2IMlVqan7Ua',refresh_url: "https://www.facebook.com",return_url: "https://www.google.com",type: "account_onboarding"}
-      })
-      .then(async function (res) {
-        console.log(res?.data);
-        await Linking.openURL(res?.data?.url);
-      })
-      .catch(function (error) {
-        console.log(error?.response?.data);
-      });
-
-    }
   }
 
   const onCreate = () => {
@@ -168,7 +117,7 @@ const CreateAccountScreen = props => {
                       console.log(res.data);
                       setLoading(false);
                       //props.navigation.navigate('loginScreen');
-                      props.navigation.navigate('verifyAccountScreen');
+                      props.navigation.navigate('verifyAccountScreen',{role:props?.route?.params?.user == 'editor' ? 2 : 3,data:res?.data?.user?.stripe_account});
                       //props.navigation.replace('loginScreen')
                       successMessage(
                         'Account verification code is sent to your email. Please check.',
@@ -230,16 +179,6 @@ const CreateAccountScreen = props => {
   //   )
   // }
 
-  const ActivityIndicatorLoadingView = () => {
-    return (
-      <ActivityIndicator
-         color="#009688"
-         size="large"
-         style={styles.ActivityIndicatorStyle}
-      /> 
-    );
- }
-
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
@@ -247,19 +186,6 @@ const CreateAccountScreen = props => {
       </View>
       <SafeAreaView style={styles.container}>
         {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}> */}
-
-        {/* <Modal  visible={showModal}>
-                    <View style={styles.modal}>
-                        <View style={styles.modalContainer}>
-                            <WebView 
-                                style={{ flex : 1 }} 
-                                source={{uri: 'https://github.com/facebook/react-native'}}
-                                renderLoading={ActivityIndicatorLoadingView}
-                            />
-                        </View>
-                    </View>
-          </Modal> */}
-
         <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.goBack()}
@@ -378,7 +304,7 @@ const CreateAccountScreen = props => {
           </TouchableOpacity>
         </View>
 
-        <TouchableOpacity onPress={onStripeConnect} style={styles.button}>
+        <TouchableOpacity onPress={onCreate} style={styles.button}>
           <Text style={{color: 'white'}}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
         {/* </KeyboardAwareScrollView> */}
@@ -489,20 +415,4 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     marginLeft: wp2(2),
   },
-
-      modal : {
-        flex : 1,
-        justifyContent : 'center',
-        alignItems : 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)'
-    },
-    modalContainer : {
-        backgroundColor : 'white',
-        width : '90%',
-        height : '90%',
-    },
-    ActivityIndicatorStyle: {
-        flex: 1,
-        justifyContent: 'center',
-    },
 });

@@ -74,3 +74,4 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const AddComment = getApi('product/add/comment');
   export const OrderStatus = getApi('status');
   export const ChnageOrderStatus = getApi('orders/changes/status');
+  export const ConnectAccountLink = getApi('account-links');

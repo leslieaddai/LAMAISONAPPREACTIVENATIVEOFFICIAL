@@ -107,6 +107,10 @@ export default function BasketComp(props) {
         console.log(res.data);
         //getBasket()
         //props?.basket?.getBasket();
+        let tempArr = props?.allData?.data;
+        tempArr[props?.index].qty=tempArr[props?.index].qty+1;
+        props?.allData?.setData(tempArr);
+
         setCount(count+1)
         setLoading2(false);
       })
@@ -169,6 +173,10 @@ axios
     console.log(res.data);
     //getBasket()
     //props?.basket?.getBasket();
+    let tempArr = props?.allData?.data;
+    tempArr[props?.index].qty=tempArr[props?.index].qty-1;
+    props?.allData?.setData(tempArr);
+
     setCount(count-1);
     setLoading2(false);
   })

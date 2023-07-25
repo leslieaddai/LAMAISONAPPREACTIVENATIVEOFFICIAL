@@ -67,6 +67,7 @@ import ImageView from "../screens/home/imageView";
 
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
  import OrderDetails from "../screens/OrderDetailedScreen/OrderDetails";
+ import ConnectStripe from "../screens/auth/connectStripe";
  // import { BottomNavigation } from "./BottomNavigator";
 
 export const stackRouteList = [
@@ -184,6 +185,7 @@ export const guestScreens = [
   {name:'selectSizes',component:SelectSizes},
   {name:"verifyAccountScreen", component:VerifyAccountScreen},
   {name:'imageView',component:ImageView},
+  {name:'connectStripe',component:ConnectStripe},
 ]
 
 export const brandScreens = [

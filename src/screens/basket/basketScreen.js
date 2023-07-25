@@ -108,7 +108,10 @@ export default function BasketScreen(props) {
             .then(async function (res) {
               console.log(res.data);
               //getBasket()
+              let tempArr = data;
+              tempArr[0].qty=tempArr[0].qty+1;
               setCount(count+1)
+              setData(tempArr);
               setLoading2(false);
             })
             .catch(function (error) {
@@ -168,7 +171,10 @@ export default function BasketScreen(props) {
         .then(async function (res) {
           console.log(res.data);
           //getBasket()
+          let tempArr = data;
+          tempArr[0].qty=tempArr[0].qty-1;
           setCount(count-1);
+          setData(tempArr);
           setLoading2(false);
         })
         .catch(function (error) {
@@ -298,7 +304,7 @@ export default function BasketScreen(props) {
                   showsVerticalScrollIndicator={false}
                   data={data}
                   renderItem={({item, index}) => {
-                    return index!== 0 && <BasketComp data={item} index={index} basket={{getBasket}} /> ;
+                    return index!== 0 && <BasketComp allData={{data,setData}} data={item} index={index} basket={{getBasket}} /> ;
                   }}
                 />
       

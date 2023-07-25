@@ -55,9 +55,15 @@ export default function VerifyAccountScreen(props) {
         .then(async function (res) {
           console.log(res.data);
 
-          setLoading(false);
-          props.navigation.navigate('loginScreen')
-          successMessage('Email Has Been Verified!')
+          if(props?.route?.params?.role===2){
+            setLoading(false);
+            props.navigation.navigate('loginScreen')
+            successMessage('Email Has Been Verified!')
+          }else{
+            setLoading(false);
+            props.navigation.navigate('connectStripe',{role:props?.route?.params?.role,data:props?.route?.params?.data})
+            successMessage('Email Has Been Verified!')
+          }
         })
         .catch(function (error) {
           console.log(error?.response?.data);
