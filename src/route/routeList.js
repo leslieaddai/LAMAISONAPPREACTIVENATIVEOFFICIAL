@@ -51,7 +51,6 @@ import ReuploadScreen from "../screens/inventory/reuploadScreen";
 import Username from "../screens/editProfile/username";
 import Email from "../screens/editProfile/email";
 import Phone from "../screens/editProfile/phone";
-import dob from "../screens/editProfile/dob";
 import PasswordChange from "../screens/editProfile/passwordChange";
 import About from "../screens/editProfile/about";
 import FollowerList from "../screens/followers/followerList";
@@ -69,6 +68,7 @@ import ImageView from "../screens/home/imageView";
  import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
  import OrderDetails from "../screens/OrderDetailedScreen/OrderDetails";
  import ConnectStripe from "../screens/auth/connectStripe";
+import DobScreen from "../screens/editProfile/DobScreen";
  // import { BottomNavigation } from "./BottomNavigator";
 
 export const stackRouteList = [
@@ -126,7 +126,7 @@ export const stackRouteList = [
     {name:'username',component:Username},//
     {name:'email',component:Email},//
     {name:'phone',component:Phone},//
-    {name:'dob',component:dob},//
+    {name:'dobScreen',component:DobScreen},//
     {name:'passwordChange',component:PasswordChange},//
     {name:'about',component:About},//
     {name:'followerList',component:FollowerList},//
@@ -238,7 +238,7 @@ export const brandScreens = [
     {name:'username',component:Username},//
     {name:'email',component:Email},//
     {name:'phone',component:Phone},//
-    {name:'dob',component:dob},//
+    {name:'dobScreen',component:DobScreen},//
     {name:'passwordChange',component:PasswordChange},//
     {name:'about',component:About},//
     //{name:'followerList',component:FollowerList},//
@@ -304,7 +304,7 @@ export const editorScreens = [
     {name:'username',component:Username},//
     {name:'email',component:Email},//
     {name:'phone',component:Phone},//
-    {name:'dob',component:dob},//
+    {name:'dobScreen',component:DobScreen},//
     {name:'passwordChange',component:PasswordChange},//
     {name:'about',component:About},//
    // {name:'followerList',component:FollowerList},//

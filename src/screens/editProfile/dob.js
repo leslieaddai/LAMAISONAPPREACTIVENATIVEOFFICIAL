@@ -27,7 +27,7 @@ import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
 import types from '../../Redux/types';
 
-export default function dob(props) {
+export default function DOB(props) {
     const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.userData);

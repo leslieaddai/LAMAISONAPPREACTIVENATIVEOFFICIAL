@@ -624,7 +624,7 @@ export default function BuyNow(props) {
                     value={card}
                     onChangeText={val => updateState({ card: val })} 
                     keyboardType='number-pad' 
-                    maxLength={19} />
+                    maxLength={16} />
                   </View>
                   <View
                     style={{
@@ -640,6 +640,7 @@ export default function BuyNow(props) {
                       placeholder="EXPIRY DATE MM/YY" 
                       maxLength={5} 
                       value={expiry}
+                      keyboardType={'number-pad'}
                       onChangeText={text => 
                         updateState({expiry: text.length === 3 && !text.includes("/")
                        ? `${text.substring(0, 2)}/${text.substring(2)}`

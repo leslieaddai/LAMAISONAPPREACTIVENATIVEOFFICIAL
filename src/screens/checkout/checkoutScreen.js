@@ -377,21 +377,15 @@ export default function CheckoutScreen(props) {
         dispatch({
           type: types.ClearBasketGuest
         });
-        // dispatch({
-        //   type: types.CartCount,
-        //   payload: res.data.user.basket_count,
-        // });
-        // dispatch({
-        //   type: types.Login,
-        //   payload: res.data,
-        // });
+        dispatch({
+          type: types.Login,
+          payload: res.data,
+        });
         successMessage('Order Done');
       })
       .catch(function (error) {
         console.log(error.response.data);
         setLoading(false);
-        //errorMessage('Order Failed');
-        //errorMessage(error?.response?.data?.message);
         errorMessage(errorHandler(error))
       });
 
@@ -1151,7 +1145,7 @@ export default function CheckoutScreen(props) {
      </View>
      <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={card}
-             onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={19}/>
+             onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={16}/>
      </View>
        <View
          style={{

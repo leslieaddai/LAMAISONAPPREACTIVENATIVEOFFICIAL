@@ -36,7 +36,7 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { errorMessage,successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { UpdateProfile } from '../../config/Urls';
+import { GetPhone, UpdateProfile } from '../../config/Urls';
 import { useDispatch,useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -50,7 +50,22 @@ export default function EditProfile(props) {
   const [loading, setLoading] = useState(false);
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
-  console.log(user?.userData)
+  const [newnumber,setNewNumber] = useState('')
+  useEffect(()=>{
+    GetPhoneNumber()
+  },[])
+  const GetPhoneNumber = ()=>{
+    axios
+    .get(GetPhone, {
+      headers: {Authorization: `Bearer ${user?.token}`},
+    })
+    .then(async function (res) {
+      setNewNumber(res.data.data)
+    })
+    .catch(function (error) {
+      console.log("error",error.response.data)
+    });
+  }
   const selectImage = async () => {
     const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
@@ -169,7 +184,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob: 'XXXXXXXXXX'}</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!=''?newnumber:'XXXXXXXXXX' : 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>
@@ -202,7 +217,7 @@ axios.request(config)
        {user?.userData?.role?.[0]?.id === 3 && (
         <>
         {settingOptions('BRAND NAME', 'name')}
-        {settingOptions('DOB', 'dob')}
+        {settingOptions('DOB', 'dobScreen')}
         </>
       )}
       {settingOptions('USERNAME', 'username')}
