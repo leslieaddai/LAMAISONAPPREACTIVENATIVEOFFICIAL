@@ -71,7 +71,7 @@ export default function BuyNow(props) {
   const [selectedCountry, setSelectedCountry] = useState('SELECT COUNTRY');
   const [countriesData, setCountriesData] = useState([]);
   const [total, setTotal] = useState(0);
-  const [commission, setCommission] = useState(15);
+  const [commission, setCommission] = useState(2.9);
   const propsparams = props?.route?.params
 
   useEffect(() => {
@@ -569,8 +569,8 @@ export default function BuyNow(props) {
                       paddingRight: wp2(6),
                       marginVertical: hp2(1),
                     }}>
-                    <Text style={styles.text}>Commission {commission}%</Text>
-                    <Text style={styles.text}>£{total * (commission / 100)}</Text>
+                    <Text style={styles.text}>Stripe Fee</Text>
+                    <Text style={styles.text}>£{Number(total*(commission/100)+0.3).toFixed(3)}</Text>
                   </View>
 
                   <View
@@ -582,7 +582,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total + (total * (commission / 100))}</Text>
+                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
                   </View>
                 </>
               }
@@ -598,7 +598,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total + (total * (commission / 100))}</Text>
+                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
                   </View>
                   <View style={styles.inputBox}>
                     <TextInput 
@@ -667,7 +667,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total + (total * (commission / 100))}</Text>
+                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
                   </View>
                   <View style={styles.inputBox}>
                     <TextInput 
@@ -772,8 +772,6 @@ export default function BuyNow(props) {
                         paddingRight: wp2(2),
                         marginVertical: hp2(1),
                       }}>
-                      <Text style={styles.text}>Total</Text>
-                      <Text style={styles.text}>£{total + (total * (commission / 100))}</Text>
                     </View>
 
                     <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
