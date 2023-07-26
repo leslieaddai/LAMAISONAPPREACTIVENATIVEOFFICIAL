@@ -78,3 +78,4 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const ConnectAccountLink = getApi('account-links');
   export const GetPhone = getApi('get/phone');
   export const ChnagePhone = getApi('change/phone')
+  export const ChnageDob = getApi('change/dob')

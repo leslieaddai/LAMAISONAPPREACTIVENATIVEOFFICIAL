@@ -278,8 +278,8 @@ export default function CheckoutScreen(props) {
     .catch(function (error) {
       console.log(error?.response?.data)
       setLoadingContinue(false);
-      //errorMessage(errorHandler(error))
-      errorMessage(error?.response?.data?.message)
+      errorMessage(errorHandler(error))
+      // errorMessage(error?.response?.data?.message)
     })
   }else{
     errorMessage('Invalid city name')
@@ -373,13 +373,18 @@ export default function CheckoutScreen(props) {
       .then(async function (res) {
         console.log(res.data);
         setLoading(false);
-        //props.navigation.pop(1);
-        //props.navigation.navigate('confirmationScreen')
-        //props.navigation.replace('confirmationScreen')
         props.navigation.replace('bottomNavigationGuest', {screen: 'confirmationScreen',})
         dispatch({
           type: types.ClearBasketGuest
         });
+        // dispatch({
+        //   type: types.CartCount,
+        //   payload: res.data.user.basket_count,
+        // });
+        // dispatch({
+        //   type: types.Login,
+        //   payload: res.data,
+        // });
         successMessage('Order Done');
       })
       .catch(function (error) {
@@ -750,6 +755,7 @@ export default function CheckoutScreen(props) {
          }}>
          <View style={[styles.inputBox, {width: wp2(48)}]}>
            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry}
+           keyboardType={'number-pad'}
              onChangeText={text => 
              updateState({expiry: text.length === 3 && !text.includes("/")
              ? `${text.substring(0, 2)}/${text.substring(2)}`
@@ -1156,7 +1162,8 @@ export default function CheckoutScreen(props) {
          }}>
          <View style={[styles.inputBox, {width: wp2(48)}]}>
            <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry}
-             onChangeText={text => 
+            keyboardType={'number-pad'}
+            onChangeText={text => 
               updateState({expiry: text.length === 3 && !text.includes("/")
              ? `${text.substring(0, 2)}/${text.substring(2)}`
              : text})} />

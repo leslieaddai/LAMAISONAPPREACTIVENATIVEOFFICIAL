@@ -640,7 +640,10 @@ export default function BuyNow(props) {
                       placeholder="EXPIRY DATE MM/YY" 
                       maxLength={5} 
                       value={expiry}
-                      onChangeText={val => updateState({ expiry: val })} />
+                      onChangeText={text => 
+                        updateState({expiry: text.length === 3 && !text.includes("/")
+                       ? `${text.substring(0, 2)}/${text.substring(2)}`
+                       : text})} />
                     </View>
                     <View style={[styles.inputBox, { width: wp2(28) }]}>
                       <TextInput 
