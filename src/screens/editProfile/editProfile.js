@@ -50,7 +50,7 @@ export default function EditProfile(props) {
   const [loading, setLoading] = useState(false);
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
-  
+  console.log(user?.userData)
   const selectImage = async () => {
     const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
@@ -77,7 +77,6 @@ export default function EditProfile(props) {
 
       }
   }
-
   const onRemove = (id) => {
     var array = [...images];
     if (id !== -1) {
@@ -170,7 +169,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name : 'XXXXXXXXXX'}</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob: 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>
@@ -203,6 +202,7 @@ axios.request(config)
        {user?.userData?.role?.[0]?.id === 3 && (
         <>
         {settingOptions('BRAND NAME', 'name')}
+        {settingOptions('DOB', 'dob')}
         </>
       )}
       {settingOptions('USERNAME', 'username')}

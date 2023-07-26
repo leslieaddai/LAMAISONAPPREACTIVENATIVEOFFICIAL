@@ -201,7 +201,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
   const NetworkCheck = () =>{
     NetInfo.addEventListener(networkState => {
-      if(!networkState?.isConnected){
+      console.log(networkState)
+      if(
+        !networkState?.isConnected && 
+        !networkState.isInternetReachable&&
+        networkState.isInternetReachable!==null){
         showMessage({
                         message: "",
                         description: "Please Check Your Internet Connection",
