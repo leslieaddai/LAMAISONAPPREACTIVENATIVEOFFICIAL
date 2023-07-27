@@ -1,6 +1,7 @@
 export default {
   Login: 'Login',
   Logout: 'Logout',
+  Applaunch:'Applaunch',
   UpdateProfilePicture: 'UpdateProfilePicture',
   UpdateProfile: 'UpdateProfile',
   UpdateShippingInfo: 'UpdateShippingInfo',

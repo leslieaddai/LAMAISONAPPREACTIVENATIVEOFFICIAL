@@ -201,7 +201,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
   const NetworkCheck = () =>{
     NetInfo.addEventListener(networkState => {
-      console.log(networkState)
+      // console.log(networkState)
       if(
         !networkState?.isConnected && 
         !networkState.isInternetReachable){
@@ -221,7 +221,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
   
   useEffect(()=>{
     NetworkCheck()
-  },[])
+  },[NetworkCheck()])
   
   return (
 <StripeProvider 

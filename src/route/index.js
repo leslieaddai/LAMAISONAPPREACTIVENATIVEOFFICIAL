@@ -11,8 +11,12 @@ import {
 } from './routeList';
 
 import {useDispatch, useSelector} from 'react-redux';
+import types from '../Redux/types';
+import { globalSetting } from '../config/Urls';
+import axios from 'react-native-axios';
 
 const Stack = createStackNavigator();
+
 
 //const [userState,setUserState] = useState();
 
@@ -20,7 +24,12 @@ const AppNavigatior = () => {
   const [status, setStatus] = useState('guest');
   const token = useSelector(state => state?.userData?.token);
   const id = useSelector(state => state?.userData?.userData?.role?.[0]?.id);
+  const[sucess,setSuccess] = useState(false)
+  const dispatch = useDispatch()
   //console.log(userState);
+  useEffect(()=>{
+    if(!sucess)getApiData(globalSetting)
+  },[sucess])
 
   useEffect(() => {
     if (token === '') {
@@ -45,6 +54,23 @@ const AppNavigatior = () => {
     //     break;
     // }
   }, [token,id]);
+  const getApiData = (url) => {
+    axios
+      .get(url)
+      .then(function (response) {
+        console.log(response.data)
+        // setSuccess(true)
+        dispatch({
+          type: types.Applaunch,
+          payload: response.data,
+        });
+      })
+      .catch(function (error) {
+        // navigation.navigate('Login')
+        console.log("response splash error", error.response.data);
+      });
+  };
+  
 
   const GuestScreensRoute = () => (
     <Stack.Navigator initialRouteName='guestScreen'>

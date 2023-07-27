@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Text,
   SafeAreaView,
+  Linking,
+  Platform,
 } from 'react-native';
 import {
   RFPercentage as rfp,
@@ -18,8 +20,49 @@ import {
   wp2,
   hp2,
 } from '../../theme';
+import { useSelector } from 'react-redux';
 
 export default function ConfirmationScreen(props) {
+  const {globalData} = useSelector(state => state.globalData)
+  const tweetNow = () => {
+    let twitterParameters = [];
+    twitterParameters.push('url=' + encodeURI(Platform.OS == 'ios' ? globalData.ios_app_url:globalData.android_app_url));
+    const url =
+    'https://twitter.com/intent/tweet?'
+    + twitterParameters.join('&');
+  Linking.openURL(url)
+    .then((data) => {
+    })
+    .catch(() => {
+      alert('Something went wrong');
+    });
+  }
+
+  const postOnFacebook = () => {
+    let facebookParameters = [];
+    facebookParameters.push('u=' + encodeURI(Platform.OS == 'ios' ? globalData.ios_app_url:globalData.android_app_url));
+    const url =
+    'https://www.facebook.com/sharer/sharer.php?' +
+    facebookParameters.join('&');
+
+  Linking.openURL(url)
+    .then((data) => {
+    })
+    .catch(() => {
+      alert('Something went wrong');
+    });
+  }
+
+  const postOnLinkedin = () => {
+    let url = Platform.OS =='ios'?globalData.ios_app_url:globalData.android_app_url 
+    let linkedinurl = `https://www.linkedin.com/sharing/share-offsite/?url={${url}}`
+    Linking.openURL(linkedinurl)
+    .then((data) => {
+    })
+    .catch(() => {
+      alert('Something went wrong');
+    });
+  }
   return (
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
@@ -44,21 +87,21 @@ export default function ConfirmationScreen(props) {
         textTransform:'uppercase',
         textAlign:'center'}}>Tell your friends about{'\n'}your great choice</Text>
       <View style={{flexDirection:'row'}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{tweetNow()}}>
         <ICONS.AntDesign 
         name="twitter" 
         size={wp2(12)} 
         color="black" 
         style={{marginHorizontal:wp2(1)}}/>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{postOnFacebook()}}>
         <ICONS.AntDesign 
         name="facebook-square" 
         size={wp2(12)} 
         color="black" 
         style={{marginHorizontal:wp2(1)}}/>
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={()=>{postOnLinkedin()}}>
         <ICONS.AntDesign 
         name="linkedin-square" 
         size={wp2(12)} 

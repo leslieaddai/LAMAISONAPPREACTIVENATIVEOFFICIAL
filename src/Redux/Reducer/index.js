@@ -13,6 +13,7 @@ import StyleReducer from './StyleReducer';
 import FilterItemReducer from './FilterItemReducer';
 import ContinentReducer from './ContinentReducer';
 import GuestBasket from './GuestBasket';
+import GloabalDataReducer from './GloabalDataReducer';
 
 const persistConfig1 = {
   key: 'auth',
@@ -37,10 +38,16 @@ const persistConfig4 = {
   storage: AsyncStorage,
   whitelist: ['products'],
 };
+const globalPersistConfig = {
+  key: 'globaldata',
+  storage: AsyncStorage,
+  whitelist: ['globalData'],
+};
 
 export const store = configureStore({
   reducer: {
     userData: persistReducer(persistConfig1, AuthReducer),
+    globalData: persistReducer(globalPersistConfig, GloabalDataReducer),
     Splash: SplashReducer,
     ImageUpload: ImageUpload,
     basket: persistReducer(persistConfig2, BasketCounter),
