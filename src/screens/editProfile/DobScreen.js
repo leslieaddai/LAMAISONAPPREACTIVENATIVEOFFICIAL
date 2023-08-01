@@ -27,7 +27,7 @@ import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
 import types from '../../Redux/types';
 
-const DobScreen = () => {
+const DobScreen = (props) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const user = useSelector(state => state.userData);
@@ -47,7 +47,6 @@ const DobScreen = () => {
         };
         useEffect(()=>{
           if(data.user!=''){
-              console.log("user store",data)
               dispatch({
                   type: types.Login,
                   payload: data,

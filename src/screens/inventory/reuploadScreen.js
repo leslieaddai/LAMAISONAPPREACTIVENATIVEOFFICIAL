@@ -112,10 +112,9 @@ export default function ReuploadScreen(props) {
   const [confirmButton, setConfirmButton] = useState(false);
   const [uploadButton, setUploadButton] = useState(false);
   const [showQuantity, setShowQuantity] = useState(false);
-
   const [isOpened, setIsOpened] = useState(false);
   const [selectedText, setSelectedText] = useState(
-    props?.route?.params?.data?.style?.name,
+    routeitem?.style?.name,
   );
   
 
@@ -126,7 +125,7 @@ export default function ReuploadScreen(props) {
   },[isOpenedShipping])
   useEffect(() => {
     let tempArr = [];
-    props?.route?.params?.data?.product_variations?.map(item => {
+    routeitem?.product_variations?.map(item => {
       //console.log(item.quantity)
       tempArr.push({
         color_id: String(item?.color?.id),
@@ -141,7 +140,7 @@ export default function ReuploadScreen(props) {
     setQuantity(tempArr);
 
     let tempImgArr = [];
-    props?.route?.params?.data?.product_images?.[0]?.image?.map(
+    routeitem?.product_images?.[0]?.image?.map(
       (item, index) => {
         tempImgArr.push({
           uri: item?.original_url,
@@ -209,17 +208,12 @@ export default function ReuploadScreen(props) {
       .then(async function (res) {
         console.log("skjjk",res?.data);
         if (res?.data?.data?.length > 0) {
-          // setHaveShippingInfo(true);
           setShippingData(res?.data?.data);
-          //console.log('this is true')
         } else {
-          // setHaveShippingInfo(false);
           setShippingData('');
-          //console.log('this is false')
         }
       })
       .catch(function (error) {
-        //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
   };
@@ -308,8 +302,7 @@ export default function ReuploadScreen(props) {
     formdata.append('user_id', user?.userData?.id);
     formdata.append('category_id', stateChange?.category);
     formdata.append('name', stateChange?.productName);
-    //formdata.append("sku", Math.floor(Math.random() * 899999 + 100000));
-    formdata.append('sku', props?.route?.params?.data?.sku);
+    formdata.append('sku', routeitem?.sku);
     formdata.append('description', stateChange?.description);
     formdata.append('price', parseFloat(stateChange?.price).toFixed(2));
     formdata.append('piece_id', stateChange?.piece_id);
@@ -323,7 +316,7 @@ export default function ReuploadScreen(props) {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: ProductUploadUrl + `/${props?.route?.params?.data?.id}`,
+      url: ProductUploadUrl + `/${routeitem?.id}`,
       headers: {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
@@ -380,7 +373,7 @@ export default function ReuploadScreen(props) {
       
                 formdata.append('product_image_id', array?.[id]?.id);
                 formdata.append('image', {uri, name: filename, type});
-                formdata.append('product_id', props?.route?.params?.data?.id);
+                formdata.append('product_id', routeitem?.id);
       
                 let config = {
                   method: 'post',
@@ -406,7 +399,6 @@ export default function ReuploadScreen(props) {
                   .catch(function (error) {
                     console.log(error.response.data);
                     setLoading2(false);
-                    //errorMessage('Image Update Failed');
                     errorMessage(errorHandler(error))
                   });
               }
@@ -457,19 +449,6 @@ export default function ReuploadScreen(props) {
               [{nativeEvent: {contentOffset: {x: scrollX}}}],
               {useNativeDriver: true},
             )}>
-            {/* {props?.route?.params?.data?.product_images?.[0]?.image?.map((item,index)=>(
-                    <View key={index} style={styles.imageContainer}>
-                      <TouchableOpacity onPress={changeImage} style={{position:'absolute',zIndex:999,right:10,top:10}}>
-                      <ICONS.FontAwesome5 name="pencil-alt" size={24} color="black" />
-                      </TouchableOpacity>
-                    <Image 
-                  //source={IMAGES.randomPic}
-                  source={{uri:item?.original_url}}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="cover"
-                />
-              </View>
-                ))} */}
             {selectedImage?.map((item, index) => (
               <View key={index} style={styles.imageContainer}>
                 <TouchableOpacity
@@ -527,15 +506,6 @@ export default function ReuploadScreen(props) {
               />
             ))}
             <View style={styles.quantityWrap}>
-              {/* {quantity?.length>1 && (
-               <TouchableOpacity onPress={()=>{
-                 var array = [...quantity];
-                 setQuantity(array.slice(0, -1));
-               }}>
-               <ICONS.AntDesign name="minuscircle" size={34} color="red" />
-               </TouchableOpacity>
-              )} */}
-
               <TouchableOpacity
                 onPress={() =>
                   setQuantity([
@@ -595,9 +565,6 @@ export default function ReuploadScreen(props) {
               ]}>
               <Text style={styles.previewTxt}>{stateChange?.description}</Text>
             </View>
-            {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-         <Text style={styles.previewTxt}>free shipping to all regions</Text>
-        </View> */}
         <View
               style={[
                 styles.inputBox,
@@ -614,9 +581,6 @@ export default function ReuploadScreen(props) {
               ]}>
               <Text style={styles.previewTxt}>{stateChange?.price}</Text>
             </View>
-            {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-         <Text style={styles.previewTxt}>colour</Text>
-        </View> */}
           
             <View
               style={[
@@ -801,7 +765,7 @@ export default function ReuploadScreen(props) {
             return(
               <TouchableOpacity
                      onPress={() => {
-                      uibottomesheetvisiblity(false)
+                      uibottomesheetvisiblity(true)
                       setIsOpenedShipping(false)
                         addRegions(item)
                     }}
