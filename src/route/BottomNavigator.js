@@ -1,46 +1,22 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
   Platform,
-  Dimensions
 } from 'react-native';
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
 import {
   RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../theme/fonts';
 import {
   IMAGES,
-  ICONS,
-  COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
   hp2,
-  getFont,
-  FONTS,
 } from '../theme';
 import { useNavigation } from '@react-navigation/native';
-
-import { errorMessage,successMessage } from '../config/NotificationMessage';
-import axios from 'react-native-axios';
-import { errorHandler } from '../config/helperFunction';
-import { LogoutUrl } from '../config/Urls';
-import { useDispatch,useSelector } from 'react-redux';
-import types from '../Redux/types';
-import { SkypeIndicator } from 'react-native-indicators';
-
+import { useDispatch, useSelector } from 'react-redux';
 import FeedbackScreen from "../screens/feedback/feedbackScreen";
 import NotificationScreen from "../screens/notification/notificationScreen";
 import OrderTrackingScreen from "../screens/accountSetting/orderTrackingScreen";
@@ -69,32 +45,26 @@ import Inventory from "../screens/inventory/inventory";
 import FollowerList from "../screens/followers/followerList";
 import Review from "../screens/feedback/review";
 import AddReview from "../screens/feedback/addReview";
-
 import WelcomeScreen from '../screens/welcome/welcomeScreen';
 import SplashScreen from '../screens/splash/splashScreen';
-
 import CommentScreen from '../screens/home/commentScreen';
 import BuyNow from '../screens/checkout/buyNow';
-
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const TestScreen = () => {
   const navigation = useNavigation();
-
-  //navigation.navigate('guestScreen')
-  useEffect(()=>{
+  useEffect(() => {
     navigation.reset({
       index: 0,
       routes: [{ name: 'guestScreen' }],
     });
-  },[])
+  }, [])
 
-  return(
+  return (
     <View></View>
   )
 }
@@ -102,12 +72,11 @@ const TestScreen = () => {
 const TestBrand = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.userData)
+  useEffect(() => {
+    navigation.navigate('brandProfileScreen', { userData: user })
+  }, [])
 
-  useEffect(()=>{
-    navigation.navigate('brandProfileScreen',{userData:user})
-  },[])
-
-  return(
+  return (
     <View></View>
   )
 }
@@ -116,11 +85,11 @@ const TestEditor = () => {
   const navigation = useNavigation();
   const user = useSelector(state => state.userData)
 
-  useEffect(()=>{
-    navigation.navigate('editorProfileScreen',{userData:user})
-  },[])
+  useEffect(() => {
+    navigation.navigate('editorProfileScreen', { userData: user })
+  }, [])
 
-  return(
+  return (
     <View></View>
   )
 }
@@ -128,367 +97,223 @@ const TestEditor = () => {
 const StackNavCompBrand = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
   const user = useSelector(state => state.userData)
   const basket = useSelector(state => state.basket)
   const navigation = useNavigation();
-  return(
+  return (
     //<Stack.Navigator initialRouteName={'brandProfileScreen'}>
     <Stack.Navigator >
-    {/* <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
-    <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'destinationScreen'} component={DestinationScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'analyticsScreen'} component={AnalyticsScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'productType'} component={ProductType} options={{headerShown: false}}/>
-    <Stack.Screen name={'inventory'} component={Inventory} options={{headerShown: false}}/>
-    <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-  </Stack.Navigator>
+      {/* <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
+      <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'destinationScreen'} component={DestinationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'analyticsScreen'} component={AnalyticsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'productType'} component={ProductType} options={{ headerShown: false }} />
+      <Stack.Screen name={'inventory'} component={Inventory} options={{ headerShown: false }} />
+      <Stack.Screen name={'followerList'} component={FollowerList} options={{ headerShown: false }} />
+    </Stack.Navigator>
   )
 }
 
 const StackNavCompEditor = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
   const user = useSelector(state => state.userData)
   const basket = useSelector(state => state.basket)
   const navigation = useNavigation();
-  return(
+  return (
     //<Stack.Navigator initialRouteName={'editorProfileScreen'}>
-        <Stack.Navigator >
-    {/* <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
-    <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-    <Stack.Screen name={'review'} component={Review} options={{headerShown: false}}/>
-    <Stack.Screen name={'addReview'} component={AddReview} options={{headerShown: false}}/>
-  </Stack.Navigator>
+    <Stack.Navigator >
+      {/* <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
+      <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'followerList'} component={FollowerList} options={{ headerShown: false }} />
+      <Stack.Screen name={'review'} component={Review} options={{ headerShown: false }} />
+      <Stack.Screen name={'addReview'} component={AddReview} options={{ headerShown: false }} />
+    </Stack.Navigator>
   )
 }
 
 const StackNavCompGuest = () => {
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
-  const [data,setData]=useState([]);
+  const [data, setData] = useState([]);
   const user = useSelector(state => state.userData)
   const basket = useSelector(state => state.basket)
   const navigation = useNavigation();
-  return(
+  return (
     //<Stack.Navigator initialRouteName='FTS100'>
-       <Stack.Navigator >
-     {/* <Stack.Screen name={'FTS100'} component={FTS100} options={{headerShown: false}}/> */}
-    <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} />
-    <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-    <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-    <Stack.Screen name={'review'} component={Review} options={{headerShown: false}}/>
-    <Stack.Screen name={'addReview'} component={AddReview} options={{headerShown: false}}/>
+    <Stack.Navigator >
+      {/* <Stack.Screen name={'FTS100'} component={FTS100} options={{headerShown: false}}/> */}
+      <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{ headerShown: false }} />
+      <Stack.Screen name={'followerList'} component={FollowerList} options={{ headerShown: false }} />
+      <Stack.Screen name={'review'} component={Review} options={{ headerShown: false }} />
+      <Stack.Screen name={'addReview'} component={AddReview} options={{ headerShown: false }} />
     </Stack.Navigator>
   )
 }
-
-
-// function StackNavComp() {
-
-//   const dispatch = useDispatch()
-//   const [loading, setLoading] = useState(false);
-//   const [data,setData]=useState([]);
-//   const user = useSelector(state => state.userData)
-//   const basket = useSelector(state => state.basket)
-//   const navigation = useNavigation();
-
-//   if(user?.userData?.role?.[0]?.id===3){
-//     return(
-//       <StackNavCompBrand/>
-//     )
-//     }
-    
-//     else if (user?.userData?.role?.[0]?.id===2){return(
-//       <StackNavCompEditor/>
-//     )}
-//     else{return(
-    
-//       <StackNavCompGuest/>
-//     )} 
-
-//   // return(
-//   //   <>
-//   //   {user?.userData?.role?.[0]?.id===3 ? <StackNavCompBrand/> : user?.userData?.role?.[0]?.id===2 ? <StackNavCompEditor/> : <StackNavCompGuest/> }
-//   //   </>
-//   // )
-  
-// }
-
-// function StackNavCompBrand() {
-
-//   const dispatch = useDispatch()
-//   const [loading, setLoading] = useState(false);
-//   const [data,setData]=useState([]);
-//   const user = useSelector(state => state.userData)
-//   const basket = useSelector(state => state.basket)
-//   const navigation = useNavigation();
-
-  
-//     return(
-//       <Stack.Navigator initialRouteName={'brandProfileScreen'}>
-//         <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} />
-//         <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'destinationScreen'} component={DestinationScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'analyticsScreen'} component={AnalyticsScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'productType'} component={ProductType} options={{headerShown: false}}/>
-//         <Stack.Screen name={'inventory'} component={Inventory} options={{headerShown: false}}/>
-//         <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-//       </Stack.Navigator>
-//     )
-  
-// }
-
-// function StackNavCompEditor() {
-
-//   const dispatch = useDispatch()
-//   const [loading, setLoading] = useState(false);
-//   const [data,setData]=useState([]);
-//   const user = useSelector(state => state.userData)
-//   const basket = useSelector(state => state.basket)
-//   const navigation = useNavigation();
-
-//     return(
-//       <Stack.Navigator initialRouteName={'editorProfileScreen'}>
-//         <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} />
-//         <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-//         <Stack.Screen name={'review'} component={Review} options={{headerShown: false}}/>
-//         <Stack.Screen name={'addReview'} component={AddReview} options={{headerShown: false}}/>
-//       </Stack.Navigator>
-//     )
-  
-// }
-
-// function StackNavCompGuest() {
-
-//   const dispatch = useDispatch()
-//   const [loading, setLoading] = useState(false);
-//   const [data,setData]=useState([]);
-//   const user = useSelector(state => state.userData)
-//   const basket = useSelector(state => state.basket)
-//   const navigation = useNavigation();
-
-//     return(
-//       <Stack.Navigator initialRouteName='testScreen'>
-//         {navigation.navigate('guestScreen')}
-//         <Stack.Screen name={'testScreen'} component={TestScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} />
-//         <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{headerShown: false}}/>
-//         <Stack.Screen name={'followerList'} component={FollowerList} options={{headerShown: false}}/>
-//         <Stack.Screen name={'review'} component={Review} options={{headerShown: false}}/>
-//         <Stack.Screen name={'addReview'} component={AddReview} options={{headerShown: false}}/>
-//     </Stack.Navigator>
-//     )
-
-// }
-
 export const BottomNavigationBrand = () => {
-  const dispatch = useDispatch()
-const [loading, setLoading] = useState(false);
-const [data,setData]=useState([]);
-const user = useSelector(state => state.userData)
-const basket = useSelector(state => state.basket)
+  const user = useSelector(state => state.userData)
+  const [showSplash, setShowSplash] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(true);
 
-const [showSplash,setShowSplash]=useState(true);
-const [showWelcome,setShowWelcome]=useState(true);
+  useEffect(() => {
+    if (showSplash && user?.token) {
+      setTimeout(() => {
+        setShowSplash(false);
+      }, 3000)
+    }
 
-useEffect(()=>{
-  if(showSplash && user?.token){
-    setTimeout(()=>{
-      setShowSplash(false);
-    },3000)
-  }
-  
-  if(showWelcome && user?.token){
-    setTimeout(()=>{
-      setShowWelcome(false);
-    },6000)
-  }
-},[])
+    if (showWelcome && user?.token) {
+      setTimeout(() => {
+        setShowWelcome(false);
+      }, 6000)
+    }
+  }, [])
 
-  if(showSplash && user?.token){
-    return(
-      <SplashScreen/>
+  if (showSplash && user?.token) {
+    return (
+      <SplashScreen />
     )
   }
 
-  if(showWelcome && user?.token){
-    return(
-      <WelcomeScreen/>
+  if (showWelcome && user?.token) {
+    return (
+      <WelcomeScreen />
     )
   }
 
-  return(
+  return (
     <>
-    <Tab.Navigator
-    backBehavior='history'
-    initialRouteName="homeScreen"
-    screenOptions={({route}) => ({
-      orientation: 'portrait',
-      unmountOnBlur:true,
-        //tabBarActiveTintColor: color.black,
-        //tabBarInactiveTintColor: '#560f09',
-        headerShown: false,
-        tabBarHideOnKeyboard: true,
-        swipeEnabled: true,
-        animationEnabled: true,
-        tabBarLabel:() => {return null},
-        tabBarStyle: {
-          width: wp2(100),
-          height: Platform.OS==='ios'?hp2(10):hp2(8),
-          backgroundColor: 'white',
-          display:'flex',
-          //flexDirection: 'row',
-          //alignItems: 'center',
-          //justifyContent: 'space-evenly',
-        },
-      })}
-    >
-         <Tab.Screen
-        name="FTS100"
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.fts2}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
-              />
-            </View>
-          ),
-        }}
-        component={FTS100}
-      />
-         <Tab.Screen
-        name="searchScreen"
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.search2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-          ),
-        }}
-        component={SearchScreen}
-      />
-         <Tab.Screen
-        name="homeScreen"
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.home2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-          ),
-        }}
-        component={HomeScreen}
-        initialParams={{ showSplash,setShowSplash,showWelcome,setShowWelcome}}
-      />
+      <Tab.Navigator
+        backBehavior='history'
+        initialRouteName="homeScreen"
+        screenOptions={({ route }) => ({
+          orientation: 'portrait',
+          unmountOnBlur: true,
+          //tabBarActiveTintColor: color.black,
+          //tabBarInactiveTintColor: '#560f09',
+          headerShown: false,
+          tabBarHideOnKeyboard: true,
+          swipeEnabled: true,
+          animationEnabled: true,
+          tabBarLabel: () => { return null },
+          tabBarStyle: {
+            width: wp2(100),
+            height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
+            backgroundColor: 'white',
+            display: 'flex',
+            //flexDirection: 'row',
+            //alignItems: 'center',
+            //justifyContent: 'space-evenly',
+          },
+        })}
+      >
+        <Tab.Screen
+          name="FTS100"
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.fts2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+            ),
+          }}
+          component={FTS100}
+        />
+        <Tab.Screen
+          name="searchScreen"
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.search2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+            ),
+          }}
+          component={SearchScreen}
+        />
+        <Tab.Screen
+          name="homeScreen"
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.home2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+            ),
+          }}
+          component={HomeScreen}
+          initialParams={{ showSplash, setShowSplash, showWelcome, setShowWelcome }}
+        />
 
-<Tab.Screen
-        name="testBrand"
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.profileicon2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-          ),
+        <Tab.Screen
+          name="testBrand"
+          options={{
+            tabBarIcon: ({ focused, color, size }) => (
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.profileicon2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+            ),
 
-        }}
-        component={TestBrand}
+          }}
+          component={TestBrand}
         //initialParams={{ userData:user}}
-      />
+        />
 
-         {/* <Tab.Screen
+        {/* <Tab.Screen
         name="stackNavComp"
         component={StackNavCompBrand}
         // options={{
@@ -503,88 +328,88 @@ useEffect(()=>{
       /> */}
 
 
-<Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'destinationScreen'} component={DestinationScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'analyticsScreen'} component={AnalyticsScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'settingsScreen'} component={SettingsScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'productType'} component={ProductType} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'inventory'} component={Inventory} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
+        <Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'destinationScreen'} component={DestinationScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'analyticsScreen'} component={AnalyticsScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'settingsScreen'} component={SettingsScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'productType'} component={ProductType} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'inventory'} component={Inventory} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'followerList'} component={FollowerList} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ tabBarButton: () => null, }} />
+        <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{ tabBarButton: () => null, }} />
 
-    </Tab.Navigator>
-  </>
+      </Tab.Navigator>
+    </>
   )
 }
 
 export const BottomNavigationEditor = () => {
   const dispatch = useDispatch()
-const [loading, setLoading] = useState(false);
-const [data,setData]=useState([]);
-const user = useSelector(state => state.userData)
-const basket = useSelector(state => state.basket)
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData)
+  const basket = useSelector(state => state.basket)
 
-const [showSplash,setShowSplash]=useState(true);
-const [showWelcome,setShowWelcome]=useState(true);
+  const [showSplash, setShowSplash] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(true);
 
-useEffect(()=>{
-  if(showSplash && user?.token){
-    setTimeout(()=>{
-      setShowSplash(false);
-    },3000)
-  }
-  
-  if(showWelcome && user?.token){
-    setTimeout(()=>{
-      setShowWelcome(false);
-    },6000)
-  }
-},[])
+  useEffect(() => {
+    if (showSplash && user?.token) {
+      setTimeout(() => {
+        setShowSplash(false);
+      }, 3000)
+    }
 
-  if(showSplash && user?.token){
-    return(
-      <SplashScreen/>
+    if (showWelcome && user?.token) {
+      setTimeout(() => {
+        setShowWelcome(false);
+      }, 6000)
+    }
+  }, [])
+
+  if (showSplash && user?.token) {
+    return (
+      <SplashScreen />
     )
   }
 
-  if(showWelcome && user?.token){
-    return(
-      <WelcomeScreen/>
+  if (showWelcome && user?.token) {
+    return (
+      <WelcomeScreen />
     )
   }
 
-  return(
+  return (
     <Tab.Navigator
-    backBehavior='history'
-    initialRouteName="homeScreen"
-    screenOptions={({route}) => ({
-      orientation: 'portrait',
-      unmountOnBlur:true,
+      backBehavior='history'
+      initialRouteName="homeScreen"
+      screenOptions={({ route }) => ({
+        orientation: 'portrait',
+        unmountOnBlur: true,
         //tabBarActiveTintColor: color.black,
         //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
         tabBarHideOnKeyboard: true,
         swipeEnabled: true,
         animationEnabled: true,
-        tabBarLabel:() => {return null},
+        tabBarLabel: () => { return null },
         tabBarStyle: {
           width: wp2(100),
-          height: Platform.OS==='ios'?hp2(10):hp2(8),
+          height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
           backgroundColor: 'white',
-          display:'flex',
+          display: 'flex',
           //flexDirection: 'row',
           //alignItems: 'center',
           //justifyContent: 'space-evenly',
@@ -593,14 +418,14 @@ useEffect(()=>{
         },
       })}
     >
-         <Tab.Screen
+      <Tab.Screen
         name="FTS100"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
               <Image
                 source={IMAGES.fts2}
-                style={{width: '100%', height: '100%'}}
+                style={{ width: '100%', height: '100%' }}
                 resizeMode="contain"
               />
             </View>
@@ -608,80 +433,80 @@ useEffect(()=>{
         }}
         component={FTS100}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="searchScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.search2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.search2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
         }}
         component={SearchScreen}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="homeScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.home2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.home2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
         }}
         component={HomeScreen}
       />
 
 
-        <Tab.Screen
+      <Tab.Screen
         name="basketScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-           <>
-            <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.bag2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-           {basket?.count > 0 && 
-            <View style={styles.basketCounter}>
-            <Text style={{color:'white',fontSize:rfv(10)}}>{basket?.count}</Text>
-        </View>
-        }
-           </>
+          tabBarIcon: ({ focused, color, size }) => (
+            <>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.bag2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+              {basket?.count > 0 &&
+                <View style={styles.basketCounter}>
+                  <Text style={{ color: 'white', fontSize: rfv(10) }}>{basket?.count}</Text>
+                </View>
+              }
+            </>
           ),
         }}
         component={BasketScreen}
       />
 
-<Tab.Screen
+      <Tab.Screen
         name="testEditor"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.profileicon2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.profileicon2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
-          
+
         }}
         component={TestEditor}
-        //initialParams={{ userData:user}}
+      //initialParams={{ userData:user}}
       />
 
-         {/* <Tab.Screen
+      {/* <Tab.Screen
         name="stackNavComp"
         component={StackNavCompEditor}
         // options={{
@@ -695,28 +520,28 @@ useEffect(()=>{
         })}
       /> */}
 
-<Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'settingsScreen'} component={SettingsScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'buyNow'} component={BuyNow} options={{tabBarButton: () => null,}}/>
+      <Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'settingsScreen'} component={SettingsScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'followerList'} component={FollowerList} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'review'} component={Review} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'addReview'} component={AddReview} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'buyNow'} component={BuyNow} options={{ tabBarButton: () => null, }} />
 
     </Tab.Navigator>
   )
@@ -725,30 +550,30 @@ useEffect(()=>{
 
 export const BottomNavigationGuest = () => {
   const dispatch = useDispatch()
-const [loading, setLoading] = useState(false);
-const [data,setData]=useState([]);
-const user = useSelector(state => state.userData)
-//const basket = useSelector(state => state.basket)
-const {products} = useSelector(state => state.GuestBasket);
-  return(
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
+  const user = useSelector(state => state.userData)
+  //const basket = useSelector(state => state.basket)
+  const { products } = useSelector(state => state.GuestBasket);
+  return (
     <Tab.Navigator
-    backBehavior='history'
-    initialRouteName="homeScreen"
-    screenOptions={({route}) => ({
-      orientation: 'portrait',
-      unmountOnBlur:true,
+      backBehavior='history'
+      initialRouteName="homeScreen"
+      screenOptions={({ route }) => ({
+        orientation: 'portrait',
+        unmountOnBlur: true,
         //tabBarActiveTintColor: color.black,
         //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
         tabBarHideOnKeyboard: true,
         swipeEnabled: true,
         animationEnabled: true,
-        tabBarLabel:() => {return null},
+        tabBarLabel: () => { return null },
         tabBarStyle: {
           width: wp2(100),
-          height: Platform.OS==='ios'?hp2(10):hp2(8),
+          height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
           backgroundColor: 'white',
-          display:'flex',
+          display: 'flex',
           //flexDirection: 'row',
           //alignItems: 'center',
           //justifyContent: 'space-evenly',
@@ -757,14 +582,14 @@ const {products} = useSelector(state => state.GuestBasket);
         },
       })}
     >
-  <Tab.Screen
+      <Tab.Screen
         name="FTS100"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
               <Image
                 source={IMAGES.fts2}
-                style={{width: '100%', height: '100%'}}
+                style={{ width: '100%', height: '100%' }}
                 resizeMode="contain"
               />
             </View>
@@ -772,79 +597,79 @@ const {products} = useSelector(state => state.GuestBasket);
         }}
         component={FTS100}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="searchScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.search2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.search2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
         }}
         component={SearchScreen}
       />
-         <Tab.Screen
+      <Tab.Screen
         name="homeScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.home2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.home2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
         }}
         component={HomeScreen}
       />
 
 
-        <Tab.Screen
+      <Tab.Screen
         name="basketScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
-           <>
-            <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.bag2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-           {products?.length !== 0 && 
-            <View style={styles.basketCounter}>
-            <Text style={{color:'white',fontSize:rfv(10)}}>{products?.length}</Text>
-        </View>
-        }
-           </>
+          tabBarIcon: ({ focused, color, size }) => (
+            <>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.bag2}
+                  style={{ width: '100%', height: '100%' }}
+                  resizeMode="contain"
+                />
+              </View>
+              {products?.length !== 0 &&
+                <View style={styles.basketCounter}>
+                  <Text style={{ color: 'white', fontSize: rfv(10) }}>{products?.length}</Text>
+                </View>
+              }
+            </>
           ),
         }}
         component={BasketScreen}
       />
-    
 
-         <Tab.Screen
+
+      <Tab.Screen
         name="testScreen"
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.profileicon2}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
+              <Image
+                source={IMAGES.profileicon2}
+                style={{ width: '100%', height: '100%' }}
+                resizeMode="contain"
+              />
+            </View>
           ),
         }}
         component={TestScreen}
       />
 
-{/* <Tab.Screen
+      {/* <Tab.Screen
         name="stackNavComp"
         component={StackNavCompGuest}
         // options={{
@@ -858,23 +683,23 @@ const {products} = useSelector(state => state.GuestBasket);
         })}
       /> */}
 
-<Tab.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{tabBarButton: () => null,}} />
-    <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'followerList'} component={FollowerList} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'review'} component={Review} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'addReview'} component={AddReview} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{tabBarButton: () => null,}}/>
-    <Tab.Screen name={'buyNow'} component={BuyNow} options={{tabBarButton: () => null,}}/>
+      <Tab.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'collectionScreen'} component={CollectionScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'galleryScreen'} component={GalleryScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'listViewScreen'} component={ListViewScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'filterScreen'} component={FilterScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'followerList'} component={FollowerList} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'review'} component={Review} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'addReview'} component={AddReview} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'commentScreen'} component={CommentScreen} options={{ tabBarButton: () => null, }} />
+      <Tab.Screen name={'buyNow'} component={BuyNow} options={{ tabBarButton: () => null, }} />
 
     </Tab.Navigator>
   )
@@ -1018,7 +843,7 @@ const {products} = useSelector(state => state.GuestBasket);
 //   const [data,setData]=useState([]);
 //   const user = useSelector(state => state.userData)
 //   const basket = useSelector(state => state.basket)
-  
+
 //       return (
 //       <Tab.Navigator
 //       initialRouteName="homeScreen"
@@ -1088,8 +913,8 @@ const {products} = useSelector(state => state.GuestBasket);
 //           }}
 //           component={HomeScreen}
 //         />
-  
-  
+
+
 //           <Tab.Screen
 //           name="basketScreen"
 //           options={{
@@ -1112,8 +937,8 @@ const {products} = useSelector(state => state.GuestBasket);
 //           }}
 //           component={BasketScreen}
 //         />
-     
-  
+
+
 //            <Tab.Screen
 //           name="stackNavCompEditor"
 //           options={{
@@ -1130,7 +955,7 @@ const {products} = useSelector(state => state.GuestBasket);
 //           }}
 //           component={StackNavCompEditor}
 //         />
-  
+
 //       </Tab.Navigator>
 //       )
 //   }
@@ -1142,7 +967,7 @@ const {products} = useSelector(state => state.GuestBasket);
 //     const [data,setData]=useState([]);
 //     const user = useSelector(state => state.userData)
 //     const basket = useSelector(state => state.basket)
-    
+
 //         return (
 //         <Tab.Navigator
 //         initialRouteName="homeScreen"
@@ -1212,8 +1037,8 @@ const {products} = useSelector(state => state.GuestBasket);
 //             }}
 //             component={HomeScreen}
 //           />
-    
-    
+
+
 //             <Tab.Screen
 //             name="basketScreen"
 //             options={{
@@ -1236,8 +1061,8 @@ const {products} = useSelector(state => state.GuestBasket);
 //             }}
 //             component={BasketScreen}
 //           />
-        
-    
+
+
 //              <Tab.Screen
 //             name="stackNavCompGuest"
 //             options={{
@@ -1254,7 +1079,7 @@ const {products} = useSelector(state => state.GuestBasket);
 //             }}
 //             component={StackNavCompGuest}
 //           />
-    
+
 //         </Tab.Navigator>
 //         )
 //     }
@@ -1279,15 +1104,15 @@ const styles = StyleSheet.create({
     color: '#A1A1A1',
     fontWeight: '700',
   },
-  basketCounter:{
-    width:wp2(5),
-    height:wp2(5),
-    borderRadius:100,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'#0F2ABA',
-    position:'absolute',
-    right:wp2(2),
-    top:Platform.OS=='android'?wp2(2):wp2(1),
+  basketCounter: {
+    width: wp2(5),
+    height: wp2(5),
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0F2ABA',
+    position: 'absolute',
+    right: wp2(2),
+    top: Platform.OS == 'android' ? wp2(2) : wp2(1),
   },
 });

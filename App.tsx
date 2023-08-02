@@ -44,164 +44,17 @@ OneSignal.setNotificationOpenedHandler(notification => {
   console.log("OneSignal: notification opened:", notification);
 });
 
-  // useEffect(() => {    
-  //   async function runThis () {
-  //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
-  //       console.log('Android Permissions Granted Go Ahead...')
-  //       Geolocation.getCurrentPosition(info => console.log(info));
-  //     }
-  //     // if (Platform.OS === 'ios' && (await hasIosPermission())) {
-  //     //   console.log('IOS Permissions Granted Go Ahead...')
-  //     //   Geolocation.getCurrentPosition(info => console.log(info));
-  //     // }
-
-  //     if(Platform.OS === 'ios'){
-  //       Geolocation.requestAuthorization(
-  //         () => {
-  //           console.log('IOS Permissions Granted Go Ahead...')
-  //           Geolocation.getCurrentPosition(info => console.log(info));
-  //         },
-  //         error => {
-  //           console.log(error)
-  //           Alert.alert(
-  //             'Location Permission',
-  //             'Location permission is blocked in the device ' +
-  //                 'settings. Allow the app to access Location.',
-  //             [
-  //                 {
-  //                     text: 'OK',
-  //                     onPress: () => {
-  //                         Linking.openSettings()
-  //                     },
-    
-  //                 },
-  //                 { text: 'CANCEL',  onPress:()=>console.log('permissions not granted on ios')}
-  //             ],
-  //         )
-  //         })
-  //     }
-
-  //   }
-  //   runThis();
-  // }, []);
-
-//  async function hasAndroidPermission() {
-//   const permission = PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION || PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION
-
-//   const hasPermission = await PermissionsAndroid.check(permission);
-//   if (hasPermission) {
-//     //setPerm(true);
-//     //console.log(hasPermission)
-//     return true;
-//   }
-
-//   const status = await PermissionsAndroid.request(permission);
-//   if (status === 'granted') {
-//     //setPerm(true);
-//   }
-//   else if (status === 'denied' || status === 'never_ask_again'){
-//     Alert.alert(
-//       'Location Permission',
-//       'Location permission is blocked in the device ' +
-//           'settings. Allow the app to access Location.',
-//       [
-//           {
-//               text: 'OK',
-//               onPress: () => {
-//                   Linking.openSettings()
-//               },
-
-//           },
-//           { text: 'CANCEL',  onPress:()=>
-//           console.log('permissions not granted on android')
-//         }
-//       ],
-//   )
-//   }
-//   //console.log(status);
-//   return status === 'granted';
-// }
-
-// async function hasIosPermission() {
-
-//   const hasPermission = await check(PERMISSIONS.IOS.LOCATION_ALWAYS || PERMISSIONS.IOS.LOCATION_WHEN_IN_USE)
-//   .then((result) => {
-//     switch (result) {
-//       case RESULTS.UNAVAILABLE:
-//         console.log('This feature is not available (on this device / in this context)');
-//         return false;
-//         //break;
-//       case RESULTS.DENIED:
-//         console.log('The permission has not been requested / is denied but requestable');
-//         return false;
-//         //break;
-//       case RESULTS.LIMITED:
-//         console.log('The permission is limited: some actions are possible');
-//         //setPerm(true);
-//         return true;
-//         //break;
-//       case RESULTS.GRANTED:
-//         console.log('The permission is granted');
-//         //setPerm(true);
-//         return true;
-//         //break;
-//       case RESULTS.BLOCKED:
-//         console.log('The permission is denied and not requestable anymore');
-//         Alert.alert(
-//           'Location Permission',
-//           'Location permission is blocked in the device ' +
-//               'settings. Allow the app to access Location.',
-//           [
-//               {
-//                   text: 'OK',
-//                   onPress: () => {
-//                       Linking.openSettings()
-//                   },
-
-//               },
-//               { text: 'CANCEL',  onPress:()=>console.log('permissions not granted on ios')}
-//           ],
-//       )
-//         return false;
-//         //break;
-//     }
-//   })
-//   .catch((error) => {
-//     // …
-//   });
-
-//   if (hasPermission) {
-//     //setPerm(true);
-//     return true;
-//   }
-
-// const status = await request(PERMISSIONS.IOS.LOCATION_ALWAYS || PERMISSIONS.IOS.LOCATION_WHEN_IN_USE).then((result) => {
-//     if (result===RESULTS.GRANTED || result===RESULTS.LIMITED){
-//       return true;
-//     }
-//   })
-//   .catch((error)=>{
-
-//   });
-
-// if (status) {
-//   //setPerm(true);
-// }
-
-// return status===true;
-  
-// }
-
-// "reactNativePermissionsIOS": [
-//   "PhotoLibrary",
-//   "LocationAccuracy",
-//   "LocationAlways",
-//   "LocationWhenInUse"
-// ],
-
+useEffect(() => {
+  (async () => {
+    LogBox.ignoreLogs([
+      'VirtualizedLists should never be nested',
+      'ViewPropTypes will be removed from React Native',
+    ]);
+    LogBox.ignoreAllLogs(true);
+  })();
+}, []);
   const NetworkCheck = () =>{
     NetInfo.addEventListener(networkState => {
-      // console.log(networkState)
       if(
         !networkState?.isConnected && 
         !networkState.isInternetReachable){
