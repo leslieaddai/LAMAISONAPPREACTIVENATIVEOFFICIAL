@@ -47,10 +47,12 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
+import LoaderComp from '../../components/loaderComp';
 
 export default function ShippingAddress(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+  const [countryLoading, setCountryLoading] = useState(false);
   const [data, setData] = useState([]);
   const [visible, setVisible] = useState(false);
   const user = useSelector(state => state.userData);
@@ -179,6 +181,7 @@ export default function ShippingAddress(props) {
   }
 
   const getAllCountries = country_code => {
+    setCountryLoading(true);
     axios
       .get(GetCountries + country_code, {
         headers: {Authorization: `Bearer ${user?.token}`},
@@ -187,11 +190,12 @@ export default function ShippingAddress(props) {
         //console.log(res.data);
         //setStateChange(res.data.data);
         setCountriesData(res?.data?.data);
-        //setLoading(false);
+        setCountryLoading(false);
       })
       .catch(function (error) {
         console.log(error.response.data);
         errorMessage(errorHandler(error))
+        setCountryLoading(false);
       });
   };
 
@@ -204,15 +208,26 @@ export default function ShippingAddress(props) {
   },[isOpenedRegions])
 
   useEffect(()=>{            
+    // if(isOpenedCountries){
+    //   setTimeout(() => {
+    //     uibottomesheetvisiblity(true)
+    //     setModalData(countriesData)
+    //     }, 1000);
+    // }
     if(isOpenedCountries){
-      setTimeout(() => {
+   
         uibottomesheetvisiblity(true)
         setModalData(countriesData)
-        }, 1000);
+
     }
   },[isOpenedCountries])
 
   return (
+    <>
+    <View style={{ position: 'absolute', zIndex: 999 }}>
+        {countryLoading && <LoaderComp />}
+      </View>
+    
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -369,6 +384,7 @@ export default function ShippingAddress(props) {
 
         </BottomSheet>
     </SafeAreaView>
+    </>
   );
 }
 

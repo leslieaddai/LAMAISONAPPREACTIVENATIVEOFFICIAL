@@ -161,11 +161,18 @@ export default function BuyNow(props) {
   }, [isOpenedRegions])
 
   useEffect(() => {
+    // if (isOpenedCountries) {
+    //   setTimeout(() => {
+    //     uibottomesheetvisiblity(true)
+    //     setModalData(countriesData)
+    //   }, 1000);
+
+    // }
     if (isOpenedCountries) {
-      setTimeout(() => {
+      
         uibottomesheetvisiblity(true)
         setModalData(countriesData)
-      }, 1000);
+  
 
     }
   }, [isOpenedCountries])
@@ -182,13 +189,16 @@ export default function BuyNow(props) {
   };
 
   const getAllCountries = country_code => {
+    setLoading(true);
     axios
       .get(GetCountries + country_code)
       .then(async function (res) {
         setCountriesData(res?.data?.data);
+        setLoading(false);
       })
       .catch(function (error) {
         errorMessage(errorHandler(error))
+        setLoading(false);
       });
   };
 
@@ -558,7 +568,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Sub Total</Text>
-                    <Text style={styles.text}>£{total}</Text>
+                    <Text style={styles.text}>£{total.toFixed(3)}</Text>
                   </View>
 
                   <View
@@ -582,7 +592,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
                   </View>
                 </>
               }
@@ -598,7 +608,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
                   </View>
                   <View style={styles.inputBox}>
                     <TextInput 
@@ -671,7 +681,7 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
                   </View>
                   <View style={styles.inputBox}>
                     <TextInput 

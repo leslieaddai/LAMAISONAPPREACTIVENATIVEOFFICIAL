@@ -213,12 +213,14 @@ export default function CheckoutScreen(props) {
   };
 
   const getAllCountries = country_code => {
+    setLoading(true);
     axios
       .get(GetCountries + country_code)
       .then(async function (res) {
         //console.log(res.data);
         //setStateChange(res.data.data);
         setCountriesData(res?.data?.data);
+        setLoading(false);
         //setLoading(false);
       })
       .catch(function (error) {
@@ -226,6 +228,7 @@ export default function CheckoutScreen(props) {
         //setLoading(false);
         //errorMessage('Something went wrong to get countries list!');
         errorMessage(errorHandler(error))
+        setLoading(false);
         //errorMessage(error.response.data.message)
       });
   };
@@ -401,7 +404,7 @@ export default function CheckoutScreen(props) {
     formdata.append('status_id', 3);
     formdata.append('payment_method', 'stripe');
     formdata.append('address1', address_1);
-    formdata.append('address2', address_2);
+    formdata.append('address2', String(address_2));
     formdata.append('region', region);
     formdata.append('city', city);
     formdata.append('country', country);
@@ -471,11 +474,17 @@ export default function CheckoutScreen(props) {
   },[isOpenedRegions])
 
   useEffect(()=>{            
+    // if(isOpenedCountries){
+    //   setTimeout(() => {
+    //   uibottomesheetvisiblity(true)
+    //   setModalData(countriesData)
+    //   }, 1000);
+    // }
     if(isOpenedCountries){
-      setTimeout(() => {
+     
       uibottomesheetvisiblity(true)
       setModalData(countriesData)
-      }, 1000);
+    
     }
   },[isOpenedCountries])
 
@@ -686,7 +695,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Sub Total</Text>
-         <Text style={styles.text}>£{total}</Text>
+         <Text style={styles.text}>£{total.toFixed(3)}</Text>
        </View>
 
        <View
@@ -710,7 +719,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
        </>
        }
@@ -726,7 +735,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -777,7 +786,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
            <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}
@@ -1093,7 +1102,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Sub Total</Text>
-         <Text style={styles.text}>£{total}</Text>
+         <Text style={styles.text}>£{total.toFixed(3)}</Text>
        </View>
 
        <View
@@ -1104,7 +1113,7 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(6),
            marginVertical: hp2(1),
          }}>
-         <Text style={styles.text}>Stripe Fees</Text>
+         <Text style={styles.text}>Stripe Fee</Text>
          <Text style={styles.text}>£{Number(total*(commission/100)+0.3).toFixed(3)}</Text>
        </View>
 
@@ -1117,7 +1126,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
        </>
        }
@@ -1133,7 +1142,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -1184,7 +1193,7 @@ export default function CheckoutScreen(props) {
            marginVertical: hp2(1),
          }}>
          <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100)+0.3)}</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
 
            <View style={styles.inputBox}>

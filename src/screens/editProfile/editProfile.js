@@ -179,7 +179,7 @@ axios.request(config)
              </View>
        </TouchableOpacity>
       ) : (
-        <TouchableOpacity disabled={name == 'USERNAME' || name == 'EMAIL' || name == 'BRAND NAME' ? true : false} onPress={()=>props.navigation.navigate(navScreen)} style={styles.filters}>
+        <TouchableOpacity disabled={name == 'USERNAME' || name == 'EMAIL' || name == 'BRAND NAME' || name == 'NAME' ? true : false} onPress={()=>props.navigation.navigate(navScreen)} style={styles.filters}>
         <Text style={{color: 'black'}}>{name}</Text>
       
           {name == 'ABOUT' ? (
@@ -187,7 +187,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!='' && !loadingNumber ? newnumber : !loadingNumber && newnumber=='' ? 'XXXXXXXXXX' : null  : 'XXXXXXXXXX'}</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name : name == 'NAME' ? user?.userData?.name : name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!='' && !loadingNumber ? newnumber : !loadingNumber && newnumber=='' ? 'XXXXXXXXXX' : null  : 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>
@@ -224,6 +224,11 @@ axios.request(config)
         </>
       )}
       {settingOptions('USERNAME', 'username')}
+      {user?.userData?.role?.[0]?.id === 2 && (
+        <>
+        {settingOptions('NAME', 'name')}
+        </>
+      )}
       {settingOptions('EMAIL', 'email')}
       {settingOptions('PHONE', 'phone')}
       {settingOptions('PASSWORD', 'passwordChange')}
