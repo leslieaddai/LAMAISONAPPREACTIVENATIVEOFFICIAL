@@ -51,6 +51,7 @@ export default function EditProfile(props) {
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
   const [newnumber,setNewNumber] = useState('')
+  const [loadingNumber,setLoadingNumber] = useState(true)
   useEffect(()=>{
     GetPhoneNumber()
   },[])
@@ -61,9 +62,11 @@ export default function EditProfile(props) {
     })
     .then(async function (res) {
       setNewNumber(res.data.data)
+      setLoadingNumber(false);
     })
     .catch(function (error) {
       console.log("error",error.response.data)
+      setLoadingNumber(false);
     });
   }
   const selectImage = async () => {
@@ -184,7 +187,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!=''?newnumber:'XXXXXXXXXX' : 'XXXXXXXXXX'}</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name :name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!='' && !loadingNumber ? newnumber : !loadingNumber && newnumber=='' ? 'XXXXXXXXXX' : null  : 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>

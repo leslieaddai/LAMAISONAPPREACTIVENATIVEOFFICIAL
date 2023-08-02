@@ -27,7 +27,7 @@ import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
 import types from '../../Redux/types';
 
-const DobScreen = () => {
+const DobScreen = (props) => {
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const user = useSelector(state => state.userData);
@@ -35,6 +35,7 @@ const DobScreen = () => {
       const [prevnumber,setPrevNumber] = useState(user?.userData?.dob)
       const [Birthday,setBirthday] = useState(subtractYears(new Date(),6))
       const [userdata,setUser] = useState({})
+      const month = `${Birthday.getMonth() + 1}`.padStart(2, "0")
       const [data,setData] = useState({
           access_token:user?.token,
           user:''
@@ -118,6 +119,7 @@ const DobScreen = () => {
                 placeholder={'CURRENT PHONE NUMBER'}
                 onChangeText={(e)=>{setPrevNumber(e)}}
                 value={prevnumber}
+                //value={`${prevnumber.getDate()} - ${ prevnumber.getMonth()+1} - ${prevnumber.getFullYear()}`}
                 keyboardType={"number-pad"}
                 placeholderTextColor={'grey'}
                 maxLength={11}
@@ -126,7 +128,7 @@ const DobScreen = () => {
             <TouchableOpacity
             style={styles.BDaystyle}
             onPress={() => setOpen(true)}>
-            <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday.getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
+            <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:`${Birthday.getFullYear()}-${ month }-${Birthday.getDate()}`}</Text>
           </TouchableOpacity>
           <DatePicker
             modal

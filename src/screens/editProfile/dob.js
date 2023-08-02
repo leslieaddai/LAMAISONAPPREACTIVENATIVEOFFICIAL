@@ -26,11 +26,13 @@ import {useDispatch, useSelector} from 'react-redux';
 import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
 import types from '../../Redux/types';
+import { useNavigation } from '@react-navigation/native';
 
 export default function DOB(props) {
     const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.userData);
+  const navigation = useNavigation();
   const [open, setOpen] = useState(false);
     const [prevnumber,setPrevNumber] = useState(user?.userData?.dob)
     const [Birthday,setBirthday] = useState(subtractYears(new Date(),6))
@@ -52,7 +54,7 @@ export default function DOB(props) {
                 type: types.Login,
                 payload: data,
               });
-            props.navigation.navigate('editProfile')
+            navigation.navigate('editProfile')
         }
       },[data])
     function subtractYears(date, years) {
@@ -98,7 +100,7 @@ export default function DOB(props) {
     />}
       </View>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
+        <TouchableOpacity onPress={()=>navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>DOB</Text>

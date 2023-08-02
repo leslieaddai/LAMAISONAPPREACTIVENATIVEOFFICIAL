@@ -545,6 +545,7 @@ export default function ImageUploadLookbook(props) {
                 placeholder="PRODUCT NAME"
                 placeholderTextColor={'grey'}
                 value={stateChange.productName}
+                maxLength={20}
                 onChangeText={val => updateState({productName: val})}
               />
             </View>
@@ -630,7 +631,7 @@ export default function ImageUploadLookbook(props) {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
-                placeholder="PRICE"
+                placeholder="PRICE (£)"
                 placeholderTextColor={'grey'}
                 keyboardType="number-pad"
                 value={stateChange.price}

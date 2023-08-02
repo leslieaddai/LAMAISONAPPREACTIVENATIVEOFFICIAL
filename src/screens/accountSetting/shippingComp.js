@@ -113,7 +113,7 @@ export default function ShippingComp(props) {
                 color="#7B788A"
               />
             </TouchableOpacity>
-            <Text style={styles.priceTxt}>Price</Text>
+            <Text style={styles.priceTxt}>Price (£)</Text>
             <View style={styles.inputWrap}>
               <TextInput
                 placeholder={'Enter Shipping Price For ' + props?.data?.name}
