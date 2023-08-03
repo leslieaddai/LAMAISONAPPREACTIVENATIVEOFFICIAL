@@ -31,8 +31,9 @@ local.properties
 *.iml
 *.hprof
 .cxx/
-*.keystore
+#*.keystore
 !debug.keystore
+#!la_maison.keystore
 
 # node.js
 #
