@@ -21,30 +21,37 @@ import {
 } from '../../theme';
 import axios from 'react-native-axios';
 import { ChnagePhone, GetPhone } from '../../config/Urls';
-import { useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
+import types from '../../Redux/types';
 
 export default function Phone(props) {
   const [loading, setLoading] = useState(false);
   const user = useSelector(state => state.userData);
-    const [prevnumber,setPrevNumber] = useState('')
+    const [prevnumber,setPrevNumber] = useState(user?.userData?.phone)
     const [newnumber,setNewNumber] = useState('')
-    useEffect(()=>{
-      GetPhoneNumber()
-    },[])
-    const GetPhoneNumber = ()=>{
-      axios
-      .get(GetPhone, {
-        headers: {Authorization: `Bearer ${user?.token}`},
-      })
-      .then(async function (res) {
-        setPrevNumber(res.data.data)
-      })
-      .catch(function (error) {
-        console.log("error",error.response.data)
+    const  dispatch = useDispatch()
+    const [data,setData] = useState({
+      access_token:user?.token,
+      user:''
+  })
+  const updateDataState = (response) => {
+      setData({
+        access_token: user?.token, 
+        user: response.user || '', 
       });
-    }
+    };
+    useEffect(()=>{
+      if(data.user!=''){
+          dispatch({
+              type: types.Login,
+              payload: data,
+            });
+          props.navigation.navigate('editProfile')
+      }
+    },[data])
+
     const ChangePhoneNumber = () =>{
       setLoading(true);
       axios
@@ -54,11 +61,10 @@ export default function Phone(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log("res",res.data)
+        // console.log("res",res.data)
         setLoading(false);
+        updateDataState(res.data)
         successMessage("Phone Number Update Successfully")
-        props.navigation.navigate('editProfile')
-
       })
       .catch(function (error) {
         setLoading(false);

@@ -18,29 +18,42 @@ import {
 } from 'react-native-responsive-fontsize';
 import fonts from '../theme/fonts';
 import {
-  IMAGES,
-  ICONS,
-  COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
-  hp2,
-  getFont,
-  FONTS,
+  hp2
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function InventoryComp(props) {
   const navigation = useNavigation();
-  console.log(props.data.product_variations_sum_quantity);
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('reuploadScreen', {data: props?.data})}
       style={styles.imageContainer}>
       <View style={{height: hp2(22), overflow: 'hidden'}}>
+      {loading?
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf:'center'
+          }}>
+        <SkypeIndicator
+        color={'black'}
+      /> 
+      </View>
+      :
+      undefined
+          }
         <Image
           //source={IMAGES.lookbook}
+          progressiveRenderingEnabled={true}
+          onLoadStart={()=>{onloading(true,"onLoadStart")}}
+          onLoad={()=>onloading(false,"onLoad")}
+          onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={{uri: props?.data?.product_images[0]?.image[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
@@ -53,7 +66,7 @@ export default function InventoryComp(props) {
       <Text
         style={{
           color:
-            props?.data?.product_variations_sum_quantity < 50
+            props?.data?.product_variations_sum_quantity < 5
               ? '#EC3030'
               : 'black',
           textAlign: 'center',

@@ -71,6 +71,7 @@ export default function ReuploadScreen(props) {
   const user = useSelector(state => state?.userData);
   const [regions, setRegions] = useState([]);
   const [isOpenedShipping, setIsOpenedShipping] = useState(false);
+  const [shippingname, setshippingname] = useState('')
   const [selectedImage, setSelectedImage] = useState([]);
 
   const routeitem = props?.route?.params?.data
@@ -206,7 +207,9 @@ export default function ReuploadScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log("skjjk",res?.data);
+        console.log("skjjk",res?.data.data[0].shipping);
+        // setshippingname(res?.data?.data[0]?.shipping.name)
+        addRegions(res?.data?.data[0])
         if (res?.data?.data?.length > 0) {
           setShippingData(res?.data?.data);
         } else {
@@ -665,7 +668,7 @@ export default function ReuploadScreen(props) {
               <Text style={[styles.selectTxt,{width:wp2(70)}]}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
-                  : 'SELECT SHIPPING DETAILS'}
+                  : shippingname}
               </Text>
               <View>
                 <ICONS.FontAwesome

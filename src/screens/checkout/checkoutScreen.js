@@ -670,6 +670,7 @@ export default function CheckoutScreen(props) {
            <Text style={styles.text}>Shipping</Text>
            <Text style={styles.text}>{item?.product?.product_region.map((item,index)=>{
              if(stateChange?.region === item?.region_id){
+              console.log("region=====>",item?.shipping_price)
                return (
                  '£'+item?.shipping_price?.price
                )

@@ -50,25 +50,7 @@ export default function EditProfile(props) {
   const [loading, setLoading] = useState(false);
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
-  const [newnumber,setNewNumber] = useState('')
-  const [loadingNumber,setLoadingNumber] = useState(true)
-  useEffect(()=>{
-    GetPhoneNumber()
-  },[])
-  const GetPhoneNumber = ()=>{
-    axios
-    .get(GetPhone, {
-      headers: {Authorization: `Bearer ${user?.token}`},
-    })
-    .then(async function (res) {
-      setNewNumber(res.data.data)
-      setLoadingNumber(false);
-    })
-    .catch(function (error) {
-      console.log("error",error.response.data)
-      setLoadingNumber(false);
-    });
-  }
+
   const selectImage = async () => {
     const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
@@ -187,7 +169,7 @@ axios.request(config)
           ) : name == 'PASSWORD' ? (
             <Text style={{color: 'black'}}>************</Text>
           ) : (
-            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name : name == 'NAME' ? user?.userData?.name : name == 'DOB'?user?.userData?.dob : name == 'PHONE'? newnumber!='' && !loadingNumber ? newnumber : !loadingNumber && newnumber=='' ? 'XXXXXXXXXX' : null  : 'XXXXXXXXXX'}</Text>
+            <Text style={{color: 'black'}}>{name == 'USERNAME' ? user?.userData?.username : name == 'EMAIL' ? user?.userData?.email : name == 'BRAND NAME' ? user?.userData?.name : name == 'NAME' ? user?.userData?.name : name == 'DOB'?user?.userData?.dob : name == 'PHONE'? user?.userData?.phone !='' ? user?.userData?.phone :  'XXXXXXXXXX'   : 'XXXXXXXXXX'}</Text>
           )}
       
       </TouchableOpacity>

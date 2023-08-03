@@ -315,7 +315,7 @@ export default function BrandProfileScreen(props) {
                 }}
                 resizeMode="contain">
                 <View style={styles.iconWrap}>
-                {data?.products_count > 0 && (
+                {data?.is_fts && (
                   <TouchableOpacity
                   onPress={() => props.navigation.navigate('FTS100')}
                   style={styles.badge}>
