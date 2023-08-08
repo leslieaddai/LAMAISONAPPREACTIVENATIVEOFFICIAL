@@ -35,7 +35,6 @@ import {useDispatch, useSelector} from 'react-redux';
 
 export default function CollectionItemsComp(props) {
   const navigation = useNavigation();
-  console.log(props);
   const user = useSelector(state => state.userData);
   const [loading, setLoading] = useState(false)
   const onloading = (value,label)=>{
@@ -45,7 +44,6 @@ export default function CollectionItemsComp(props) {
     <TouchableOpacity
       onPress={() => user?.userData?.role?.[0]?.id!==3?
         navigation.navigate('dressingRoomScreen', {
-          // userData:props?.userData,
           data: props?.data,
         }):navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})
       }
@@ -86,7 +84,6 @@ export default function CollectionItemsComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(45),
-    //height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

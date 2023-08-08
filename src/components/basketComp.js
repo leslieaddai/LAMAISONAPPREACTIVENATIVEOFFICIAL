@@ -104,9 +104,6 @@ export default function BasketComp(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
-        //getBasket()
-        //props?.basket?.getBasket();
         let tempArr = props?.allData?.data;
         tempArr[props?.index].qty=tempArr[props?.index].qty+1;
         props?.allData?.setData(tempArr);
@@ -115,15 +112,12 @@ export default function BasketComp(props) {
         setLoading2(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
         setLoading2(false);
-        //errorMessage('Something went wrong!');
         errorMessage(errorHandler(error))
       });
 }
 
 const onDecreamentEditor = (basketId) => {
-//if(props?.data?.qty<2){
   if(count<2){
 Alert.alert(
   'Confirmation',
@@ -144,18 +138,18 @@ Alert.alert(
             headers: {Authorization: `Bearer ${user?.token}`},
           })
           .then(async function (res) { 
-            console.log(res.data);
+          
             dispatch({
               type: types.RemoveFromBasket
             });
-            //getBasket()
+        
             props?.basket?.getBasket();
             setLoading2(false);
           })
           .catch(function (error) {
-            console.log(error.response.data);
+           
             setLoading2(false);
-            //errorMessage('Something went wrong!');
+   
             errorMessage(errorHandler(error))
           });
       },
@@ -170,9 +164,7 @@ axios
     headers: {Authorization: `Bearer ${user?.token}`},
   })
   .then(async function (res) {
-    console.log(res.data);
-    //getBasket()
-    //props?.basket?.getBasket();
+ 
     let tempArr = props?.allData?.data;
     tempArr[props?.index].qty=tempArr[props?.index].qty-1;
     props?.allData?.setData(tempArr);
@@ -181,9 +173,9 @@ axios
     setLoading2(false);
   })
   .catch(function (error) {
-    console.log(error.response.data);
+
     setLoading2(false);
-    //errorMessage('Something went wrong!');
+
     errorMessage(errorHandler(error))
   });
 }
@@ -198,7 +190,7 @@ axios
         onPress={() => navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})}
         style={styles.imageWrap}>
         <Image
-          //source={IMAGES.randomPic}
+        
           source={{uri:props?.data?.product?.product_images[0].image[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
@@ -221,7 +213,7 @@ axios
               
           ):(
             <Text style={[styles.quantityTxt,{position:'absolute',}]}>
-              {/* {props?.data?.qty} */}
+             
               {count}
               </Text>
           )}
@@ -244,7 +236,7 @@ axios
         onPress={() => navigation.navigate('imageViewScreen',{item:props?.data?.data?.product_images})}
         style={styles.imageWrap}>
         <Image
-          //source={IMAGES.randomPic}
+       
           source={{uri:props?.data?.data?.product_images[0].image[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"

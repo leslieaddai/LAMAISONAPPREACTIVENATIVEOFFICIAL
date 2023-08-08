@@ -55,17 +55,13 @@ import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function EditorProfileScreen(props) {
-  //console.log(props.route.params.userData.userData)
+ 
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState(false);
 
-  // const [loadingFollowList,setLoadingFollowList]=useState(false);
-  // const [followingDataBrand,setFollowingDataBrand]=useState([]);
-  // const [followerDataBrand,setFollowerDataBrand]=useState([]);
-  // const [followingDataEditor,setFollowingDataEditor]=useState([]);
-  // const [followerDataEditor,setFollowerDataEditor]=useState([]);
+  
 
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
@@ -73,27 +69,10 @@ export default function EditorProfileScreen(props) {
   const [follow, setFollow] = useState(false);
   const {count} = useSelector(state => state.ordercount)
 
-  // useEffect(()=>{
-  //   setLoading(true);
-
-  //   axios
-  //   //.post(WishListsUrl,{user_id:user?.userData?.id})
-  //   .post(WishListsUrl, {user_id:props?.route?.params?.userData?.userData?.id})
-  //   .then(async function (res) {
-  //      console.log(res.data);
-  //      setData(res?.data?.data.reverse());
-  //      setLoading(false);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error.response.data)
-  //     setLoading(false);
-  //     errorMessage('Something went wrong!')
-  //   });
-
-  // },[])
+  
 
   useEffect(() => {
-    //getBrandData()
+
     setLoading(true);
 
     axios
@@ -104,7 +83,7 @@ export default function EditorProfileScreen(props) {
           }`,
       )
       .then(async function (res) {
-        console.log(res.data);
+      
         setData(res?.data?.data);
         if (res?.data?.data?.is_following === null) {
           setFollow(false);
@@ -114,15 +93,15 @@ export default function EditorProfileScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+    
         errorMessage(errorHandler(error))
       });
   }, []);
 
   const getEditorData = () => {
-    //setLoading(true);
+   
 
     axios
       .get(
@@ -132,7 +111,7 @@ export default function EditorProfileScreen(props) {
           }`,
       )
       .then(async function (res) {
-        console.log(res.data);
+      
         setData(res?.data?.data);
         if (res?.data?.data?.is_following === null) {
           setFollow(false);
@@ -142,81 +121,13 @@ export default function EditorProfileScreen(props) {
         //setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+        
         errorMessage(errorHandler(error))
       });
   };
 
-  // useEffect(()=>{
-  //   setLoadingFollowList(true);
-
-  //   axios
-  //   .get(GetBrandFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //   .then(async function (res) {
-  //      console.log(res.data);
-  //      setFollowerDataBrand(res.data.data);
-  //      if(user?.token !== ''){
-  //       if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===3){
-  //         //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //         setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //       }
-  //      }
-
-  //      axios
-  //      .get(GetBrandFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //      .then(async function (res){
-  //         console.log(res.data);
-  //         setFollowingDataBrand(res.data.data);
-
-  //         axios
-  //         .get(GetEditorFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //         .then(async function (res){
-  //           console.log(res.data);
-  //           setFollowerDataEditor(res.data.data);
-  //           if(user?.token!==''){
-  //             if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===2){
-  //               //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //               setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //             }
-  //           }
-
-  //           axios
-  //           .get(GetEditorFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //           .then(async function (res){
-  //             console.log(res.data);
-  //             setFollowingDataEditor(res.data.data);
-  //             setLoadingFollowList(false);
-  //           })
-  //           .catch(function (error){
-  //             console.log(error.response.data)
-  //             setLoadingFollowList(false);
-  //             errorMessage('Something went wrong!')
-  //           })
-
-  //         })
-  //         .catch(function (error){
-  //           console.log(error.response.data)
-  //           setLoadingFollowList(false);
-  //           errorMessage('Something went wrong!')
-  //         })
-
-  //      })
-  //      .catch(function (error){
-  //       console.log(error.response.data)
-  //       setLoadingFollowList(false);
-  //       errorMessage('Something went wrong!')
-  //      })
-
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error.response.data)
-  //     setLoadingFollowList(false);
-  //     errorMessage('Something went wrong!')
-  //   });
-
-  // },[])
 
   const onFollow = () => {
     setLoadingFollow(true);
@@ -237,15 +148,15 @@ export default function EditorProfileScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+     
         getEditorData();
         setFollow(true);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -269,15 +180,15 @@ export default function EditorProfileScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+      
         getEditorData();
         setFollow(false);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -297,8 +208,7 @@ export default function EditorProfileScreen(props) {
           <View style={styles.container}>
             <View style={styles.editorProfile}>
               <ImageBackground
-                //source={IMAGES.randomProfile}
-                //source={{uri:props?.route?.params?.userData?.userData?.profile_image}}
+                
                 source={data?.profile_image!==null?{uri: data?.profile_image?.original_url}:IMAGES.profileIcon3}
                 style={{width: '100%', height: '100%'}}
                 resizeMode="contain">
@@ -320,7 +230,7 @@ export default function EditorProfileScreen(props) {
                   </TouchableOpacity>
                 )}
                 <View style={styles.nameContainer}>
-                  {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(22)}}>{props?.route?.params?.userData?.userData?.username}</Text> */}
+                
                   <Text style={styles.usernameTxt}>{data?.username}</Text>
                   {props?.route?.params?.userData?.userData?.id !==
                     user?.userData?.id && (
@@ -361,16 +271,7 @@ export default function EditorProfileScreen(props) {
               </ImageBackground>
             </View>
 
-            {/* <View style={{flexDirection:'row',marginLeft:wp2(4),marginVertical:hp2(1)}}>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following',followingDataBrand,followingDataEditor})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>{followingDataBrand.length+followingDataEditor.length}</Text>
-      <Text style={{color:'black'}}> FOLLOWING </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower',followerDataBrand,followerDataEditor})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>{followerDataBrand.length+followerDataEditor.length}</Text>
-      <Text style={{color:'black'}}> FOLLOWERS</Text>
-      </TouchableOpacity>
-      </View> */}
+          
 
             <View style={styles.followersContainer}>
               <TouchableOpacity
@@ -425,7 +326,7 @@ export default function EditorProfileScreen(props) {
               )}
             </ScrollView>
 
-            {/* <BottomComp /> */}
+       
           </View>
         </SafeAreaView>
         </>
@@ -438,7 +339,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //marginBottom:Platform.OS==="ios"?hp(-10):0
+
   },
   editorProfile: {
     width: wp2(100),
@@ -450,7 +351,7 @@ const styles = StyleSheet.create({
   },
   iconWrap: {
     alignSelf: 'flex-end',
-    //backgroundColor:'white',
+   
     marginRight: wp2(2),
     marginTop: hp2(1),
   },

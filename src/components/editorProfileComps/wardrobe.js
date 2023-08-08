@@ -55,13 +55,13 @@ const [loadingImage, setLoadingImage] = useState(false)
     axios
       .get(GetVirtualWardrobe + `${props?.user?.userData?.id}`)
       .then(async function (res) {
-        console.log(res.data, '=======> wardrobe');
+      
         setData(res?.data?.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //errorMessage('Something went wrong!');
+       
+
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -94,7 +94,7 @@ const [loadingImage, setLoadingImage] = useState(false)
             undefined
                 }
                 <Image
-                  //source={IMAGES.randomPic}
+           
                   progressiveRenderingEnabled={true}
               onLoadStart={()=>{onloading(true,"onLoadStart")}}
               onLoad={()=>onloading(false,"onLoad")}

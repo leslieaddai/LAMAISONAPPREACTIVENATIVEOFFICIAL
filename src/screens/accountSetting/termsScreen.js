@@ -96,8 +96,7 @@ const styles = StyleSheet.create({
   headWrap: {
     flexDirection: 'row',
     alignItems: 'center',
-    //backgroundColor:'red',
-    //justifyContent: 'center',
+ 
     width: wp2(100),
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     marginBottom: hp2(2),
@@ -107,8 +106,6 @@ const styles = StyleSheet.create({
     fontSize: rfv(18),
     fontWeight: '700',
     marginLeft: wp2(14),
-    //marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
-    //marginBottom:hp2(2),
-    //marginLeft: wp2(8),
+   
   },
 });

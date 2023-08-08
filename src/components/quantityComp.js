@@ -33,7 +33,6 @@ import {useNavigation} from '@react-navigation/native';
 
 export default function QuantityComp(props) {
   const navigation = useNavigation();
-  //console.log(props)
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -80,11 +79,11 @@ export default function QuantityComp(props) {
           value={props.state.quantity[props.key2].quantity}
           onChangeText={val => {
             const newState = props.state.quantity.map((obj, index) => {
-              // :point_down:️ if id equals 2, update country property
+         
               if (index === props.key2) {
                 return {...obj, quantity: val};
               }
-              // :point_down:️ otherwise return the object as is
+         
               return obj;
             });
             props.state.setQuantity(newState);
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
   colorBox: {
     width: wp2(8),
     height: wp2(8),
-    //backgroundColor: COLORS.appBackground,
+   
     borderRadius: wp2(2),
 
     shadowColor: '#000',

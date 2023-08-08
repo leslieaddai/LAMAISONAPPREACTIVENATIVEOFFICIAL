@@ -85,14 +85,14 @@ export default function SearchScreen({navigation, route}) {
     axios
       .post(EditorSearch,{keyword:searchtext})
       .then(async function (res) {
-        console.log(res?.data);
+        
         setDataEditor(res?.data?.data)
         setLoading2(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading2(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   }
@@ -126,7 +126,7 @@ export default function SearchScreen({navigation, route}) {
       .post(SearchUrl + page_no, obj)
       .then(async function (res) {
         if(previouspage == res?.data?.current_page){
-          console.log("asda=======>");
+         
         setData([...res?.data?.data]);
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
@@ -139,9 +139,9 @@ export default function SearchScreen({navigation, route}) {
       }
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+     
         errorMessage(errorHandler(error))
       });
   };
@@ -151,7 +151,7 @@ export default function SearchScreen({navigation, route}) {
                   setDataEditor([]);
                   getSearchResults(searchTerm,'1');
                   getEditorResults(searchTerm);
-    console.log(searchTerm)
+  
   }, 2000);
   let typingTimeout = null;
 const handleInputChange = (text) => {
@@ -180,13 +180,7 @@ const handleInputChange = (text) => {
                 value={text}
                   onChangeText={handleInputChange}
               
-                // onSubmitEditing={() => {
-                //   //console.log('submited', text);
-                //   setData([]);
-                //   setDataEditor([]);
-                //   getSearchResults('1');
-                //   getEditorResults();
-                // }}
+               
                 placeholderTextColor={'grey'}
                 returnKeyLabel="done"
                 returnKeyType="done"
@@ -195,7 +189,7 @@ const handleInputChange = (text) => {
             </View>
             <TouchableOpacity
               onPress={() => navigation.navigate('filterScreen', text)}
-              //onPress={()=>props.navigation.navigate('stackNavComp', {screen: 'filterScreen'})}
+              
             >
               <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />
             </TouchableOpacity>
@@ -288,20 +282,7 @@ const handleInputChange = (text) => {
             </View>
           )}
 
-          {/* <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: hp2(12),
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          width: wp2(97),
-          alignSelf: 'center',
-        }}>
-        <SearchComp />
-       
-      </ScrollView> */}
-
-          {/* <BottomComp /> */}
+   
         </View>
       </SafeAreaView>
     </>
@@ -326,8 +307,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical: hp2(1),
-    //alignSelf:'center',
+
   },
   headWrap: {
     flexDirection: 'row',
@@ -339,7 +319,7 @@ const styles = StyleSheet.create({
     width: wp2(50),
     height: hp2(8),
     flexDirection: 'row',
-    //backgroundColor:'red',
+ 
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
@@ -353,7 +333,7 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '700',
     fontSize: rfv(14),
-    //color: 'black',
+
   },
   textBoxInput: {
     flex: 1,

@@ -13,11 +13,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
-//import LoaderComp from '../loaderComp';
 
 const OrderDetailscomp = (props) => {
 const dispatch = useDispatch();
-//const [loadingStatusChange, setLoadingStatusChange] = useState(false);
+
 const user = useSelector(state => state.userData);
 const roleid = user?.userData?.role?.[0]?.id
   const [visible, setVisible] = useState(false);
@@ -43,20 +42,7 @@ const roleid = user?.userData?.role?.[0]?.id
 
     const SelectOrderStatus = (Bool,statusname,statusid)=>{
 
-      //////setSelectedStatus(statusname);
-
-      //updateState({region: Number(regionid)});
-      //setIsOpenedRegions(false);
-
-      //////setIsOpenedStatus(false);
-
-      //setSelectedCountry('SELECT COUNTRY');
-      //updateState({country: null});
-      //setIsOpenedRegions(Bool)
-
-      //////setIsOpenedStatus(Bool)
-
-      //getAllCountries(regioncode);
+     
 
         props?.loaderState?.setLoadingStatusChange(true);
       
@@ -65,16 +51,16 @@ const roleid = user?.userData?.role?.[0]?.id
             headers:{Authorization:`Bearer ${user?.token}`}
           })
           .then(async function (res) {
-            console.log(res?.data);
+           
             setSelectedStatus(statusname);
             setIsOpenedStatus(false);
             props?.loaderState?.setLoadingStatusChange(false);
             props?.loaderState?.onChangeOrderStatus(props?.indexValue,statusname);
           })
           .catch(function (error) {
-            console.log(error?.response?.data);
+          
             props?.loaderState?.setLoadingStatusChange(false);
-            //errorMessage('Something went wrong!');
+   
             errorMessage(errorHandler(error))
           });
 
@@ -132,7 +118,7 @@ const roleid = user?.userData?.role?.[0]?.id
       <View style={{width:wp2(9),height:wp2(5),backgroundColor:`${props?.colourcode}`,borderRadius:wp2(2),borderWidth:1}}></View>
       </View>
       <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
-      {/* <Text style={styles.textstyle} onPress={()=> console.log('hi')}> {`Status - ${props.status}`}</Text> */}
+    
       <TouchableOpacity 
       onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
       style={styles.statusbtn}>

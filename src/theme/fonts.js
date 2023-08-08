@@ -7,15 +7,9 @@ const fonts = {
     MontserratMedium: "Montserrat-Medium",
     MontserratBold: "Montserrat-Bold",
 
-    // AleoBold: "Aleo-Bold",
-    // AleoMedium: "Aleo-Medium",
-    // AleoRegular: "Aleo-Regular",
-
     OpenSansBold: "OpenSans-Bold",
     OpenSansMedium: "OpenSans-Regular",
     OpenSansRegular: "OpenSans-Regular",
 
-    // AmostelySignature: "AmostelySignature",
-    // MrDeHavilandRegular: "MrDeHaviland-Regular"
 }
 export default fonts

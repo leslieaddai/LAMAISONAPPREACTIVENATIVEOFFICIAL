@@ -70,15 +70,15 @@ export default function WardrobeScreen(props) {
           }`,
       )
       .then(async function (res) {
-        console.log(res?.data);
+        
         setData(prev => [...prev, ...res?.data?.data]);
         setPage(res?.data?.meta);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+     
         setLoading(false);
-        //errorMessage('Something went wrong!');
+    
         errorMessage(errorHandler(error))
       });
   };
@@ -147,7 +147,7 @@ export default function WardrobeScreen(props) {
             </View>
           )}
 
-          {/* <BottomComp /> */}
+      
         </View>
       </SafeAreaView>
     </>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
   },
   wardrobeText: {

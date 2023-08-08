@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   wrap:{
     width:wp2(80),
     height:hp2(60),
-    //backgroundColor:'red',
+
     alignItems:'center',
     justifyContent:'space-evenly',
   },

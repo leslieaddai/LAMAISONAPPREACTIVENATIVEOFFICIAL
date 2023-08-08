@@ -44,11 +44,7 @@ import {SkypeIndicator} from 'react-native-indicators';
 import LoaderComp from '../../components/loaderComp';
 
 export default function PasswordChange(props) {
-    // const textBox = (placeText,onChangeText) => {
-    //     return(
-            
-    //     )
-    // }
+   
     const special =/[!@#\$%\^\&*\)\(+=._-]/g
     const numeric = /[0-9]/
 
@@ -88,14 +84,14 @@ export default function PasswordChange(props) {
                     headers: {Authorization: `Bearer ${user?.token}`},
                   })
                   .then(async function (res) {
-                    console.log(res?.data);
+                   
   
                     setLoading(false);
                     props?.navigation?.goBack();
                     successMessage('Password Changed Successfully!');
                   })
                   .catch(function (error) {
-                    console.log(error?.response?.data);
+                    
                     setLoading(false);
                     errorMessage(errorHandler(error))
                   });
@@ -214,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   heading: {

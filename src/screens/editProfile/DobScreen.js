@@ -69,7 +69,7 @@ const DobScreen = (props) => {
           headers: {Authorization: `Bearer ${user?.token}`},
         })
         .then(async function (res) {
-          // console.log("res",res.data)
+          
           setLoading(false);
           updateDataState(res.data);
           successMessage("DOB Update Successfully")
@@ -78,7 +78,7 @@ const DobScreen = (props) => {
         })
         .catch(function (error) {
           setLoading(false);
-          console.log("error",error.response.data)
+         
         });
       }
     return (
@@ -121,7 +121,7 @@ const DobScreen = (props) => {
                 placeholder={'CURRENT PHONE NUMBER'}
                 onChangeText={(e)=>{setPrevNumber(e)}}
                 value={prevnumber}
-                //value={`${prevnumber.getDate()} - ${ prevnumber.getMonth()+1} - ${prevnumber.getFullYear()}`}
+               
                 keyboardType={"number-pad"}
                 placeholderTextColor={'grey'}
                 maxLength={11}
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
       alignItems: 'center',
-      //backgroundColor:'red',
+    
       justifyContent: 'center',
     },
     heading: {

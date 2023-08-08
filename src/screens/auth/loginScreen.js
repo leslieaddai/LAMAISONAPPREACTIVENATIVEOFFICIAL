@@ -74,67 +74,6 @@ export default function LoginScreen(props) {
     return /\s/.test(str);
   }
 
-  const onStripeConnect = (acc_id) => {
-
-      // axios
-      //   .post('https://api.stripe.com/v1/accounts', 'type=express&capabilities[card_payments][requested]=true&capabilities[transfers][requested]=true',
-      //   {
-      //     headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-      //     // params:{type:'express',capabilities: {card_payments: { requested: true },transfers: { requested: true }}}
-      //   })
-      //   .then(async function (res) {
-      //     console.log(res?.data?.capabilities);
-
-      //     axios
-      //     .post('https://api.stripe.com/v1/account_links', null,
-      //     {
-      //       headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-      //       params:{account:res?.data?.id,refresh_url: "https://www.facebook.com",return_url: "https://www.google.com",type: "account_onboarding"}
-      //     })
-      //     .then(async function (res) {
-      //       console.log(res?.data);
-      //       await Linking.openURL(res?.data?.url);
-      //     })
-      //     .catch(function (error) {
-      //       console.log(error?.response?.data);
-      //     });
-
-      //   })
-      //   .catch(function (error) {
-      //     console.log(error?.response?.data);
-      //   });
-
-      // axios
-      // .post('https://api.stripe.com/v1/account_links', null,
-      // {
-      //   headers:{'Authorization':`Bearer sk_test_51M5W9vIM397QIZ0d1tVmBjhgCC87vwl0B9wbWDDdfVHfpdq0emhxfx3jBpnJgTxveh7c9XVquF0JzCFl5NT3Lj3e00u5ffQwQ9`},
-      //   params:{account:'acct_1NWEl2IMlVqan7Ua',refresh_url: "https://www.facebook.com",return_url: "https://www.google.com",type: "account_onboarding"}
-      // })
-      // .then(async function (res) {
-      //   console.log(res?.data);
-      //   await Linking.openURL(res?.data?.url);
-      //   setShowModal(true);
-      //   setConnectUrl(res?.data?.url)
-
-      // })
-      // .catch(function (error) {
-      //   console.log(error?.response?.data);
-      // });
-
-      axios
-        .post(ConnectAccountLink, {stripe_account_id:acc_id})
-        .then(async function (res) {
-          console.log(res?.data?.data)
-          setConnectUrl(res?.data?.data?.url)
-          setShowModal(true);
-        })
-        .catch(function (error) {
-          console.log(error?.response?.data);
-          setError(errorHandler(error))
-        });
-
-  }
-
   const onSignIn = () => {
     if (UserName != '' && Password != '') {
       if(!containsWhitespace(UserName)){
@@ -146,16 +85,16 @@ export default function LoginScreen(props) {
       axios
         .post(LoginUrl, obj)
         .then(async function (res) {
-          console.log('login response=====>', res.data);
+        
           setLoading(false);
           if (res.data.user.email_verified === false) {
-            //setError('Please verify your email');
+          
             props.navigation.navigate('verifyAccountScreen',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
             errorMessage('Please verify your email');
           } 
           else if (res?.data?.user?.stripe_account?.charges_enabled === false || res?.data?.user?.stripe_account?.details_submitted === false){
-            //onStripeConnect(res?.data?.user?.stripe_account?.id);
-            console.log(res?.data?.user?.stripe_account?.details_submitted);
+          
+            
             props.navigation.navigate('connectStripe',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
           }
             else {
@@ -171,7 +110,7 @@ export default function LoginScreen(props) {
           }
         })
         .catch(function (error) {
-          console.log(error.response.data);
+        
           setLoading(false);
           setError(errorHandler(error))
           setShowError(true);
@@ -200,14 +139,14 @@ export default function LoginScreen(props) {
     try {
       setLoading(true);
       NetworkInfo.getIPAddress().then(ipAddress => {
-        console.log(ipAddress);
+       
         getUniqueId().then(uniqueId => {
-          console.log(uniqueId);
+         
 
           axios
             .post(RegisterGuest, {device_id: uniqueId, ip_address: ipAddress})
             .then(async function (res) {
-              console.log(res.data);
+             
               dispatch({
                 type: types.LoginGuest,
                 payload: res?.data,
@@ -217,7 +156,7 @@ export default function LoginScreen(props) {
               props.navigation.navigate('bottomNavigationGuest');
             })
             .catch(function (error) {
-              console.log(error.response.data);
+            
               setLoading(false);
               setError(errorHandler(error))
               setShowError(true);
@@ -245,25 +184,7 @@ export default function LoginScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
 
-      {/* <Modal animationType="slide"
-        transparent={true} visible={showModal}
-        // onRequestClose={() => {
-        //   Alert.alert('Modal has been closed.');
-        //   setShowModal(!showModal);
-        // }}
-        >
-                    <View style={styles.modal}>
-                        <View style={styles.modalContainer}>
-                        <TouchableOpacity onPress={()=> setShowModal(!showModal)} style={styles.cancelButton}>
-                              <ICONS.MaterialIcons name="cancel" size={30} color="red" />
-                        </TouchableOpacity>
-                            <WebView 
-                                style={{ flex : 1 }} 
-                                source={{uri: connectUrl}}
-                            />
-                        </View>
-                    </View>
-          </Modal> */}
+    
 
         <View style={{flexGrow: 1}}>
           <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>

@@ -61,9 +61,9 @@ export default function ColourClothing(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -107,10 +107,7 @@ export default function ColourClothing(props) {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-            // dispatch({
-            //   type:types.Colouradd,
-            //   payload:selected?.color_code
-            // })
+           
           }}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -130,26 +127,13 @@ export default function ColourClothing(props) {
       ) : (
         <View style={styles.colorsWrap}>
           {data?.map((item, index) => {
-            //console.log("item=======>",item);
+          
             return <View key={index}>{color(item)}</View>;
           })}
         </View>
       )}
 
-      {/* <View style={styles.colorsWrap}>
-        {color('black')}
-        {color('white')}
-        {color('#A1A1A1')}
-        {color('#F61616')}
-        {color('#008000E8')}
-        {color('#0000FF')}
-        {color('#5C4033')}
-        {color('#FF69B4')}
-        {color('#FAFA33')}
-        {color('#FFA500')}
-        {color('#800080')}
-        {color('#F5F5DC')}
-      </View> */}
+     
     </SafeAreaView>
     </>
   );
@@ -164,7 +148,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+  
     justifyContent: 'center',
     width: wp2(100),
   },

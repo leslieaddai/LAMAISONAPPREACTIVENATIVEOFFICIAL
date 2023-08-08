@@ -70,7 +70,7 @@ const CreateAccountScreen = props => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  console.log(special.test(Newpassword));
+  
   
   function subtractYears(date, years) {
     date.setFullYear(date.getFullYear() - years);
@@ -108,17 +108,17 @@ const CreateAccountScreen = props => {
                     role_id: props.route.params.user == 'editor' ? 2 : 3,
                   };
 
-                  console.log(obj);
+                 
                   setLoading(true);
 
                   axios
                     .post(RegisterUrl, obj)
                     .then(async function (res) {
-                      console.log(res.data);
+                      
                       setLoading(false);
-                      //props.navigation.navigate('loginScreen');
+                     
                       props.navigation.navigate('verifyAccountScreen',{role:props?.route?.params?.user == 'editor' ? 2 : 3,data:res?.data?.user?.stripe_account});
-                      //props.navigation.replace('loginScreen')
+                      
                       successMessage(
                         'Account verification code is sent to your email. Please check.',
                       );
@@ -166,7 +166,7 @@ const CreateAccountScreen = props => {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-        {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}> */}
+     
         <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.goBack()}
@@ -247,8 +247,7 @@ const CreateAccountScreen = props => {
         <TouchableOpacity
           style={styles.BDaystyle}
           onPress={() => setOpen(true)}>
-          {/* <TextInput  placeholder="BIRTHDAY DD/MM/YYYY" onChangeText={(val) => updateState({Birthday:val})} placeholderTextColor={'grey'}/> */}
-          {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
+        
           <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday.getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
         </TouchableOpacity>
         <DatePicker
@@ -288,7 +287,7 @@ const CreateAccountScreen = props => {
         <TouchableOpacity onPress={onCreate} style={styles.button}>
           <Text style={{color: 'white'}}>CREATE ACCOUNT</Text>
         </TouchableOpacity>
-        {/* </KeyboardAwareScrollView> */}
+       
       </SafeAreaView>
     </>
   );
@@ -305,7 +304,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
     marginBottom:hp2(1),
   },
@@ -313,8 +312,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: rfv(20),
     fontWeight: '700',
-    //marginLeft: wp2(8),
-    //marginBottom: hp2(2),
+    
   },
   inputBox: {
     width: wp2(80),
@@ -386,7 +384,7 @@ const styles = StyleSheet.create({
   checkBoxWrap: {
     flexDirection: 'row',
     marginLeft: wp2(8),
-    //alignItems: 'center',
+   
     alignItems: 'flex-end',
     marginVertical: hp2(3),
   },

@@ -55,7 +55,7 @@ export default function EditProfile(props) {
     const result = await launchImageLibrary({mediaType:'photo'});
     if (!result.didCancel) {
 
-      console.log(result?.assets[0].fileSize/1024)
+      
       if(result?.assets[0].type !== 'image/gif'){
         if(result?.assets[0].fileSize < 1572864){
           const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
@@ -66,8 +66,7 @@ export default function EditProfile(props) {
         
           setImages([{uri, name: filename, type}])
     
-            //setImages(result.assets)
-            //console.log(result.assets); 
+           
         }else{
           errorMessage('The maximum file size allowed is 1.5mb.')
         }
@@ -81,7 +80,7 @@ export default function EditProfile(props) {
     var array = [...images];
     if (id !== -1) {
       array.splice(id, 1);
-      //setImages(array);
+     
     }
     setImages([]);
   };
@@ -106,7 +105,7 @@ let config = {
 
 axios.request(config)
 .then(async function (res) {
-  console.log(res.data);
+  
   dispatch({
     type: types.UpdateProfilePicture,
     payload: res.data.data.profile_image.original_url,
@@ -116,9 +115,9 @@ axios.request(config)
   successMessage('Profile Update Successfully');
 }) 
 .catch(function (error) {
-  console.log(error.response.data)
+  
   setLoading(false);
-  //errorMessage('Upload Failed');
+
   errorMessage(errorHandler(error))
 });
 
@@ -151,8 +150,7 @@ axios.request(config)
                       </>
                     ) : (
                       <Image
-                          //source={IMAGES.randomProfile}
-                          //source={{uri:user?.userData?.profile_image}}
+                         
                           source={user?.userData?.profile_image!==''?{uri:user?.userData?.profile_image}:IMAGES.profileIcon3}
                           style={{width: '100%', height: '100%'}}
                           resizeMode="cover"
@@ -237,7 +235,7 @@ const styles = StyleSheet.create({
     marginVertical: hp2(4),
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+  
     justifyContent: 'center',
     width:wp2(100),
   },
@@ -303,6 +301,6 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginTop:hp2(6),
     alignSelf:'center',
-    //marginRight:wp2(6),
+    
   },
 });

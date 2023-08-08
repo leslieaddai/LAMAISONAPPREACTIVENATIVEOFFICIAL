@@ -44,7 +44,7 @@ export default function SelectSizes(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
 
-  //console.log(props?.route?.params?.color?.id)
+
 
   useEffect(() => {
     setLoading(true);
@@ -54,14 +54,14 @@ export default function SelectSizes(props) {
         `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`,
       )
       .then(async function (res) {
-        //console.log(res.data);
+       
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+        
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -128,7 +128,7 @@ export default function SelectSizes(props) {
       ) : (
         <>
           {data?.map(item => {
-            //console.log("item=======>",item);
+           
             return <>{options(item)}</>;
           })}
         </>
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+   
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+   
     borderRadius: 100,
   },
   quantityTxt: { position: 'absolute', left: wp2(28)},

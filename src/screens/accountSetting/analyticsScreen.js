@@ -56,36 +56,19 @@ export default function AnalyticsScreen(props) {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
+        
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+        
         errorMessage(errorHandler(error))
       });
   }, []);
 
-  // const boxComp = badge => {
-  //   return (
-  //     <View style={styles.box2}>
-  //       <Text style={[styles.textOne, {fontSize: rfv(24)}]}>20,000</Text>
-  //       {badge ? (
-  //         <View style={styles.badge}>
-  //           <Image
-  //             source={IMAGES.badge}
-  //             style={{width: '100%', height: '100%'}}
-  //             resizeMode="contain"
-  //           />
-  //         </View>
-  //       ) : (
-  //         <Text style={styles.textTwo}>SALES</Text>
-  //       )}
-  //     </View>
-  //   );
-  // };
+  
 
   return (
     <>
@@ -153,7 +136,7 @@ export default function AnalyticsScreen(props) {
         </>
       )}
 
-        {/* <BottomComp /> */}
+       
       </View>
     </SafeAreaView>
     </>
@@ -193,7 +176,7 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     width: wp2(88),
-    //backgroundColor: 'red',
+   
     justifyContent: 'space-between',
     alignSelf: 'center',
     flexDirection: 'row',

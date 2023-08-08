@@ -117,7 +117,7 @@ export default function CheckoutScreen(props) {
 
   useEffect(() => {
     if(user?.token!==''){
-      //setLoading(true);
+   
       setLoadingAddress(true);
 
       axios
@@ -125,7 +125,7 @@ export default function CheckoutScreen(props) {
           headers: {Authorization: `Bearer ${user?.token}`},
         })
         .then(async function (res) {
-          console.log(res.data);
+          
           setStateChange({
             address_1: res?.data?.data?.address_1,
             address_2: res?.data?.data?.address_2,
@@ -149,14 +149,14 @@ export default function CheckoutScreen(props) {
             getAllCountries(res?.data?.data?.region?.code);
             setSelectedCountry(res?.data?.data?.country?.name);
           }
-          //setLoading(false);
+         
           setLoadingAddress(false);
         })
         .catch(function (error) {
-          console.log(error.response.data);
-          //setLoading(false);
+          
+          
           setLoadingAddress(false);
-          //errorMessage('Something went wrong!');
+     
           errorMessage(errorHandler(error))
         });
     }
@@ -175,7 +175,7 @@ export default function CheckoutScreen(props) {
                 }
               })
             })
-            console.log(val);
+           
             setTotal(val);
         }else{
           let val = 0;
@@ -187,7 +187,7 @@ export default function CheckoutScreen(props) {
             }
           })
         })
-        console.log(val);
+      
         setTotal(val);
         }
       }
@@ -198,17 +198,14 @@ export default function CheckoutScreen(props) {
     axios
       .get(GetRegionsAll)
       .then(async function (res) {
-        //console.log(res.data);
-        //setStateChange(res.data.data);
+       
         setRegionsData(res?.data?.data);
-        //setLoading(false);
+       
       })
       .catch(function (error) {
-        console.log(31,error.response.data);
-        //setLoading(false);
-        //errorMessage('Something went wrong to get regions list!');
+       
         errorMessage(errorHandler(error))
-        //errorMessage(error.response.data.message)
+       
       });
   };
 
@@ -217,19 +214,16 @@ export default function CheckoutScreen(props) {
     axios
       .get(GetCountries + country_code)
       .then(async function (res) {
-        //console.log(res.data);
-        //setStateChange(res.data.data);
+       
         setCountriesData(res?.data?.data);
         setLoading(false);
-        //setLoading(false);
+       
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //setLoading(false);
-        //errorMessage('Something went wrong to get countries list!');
+       
         errorMessage(errorHandler(error))
         setLoading(false);
-        //errorMessage(error.response.data.message)
+        
       });
   };
 
@@ -261,7 +255,7 @@ export default function CheckoutScreen(props) {
   (postcode !== '' && postcode !== null)
   ){
     if(constainalphabet(city)){
-    //setContinueButton('confirm')
+  
     setLoadingContinue(true);
     let obj = {
       region:stateChange?.region,
@@ -270,7 +264,7 @@ export default function CheckoutScreen(props) {
     axios
     .post(ShippingAvailability,obj)
     .then(async function(res){
-      console.log(res?.data)
+     
       setLoadingContinue(false);
       if(res?.data?.status){
         setContinueButton('confirm')
@@ -279,10 +273,10 @@ export default function CheckoutScreen(props) {
       }
     })
     .catch(function (error) {
-      console.log(error?.response?.data)
+     
       setLoadingContinue(false);
       errorMessage(errorHandler(error))
-      // errorMessage(error?.response?.data?.message)
+     
     })
   }else{
     errorMessage('Invalid city name')
@@ -300,7 +294,7 @@ export default function CheckoutScreen(props) {
      (expiry !== '' && expiry !== null) && 
      (cvv !== '' && cvv !== null))
      {
-      console.log(emailvalidation)
+      
       if(emailvalidation(email)){
 
       
@@ -364,7 +358,7 @@ export default function CheckoutScreen(props) {
       maxBodyLength: Infinity,
       url: CreateGuestOrder,
       headers: {
-        // Authorization: `Bearer ${user.token}`,
+        
         Accept: 'application/json',
         'Content-Type': 'multipart/form-data',
       },
@@ -374,7 +368,7 @@ export default function CheckoutScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         setLoading(false);
         props.navigation.replace('bottomNavigationGuest', {screen: 'confirmationScreen',})
         dispatch({
@@ -387,7 +381,7 @@ export default function CheckoutScreen(props) {
         successMessage('Order Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -429,23 +423,21 @@ export default function CheckoutScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         setLoading(false);
-        //props.navigation.pop();
+       
         props.navigation.goBack();
         props.navigation.navigate('confirmationScreen');
-        //props.navigation.replace('confirmationScreen')
-        //props.navigation.replace('bottomNavigation', {screen: 'confirmationScreen',})
+       
         dispatch({
           type: types.Clearcart
         });
         successMessage('Order Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Order Failed');
-        //errorMessage(error?.response?.data?.message);
+       
         errorMessage(errorHandler(error))
       });
 
@@ -473,12 +465,7 @@ export default function CheckoutScreen(props) {
   },[isOpenedRegions])
 
   useEffect(()=>{            
-    // if(isOpenedCountries){
-    //   setTimeout(() => {
-    //   uibottomesheetvisiblity(true)
-    //   setModalData(countriesData)
-    //   }, 1000);
-    // }
+   
     if(isOpenedCountries){
      
       uibottomesheetvisiblity(true)
@@ -502,37 +489,6 @@ export default function CheckoutScreen(props) {
     updateState({country: Number(countryid)});
     setIsOpenedCountries(Bool)
   }
-  // const textBox = (place) => {
-  //   return (
-  //     <View style={styles.inputBox}>
-  //       <TextInput style={styles.textInput} placeholder={place}  placeholderTextColor={'grey'} keyboardType={place=='CARD NUMBER' ? 'number-pad' : 'default'} />
-  //     </View>
-  //   );
-  // };
-
-  // const textBox2 = () => {
-  //   return (
-  //     <>
-  //       {textBox('EMAIL')}
-  //       {textBox('NAME ON CARD')}
-  //       {textBox('CARD NUMBER')}
-  //       <View
-  //         style={{
-  //           flexDirection: 'row',
-  //           alignSelf: 'center',
-  //           justifyContent: 'space-between',
-  //           width: wp2(80),
-  //         }}>
-  //         <View style={[styles.inputBox, {width: wp2(48)}]}>
-  //           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" />
-  //         </View>
-  //         <View style={[styles.inputBox, {width: wp2(28)}]}>
-  //           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' />
-  //         </View>
-  //       </View>
-  //     </>
-  //   );
-  // };
 
   return (
     <>
@@ -576,37 +532,10 @@ export default function CheckoutScreen(props) {
              return (
                <View style={styles.dataWrap}>
              
-             {/* <View style={styles.productImage}>
-               <Image
-                 //source={IMAGES.vinDiesel}
-                 source={{uri:item?.product?.product_images[0]?.image[0]?.original_url}}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="cover"
-               />
-             </View> */}
+             
 
              <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
-             {/* <Animated.ScrollView
-        horizontal
-        pagingEnabled
-        
-        showsHorizontalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: true},
-        )}>
-          {item?.product?.product_images[0]?.image?.map((item,index)=>{
-            return(
-          <View key={index} style={styles.productImage}>
-          <Image
-            source={{uri:item?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-          )
-          })}
-      </Animated.ScrollView> */}
+            
 
       <GestureHandlerScrollView
       horizontal
@@ -639,7 +568,7 @@ export default function CheckoutScreen(props) {
        <RNAnimatedScrollIndicators
          numberOfCards={item?.product?.product_images[0]?.image?.length}
          scrollWidth={wp2(36)}
-         //activeColor={'#707070'}
+        
          activeColor={'#D9D9D9'}
          inActiveColor={'#D9D9D9'}
          scrollAnimatedValue={scrollX}
@@ -670,7 +599,7 @@ export default function CheckoutScreen(props) {
            <Text style={styles.text}>Shipping</Text>
            <Text style={styles.text}>{item?.product?.product_region.map((item,index)=>{
              if(stateChange?.region === item?.region_id){
-              console.log("region=====>",item?.shipping_price)
+             
                return (
                  '£'+item?.shipping_price?.price
                )
@@ -773,11 +702,7 @@ export default function CheckoutScreen(props) {
          </View>
        ) : continueButton == 'continue' ? (
          <View style={[styles.detailInputArea2]}>
-           {/* {textBox('ADDRESS LINE 1')}
-           {textBox('ADDRESS LINE 2')}
-           {textBox('COUNTRY')}
-           {textBox('CITY')}
-           {textBox('POSTCODE')} */}
+          
            <View
          style={{
            flexDirection: 'row',
@@ -863,11 +788,7 @@ export default function CheckoutScreen(props) {
        ) : (
          <>
            <View style={[styles.detailInputArea2]}>
-           {/* {textBox('ADDRESS LINE 1')}
-           {textBox('ADDRESS LINE 2')}
-           {textBox('CITY')}
-           {textBox('COUNTRY')}
-           {textBox('POSTCODE')} */}
+          
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{address_1}</Text>
@@ -889,7 +810,7 @@ export default function CheckoutScreen(props) {
      </View>
            </View>
            <View style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
-             {/* {textBox2()} */}
+            
              <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{email}</Text>
      </View>
@@ -915,29 +836,7 @@ export default function CheckoutScreen(props) {
        </View>
            </View>
 
-           {/* <View style={styles.iconsWrap}>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.applePay}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.paypal}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.gPay}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-           </View> */}
+           
          </>
        )}
 
@@ -980,37 +879,10 @@ export default function CheckoutScreen(props) {
            renderItem={({item, index}) => {
              return (
                <View style={styles.dataWrap}>
-             {/* <View style={styles.productImage}>
-               <Image
-                 //source={IMAGES.vinDiesel}
-                 source={{uri:item?.data?.product_images[0]?.image[0]?.original_url}}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="cover"
-               />
-             </View> */}
+             
 
 <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
-      {/* <Animated.ScrollView
-        horizontal
-        
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {x: scrollX}}}],
-          {useNativeDriver: true},
-        )}>
-          {item?.data?.product_images[0]?.image?.map((item,index)=>{
-            return(
-          <View key={index} style={styles.productImage}>
-          <Image
-            source={{uri:item?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        </View>
-          )
-          })}
-      </Animated.ScrollView> */}
+      
 
       <GestureHandlerScrollView
       horizontal
@@ -1043,7 +915,7 @@ export default function CheckoutScreen(props) {
        <RNAnimatedScrollIndicators
          numberOfCards={item?.data?.product_images[0]?.image?.length}
          scrollWidth={wp2(36)}
-         //activeColor={'#707070'}
+         
          activeColor={'#D9D9D9'}
          inActiveColor={'#D9D9D9'}
          scrollAnimatedValue={scrollX}
@@ -1180,11 +1052,7 @@ export default function CheckoutScreen(props) {
          </View>
        ) : continueButton == 'continue' ? (
          <View style={[styles.detailInputArea2]}>
-           {/* {textBox('ADDRESS LINE 1')}
-           {textBox('ADDRESS LINE 2')}
-           {textBox('COUNTRY')}
-           {textBox('CITY')}
-           {textBox('POSTCODE')} */}
+           
            <View
          style={{
            flexDirection: 'row',
@@ -1238,33 +1106,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-         {/* {isOpenedRegions && (
-           <View style={[styles.styleBox]}>
-             {regionsData?.map((item, index) => (
-               <TouchableOpacity
-                 onPress={() => {
-                   setSelectedRegion(item?.name);
-                   updateState({region: Number(item?.id)});
-                   setIsOpenedRegions(false);
-                   setSelectedCountry('SELECT COUNTRY');
-                   updateState({country: null});
-                   getAllCountries(item?.code);
-                 }}
-                 key={index}
-                 style={styles.itemWrap}>
-                 <Text style={styles.itemTxt}>{item?.name}</Text>
-                 {selectedRegion === item?.name && (
-                   <ICONS.Entypo
-                     name="check"
-                     size={24}
-                     color="black"
-                     style={{position: 'absolute', right: 10}}
-                   />
-                 )}
-               </TouchableOpacity>
-             ))}
-           </View>
-         )} */}
+       
 
          <TouchableOpacity
            disabled={selectedRegion === 'SELECT REGION' ? true : false}
@@ -1292,9 +1134,7 @@ export default function CheckoutScreen(props) {
            </View>
          </TouchableOpacity>
 
-     {/* <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'COUNTRY'}  placeholderTextColor={'grey'}  />
-     </View> */}
+    
      
      <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={postcode}
@@ -1304,11 +1144,7 @@ export default function CheckoutScreen(props) {
        ) : (
          <>
            <View style={[styles.detailInputArea2]}>
-           {/* {textBox('ADDRESS LINE 1')}
-           {textBox('ADDRESS LINE 2')}
-           {textBox('CITY')}
-           {textBox('COUNTRY')}
-           {textBox('POSTCODE')} */}
+           
            <View
          style={{
            flexDirection: 'row',
@@ -1317,8 +1153,7 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         {/* <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{total+(total*(commission/100))}</Text> */}
+       
        </View>
 
                <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
@@ -1341,7 +1176,7 @@ export default function CheckoutScreen(props) {
      </View>
            </View>
            <View style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
-             {/* {textBox2()} */}
+             
              <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
        <Text style={styles.selectedTxt}>{email}</Text>
      </View>
@@ -1367,29 +1202,7 @@ export default function CheckoutScreen(props) {
        </View>
            </View>
 
-           {/* <View style={styles.iconsWrap}>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.applePay}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.paypal}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-             <TouchableOpacity style={styles.iconImage}>
-               <Image
-                 source={IMAGES.gPay}
-                 style={{width: '100%', height: '100%'}}
-                 resizeMode="contain"
-               />
-             </TouchableOpacity>
-           </View> */}
+         
          </>
        )}
 
@@ -1419,7 +1232,7 @@ export default function CheckoutScreen(props) {
      )}
       </>
      )}
-      {/* <BottomComp /> */}
+     
     </View>
     <BottomSheet
         visible={visible}
@@ -1452,7 +1265,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   checkout: {
@@ -1467,7 +1280,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: wp2(4),
     alignSelf: 'center',
-    //marginHorizontal: wp2(1),
+    
 
     shadowColor: '#000',
     shadowOffset: {
@@ -1494,7 +1307,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   itemArea: {
-    //flex: 1,
+    
     width:wp2(54),
     justifyContent: 'space-evenly',
     paddingLeft: wp2(2),
@@ -1573,9 +1386,7 @@ const styles = StyleSheet.create({
     width: wp2(18),
     height: wp2(18),
     overflow: 'hidden',
-    //borderRadius: wp2(4),
-    //alignSelf:'center',
-    //marginHorizontal: wp2(1),
+    
 
     shadowColor: '#000',
     shadowOffset: {

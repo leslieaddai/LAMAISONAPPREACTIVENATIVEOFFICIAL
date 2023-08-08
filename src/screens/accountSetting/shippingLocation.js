@@ -70,7 +70,7 @@ export default function ShippingLocation(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        //console.log(res?.data);
+        
         setData(res?.data?.data);
         setLoading(false);
       })
@@ -96,7 +96,7 @@ export default function ShippingLocation(props) {
           },
         })
         .then(async function (res) {
-          console.log(res.data);
+         
           dispatch({
             type: types.UpdateShippingInfo,
             payload: shippingDescription,
@@ -105,7 +105,7 @@ export default function ShippingLocation(props) {
           successMessage('Shipping Information Added Successfully');
         })
         .catch(function (error) {
-          console.log(error.response.data);
+         
           setLoading2(false);
           errorMessage(errorHandler(error))
         });
@@ -155,24 +155,19 @@ export default function ShippingLocation(props) {
             ) : (
               <>
                 {data?.map((item, index) => {
-                  //console.log("item=======>",item);
+                  
                   return (
                     <ShippingComp
                       key={index}
                       data={item}
                       state={{getAllRegions}}
-                      //disable={item?.name === 'Asia' ? false : false}
+                      
                     />
                   );
                 })}
               </>
             )}
-            {/* {options('ASIA')}
-      {options('AFRICA')}
-      {options('NORTH AMERICA')}
-      {options('SOUTH AMERICA')}
-      {options('EUROPE')}
-      {options('AUSTRALIA')} */}
+            
             <TouchableOpacity
               onPress={() => saveShipping()}
               style={styles.button}>
@@ -221,7 +216,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+    
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -232,7 +227,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+    
     borderRadius: 100,
   },
   button: {

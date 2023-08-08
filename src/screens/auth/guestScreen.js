@@ -43,14 +43,14 @@ export default function GuestScreen(props) {
     try {
       setLoading(true);
       NetworkInfo.getIPAddress().then(ipAddress => {
-        console.log(ipAddress);
+        
         getUniqueId().then(uniqueId => {
-          console.log(uniqueId);
+         
 
           axios
             .post(RegisterGuest, {device_id: uniqueId, ip_address: ipAddress})
             .then(async function (res) {
-              console.log(res.data);
+             
               dispatch({
                 type: types.LoginGuest,
                 payload: res?.data,
@@ -60,7 +60,7 @@ export default function GuestScreen(props) {
               props.navigation.navigate('bottomNavigationGuest');
             })
             .catch(function (error) {
-              console.log(error.response.data);
+             
               setLoading(false);
               errorMessage(errorHandler(error))
             });
@@ -96,14 +96,9 @@ export default function GuestScreen(props) {
           <Text style={styles.buttonText}>SIGN IN</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          //onPress={()=> props.navigation.navigate('homeScreen')}
+         
           onPress={() => registerGuest()}
-          //     onPress={()=>navigation.navigate('bottomNavigation', {
-          //   screen: 'stackNavComp',
-          //   params: {
-          //     screen: 'dressingRoomScreen',
-          //   },
-          // })}
+         
           style={{marginTop: hp2(12)}}>
           <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
         </TouchableOpacity>
@@ -117,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
     alignItems: 'center',
-    //justifyContent:'center',
+   
   },
   logoWrap: {
     width: wp2(60),

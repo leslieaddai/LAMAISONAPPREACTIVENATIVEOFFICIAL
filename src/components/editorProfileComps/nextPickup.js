@@ -45,7 +45,7 @@ export function ImgComp(props) {
     <TouchableOpacity 
     onPress={() => user?.userData?.role?.[0]?.id!==3?
       navigation.navigate('dressingRoomScreen', {
-        // userData:props?.userData,
+    
         data: {product: {id: props?.path?.item?.product_id}},
       }):navigation.navigate('imageViewScreen',{item:props?.path?.item?.product?.product_images})
     }
@@ -65,7 +65,7 @@ export function ImgComp(props) {
         }
       {props?.path?.item?.product?.product_images?.[0]?.image?.[0]?.url&&(
       <Image
-        //source={IMAGES.randomPic}
+      
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
         progressiveRenderingEnabled={true}
@@ -83,7 +83,7 @@ export function ImgComp(props) {
 
 export default function NextPickup(props) {
   const navigation = useNavigation();
-  //console.log(props.data.data)
+  
   return (
     <View>
       <View style={styles.galaryContainer}>

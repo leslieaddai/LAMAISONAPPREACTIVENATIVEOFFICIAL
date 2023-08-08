@@ -35,7 +35,7 @@ import { useDispatch,useSelector } from 'react-redux';
 
 export default function WelcomeScreen(props) {
   const user = useSelector(state => state.userData)
-  console.log(user.userData)
+ 
   return (
     <View style={styles.container}>
         <Text style={styles.text}>{'Hi '+user.userData.username}</Text>

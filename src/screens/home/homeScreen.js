@@ -66,15 +66,15 @@ export default function HomeScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res?.data);
+        
         setPopularData(res?.data?.data);
         user?.token!==''?getNewsfeed('1'):setLoading(false)
-        //setLoading(false);
+       
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -87,7 +87,7 @@ export default function HomeScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res?.data);
+       
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
@@ -98,9 +98,9 @@ export default function HomeScreen(props) {
         });
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   };
@@ -112,7 +112,7 @@ export default function HomeScreen(props) {
           onPress={() => props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:data?.user_id}}})}
           style={styles.brandImage}>
           <Image
-            //source={IMAGES.randomPic}
+         
             source={data?.brand?.profile_image!==null?{uri:data?.brand?.profile_image?.original_url}:IMAGES.profileIcon3}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
@@ -184,7 +184,7 @@ export default function HomeScreen(props) {
     undefined
         }
           <Image
-            //source={IMAGES.randomPic}
+          
             progressiveRenderingEnabled={true}
             onLoadStart={()=>{onloading(true,"onLoadStart")}}
             onLoad={()=>onloading(false,"onLoad")}
@@ -209,7 +209,7 @@ export default function HomeScreen(props) {
           onPress={() => props.navigation.navigate('brandProfileScreen')}
           style={[
             styles.imageWrap,
-            // {marginLeft: wp2(3), marginVertical: hp2(1)},
+           
           ]}>
           <Image
             source={IMAGES.randomProfile}
@@ -251,7 +251,7 @@ export default function HomeScreen(props) {
             onLoadStart={()=>{onloading(true,"onLoadStart")}}
             onLoad={()=>onloading(false,"onLoad")}
             onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-              //source={IMAGES.randomPic}
+            
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="cover"
@@ -275,7 +275,7 @@ export default function HomeScreen(props) {
           onPress={() => props.navigation.navigate('brandProfileScreen')}
           style={[
             styles.imageWrap,
-            // {marginLeft: wp2(3), marginVertical: hp2(1)},
+           
           ]}>
           <Image
             source={IMAGES.randomProfile}
@@ -320,7 +320,7 @@ export default function HomeScreen(props) {
     undefined
         }
             <Image
-              //source={IMAGES.randomPic}
+            
             progressiveRenderingEnabled={true}
             onLoadStart={()=>{onloading(true,"onLoadStart")}}
             onLoad={()=>onloading(false,"onLoad")}
@@ -600,12 +600,7 @@ export default function HomeScreen(props) {
                 )
               }
 
-              // return (
-              //   <>
-              //   {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
-              //   </>
-
-              // );
+             
             }}
           />
       )}
@@ -696,7 +691,7 @@ const styles = StyleSheet.create({
     width: wp2(44),
     height: hp2(8),
     flexDirection: 'row',
-    //backgroundColor:'red',
+   
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
@@ -714,7 +709,7 @@ const styles = StyleSheet.create({
   headWrap: {
     width: wp2(94),
     height: hp2(7),
-    //backgroundColor:'red',
+    
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
@@ -738,7 +733,7 @@ const styles = StyleSheet.create({
     width: wp2(100),
     height: hp2(30),
     overflow: 'hidden',
-    //backgroundColor:'yellow',
+   
     marginTop: hp2(1),
   },
   text: {
@@ -772,7 +767,7 @@ const styles = StyleSheet.create({
     width: wp2(48),
     height: hp2(32),
     overflow: 'hidden',
-    //marginHorizontal: wp2(1),
+   
     marginTop: hp2(1),
   },
 });

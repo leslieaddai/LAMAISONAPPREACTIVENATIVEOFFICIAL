@@ -94,7 +94,7 @@ export default function SettingsScreen(props) {
           text: 'Yes',
           onPress: () => {
             setLoading(true);
-            console.log(props?.route?.params?.user?.token);
+           
 
             let config = {
               method: 'post',
@@ -106,21 +106,11 @@ export default function SettingsScreen(props) {
               },
             };
 
-            // axios
-            // .post(LogoutUrl,
-            //   {
-            //     headers: {'Authorization': `Bearer ${user.token}`},
-            //   }
-            // )
+           
             axios
               .request(config)
               .then(async function (res) {
-                console.log(res.data);
-
-                //  props.navigation.reset({
-                //   index: 0,
-                //   routes: [{ name: 'settingsScreen',params:{user:props?.route?.params?.user} }],
-                // });
+                
                 dispatch({
                   type: types.Clearcart,
                 });
@@ -132,23 +122,12 @@ export default function SettingsScreen(props) {
                 successMessage('Logout Success');
               })
               .catch(function (error) {
-                console.log(error.response.data);
+               
                 setLoading(false);
                 errorMessage(errorHandler(error))
               });
 
-            // props.navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'settingsScreen',params:{user:props.route.params.user} }],
-            // });
-            // dispatch({
-            //   type: types.Logout
-            // });
-
-            // props.navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'guestScreen' }],
-            // });
+            
           },
         },
       ]);
@@ -176,7 +155,7 @@ useEffect(()=>{
     
       <View style={{position: 'absolute', zIndex: 999}}>
       {loading &&
-      // <LoaderComp />
+     
       <SkypeIndicator
       style={{
         width: wp2(100),
@@ -215,7 +194,7 @@ useEffect(()=>{
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}
-              {/* {settingOptions('LOGOUT','','guestScreen')} */}
+             
               {logoutButton()}
             </>
           ) : (
@@ -227,12 +206,12 @@ useEffect(()=>{
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}
-              {/* {settingOptions('LOGOUT','','guestScreen')} */}
+              
               {logoutButton()}
             </>
           )}
 
-          {/* <BottomComp /> */}
+         
         </View>
         
       </SafeAreaView>
@@ -250,7 +229,7 @@ const styles = StyleSheet.create({
     marginVertical: hp2(4),
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
     width: wp2(100),
   },

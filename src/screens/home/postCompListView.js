@@ -96,12 +96,11 @@ export default function PostCompListView(props) {
     renderItem={({item,index}) => {
       return (
         <TouchableOpacity key={index}
-        //onPress={() => navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
+        
         onPress={() => navigation.navigate('imageView',{item:props?.data,indexValue:index})}
         style={styles.imageContainer}>
         <Image
-          //source={IMAGES.randomPic}
-          //source={{uri:props?.data?.product_images?.[0]?.image?.[0]?.original_url}}
+          
           source={{uri:item?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
@@ -169,7 +168,7 @@ const styles = StyleSheet.create({
   postWrap: {
     width: wp2(94),
     height: hp2(7),
-    //backgroundColor:'red',
+   
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
@@ -193,12 +192,12 @@ const styles = StyleSheet.create({
     width: wp2(100),
     height: hp2(36),
     overflow: 'hidden',
-    //backgroundColor:'yellow',
+
   },
   iconWrap: {
     width: wp2(80),
     height: hp2(6),
-    //backgroundColor:'red',
+
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',

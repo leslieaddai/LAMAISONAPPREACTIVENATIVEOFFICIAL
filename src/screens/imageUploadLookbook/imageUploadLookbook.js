@@ -39,8 +39,6 @@ import {
 } from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
-//import SelectDropdown from 'react-native-select-dropdown';
-//import ColorBox from '../../components/colorBox';
 import QuantityComp from '../../components/quantityComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ImageCard from './ImageCard';
@@ -61,7 +59,7 @@ import Icons from '../../theme/icons';
 const PAGE_SIZE = 40;
 
 export default function ImageUploadLookbook(props) {
-  //console.log(props?.route?.params?.item?.id)
+
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -81,7 +79,7 @@ export default function ImageUploadLookbook(props) {
     price,
     style_id,
     category: props?.route?.params?.item?.id,
-    //quantity:[{color:'',size:'',quantity:''}],
+
   });
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {
@@ -92,14 +90,14 @@ export default function ImageUploadLookbook(props) {
     price,
     style_id,
     category,
-    //quantity,
+
   } = stateChange;
 
   const [quantity, setQuantity] = useState([
     {color_id: '', color: '', size_id: '', size: '', quantity: ''},
   ]);
 
-  //const [photos, setPhotos]=useState();
+  
   const [selectedImage, setSelectedImage] = useState([]);
   const [nextButton, setNextButton] = useState(false);
   const [showQuantity, setShowQuantity] = useState(false);
@@ -148,21 +146,20 @@ export default function ImageUploadLookbook(props) {
     }
   },[isOpenedShipping])
   useEffect(() => {
-    //setLoading(true);
+
 
     axios
       .get(StylesUrl, {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-        //console.log(res.data);
+       
         setData(res.data.data);
-        //setLoading(false);
+      
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //setLoading(false);
-        //errorMessage('Something went wrong!');
+   
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -225,7 +222,7 @@ export default function ImageUploadLookbook(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
-      //console.log(hasPermission)
+ 
       return true;
     }
 
@@ -233,7 +230,7 @@ export default function ImageUploadLookbook(props) {
     if (status === 'granted') {
       setPerm(true);
     }
-    //console.log(status);
+ 
     return status === 'granted';
   }
 
@@ -387,11 +384,11 @@ export default function ImageUploadLookbook(props) {
           ...regions,
           {regionName: item?.shipping?.name, regionId: item?.shipping_id},
         ]);
-    console.log(regions);
+    
   };
 
   const uploadProduct = () => {
-    //setUploadButton(true)
+    
     setLoading(true);
 
     var formdata = new FormData();
@@ -415,7 +412,7 @@ export default function ImageUploadLookbook(props) {
     formdata.append('category_id', stateChange?.category);
     formdata.append('name', stateChange?.productName);
     formdata.append('sku', Math.floor(Math.random() * 899999 + 100000));
-    //formdata.append("sku", '123422');
+   
     formdata.append('description', stateChange?.description);
     formdata.append('price', parseFloat(stateChange?.price).toFixed(2));
     formdata.append('piece_id', stateChange?.piece_id);
@@ -443,7 +440,7 @@ export default function ImageUploadLookbook(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         setLoading(false);
         successMessage('Upload Success');
         setUploadButton(true);
@@ -453,9 +450,9 @@ export default function ImageUploadLookbook(props) {
         }, 3000);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Upload Failed');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -529,7 +526,7 @@ export default function ImageUploadLookbook(props) {
           </View>
         ) : (
           <View style={styles.imageContainer}>
-            {/* <Text>Select Image</Text> */}
+           
             <Image
               source={IMAGES.selectIMG}
               style={{width: '100%', height: '100%'}}
@@ -590,7 +587,7 @@ export default function ImageUploadLookbook(props) {
                   justifyContent: 'space-between',
                 },
               ]}>
-              {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>SELECT SHIPPING DETAILS</Text> */}
+             
               <Text style={[styles.selectTxt,{width:wp2(70)}]}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
@@ -604,32 +601,7 @@ export default function ImageUploadLookbook(props) {
                 />
               </View>
             </TouchableOpacity>
-            {/* {isOpenedShipping && (
-              <View style={[styles.styleBox]}>
-                {props?.route?.params?.shippingData.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => addRegions(item, index)}
-                    key={index}
-                    style={styles.itemsWrap}>
-                    <Text style={styles.itemsTxt}>{item?.shipping?.name}</Text>
-                    <ICONS.AntDesign
-                      name={
-                        regions.some(e => e.regionId === item?.shipping_id)
-                          ? 'checkcircle'
-                          : 'checkcircleo'
-                      }
-                      size={24}
-                      color={
-                        regions.some(e => e.regionId === item?.shipping_id)
-                          ? 'black'
-                          : 'lightgray'
-                      }
-                      style={{position: 'absolute', right: 10}}
-                    />
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )} */}
+           
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
@@ -640,9 +612,7 @@ export default function ImageUploadLookbook(props) {
                 onChangeText={val => updateState({price: val})}
               />
             </View>
-            {/* <TouchableOpacity onPress={()=>setColorBox(true)} style={styles.inputBox}>
-         <Text>colour</Text>
-        </TouchableOpacity> */}
+           
 
             <TouchableOpacity
               onPress={() =>
@@ -667,31 +637,7 @@ export default function ImageUploadLookbook(props) {
               </View>
             </TouchableOpacity>
 
-            {/* {isOpened && (
-              <View style={[styles.styleBox]}>
-                {data?.map((item, index) => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelectedText(item.name);
-                      updateState({style_id: item.id});
-                      setIsOpened(false);
-                    }}
-                    key={index}
-                    style={{
-                      width: wp2(80),
-                      height: hp2(6),
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      backgroundColor:
-                        selectedText === item.name ? '#F6F5F3' : 'white',
-                      borderRadius: wp2(2),
-                      overflow: 'hidden',
-                    }}>
-                    <Text style={styles.selectTxt}>{item.name}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-            )} */}
+            
 
             <TouchableOpacity
               onPress={productDetails}
@@ -794,9 +740,7 @@ export default function ImageUploadLookbook(props) {
               ]}>
               <Text style={styles.selectTxt}>{stateChange.description}</Text>
             </View>
-            {/* <View style={[styles.inputBox,{justifyContent:'center',paddingHorizontal:wp2(2)}]}>
-           <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>free shipping to all regions</Text>
-          </View> */}
+            
             <View
               style={[
                 styles.inputBox,
@@ -886,12 +830,7 @@ export default function ImageUploadLookbook(props) {
         onBackButtonPress={toggleBottomNavigationView}
         onBackdropPress={toggleBottomNavigationView}
         >
-          {/* <BottomSheetShippingView
-          Data={modalData}
-          uibottomesheetvisiblity={uibottomesheetvisiblity}
-          addRegions={addRegions}
-          regions={regions}
-          /> */}
+          
            <View style={styles.bottomcontainer}>
         <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
         <View style={[styles.bottomstyleBox]}>
@@ -1025,7 +964,7 @@ const styles = StyleSheet.create({
   },
   inputBox2: {
     width: wp2(80),
-    //height: hp2(6),
+    
     paddingVertical: hp2(1),
     paddingHorizontal: wp2(2),
     backgroundColor: 'white',

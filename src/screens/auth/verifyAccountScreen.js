@@ -53,7 +53,7 @@ export default function VerifyAccountScreen(props) {
       axios
         .post(VerifyAccount, {code:code})
         .then(async function (res) {
-          console.log(res.data);
+          
 
           if(props?.route?.params?.role===2){
             setLoading(false);
@@ -66,7 +66,7 @@ export default function VerifyAccountScreen(props) {
           }
         })
         .catch(function (error) {
-          console.log(error?.response?.data);
+         
           setLoading(false);
           errorMessage(errorHandler(error))
         });
@@ -107,8 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+  
   },
   resetText: {
     color: 'black',
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical:hp(2),
+    
     marginTop: hp2(2),
     alignSelf: 'center',
     marginBottom: hp2(8),

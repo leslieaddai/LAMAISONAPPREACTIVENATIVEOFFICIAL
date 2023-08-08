@@ -63,16 +63,16 @@ export default function ListViewScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res?.data);
+       
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+ 
         errorMessage(errorHandler(error))
       });
   };
@@ -148,7 +148,6 @@ export default function ListViewScreen(props) {
             </View>
           )}
 
-        {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
     </>
@@ -164,7 +163,7 @@ const styles = StyleSheet.create({
     width: wp2(44),
     height: hp2(8),
     flexDirection: 'row',
-    //backgroundColor:'red',
+   
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
@@ -183,7 +182,7 @@ const styles = StyleSheet.create({
   postWrap: {
     width: wp2(94),
     height: hp2(7),
-    //backgroundColor:'red',
+    
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
@@ -207,12 +206,12 @@ const styles = StyleSheet.create({
     width: wp2(100),
     height: hp2(36),
     overflow: 'hidden',
-    //backgroundColor:'yellow',
+  
   },
   iconWrap: {
     width: wp2(80),
     height: hp2(6),
-    //backgroundColor:'red',
+ 
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-evenly',

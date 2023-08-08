@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
   },
   heading: {

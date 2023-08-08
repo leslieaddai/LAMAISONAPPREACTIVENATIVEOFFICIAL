@@ -62,14 +62,14 @@ export default function Inventory(props) {
     axios
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
-        //console.log(res.data);
+  
         setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   }
@@ -107,19 +107,7 @@ export default function Inventory(props) {
           />
         )}
 
-        {/* <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingTop: hp2(2),
-          paddingBottom:hp2(12),
-          justifyContent: 'space-between',
-        }}>
-       <InventoryComp value={300} />
-      </ScrollView> */}
-
-        {/* <BottomComp /> */}
+        
       </View>
     </SafeAreaView>
     </>

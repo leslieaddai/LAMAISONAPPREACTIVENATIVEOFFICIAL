@@ -105,7 +105,7 @@ export default function BuyNow(props) {
           headers: { Authorization: `Bearer ${user?.token}` },
         })
         .then(async function (res) {
-          console.log("buynow 01=====>", res.data);
+         
           setStateChange({
             address_1: res?.data?.data?.address_1,
             address_2: res?.data?.data?.address_2,
@@ -132,7 +132,7 @@ export default function BuyNow(props) {
           setLoadingAddress(false);
         })
         .catch(function (error) {
-          console.log(error.response.data);
+         
           setLoadingAddress(false);
           errorMessage(errorHandler(error))
         });
@@ -161,13 +161,7 @@ export default function BuyNow(props) {
   }, [isOpenedRegions])
 
   useEffect(() => {
-    // if (isOpenedCountries) {
-    //   setTimeout(() => {
-    //     uibottomesheetvisiblity(true)
-    //     setModalData(countriesData)
-    //   }, 1000);
-
-    // }
+    
     if (isOpenedCountries) {
       
         uibottomesheetvisiblity(true)
@@ -333,13 +327,13 @@ export default function BuyNow(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         setLoading(false);
         props.navigation.replace('bottomNavigationGuest', { screen: 'confirmationScreen', })
         successMessage('Order Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -385,14 +379,14 @@ export default function BuyNow(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+        
         setLoading(false);
         props.navigation.goBack();
         props.navigation.navigate('confirmationScreen');
         successMessage('Order Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -894,7 +888,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === "ios" ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   checkout: {
@@ -909,7 +903,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: wp2(4),
     alignSelf: 'center',
-    //marginHorizontal: wp2(1),
+    
 
     shadowColor: '#000',
     shadowOffset: {
@@ -936,7 +930,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   itemArea: {
-    //flex: 1,
+    
     width: wp2(54),
     justifyContent: 'space-evenly',
     paddingLeft: wp2(2),
@@ -1015,9 +1009,7 @@ const styles = StyleSheet.create({
     width: wp2(18),
     height: wp2(18),
     overflow: 'hidden',
-    //borderRadius: wp2(4),
-    //alignSelf:'center',
-    //marginHorizontal: wp2(1),
+    
 
     shadowColor: '#000',
     shadowOffset: {

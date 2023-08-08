@@ -63,7 +63,7 @@ export default function SearchComp(props) {
     undefined
         }
         <Image
-          //source={IMAGES.lookbook}
+        
           progressiveRenderingEnabled={true}
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}

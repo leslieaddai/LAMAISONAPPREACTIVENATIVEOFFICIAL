@@ -29,9 +29,6 @@ const BottomSheetViewOrderStatus = ({
   SelectOrderStatus,
 }) => {
 
-  useEffect(() => {
-    console.log("asd");
-  }, []);
 
   const changebottomsheetvisibility = (Bool,statusname,statusid) => {
     uibottomesheetvisiblity(Bool);

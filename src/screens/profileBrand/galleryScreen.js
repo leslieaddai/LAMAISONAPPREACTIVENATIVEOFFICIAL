@@ -45,34 +45,11 @@ import {SkypeIndicator} from 'react-native-indicators';
 
 export default function GalleryScreen(props) {
   const [loading, setLoading] = useState(false);
-  //const [data,setData]=useState([]);
+  
   const user = useSelector(state => state.userData);
   const [data, setData] = useState(props?.route?.params?.data?.galleries);
 
-  //console.log(props.route.params.data)
 
-  // useEffect(()=>{
-  //   setLoading(true);
-
-  //   axios
-  //   .get(GalleriesUrl, {
-  //       headers:{'Authorization':`Bearer ${user.token}`},
-  //   })
-  //   .then(async function (res) {
-  //      console.log(res.data.data);
-  //      setData(res.data.data);
-  //      setLoading(false);
-
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error.response.data)
-  //     setLoading(false);
-  //     errorMessage('Something went wrong!')
-  //     //errorMessage(errorHandler(error))
-  //     //errorMessage('Login Failed');
-  //   });
-
-  // },[])
 
   return (
     <>
@@ -100,13 +77,7 @@ export default function GalleryScreen(props) {
             <SkypeIndicator color={'black'} />
           </View>
         ) : data.length!==0 ? (
-          // <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{alignSelf:'center',width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
-          // {data?.map((item)=>{
-          //     //console.log("item=======>",item);
-          // return(
-          //     <GalleryComp item={{item}} />
-          // )})}
-          // </ScrollView>
+          
           <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -122,12 +93,7 @@ export default function GalleryScreen(props) {
           />
         ) : <View style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>No images added yet</Text></View>}
 
-        {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(97),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),}}>
-        <GalleryComp/>
-        <GalleryComp/>
-      </ScrollView> */}
-
-        {/* <BottomComp /> */}
+        
       </View>
     </SafeAreaView>
     </>
@@ -138,13 +104,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems:'center',
+  
   },
   headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
     width: wp2(100),
   },

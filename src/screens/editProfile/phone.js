@@ -61,14 +61,14 @@ export default function Phone(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        // console.log("res",res.data)
+       
         setLoading(false);
         updateDataState(res.data)
         successMessage("Phone Number Update Successfully")
       })
       .catch(function (error) {
         setLoading(false);
-        console.log("error",error.response.data)
+       
       });
     }
   return (
@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   heading: {

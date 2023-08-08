@@ -60,7 +60,7 @@ export default function NotificationScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        //console.log(res.data);
+      
         setData(res?.data?.data);
         setUniqDates(
           res?.data?.data
@@ -77,9 +77,9 @@ export default function NotificationScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
-        //errorMessage('Something went wrong!');
+   
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -110,21 +110,7 @@ export default function NotificationScreen(props) {
             <SkypeIndicator color={'black'} />
           </View>
         ) : (
-          // <FlatList
-          //   showsVerticalScrollIndicator={false}
-          //   contentContainerStyle={{paddingBottom:hp2(2)}}
-          //   data={data}
-          //   renderItem={({item,index})=>{
-          //     //console.log(moment(item?.created_at).format('MM/YY'))
-          //     //console.log(moment().format('MM/YY'))
-          //     return(
-          //       <>
-          //       { moment(item?.created_at).format('MM/YY') && <LineComp/> }
-          //       <NotificationComp key={index} date={item?.created_at} type={item?.noti_type} user={item?.user} product={item?.product} />
-          //       </>
-          //     )
-          //   }}
-          // />
+         
           <>
           {data?.length!==0?(
             <FlatList
@@ -132,8 +118,7 @@ export default function NotificationScreen(props) {
             contentContainerStyle={{paddingBottom: hp2(2)}}
             data={uniqDates}
             renderItem={({item, index}) => {
-              //console.log(moment(item?.created_at).format('MM/YY'))
-              //console.log(moment().format('MM/YY'))
+             
               return (
                 <>
                   <LineComp date={item} />
@@ -162,14 +147,7 @@ export default function NotificationScreen(props) {
           </>
         )}
 
-        {/* <ScrollView contentContainerStyle={{paddingBottom:hp2(12),}}>
-        <LineComp/>
-        <NotificationComp follow={true}/>
-        <LineComp/>
-        <NotificationComp follow={false}/>
-        </ScrollView> */}
-
-        {/* <BottomComp/> */}
+        
       </View>
     </SafeAreaView>
     </>

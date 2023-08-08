@@ -73,10 +73,7 @@ export default function PriceList(props) {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-            // dispatch({
-            //   type:types.Priceadd,
-            //   payload: selected
-            // })
+            
           }}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -103,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -115,7 +112,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+   
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -126,7 +123,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+    
     borderRadius: 100,
   },
 });

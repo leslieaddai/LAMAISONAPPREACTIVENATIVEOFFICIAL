@@ -5,9 +5,6 @@ import { RFValue } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({
     container: {
-        //flex: 1,
-        //backgroundColor: COLORS.appBackground,
-        //paddingVertical:hp2(6),
         paddingBottom:hp2(4),
     },
     orderText: {

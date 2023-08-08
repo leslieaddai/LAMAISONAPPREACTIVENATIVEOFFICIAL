@@ -66,7 +66,7 @@ export default function DestinationScreen(props) {
           </View>
           <Text style={{color: 'black'}}>Collection</Text>
         </TouchableOpacity>
-        {/* <BottomComp /> */}
+       
       </View>
     </SafeAreaView>
     </>

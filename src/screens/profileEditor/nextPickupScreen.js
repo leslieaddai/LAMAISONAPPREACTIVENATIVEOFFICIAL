@@ -45,7 +45,7 @@ import {SkypeIndicator} from 'react-native-indicators';
 
 export default function NextPickupScreen(props) {
   const [loading, setLoading] = useState(false);
-  //const [data,setData]=useState([]);
+
   const user = useSelector(state => state.userData);
   const [data, setData] = useState(props?.route?.params?.data);
 
@@ -90,11 +90,6 @@ export default function NextPickupScreen(props) {
           />
         ) : null}
 
-        {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{width:wp2(100),flexDirection:'row',flexWrap:'wrap',paddingTop:hp2(1),paddingBottom:hp2(12),justifyContent:'space-between'}}>
-        <NextPickupComp/>
-      </ScrollView> */}
-
-        {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
     </>
@@ -105,13 +100,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems:'center',
+   
   },
   headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
     width: wp2(100),
   },

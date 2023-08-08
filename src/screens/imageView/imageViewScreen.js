@@ -40,8 +40,6 @@ export default function ImageViewScreen(props) {
   const scrollX = new Animated.Value(0);
   itemdata = props?.route?.params?.item
   itemindex = props?.route?.params?.indexValue === undefined ? null : props?.route?.params?.indexValue
-  console.log(itemdata)
-  console.log(itemindex)
  
   return (
     <>
@@ -69,7 +67,7 @@ export default function ImageViewScreen(props) {
           {useNativeDriver: true},
         )}>
           {itemdata[0]?.image?.map((item,index)=>{
-             console.log("testimgas",itemdata[0]?.image.length)
+            
             return(
             <View key={index} style={{width: wp2(100), height: hp2(100)}}>
             <Image

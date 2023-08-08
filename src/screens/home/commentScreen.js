@@ -57,9 +57,7 @@ export default function CommentScreen(props) {
   commentsArr = props?.route?.params?.comments;
   const [desc, setDesc] = useState('');
 
-  // useEffect(() => {
-  //   setUniqDates(commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY')),);
-  // }, [commentsArr]);
+  
 
   const onSend = () => {
     if (desc !== '') {
@@ -71,7 +69,7 @@ export default function CommentScreen(props) {
         comment: desc,
       };
 
-      //console.log(obj)
+     
 
       axios
         .post(AddComment, obj, {
@@ -80,16 +78,16 @@ export default function CommentScreen(props) {
           },
         })
         .then(async function (res) {
-          console.log(res?.data);
+          
           commentsArr?.push({comment:desc,created_at:new Date()});
           setDesc('');
           setLoading(false);
           successMessage('Comment Added!');
         })
         .catch(function (error) {
-          console.log(error?.response?.data);
+          
           setLoading(false);
-          //errorMessage('Something went wrong!');
+        
           errorMessage(errorHandler(error))
         });
     } else {
@@ -117,9 +115,9 @@ export default function CommentScreen(props) {
       <>
           {commentsArr?.length!==0? 
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
-            {/* {uniqDates?.map((item,index)=>{ */}
+            
             {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
-            //console.log(uniqDates)
+          
             return(
               <>
               <LineComp date={item} key={index} />
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#D9D9D9',
     height: hp2(6),
-    //marginVertical:hp2(1),
+    
   },
   button: {
     width: wp2(88),

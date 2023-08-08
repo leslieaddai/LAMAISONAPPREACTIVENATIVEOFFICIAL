@@ -49,7 +49,6 @@ export default function InventoryComp(props) {
       undefined
           }
         <Image
-          //source={IMAGES.lookbook}
           progressiveRenderingEnabled={true}
           onLoadStart={()=>{onloading(true,"onLoadStart")}}
           onLoad={()=>onloading(false,"onLoad")}
@@ -84,7 +83,6 @@ export default function InventoryComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(47),
-    //height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

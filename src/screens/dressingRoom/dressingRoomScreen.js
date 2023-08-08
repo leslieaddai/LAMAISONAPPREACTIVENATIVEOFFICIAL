@@ -62,7 +62,7 @@ export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(null);
   const [share, setShare] = useState(null);
   const [hanger, setHanger] = useState(null);
-  //const [basket, setBasket] = useState(null);
+  
   const [show, setShow] = useState(false);
   const [qty,setQty]=useState();
 
@@ -73,7 +73,7 @@ export default function DressingRoomScreen(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
-  console.log(products,'=====> basket state')
+  
 
   const [colorId, setColorId] = useState();
   const [sizeId, setSizeId] = useState(null);
@@ -84,20 +84,20 @@ export default function DressingRoomScreen(props) {
     setLoadingImage(value)
   }
 
-  //console.log(props?.route?.params)
+  
 
   useEffect(() => {
     axios
       .get(GetAppNotice)
       .then(async function (res) {
-        //console.log(res.data);
+        
         setAppNotice({
           html: `${res?.data?.data?.description}`,
         });
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //errorMessage('Something went wrong!');
+       
+        
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -108,7 +108,7 @@ export default function DressingRoomScreen(props) {
     axios
       .get(GetProductInfoById + `${props?.route?.params?.data?.product?.id}`)
       .then(async function (res) {
-        //console.log('dressing room', res.data);
+        
         setData(res.data.data);
         setColorId(res.data.data.product_variations[0].color);
 
@@ -118,41 +118,19 @@ export default function DressingRoomScreen(props) {
               `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
             )
             .then(async function (res) {
-              //console.log(res.data.data);
+            
               setHeart(res?.data?.data?.is_liked > 0 ? true : null);
               setHanger(res?.data?.data?.is_wishlist > 0 ? true : null);
               setShare(res?.data?.data?.is_shared > 0 ? true : null);
               setLoading2(false);
 
-                    //  if(user?.userData?.role?.[0]?.id===2){
-                    //   axios
-                    //   .get(GetUserBasket, {
-                    //     headers: {Authorization: `Bearer ${user?.token}`},
-                    //   })
-                    
-                    // .then(async function (res){
-                    //   console.log(res.data.data.length!==0?true:false)
-                    //   if(res?.data?.data?.length===0){
-                    //     setBasket(null);
-                    //   }else{
-                    //     setBasket(res?.data?.data)
-                    //   }
-                    //   setLoading2(false)
-                    // })
-                    // .catch(function (error){
-                    //   console.log(e.response.data);
-                    //   setLoading2(false);
-                    //   errorMessage('Something went wrong!');
-                    // })
-                    //  }else{
-                    //   setLoading2(false);
-                    //  }
+                   
 
             })
             .catch(function (e) {
-              console.log(e.response.data);
+            
               setLoading2(false);
-              //errorMessage('Something went wrong!');
+            
               errorMessage(errorHandler(error))
             });
         } else {
@@ -160,9 +138,9 @@ export default function DressingRoomScreen(props) {
         }
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading2(false);
-        //errorMessage('Something went wrong!');
+        
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -189,9 +167,7 @@ export default function DressingRoomScreen(props) {
                 qty: 1,
                 size_id: sizeId?.size_id,
                 color_id: colorId?.id,
-                // style_id: props?.route?.params?.data?.product?.style,
-                // category_id: props?.route?.params?.data?.product?.category?.id,
-                // piece_id: props?.route?.params?.data?.product?.piece?.id,
+               
                 style_id: data?.style,
                 category_id: data?.category?.id,
                 piece_id: data?.piece?.id,
@@ -211,7 +187,7 @@ export default function DressingRoomScreen(props) {
               axios
                 .request(config)
                 .then(async function (res) {
-                  console.log(res.data);
+                
 
                   dispatch({
                     type: types.AddToBasket,
@@ -221,10 +197,9 @@ export default function DressingRoomScreen(props) {
                   successMessage('Success');
                 })
                 .catch(function (error) {
-                  console.log(error.response.data);
+                 
                   setLoading(false);
-                  //errorMessage('Failed');
-                  //errorMessage(error.response.data.message)
+                  
                   errorMessage(errorHandler(error))
                 });
             },
@@ -267,29 +242,6 @@ export default function DressingRoomScreen(props) {
     }
   };
 
-  // const RemoveBasketGuest = () => {
-  //       Alert.alert(
-  //         'Confirmation',
-  //         'Do you want to remove this product from your basket?',
-  //         [
-  //           {
-  //             text: 'No',
-  //             onPress: () => console.log('No Pressed'),
-  //             style: 'cancel',
-  //           },
-  //           {
-  //             text: 'Yes',
-  //             onPress: () => {
-  //               dispatch({
-  //                 type: types.RemoveFromBasketGuest,
-  //                 payload: props?.route?.params?.data?.product?.id
-  //               });
-  //             },
-  //           },
-  //         ],
-  //       );    
-  // };
-
   const AddWishlist = () => {
     Alert.alert(
       'Confirmation',
@@ -303,7 +255,7 @@ export default function DressingRoomScreen(props) {
         {
           text: 'Yes',
           onPress: () => {
-            //hanger!==null ? setHanger(false) : setHanger(true)
+          
             setLoading(true);
 
             let obj = {
@@ -325,8 +277,8 @@ export default function DressingRoomScreen(props) {
             axios
               .request(config)
               .then(async function (res) {
-                console.log(res.data);
-                //setHanger(true)
+                
+               
 
                 axios
                   .get(
@@ -342,22 +294,20 @@ export default function DressingRoomScreen(props) {
                           `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
-                          //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+                          
                           setHanger(
                             res?.data?.data?.is_wishlist > 0 ? true : null,
                           );
-                          //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+                         
 
                           setLoading(false);
                           successMessage('Success');
                         })
                         .catch(function (e) {
-                          console.log(e.response.data);
+                         
 
                           setLoading(false);
-                          // errorMessage(
-                          //   'Something went wrong to update state of wishlists!',
-                          // );
+                         
                           errorMessage(errorHandler(error))
                         });
                     } else {
@@ -365,24 +315,21 @@ export default function DressingRoomScreen(props) {
                       successMessage('Success');
                     }
 
-                    //setLoading(false);
-                    //successMessage('Success')
+                   
                   })
                   .catch(function (error) {
-                    console.log(error?.response?.data);
+                  
                     setLoading(false);
-                    //errorMessage('Something went wrong to update wishlists!');
+                  
                     errorMessage(errorHandler(error))
                   });
 
-                //  setLoading(false);
-                //  successMessage('Success')
+           
               })
               .catch(function (error) {
-                console.log(error.response.data);
+               
                 setLoading(false);
-                //errorMessage('Something went wrong to add product into wishlist!')
-                //errorMessage(error?.response?.data?.message);
+               
                 errorMessage(errorHandler(error))
               });
           },
@@ -404,7 +351,7 @@ export default function DressingRoomScreen(props) {
         {
           text: 'Yes',
           onPress: () => {
-            //hanger!==null ? setHanger(false) : setHanger(true)
+            
             setLoading(true);
 
             let config = {
@@ -420,8 +367,7 @@ export default function DressingRoomScreen(props) {
             axios
               .request(config)
               .then(async function (res) {
-                console.log(res.data);
-                //setHanger(true)
+               
 
                 axios
                   .get(
@@ -437,22 +383,20 @@ export default function DressingRoomScreen(props) {
                           `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
-                          //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
+                         
                           setHanger(
                             res?.data?.data?.is_wishlist > 0 ? true : null,
                           );
-                          //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+                          
 
                           setLoading(false);
                           successMessage('Success');
                         })
                         .catch(function (e) {
-                          console.log(e.response.data);
+                        
 
                           setLoading(false);
-                          // errorMessage(
-                          //   'Something went wrong to update state of wishlists!',
-                          // );
+                         
                           errorMessage(errorHandler(error))
                         });
                     } else {
@@ -460,26 +404,21 @@ export default function DressingRoomScreen(props) {
                       successMessage('Success');
                     }
 
-                    //setLoading(false);
-                    //successMessage('Success')
+                 
                   })
                   .catch(function (error) {
-                    console.log(error?.response?.data);
+                   
                     setLoading(false);
-                    //errorMessage('Something went wrong to update wishlists!');
+                   
                     errorMessage(errorHandler(error))
                   });
 
-                //  setLoading(false);
-                //  successMessage('Success')
+               
               })
               .catch(function (error) {
-                console.log(error.response.data);
+              
                 setLoading(false);
-                // errorMessage(
-                //   'Something went wrong to remove product from wishlist!',
-                // );
-                //errorMessage(error?.response?.data?.message)
+               
                 errorMessage(errorHandler(error))
               });
           },
@@ -502,7 +441,7 @@ export default function DressingRoomScreen(props) {
   }
 
   const productLikeDislike = () => {
-    //heart ? setHeart(false) : setHeart(true)
+    
 
     setLoading(true);
 
@@ -525,8 +464,7 @@ export default function DressingRoomScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
-        //heart!==null?setHeart(null):setHeart(true)
+       
 
         axios
           .get(
@@ -542,19 +480,16 @@ export default function DressingRoomScreen(props) {
                 )
                 .then(async function (res) {
                   setHeart(res?.data?.data?.is_liked > 0 ? true : null);
-                  //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
-                  //setShare(res?.data?.data?.is_shared > 0 ? true : null)
+                  
 
                   setLoading(false);
                   successMessage('Success');
                 })
                 .catch(function (e) {
-                  console.log(e.response.data);
+                 
 
                   setLoading(false);
-                  // errorMessage(
-                  //   'Something went wrong to update state of likes!',
-                  // );
+                 
                   errorMessage(errorHandler(error))
                 });
             } else {
@@ -562,29 +497,27 @@ export default function DressingRoomScreen(props) {
               successMessage('Success');
             }
 
-            //setLoading(false);
-            //successMessage('Success')
+         
           })
           .catch(function (error) {
-            console.log(error?.response?.data);
+          
             setLoading(false);
-            // errorMessage('Something went wrong to update likes!');
+            
             errorMessage(errorHandler(error))
           });
 
-        //  setLoading(false);
-        //  successMessage('Success')
+       
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        // errorMessage('Something went wrong to like product!');
+      
         errorMessage(errorHandler(error))
       });
   };
 
   const productShare = () => {
-    //share!==null ? setShare(false) : setShare(true)
+  
 
     setLoading(true);
 
@@ -607,8 +540,7 @@ export default function DressingRoomScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
-        //setShare(true)
+       
 
         axios
           .get(
@@ -618,27 +550,7 @@ export default function DressingRoomScreen(props) {
             setData(res?.data?.data);
 
             if (user?.token !== '') {
-              // axios
-              //   .get(
-              //     `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
-              //   )
-              //   .then(async function (res) {
-              //     //setHeart(res?.data?.data?.is_liked > 0 ? true : null)
-              //     //setHanger(res?.data?.data?.is_wishlist > 0 ? true : null)
-              //     setShare(res?.data?.data?.is_shared > 0 ? true : null);
-
-              //     setLoading(false);
-              //     successMessage('Success');
-              //   })
-              //   .catch(function (e) {
-              //     console.log(e.response.data);
-
-              //     setLoading(false);
-              //     // errorMessage(
-              //     //   'Something went wrong to update state of shares!',
-              //     // );
-              //     errorMessage(errorHandler(error))
-              //   });
+            
                   setShare(share===null?true:null);
                   setLoading(false);
                   successMessage('Success');
@@ -647,23 +559,21 @@ export default function DressingRoomScreen(props) {
               successMessage('Success');
             }
 
-            //setLoading(false);
-            //successMessage('Success')
+          
           })
           .catch(function (error) {
-            console.log(error?.response?.data);
+           
             setLoading(false);
-            //errorMessage('Something went wrong to update shares!');
+          
             errorMessage(errorHandler(error))
           });
 
-        //  setLoading(false);
-        //  successMessage('Success')
+   
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong to share product!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -778,7 +688,7 @@ export default function DressingRoomScreen(props) {
                     onLoadStart={()=>{onloading(true,"onLoadStart")}}
                     onLoad={()=>onloading(false,"onLoad")}
                     onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-                      //source={IMAGES.randomPic}
+                     
                       source={data?.user?.profile_image!==null?{uri: data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
                       style={{width: '100%', height: '100%'}}
                       resizeMode="contain"
@@ -841,7 +751,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                       onPress={() =>
-                        //props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})
+                       
                         props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:0})
                       }
                       style={[
@@ -866,7 +776,7 @@ export default function DressingRoomScreen(props) {
                       onLoadStart={()=>{onloading(true,"onLoadStart")}}
                       onLoad={()=>onloading(false,"onLoad")}
                       onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-                        //source={IMAGES.randomPic}
+                      
                         source={{
                           uri: data?.product_images?.[0]?.image?.[0]
                             ?.original_url,
@@ -888,7 +798,7 @@ export default function DressingRoomScreen(props) {
                         },
                       ]}>
                       <Animated.ScrollView
-                        //style={{flexGrow:0,}}
+                       
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
@@ -954,11 +864,7 @@ export default function DressingRoomScreen(props) {
                             ) : (
                               <SkypeIndicator color={'black'} />
                             )}
-                            {/* <Text style={styles.text}>
-                        the cost of shipping is <Text style={{color:'#0F2ABA',fontWeight:'700'}}>not</Text> decided by LA Maison App.
-                        this is decided by the brands themselves. <Text style={{color:'#0F2ABA',fontWeight:'700'}}>the country
-                        the product is delivered to may add additional taxes.</Text>
-                      </Text> */}
+                           
                           </ScrollView>
                         </View>
                       </Animated.ScrollView>
@@ -982,11 +888,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                      onPress={() =>
-                      // props.navigation.navigate('imageViewScreen',{item:
-                      //   data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0] ?.original_url}]}]
-                      //   : data?.product_images?.[0]?.image.length >= 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
-                      //   : null,
-                      // })
+                      
                       props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
                         data?.product_images?.[0]?.image.length === 1 ? 0
                         : data?.product_images?.[0]?.image.length >= 2 ? 1
@@ -1011,7 +913,7 @@ export default function DressingRoomScreen(props) {
                 undefined
                     }
                       <Image
-                        //source={IMAGES.randomPic}
+                       
                         progressiveRenderingEnabled={true}
                     onLoadStart={()=>{onloading(true,"onLoadStart")}}
                     onLoad={()=>onloading(false,"onLoad")}
@@ -1034,12 +936,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                     onPress={() =>
-                      // props.navigation.navigate('imageViewScreen',{item:
-                      //   data?.product_images?.[0]?.image.length === 1 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                      //   : data?.product_images?.[0]?.image.length === 2 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                      //    : data?.product_images?.[0]?.image.length >= 3 ? [{image:[{original_url:data?.product_images?.[0]?.image?.[2]?.original_url}]}]
-                      //      : null,
-                      // })
+                     
                       props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
                         data?.product_images?.[0]?.image.length === 1 ? 0
                         : data?.product_images?.[0]?.image.length === 2 ? 0
@@ -1065,7 +962,7 @@ export default function DressingRoomScreen(props) {
                 undefined
                     }
                       <Image
-                        //source={IMAGES.vinDiesel}
+                        
                         progressiveRenderingEnabled={true}
                     onLoadStart={()=>{onloading(true,"onLoadStart")}}
                     onLoad={()=>onloading(false,"onLoad")}
@@ -1091,13 +988,7 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                     onPress={() =>
-                      // props.navigation.navigate('imageViewScreen',{item:
-                      //   data?.product_images?.[0]?.image.length === 1? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                      //     : data?.product_images?.[0]?.image.length === 2? [{image:[{original_url:data?.product_images?.[0]?.image?.[1]?.original_url}]}]
-                      //      : data?.product_images?.[0]?.image.length === 3? [{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]
-                      //         : data?.product_images?.[0]?.image.length === 4? [{image:[{original_url:data?.product_images?.[0]?.image?.[3]?.original_url}]}]
-                      //         : null,
-                      // })
+                     
                       props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
                         data?.product_images?.[0]?.image.length === 1? 0
                           : data?.product_images?.[0]?.image.length === 2? 1
@@ -1124,7 +1015,7 @@ export default function DressingRoomScreen(props) {
                 undefined
                     }
                       <Image
-                        //source={IMAGES.randomPic}
+                        
                         progressiveRenderingEnabled={true}
                     onLoadStart={()=>{onloading(true,"onLoadStart")}}
                     onLoad={()=>onloading(false,"onLoad")}
@@ -1164,7 +1055,7 @@ export default function DressingRoomScreen(props) {
                           width: wp2(34),
                           height: hp2(14),
                           borderRadius: wp2(2),
-                          //backgroundColor: '#168B16',
+                         
                           backgroundColor: colorId?.color_code,
                         },
                       ]}></TouchableOpacity>
@@ -1246,7 +1137,7 @@ export default function DressingRoomScreen(props) {
               </View>
             </ScrollView>
           )}
-          {/* <BottomComp /> */}
+         
         </View>
       </SafeAreaView>
     </>
@@ -1280,7 +1171,7 @@ const styles = StyleSheet.create({
     height: hp2(8),
     overflow: 'hidden',
     borderRadius: wp2(6),
-    //marginHorizontal: wp2(1),
+    
 
     shadowColor: '#000',
     shadowOffset: {
@@ -1299,7 +1190,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    //elevation: 5,
+    
   },
   imagesWrap: {
     height: hp2(60),
@@ -1382,7 +1273,7 @@ const styles = StyleSheet.create({
     borderRadius: wp2(3),
     borderWidth: 1,
     marginTop: hp2(20),
-    //borderColor:'#039C8A',
+   
     paddingVertical: hp2(2),
     paddingHorizontal: wp2(4),
   },

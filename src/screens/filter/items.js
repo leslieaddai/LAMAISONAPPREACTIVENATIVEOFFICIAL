@@ -57,14 +57,14 @@ export default function Items(props) {
     axios
       .get(PiecesUrl)
       .then(async function (res) {
-        //  console.log(res.data);
+       
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -100,10 +100,7 @@ export default function Items(props) {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-            // dispatch({
-            //   type:types.Itemadd,
-            //   payload:selected
-            // })
+           
           }}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -123,19 +120,13 @@ export default function Items(props) {
       ) : (
         <>
           {data?.map((item, index) => {
-            //console.log("item=======>",item);
+           
             return <View key={index}>{options(item)}</View>;
           })}
         </>
       )}
 
-      {/* 
-      {options('TOPS')}
-      {options('BOTTOMS')}
-      {options('FOOTWEAR')}
-      {options('ACCESSORIES')}
-      {options('JACKETS & COATS')}
-      {options('TRACKSUITS')} */}
+      
     </SafeAreaView>
     </>
   );
@@ -150,7 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+  
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -162,7 +153,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+  
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -173,7 +164,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+   
     borderRadius: 100,
   },
 });

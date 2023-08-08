@@ -55,10 +55,6 @@ export default function ConnectStripe(props) {
 
   const webView = useRef();
 
-  const handleUrlChange = (state) => {
-    console.log(state)
-  }
-
   const handleMessage = (event) => {
     // Handle the received message from the web page
     console.log('Received message from web page:', event.nativeEvent.data);
@@ -74,63 +70,19 @@ export default function ConnectStripe(props) {
     console.log("WebView console log: Hello from WebView");
   `;
 
-    // // Function to handle the message received from the web page
-    // const handleMessage = (event) => {
-    //     console.log(event)
-    //   const data = JSON.parse(event.nativeEvent.data);
-    //   if (data.type === 'dataUpdate') {
-    //     // Do something with the received data
-    //     console.log('Received data from web page:', data.data);
-    //   }
-    // };
-    // // Use useEffect to add the message event listener once the component mounts
-    // useEffect(() => {
-    //     const webViewRef = webView.current;
-    //     if (webViewRef) {
-    //       webViewRef.postMessage(JSON.stringify({ type: 'appReady' }));
-    //     }
-    //   }, []);
-
   const onStripeConnect = () => {
     axios
       .post(ConnectAccountLink, {stripe_account_id:props?.route?.params?.data?.id})
       .then(async function (res) {
-        console.log(res?.data,'=======> api response')
+       
         setConnectUrl(res?.data?.data?.url)
         setShowModal(true);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+       
         errorMessage(errorHandler(error))
       });
 }
-
-  const onVerifyCode = () => {
-    if (code) {
-      setLoading(true);
-      axios
-        .post(VerifyAccount, {code:code})
-        .then(async function (res) {
-          console.log(res.data);
-
-          if(props?.route?.params?.role===2){
-            setLoading(false);
-            props.navigation.navigate('loginScreen')
-            successMessage('Email Has Been Verified!')
-          }else{
-            setLoading(false);
-            props.navigation.navigate('connectStripe')
-          }
-        })
-        .catch(function (error) {
-          console.log(error?.response?.data);
-          setLoading(false);
-          errorMessage(errorHandler(error))
-        });
-    } else {
-      errorMessage('Please Enter Verification Code');
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -139,10 +91,7 @@ export default function ConnectStripe(props) {
  
       <Modal animationType="slide"
         transparent={true} visible={showModal}
-        // onRequestClose={() => {
-        //   Alert.alert('Modal has been closed.');
-        //   setShowModal(!showModal);
-        // }}
+       
         >
                     <View style={styles.modal}>
                         <View style={styles.modalContainer}>
@@ -154,16 +103,7 @@ export default function ConnectStripe(props) {
                                 source={{uri: connectUrl}}
                                 javaScriptEnabled={true}
                                 ref={webView}
-                                //onNavigationStateChange={handleUrlChange}
-                            //     injectedJavaScript={`
-                            //     // Optional: You can inject JavaScript into the web page if needed
-                            //     // For example, to execute a function when the web page loads
-                            //     // yourFunctionName();
-                            //   `}
-                            //   onLoadEnd={() => {
-                            //     postMessageTest({helloFromRN: true});
-                            // }}
-                            // onMessage={(e)=>{console.log("event",e)}}
+                               
                             onMessage={handleMessage}
         injectedJavaScript={injectedJS}
         javaScriptEnabledAndroid={true}
@@ -182,8 +122,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+   
   },
   connectText: {
     color: 'black',

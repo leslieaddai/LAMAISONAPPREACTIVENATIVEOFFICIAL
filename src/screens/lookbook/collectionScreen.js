@@ -41,11 +41,11 @@ import {useDispatch, useSelector} from 'react-redux';
 export default function CollectionScreen({navigation, route}) {
   items = route.params;
   const user = useSelector(state => state.userData);
-  //console.log(items)
+ 
   const [showDelete, setShowDelete] = useState(false);
 
   const onDeleteCollection = () => {
-    //showDelete ? setShowDelete(false) : setShowDelete(true);
+    
 
     if(showDelete){
       Alert.alert('Confirmation', 'Do you want to delete?', [
@@ -100,7 +100,7 @@ export default function CollectionScreen({navigation, route}) {
               name="menu-outline"
               size={30}
               color="black"
-              //style={{marginLeft: wp2(68)}}
+          
             />
           )}
         </TouchableOpacity>
@@ -113,10 +113,10 @@ export default function CollectionScreen({navigation, route}) {
           data={items?.collection}
           numColumns={2}
           renderItem={({item}) => {
-            // console.log("sajda",item?.product?.product_images[0].media[0]?.original_url)
+           
             return (
               <CollectionItemsComp
-                //userData={items?.userData}
+                
                 data={item}
                 uri={{
                   uri: item?.product?.product_images[0].media[0]?.original_url,
@@ -127,7 +127,7 @@ export default function CollectionScreen({navigation, route}) {
             );
           }}
         />
-        {/* <BottomComp /> */}
+
       </View>
     </SafeAreaView>
     </>
@@ -158,10 +158,10 @@ const styles = StyleSheet.create({
     marginTop: hp2(3),
   },
   flatlist: {
-    //flexDirection:'row',
+  
     paddingTop: hp2(2),
     paddingBottom: hp2(12),
-    //justifyContent:'space-between',
+
   },
   deleteButton: {
     width: wp2(28),
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
     alignItems: 'center',
     flexDirection: 'row',
-    //marginLeft: wp2(44),
+  
 
     shadowColor: '#000',
     shadowOffset: {

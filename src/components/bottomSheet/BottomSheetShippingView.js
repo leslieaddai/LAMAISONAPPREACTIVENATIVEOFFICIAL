@@ -28,9 +28,7 @@ addRegions,
 regions
 ) => {
 
-    useEffect(() => {
-        console.log("asd",regions);
-      }, []);   
+ 
     const width = Dimensions.get('screen').width / 3;
     const changebottomsheetvisibility = (Bool,item) => {
         uibottomesheetvisiblity(Bool);

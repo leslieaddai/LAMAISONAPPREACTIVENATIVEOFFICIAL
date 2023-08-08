@@ -102,9 +102,7 @@ const StackNavCompBrand = () => {
   const basket = useSelector(state => state.basket)
   const navigation = useNavigation();
   return (
-    //<Stack.Navigator initialRouteName={'brandProfileScreen'}>
     <Stack.Navigator >
-      {/* <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
       <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ headerShown: false }} />
       <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{ headerShown: false }} />
       <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ headerShown: false }} />
@@ -128,69 +126,6 @@ const StackNavCompBrand = () => {
   )
 }
 
-const StackNavCompEditor = () => {
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const user = useSelector(state => state.userData)
-  const basket = useSelector(state => state.basket)
-  const navigation = useNavigation();
-  return (
-    //<Stack.Navigator initialRouteName={'editorProfileScreen'}>
-    <Stack.Navigator >
-      {/* <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{headerShown: false}} initialParams={{ userData:user}} /> */}
-      <Stack.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'notificationScreen'} component={NotificationScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'orderTrackingScreen'} component={OrderTrackingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'customerSupportScreen'} component={CustomerSupportScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'settingsScreen'} component={SettingsScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'followerList'} component={FollowerList} options={{ headerShown: false }} />
-      <Stack.Screen name={'review'} component={Review} options={{ headerShown: false }} />
-      <Stack.Screen name={'addReview'} component={AddReview} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  )
-}
-
-const StackNavCompGuest = () => {
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState([]);
-  const user = useSelector(state => state.userData)
-  const basket = useSelector(state => state.basket)
-  const navigation = useNavigation();
-  return (
-    //<Stack.Navigator initialRouteName='FTS100'>
-    <Stack.Navigator >
-      {/* <Stack.Screen name={'FTS100'} component={FTS100} options={{headerShown: false}}/> */}
-      <Stack.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'collectionScreen'} component={CollectionScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'galleryScreen'} component={GalleryScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'listViewScreen'} component={ListViewScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'brandProfileScreen'} component={BrandProfileScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'editorProfileScreen'} component={EditorProfileScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'nextPickupScreen'} component={NextPickupScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'dressingRoomScreen'} component={DressingRoomScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'checkoutScreen'} component={CheckoutScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'filterScreen'} component={FilterScreen} options={{ headerShown: false }} />
-      <Stack.Screen name={'followerList'} component={FollowerList} options={{ headerShown: false }} />
-      <Stack.Screen name={'review'} component={Review} options={{ headerShown: false }} />
-      <Stack.Screen name={'addReview'} component={AddReview} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  )
-}
 export const BottomNavigationBrand = () => {
   const user = useSelector(state => state.userData)
   const [showSplash, setShowSplash] = useState(true);
@@ -230,8 +165,6 @@ export const BottomNavigationBrand = () => {
         screenOptions={({ route }) => ({
           orientation: 'portrait',
           unmountOnBlur: true,
-          //tabBarActiveTintColor: color.black,
-          //tabBarInactiveTintColor: '#560f09',
           headerShown: false,
           tabBarHideOnKeyboard: true,
           swipeEnabled: true,
@@ -242,9 +175,6 @@ export const BottomNavigationBrand = () => {
             height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
             backgroundColor: 'white',
             display: 'flex',
-            //flexDirection: 'row',
-            //alignItems: 'center',
-            //justifyContent: 'space-evenly',
           },
         })}
       >
@@ -310,23 +240,7 @@ export const BottomNavigationBrand = () => {
 
           }}
           component={TestBrand}
-        //initialParams={{ userData:user}}
         />
-
-        {/* <Tab.Screen
-        name="stackNavComp"
-        component={StackNavCompBrand}
-        // options={{
-        //   unmountOnBlur: true,
-        // }}
-        options={() => ({
-          // tabBarStyle: {
-          //   display: "none",
-          // },
-          tabBarButton: () => null,
-        })}
-      /> */}
-
 
         <Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ tabBarButton: () => null, }} />
         <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{ tabBarButton: () => null, }} />
@@ -398,8 +312,6 @@ export const BottomNavigationEditor = () => {
       screenOptions={({ route }) => ({
         orientation: 'portrait',
         unmountOnBlur: true,
-        //tabBarActiveTintColor: color.black,
-        //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
         tabBarHideOnKeyboard: true,
         swipeEnabled: true,
@@ -410,11 +322,6 @@ export const BottomNavigationEditor = () => {
           height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
           backgroundColor: 'white',
           display: 'flex',
-          //flexDirection: 'row',
-          //alignItems: 'center',
-          //justifyContent: 'space-evenly',
-          //position: 'absolute',
-          //bottom: 0,
         },
       })}
     >
@@ -503,22 +410,7 @@ export const BottomNavigationEditor = () => {
 
         }}
         component={TestEditor}
-      //initialParams={{ userData:user}}
       />
-
-      {/* <Tab.Screen
-        name="stackNavComp"
-        component={StackNavCompEditor}
-        // options={{
-        //   unmountOnBlur: true,
-        // }}
-        options={() => ({
-          // tabBarStyle: {
-          //   display: "none",
-          // },
-          tabBarButton: () => null,
-        })}
-      /> */}
 
       <Tab.Screen name={'feedbackScreen'} component={FeedbackScreen} options={{ tabBarButton: () => null, }} />
       <Tab.Screen name={'notificationScreen'} component={NotificationScreen} options={{ tabBarButton: () => null, }} />
@@ -553,7 +445,6 @@ export const BottomNavigationGuest = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData)
-  //const basket = useSelector(state => state.basket)
   const { products } = useSelector(state => state.GuestBasket);
   return (
     <Tab.Navigator
@@ -562,8 +453,6 @@ export const BottomNavigationGuest = () => {
       screenOptions={({ route }) => ({
         orientation: 'portrait',
         unmountOnBlur: true,
-        //tabBarActiveTintColor: color.black,
-        //tabBarInactiveTintColor: '#560f09',
         headerShown: false,
         tabBarHideOnKeyboard: true,
         swipeEnabled: true,
@@ -574,11 +463,6 @@ export const BottomNavigationGuest = () => {
           height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
           backgroundColor: 'white',
           display: 'flex',
-          //flexDirection: 'row',
-          //alignItems: 'center',
-          //justifyContent: 'space-evenly',
-          //position: 'absolute',
-          //bottom: 0,
         },
       })}
     >
@@ -669,20 +553,6 @@ export const BottomNavigationGuest = () => {
         component={TestScreen}
       />
 
-      {/* <Tab.Screen
-        name="stackNavComp"
-        component={StackNavCompGuest}
-        // options={{
-        //   unmountOnBlur: true,
-        // }}
-        options={() => ({
-          // tabBarStyle: {
-          //   display: "none",
-          // },
-          tabBarButton: () => null,
-        })}
-      /> */}
-
       <Tab.Screen name={'confirmationScreen'} component={ConfirmationScreen} options={{ tabBarButton: () => null, }} />
       <Tab.Screen name={'lookbookScreen'} component={LookbookScreen} options={{ tabBarButton: () => null, }} />
       <Tab.Screen name={'wardrobeScreen'} component={WardrobeScreen} options={{ tabBarButton: () => null, }} />
@@ -704,385 +574,6 @@ export const BottomNavigationGuest = () => {
     </Tab.Navigator>
   )
 }
-
-// export function BottomNavigation(){
-
-// const dispatch = useDispatch()
-// const [loading, setLoading] = useState(false);
-// const [data,setData]=useState([]);
-// const user = useSelector(state => state.userData)
-// const basket = useSelector(state => state.basket)
-
-// if(user?.userData?.role?.[0]?.id===3){
-// return(
-// <BottomNavigationBrand/>
-// )
-// }
-
-// else if (user?.userData?.role?.[0]?.id===2){return(
-//   <BottomNavigationEditor/>
-// )}
-// else{return(
-
-//   <BottomNavigationGuest/>
-// )} 
-
-
-// // return(
-// //   <>
-// //       {user?.userData?.role?.[0]?.id===3 ? <BottomNavigationBrand/> : user?.userData?.role?.[0]?.id===2 ? <BottomNavigationEditor/> : <BottomNavigationGuest/> }
-// //   </>
-// // )
-// }
-
-
-// export function BottomNavigationBrand() {
-
-// const dispatch = useDispatch()
-// const [loading, setLoading] = useState(false);
-// const [data,setData]=useState([]);
-// const user = useSelector(state => state.userData)
-// const basket = useSelector(state => state.basket)
-
-//     return (
-//       <>
-//     <Tab.Navigator
-//     initialRouteName="homeScreen"
-//     screenOptions={({route}) => ({
-//       orientation: 'portrait',
-//         //tabBarActiveTintColor: color.black,
-//         //tabBarInactiveTintColor: '#560f09',
-//         headerShown: false,
-//         tabBarHideOnKeyboard: true,
-//         swipeEnabled: true,
-//         animationEnabled: true,
-//         tabBarLabel:() => {return null},
-//         tabBarStyle: {
-//           width: wp2(100),
-//           height: hp2(8),
-//           backgroundColor: 'white',
-//           //flexDirection: 'row',
-//           //alignItems: 'center',
-//           //justifyContent: 'space-evenly',
-//         },
-//       })}
-//     >
-//          <Tab.Screen
-//         name="FTS100"
-//         options={{
-//           tabBarIcon: ({focused, color, size}) => (
-//             <View style={styles.iconWrap}>
-//               <Image
-//                 source={IMAGES.fts2}
-//                 style={{width: '100%', height: '100%'}}
-//                 resizeMode="contain"
-//               />
-//             </View>
-//           ),
-//         }}
-//         component={FTS100}
-//       />
-//          <Tab.Screen
-//         name="searchScreen"
-//         options={{
-//           tabBarIcon: ({focused, color, size}) => (
-//             <View style={styles.iconWrap}>
-//             <Image
-//               source={IMAGES.search2}
-//               style={{width: '100%', height: '100%'}}
-//               resizeMode="contain"
-//             />
-//           </View>
-//           ),
-//         }}
-//         component={SearchScreen}
-//       />
-//          <Tab.Screen
-//         name="homeScreen"
-//         options={{
-//           tabBarIcon: ({focused, color, size}) => (
-//             <View style={styles.iconWrap}>
-//             <Image
-//               source={IMAGES.home2}
-//               style={{width: '100%', height: '100%'}}
-//               resizeMode="contain"
-//             />
-//           </View>
-//           ),
-//         }}
-//         component={HomeScreen}
-//       />
-
-//          <Tab.Screen
-//         name="stackNavCompBrand"
-//         options={{
-//           unmountOnBlur: true,
-//           tabBarIcon: ({focused, color, size}) => (
-//             <View style={styles.iconWrap}>
-//             <Image
-//               source={IMAGES.profileicon2}
-//               style={{width: '100%', height: '100%'}}
-//               resizeMode="contain"
-//             />
-//           </View>
-//           ),
-//         }}
-//         component={StackNavCompBrand}
-//       />
-
-//     </Tab.Navigator>
-
-//     </>
-//     )
-// }
-
-// export function BottomNavigationEditor() {
-
-//   const dispatch = useDispatch()
-//   const [loading, setLoading] = useState(false);
-//   const [data,setData]=useState([]);
-//   const user = useSelector(state => state.userData)
-//   const basket = useSelector(state => state.basket)
-
-//       return (
-//       <Tab.Navigator
-//       initialRouteName="homeScreen"
-//       screenOptions={({route}) => ({
-//         orientation: 'portrait',
-//           //tabBarActiveTintColor: color.black,
-//           //tabBarInactiveTintColor: '#560f09',
-//           headerShown: false,
-//           tabBarHideOnKeyboard: true,
-//           swipeEnabled: true,
-//           animationEnabled: true,
-//           tabBarLabel:() => {return null},
-//           tabBarStyle: {
-//             width: wp2(100),
-//             height: hp2(8),
-//             backgroundColor: 'white',
-//             //flexDirection: 'row',
-//             //alignItems: 'center',
-//             //justifyContent: 'space-evenly',
-//             //position: 'absolute',
-//             //bottom: 0,
-//           },
-//         })}
-//       >
-//            <Tab.Screen
-//           name="FTS100"
-//           options={{
-//             tabBarIcon: ({focused, color, size}) => (
-//               <View style={styles.iconWrap}>
-//                 <Image
-//                   source={IMAGES.fts2}
-//                   style={{width: '100%', height: '100%'}}
-//                   resizeMode="contain"
-//                 />
-//               </View>
-//             ),
-//           }}
-//           component={FTS100}
-//         />
-//            <Tab.Screen
-//           name="searchScreen"
-//           options={{
-//             tabBarIcon: ({focused, color, size}) => (
-//               <View style={styles.iconWrap}>
-//               <Image
-//                 source={IMAGES.search2}
-//                 style={{width: '100%', height: '100%'}}
-//                 resizeMode="contain"
-//               />
-//             </View>
-//             ),
-//           }}
-//           component={SearchScreen}
-//         />
-//            <Tab.Screen
-//           name="homeScreen"
-//           options={{
-//             tabBarIcon: ({focused, color, size}) => (
-//               <View style={styles.iconWrap}>
-//               <Image
-//                 source={IMAGES.home2}
-//                 style={{width: '100%', height: '100%'}}
-//                 resizeMode="contain"
-//               />
-//             </View>
-//             ),
-//           }}
-//           component={HomeScreen}
-//         />
-
-
-//           <Tab.Screen
-//           name="basketScreen"
-//           options={{
-//             tabBarIcon: ({focused, color, size}) => (
-//              <>
-//               <View style={styles.iconWrap}>
-//               <Image
-//                 source={IMAGES.bag2}
-//                 style={{width: '100%', height: '100%'}}
-//                 resizeMode="contain"
-//               />
-//             </View>
-//              {basket?.count > 0 && 
-//               <View style={styles.basketCounter}>
-//               <Text style={{color:'white',fontSize:rfv(10)}}>{basket?.count}</Text>
-//           </View>
-//           }
-//              </>
-//             ),
-//           }}
-//           component={BasketScreen}
-//         />
-
-
-//            <Tab.Screen
-//           name="stackNavCompEditor"
-//           options={{
-//             unmountOnBlur: true,
-//             tabBarIcon: ({focused, color, size}) => (
-//               <View style={styles.iconWrap}>
-//               <Image
-//                 source={IMAGES.profileicon2}
-//                 style={{width: '100%', height: '100%'}}
-//                 resizeMode="contain"
-//               />
-//             </View>
-//             ),
-//           }}
-//           component={StackNavCompEditor}
-//         />
-
-//       </Tab.Navigator>
-//       )
-//   }
-
-//   export function BottomNavigationGuest() {
-
-//     const dispatch = useDispatch()
-//     const [loading, setLoading] = useState(false);
-//     const [data,setData]=useState([]);
-//     const user = useSelector(state => state.userData)
-//     const basket = useSelector(state => state.basket)
-
-//         return (
-//         <Tab.Navigator
-//         initialRouteName="homeScreen"
-//         screenOptions={({route}) => ({
-//           orientation: 'portrait',
-//             //tabBarActiveTintColor: color.black,
-//             //tabBarInactiveTintColor: '#560f09',
-//             headerShown: false,
-//             tabBarHideOnKeyboard: true,
-//             swipeEnabled: true,
-//             animationEnabled: true,
-//             tabBarLabel:() => {return null},
-//             tabBarStyle: {
-//               width: wp2(100),
-//               height: hp2(8),
-//               backgroundColor: 'white',
-//               //flexDirection: 'row',
-//               //alignItems: 'center',
-//               //justifyContent: 'space-evenly',
-//               //position: 'absolute',
-//               //bottom: 0,
-//             },
-//           })}
-//         >
-//              <Tab.Screen
-//             name="FTS100"
-//             options={{
-//               tabBarIcon: ({focused, color, size}) => (
-//                 <View style={styles.iconWrap}>
-//                   <Image
-//                     source={IMAGES.fts2}
-//                     style={{width: '100%', height: '100%'}}
-//                     resizeMode="contain"
-//                   />
-//                 </View>
-//               ),
-//             }}
-//             component={FTS100}
-//           />
-//              <Tab.Screen
-//             name="searchScreen"
-//             options={{
-//               tabBarIcon: ({focused, color, size}) => (
-//                 <View style={styles.iconWrap}>
-//                 <Image
-//                   source={IMAGES.search2}
-//                   style={{width: '100%', height: '100%'}}
-//                   resizeMode="contain"
-//                 />
-//               </View>
-//               ),
-//             }}
-//             component={SearchScreen}
-//           />
-//              <Tab.Screen
-//             name="homeScreen"
-//             options={{
-//               tabBarIcon: ({focused, color, size}) => (
-//                 <View style={styles.iconWrap}>
-//                 <Image
-//                   source={IMAGES.home2}
-//                   style={{width: '100%', height: '100%'}}
-//                   resizeMode="contain"
-//                 />
-//               </View>
-//               ),
-//             }}
-//             component={HomeScreen}
-//           />
-
-
-//             <Tab.Screen
-//             name="basketScreen"
-//             options={{
-//               tabBarIcon: ({focused, color, size}) => (
-//                <>
-//                 <View style={styles.iconWrap}>
-//                 <Image
-//                   source={IMAGES.bag2}
-//                   style={{width: '100%', height: '100%'}}
-//                   resizeMode="contain"
-//                 />
-//               </View>
-//                {basket?.count > 0 && 
-//                 <View style={styles.basketCounter}>
-//                 <Text style={{color:'white',fontSize:rfv(10)}}>{basket?.count}</Text>
-//             </View>
-//             }
-//                </>
-//               ),
-//             }}
-//             component={BasketScreen}
-//           />
-
-
-//              <Tab.Screen
-//             name="stackNavCompGuest"
-//             options={{
-//               unmountOnBlur: true,
-//               tabBarIcon: ({focused, color, size}) => (
-//                 <View style={styles.iconWrap}>
-//                 <Image
-//                   source={IMAGES.profileicon2}
-//                   style={{width: '100%', height: '100%'}}
-//                   resizeMode="contain"
-//                 />
-//               </View>
-//               ),
-//             }}
-//             component={StackNavCompGuest}
-//           />
-
-//         </Tab.Navigator>
-//         )
-//     }
 
 const styles = StyleSheet.create({
   container: {

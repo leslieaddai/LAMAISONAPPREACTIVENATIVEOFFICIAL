@@ -37,8 +37,7 @@ import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import FastImage from 'react-native-fast-image';
 
 const ImageCard = props => {
-  console.log(props.item.node.image.uri);
-  //const [myState,setMyState]=useState();
+
 
   const formatImgObj = img => {
     const uri =
@@ -58,10 +57,10 @@ const ImageCard = props => {
   return (
     <TouchableOpacity
       onPress={() =>
-        //props.state.setSelectedImage(props.item.node.image.uri)
+       
         formatImgObj(props.item.node.image)
       }
-      //onPress={()=>setMyState(props.item.node.image.uri)}
+     
       key={props.key}
       style={{width: wp2(24), height: wp2(24), overflow: 'hidden'}}>
       <Image
@@ -70,13 +69,8 @@ const ImageCard = props => {
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
       />
-      {/* <FastImage
-             key={props.key}
-             source={{ uri: props.item.node.image.uri, priority: FastImage.priority.normal,}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode={FastImage.resizeMode.cover}
-            /> */}
-      {/* {myState===props.item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)} */}
+     
+      
       {props?.state?.selectedImage?.uri === props?.item?.node?.image?.uri && (
         <ICONS.AntDesign
           name="checkcircle"

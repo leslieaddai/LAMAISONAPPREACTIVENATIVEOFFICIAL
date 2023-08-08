@@ -97,7 +97,6 @@ export default function SignupScreen(props) {
 
   function ValidateEmail(input) {
 
-    //var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
     var validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   
     if (input.match(validRegex)) {
@@ -153,7 +152,7 @@ export default function SignupScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
     
     <SafeAreaView style={styles.container}>
-      {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}> */}
+    
       <Text style={[styles.signupText]}>Create new account</Text>
       <View style={styles.inputWrap}>
         <View style={[styles.inputBox, {width: wp2(36)}]}>
@@ -218,7 +217,7 @@ export default function SignupScreen(props) {
         />
         <Text style={styles.button2Text}>continue with facebook</Text>
       </TouchableOpacity>
-      {/* </KeyboardAwareScrollView> */}
+      
     </SafeAreaView>
     </>
   );
@@ -228,8 +227,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+   
   },
   signupText: {
     color: 'black',
@@ -277,7 +275,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical:hp(2),
+    
     marginTop: hp2(2),
     alignSelf: 'center',
     marginBottom: hp2(8),
@@ -302,7 +300,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical:hp(2),
+   
     marginTop: hp2(2),
     alignSelf: 'center',
     flexDirection: 'row',

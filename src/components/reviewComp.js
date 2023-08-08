@@ -31,12 +31,12 @@ import {
 } from '../theme';
 
 export default function ReviewComp(props) {
-  //console.log(props);
+
   return (
     <View style={styles.container}>
       <View style={styles.imageWrap}>
         <Image
-          //source={IMAGES.randomProfile}
+         
           source={props?.data?.user?.profile_image!==null?{uri:props?.data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     width: wp2(90),
     minHeight: hp2(16),
-    //backgroundColor: 'red',
+   
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

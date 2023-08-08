@@ -39,14 +39,13 @@ const AppNavigatior = () => {
     axios
       .get(url)
       .then(function (response) {
-        console.log(response.data)
         dispatch({
           type: types.Applaunch,
           payload: response.data,
         });
       })
       .catch(function (error) {
-        console.log("response splash error", error.response.data);
+        console.log("response splash error", error?.response?.data);
       });
   };
 

@@ -63,14 +63,14 @@ export default function AddCollection(props) {
     axios
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
-        //console.log(res.data);
+  
         setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+    
         setLoading(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -86,7 +86,7 @@ export default function AddCollection(props) {
     selectedProducts.map((item, index) => {
       formdata.append('product_id[]', item);
     });
-    //formdata.append("product_id[]", selectedProducts);
+
 
     let config = {
       method: 'post',
@@ -103,7 +103,7 @@ export default function AddCollection(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+      
         setLoading2(false);
         successMessage('Created Successfully');
         setUploadButton(true);
@@ -113,9 +113,9 @@ export default function AddCollection(props) {
         }, 3000);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading2(false);
-        //errorMessage('Upload Failed');
+    
         errorMessage(errorHandler(error))
       });
   };
@@ -183,16 +183,7 @@ export default function AddCollection(props) {
           />
         )}
 
-        {/* <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-          paddingVertical: hp2(2),
-          justifyContent: 'space-between',
-        }}>
-        <AddCollectionComp setBtn={setShowButton} />
-      </ScrollView> */}
+       
       </SafeAreaView>
     </>
   );

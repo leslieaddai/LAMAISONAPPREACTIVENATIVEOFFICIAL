@@ -34,7 +34,7 @@ import {
 import BottomComp from '../../components/bottomComp';
 
 export default function AccountTypeScreen(props) {
-  console.log(props.route.params.data);
+  
   return (
     <>
     <SafeAreaView
@@ -76,7 +76,7 @@ export default function AccountTypeScreen(props) {
         </View>
         <Text style={{color: 'black'}}>Brand</Text>
       </TouchableOpacity>
-      {/* <BottomComp /> */}
+      
     </SafeAreaView>
     </>
   );

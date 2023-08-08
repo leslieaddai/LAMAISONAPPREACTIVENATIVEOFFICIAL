@@ -52,7 +52,7 @@ export default function CommentComp(props) {
 const styles = StyleSheet.create({
   container: {
     width: wp2(90),
-    //minHeight: hp2(16),
+ 
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
   messageBox: {
     width: wp2(70),
-    //minHeight:hp2(8),
+
     borderRadius: wp2(2),
     backgroundColor: 'white',
     shadowColor: '#000',

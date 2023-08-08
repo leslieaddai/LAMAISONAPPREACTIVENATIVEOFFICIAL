@@ -32,7 +32,7 @@ import {
 import Animated, {FadeInUp, FadeOutUp} from 'react-native-reanimated';
 
 export default function AlertComp(props) {
-  //console.log(props);
+
   return (
     <Animated.View
       entering={FadeInUp.duration(1000)}

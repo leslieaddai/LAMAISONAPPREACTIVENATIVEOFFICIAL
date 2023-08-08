@@ -79,15 +79,15 @@ export default function OrderTrackingScreen(props) {
         headers: { Authorization: `Bearer ${user?.token}` }
       })
       .then(async function (res) {
-        console.log(res?.data);
+       
         setOrderStatus(res?.data?.data)
         getOrdersByBrand('1')
-        //setLoading(false);
+       
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }
@@ -100,21 +100,10 @@ export default function OrderTrackingScreen(props) {
         headers: { Authorization: `Bearer ${user?.token}` },
       })
       .then(async function (res) {
-        console.log(res?.data);
+       
         setData(prev => [...prev, ...res?.data?.data]);
 
-        // setUniqDates(prev => [...prev,
-        //   ...res?.data?.data
-        //     .filter(
-        //       (v, i, a) =>
-        //         a.findIndex(
-        //           v2 =>
-        //             moment(v2?.created_at).format('MM/YY') ===
-        //             moment(v?.created_at).format('MM/YY'),
-        //         ) === i,
-        //     )
-        //     .map((item, index) => moment(item?.created_at).format('MM/YY')),
-        //   ]);
+       
 
         tempArr = res?.data?.data
           .filter(
@@ -127,22 +116,19 @@ export default function OrderTrackingScreen(props) {
           )
           .map((item, index) => moment(item?.created_at).format('MM/YY')),
 
-          //console.log(filterDates?.includes(tempArr[0]))
+          
           !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
 
-        //setFilterDates([...new Set(uniqDates)])
-        //uniq = [...new Set(uniqDates)];
-        //setFilterDates(uniq);
-        console.log(filterDates);
+       
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+      
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -153,7 +139,7 @@ export default function OrderTrackingScreen(props) {
     axios
       .get(GetOrdersByEditorAndGuest + `editor/${user?.userData?.id}?page=${page_no}`)
       .then(async function (res) {
-        console.log(res?.data);
+      
         setData(prev => [...prev, ...res?.data?.data]);
 
         tempArr = res?.data?.data
@@ -168,16 +154,16 @@ export default function OrderTrackingScreen(props) {
           .map((item, index) => moment(item?.created_at).format('MM/YY')),
 
           !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
-        console.log(filterDates);
+       
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -188,7 +174,7 @@ export default function OrderTrackingScreen(props) {
     axios
       .get(GetBrandOrders + `guest/${guestUser?.device_id}?page=${page_no}`)
       .then(async function (res) {
-        console.log(res?.data);
+       
         setData(prev => [...prev, ...res?.data?.data]);
 
         tempArr = res?.data?.data
@@ -203,16 +189,16 @@ export default function OrderTrackingScreen(props) {
           .map((item, index) => moment(item?.created_at).format('MM/YY')),
 
           !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
-        console.log(filterDates);
+      
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   };
@@ -354,7 +340,6 @@ export default function OrderTrackingScreen(props) {
           </View>
         )}
 
-        {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
     </>

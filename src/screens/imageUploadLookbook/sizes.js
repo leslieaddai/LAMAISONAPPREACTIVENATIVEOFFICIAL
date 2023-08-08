@@ -41,16 +41,16 @@ import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function Sizes(props) {
-  //const [selected,setSelected]=useState('');
+  
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
 
-  //const category = 2;
+  
   const category = props?.route?.params?.state?.stateChange?.category;
-  //console.log(props.route.params.state.stateChange.category)
+  
 
   useEffect(() => {
     setLoading(true);
@@ -60,14 +60,14 @@ export default function Sizes(props) {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
+      
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -76,7 +76,7 @@ export default function Sizes(props) {
     return (
       <TouchableOpacity
         onPress={() => {
-          //setSelected(text)
+         
           const newState = props.route.params.state.quantity.map(
             (obj, index) => {
               // :point_down:️ if id equals 2, update country property
@@ -92,7 +92,7 @@ export default function Sizes(props) {
         }}
         style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{text.size}</Text>
-        {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
+       
         <View
           style={[
             styles.circle,
@@ -139,16 +139,13 @@ export default function Sizes(props) {
       ) : (
         <>
           {data?.map(item => {
-            //console.log("item=======>",item);
+            
             return <>{item.category_id === category && options(item)}</>;
           })}
         </>
       )}
 
-      {/* {options('SMALL')}
-      {options('MEDIUM')}
-      {options('LARGE')}
-      {options('EXTRA LARGE')} */}
+      
     </SafeAreaView>
     </>
   );
@@ -163,7 +160,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -175,7 +172,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+   
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -186,7 +183,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+   
     borderRadius: 100,
   },
   titleTxt: {

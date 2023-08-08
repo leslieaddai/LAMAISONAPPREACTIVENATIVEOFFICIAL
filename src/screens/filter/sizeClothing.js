@@ -57,14 +57,14 @@ export default function SizeClothing(props) {
     axios
       .get(SizesUrl)
       .then(async function (res) {
-        //  console.log(res.data);
+      
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -82,7 +82,7 @@ export default function SizeClothing(props) {
         }}
         style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{text?.size}</Text>
-        {/* <Text style={{color:'#E81717',position:'absolute',left:wp2(28)}}>{'7 remaining!'}</Text> */}
+        
         <View
           style={[
             styles.circle,
@@ -101,10 +101,7 @@ export default function SizeClothing(props) {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-            // dispatch({
-            //   type:types.Sizeadd,
-            //   payload:selected.size
-            // })
+            
           }}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -127,7 +124,7 @@ export default function SizeClothing(props) {
             <Text style={styles.titleTxt}>APPAREL (U.K)</Text>
 
             {data?.map((item, index) => {
-              //console.log("item=======>",item);
+             
               return (
                 <View key={index}>
                   {item?.category_id === 2 && options(item)}
@@ -138,7 +135,7 @@ export default function SizeClothing(props) {
             <Text style={styles.titleTxt2}>FOOTWEAR (U.K)</Text>
 
             {data?.map((item, index) => {
-              //console.log("item=======>",item);
+              
               return (
                 <View key={index}>
                   {item?.category_id === 1 && options(item)}
@@ -149,10 +146,7 @@ export default function SizeClothing(props) {
         </>
       )}
 
-      {/* {options('SMALL')}
-      {options('MEDIUM')}
-      {options('LARGE')}
-      {options('EXTRA LARGE')} */}
+     
     </SafeAreaView>
     </>
   );
@@ -167,7 +161,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+  
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -179,7 +173,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+  
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -190,7 +184,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+    
     borderRadius: 100,
   },
   titleTxt: {

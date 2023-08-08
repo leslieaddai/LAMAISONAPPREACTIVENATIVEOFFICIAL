@@ -62,7 +62,7 @@ export default function AddReview(props) {
         feeling: selected,
       };
 
-      //console.log(obj)
+   
 
       axios
         .post(PostReview, obj, {
@@ -71,15 +71,15 @@ export default function AddReview(props) {
           },
         })
         .then(async function (res) {
-          console.log(res.data);
+         
           setLoading(false);
           successMessage('Done!');
           props.navigation.goBack();
         })
         .catch(function (error) {
-          console.log(error.response.data);
+         
           setLoading(false);
-          //errorMessage('Something went wrong!');
+    
           errorMessage(errorHandler(error))
         });
     } else {
@@ -150,7 +150,7 @@ export default function AddReview(props) {
             <Text style={{color: 'white'}}>SEND</Text>
           </TouchableOpacity>
         </KeyboardAwareScrollView>
-        {/* <BottomComp /> */}
+   
       </View>
     </SafeAreaView>
 
@@ -163,13 +163,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
     alignItems: 'center',
-    //justifyContent:'center',
+ 
   },
   headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+    
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+   
     borderRadius: 100,
   },
   button: {

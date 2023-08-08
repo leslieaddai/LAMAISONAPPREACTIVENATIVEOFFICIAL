@@ -81,7 +81,7 @@ export default function ProductType(props) {
         updateState({[state]: response?.data?.data});
       })
       .catch(function (error) {
-        console.log('ProductType error', error.response.data);
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -92,19 +92,19 @@ export default function ProductType(props) {
         headers: {Authorization: `Bearer ${token}`},
       })
       .then(async function (res) {
-        //console.log(res?.data);
+        
         if (res?.data?.data.length > 0) {
           setHaveShippingInfo(true);
           setShippingData(res?.data?.data);
-          //console.log('this is true')
+          
         } else {
           setHaveShippingInfo(false);
           setShippingData('');
-          //console.log('this is false')
+        
         }
       })
       .catch(function (error) {
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -171,7 +171,7 @@ export default function ProductType(props) {
           }}
         />
 
-        {/* <BottomComp /> */}
+       
       </View>
     </SafeAreaView>
     </>

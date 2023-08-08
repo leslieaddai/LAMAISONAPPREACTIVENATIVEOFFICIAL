@@ -31,7 +31,6 @@ import {
 } from '../theme';
 
 export default function FeedbackMessageComp(props) {
-  //console.log(props);
   return (
     <View style={styles.container}>
       <View style={styles.imageWrap}>
@@ -60,7 +59,6 @@ const styles = StyleSheet.create({
   container: {
     width: wp2(90),
     minHeight: hp2(16),
-    //backgroundColor: 'red',
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

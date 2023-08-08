@@ -34,7 +34,7 @@ export default function AddCollectionComp(props) {
   return (
     <TouchableOpacity
       onPress={() =>
-        //selected?setSelected(false):setSelected(true)}
+  
         props?.state?.selectedProducts.some(e => e === props?.data?.item?.id)
           ? props?.state?.setSelectedProducts(
               props?.state?.selectedProducts.filter(
@@ -49,7 +49,7 @@ export default function AddCollectionComp(props) {
       style={styles.imageContainer}>
       <View style={{height: hp2(18), overflow: 'hidden'}}>
         <Image
-          //source={IMAGES.lookbook}
+      
           source={{
             uri: props?.data?.item?.product_images[0]?.image[0]?.original_url,
           }}
@@ -85,7 +85,7 @@ export default function AddCollectionComp(props) {
 const styles = StyleSheet.create({
   imageContainer: {
     width: wp2(45),
-    //height: hp2(22),
+
     overflow: 'hidden',
     backgroundColor: 'white',
     borderRadius: wp2(4),

@@ -58,11 +58,7 @@ export default function BrandProfileScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState(false);
-  // const [loadingFollowList,setLoadingFollowList]=useState(false);
-  // const [followingDataBrand,setFollowingDataBrand]=useState([]);
-  // const [followerDataBrand,setFollowerDataBrand]=useState([]);
-  // const [followingDataEditor,setFollowingDataEditor]=useState([]);
-  // const [followerDataEditor,setFollowerDataEditor]=useState([]);
+ 
 
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
@@ -70,23 +66,10 @@ export default function BrandProfileScreen(props) {
 
   const [follow, setFollow] = useState(false);
 
-  //console.log(props.route.params.userData.token);
-
-  // useEffect(() => {
-  //   getBrandData()
-
-  //   props?.navigation.addListener('focus', () => {
-  //     getBrandData()
-  //   });
-
-  //   // props?.navigation.addListener('blur', () => {
-  //   //   setSelected('');
-  //   // });
-
-  // },[props?.navigation])
+  
 
   useEffect(() => {
-    //getBrandData()
+  
     setLoading(true);
 
     axios
@@ -97,7 +80,7 @@ export default function BrandProfileScreen(props) {
           }`,
       )
       .then(async function (res) {
-        console.log(res.data);
+       
         setData(res?.data?.data);
         if (res?.data?.data?.is_following === null) {
           setFollow(false);
@@ -107,15 +90,15 @@ export default function BrandProfileScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+     
         errorMessage(errorHandler(error))
       });
   }, []);
 
   const getBrandData = () => {
-    //setLoading(true);
+
 
     axios
       .get(
@@ -125,110 +108,22 @@ export default function BrandProfileScreen(props) {
           }`,
       )
       .then(async function (res) {
-        console.log(res.data);
+      
         setData(res?.data?.data);
         if (res?.data?.data?.is_following === null) {
           setFollow(false);
         } else {
           setFollow(true);
         }
-        //setLoading(false);
+ 
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   };
-
-  // useEffect(()=>{
-  // setLoading(true);
-
-  // axios
-  // //.post(GalleriesUrl, {user_id:user?.userData?.id})
-  // .post(GalleriesUrl, {user_id:props?.route?.params?.userData?.userData?.id})
-  // .then(async function (res) {
-  //    console.log(res.data);
-  //    setData(res?.data?.data.reverse());
-  //    setLoading(false);
-  // })
-  // .catch(function (error) {
-  //   console.log(error.response.data)
-  //   setLoading(false);
-  //   errorMessage('Something went wrong!')
-  // });
-
-  // },[])
-
-  // useEffect(()=>{
-  //   setLoadingFollowList(true);
-
-  //   axios
-  //   .get(GetBrandFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //   .then(async function (res) {
-  //      console.log(res.data);
-  //      setFollowerDataBrand(res.data.data);
-  //      if(user?.token !== ''){
-  //       if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===3){
-  //         //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //         setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //       }
-  //      }
-
-  //      axios
-  //      .get(GetBrandFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //      .then(async function (res){
-  //         console.log(res.data);
-  //         setFollowingDataBrand(res.data.data);
-
-  //         axios
-  //         .get(GetEditorFollowerList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //         .then(async function (res){
-  //           console.log(res.data);
-  //           setFollowerDataEditor(res.data.data);
-  //           if(user?.token !== ''){
-  //             if(user?.userData?.id !== props?.route?.params?.userData?.userData?.id && user?.userData?.role[0]?.id===2){
-  //               //console.log(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //               setFollow(res.data.data.some(e => e.follower_id === user?.userData?.id))
-  //             }
-  //           }
-
-  //           axios
-  //           .get(GetEditorFollowingList+`/${props?.route?.params?.userData?.userData?.id}`)
-  //           .then(async function (res){
-  //             console.log(res.data);
-  //             setFollowingDataEditor(res.data.data);
-  //             setLoadingFollowList(false);
-  //           })
-  //           .catch(function (error){
-  //             console.log(error.response.data)
-  //             setLoadingFollowList(false);
-  //             errorMessage('Something went wrong!')
-  //           })
-
-  //         })
-  //         .catch(function (error){
-  //           console.log(error.response.data)
-  //           setLoadingFollowList(false);
-  //           errorMessage('Something went wrong!')
-  //         })
-
-  //      })
-  //      .catch(function (error){
-  //       console.log(error.response.data)
-  //       setLoadingFollowList(false);
-  //       errorMessage('Something went wrong!')
-  //      })
-
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error.response.data)
-  //     setLoadingFollowList(false);
-  //     errorMessage('Something went wrong!')
-  //   });
-
-  // },[])
 
   const onFollow = () => {
     setLoadingFollow(true);
@@ -249,15 +144,15 @@ export default function BrandProfileScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         getBrandData();
         setFollow(true);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+   
         errorMessage(errorHandler(error))
       });
   };
@@ -281,15 +176,15 @@ export default function BrandProfileScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         getBrandData();
         setFollow(false);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -309,8 +204,7 @@ export default function BrandProfileScreen(props) {
           <View style={styles.container}>
             <View style={styles.brandLogo}>
               <ImageBackground
-                //source={IMAGES.temp}
-                //source={{uri:props?.route?.params?.userData?.userData?.profile_image}}
+               
                 source={data?.profile_image!==null?{uri: data?.profile_image?.original_url}:IMAGES.profileIcon3}
                 style={{
                   width: '100%',
@@ -354,7 +248,7 @@ export default function BrandProfileScreen(props) {
                 </View>
 
                 <View style={styles.usernameContainer}>
-                  {/* <Text style={{fontWeight:'700',fontSize:rfv(22),color:'black'}}>{props?.route?.params?.userData?.userData?.name}</Text> */}
+                  
                   <Text style={styles.usernameTxt}>{data?.name}</Text>
                   {props?.route?.params?.userData?.userData?.id !==
                     user?.userData?.id && (
@@ -395,16 +289,7 @@ export default function BrandProfileScreen(props) {
               </ImageBackground>
             </View>
 
-            {/* <View style={{flexDirection:'row',marginLeft:wp2(4),marginBottom:hp2(2)}}>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'following',followingDataBrand,followingDataEditor})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>{followingDataBrand.length+followingDataEditor.length}</Text>
-      <Text style={{color:'black'}}> FOLLOWING </Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={{flexDirection:'row'}} onPress={()=>props.navigation.navigate('followerList',{list:'follower',followerDataBrand,followerDataEditor})}>
-      <Text style={{fontWeight:'bold',color:'black'}}>{followerDataBrand.length+followerDataEditor.length}</Text>
-      <Text style={{color:'black'}}> FOLLOWERS</Text>
-      </TouchableOpacity>
-      </View> */}
+          
 
             <View style={styles.followersContainer}>
               <TouchableOpacity
@@ -443,11 +328,7 @@ export default function BrandProfileScreen(props) {
                 return <Popular key={index} data={item} no={index} />;
               }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Popular Products Not Available</Text></View>}
 
-              {/* <Popular no={'1.'} />
-        <Popular no={'2.'} />
-        <Popular no={'3.'} />
-        <Popular no={'4.'} />
-        <Popular no={'5.'} /> */}
+             
 
               <TouchableOpacity
                 onPress={() =>
@@ -473,7 +354,6 @@ export default function BrandProfileScreen(props) {
               <About data={data} />
             </ScrollView>
 
-            {/* <BottomComp /> */}
           </View>
         </SafeAreaView>
         </>
@@ -490,7 +370,7 @@ const styles = StyleSheet.create({
   iconWrap: {
     flexDirection: 'row',
     paddingHorizontal: wp2(4),
-    //justifyContent: 'space-between',
+    
     marginTop: hp2(1),
   },
   badge: {

@@ -56,7 +56,7 @@ export function ImgComp(props) {
         }
         {props?.path?.item?.media?.[0]?.original_url&&(
       <Image
-        //source={IMAGES.randomPic}
+     
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
         progressiveRenderingEnabled={true}
@@ -71,34 +71,19 @@ export function ImgComp(props) {
 }
 
 export default function Lookbook(props) {
-  //console.log(props.data.data,'=======>')
+  
   const navigation = useNavigation();
 
   return (
     <>
-      {/* <TouchableOpacity  onPress={() => navigation.navigate('lookbookScreen')} style={styles.lookbook}>
-        <Text style={{color: 'white', fontWeight: '700', fontSize: rfv(24)}}>
-          LOOKBOOK
-        </Text>
-      </TouchableOpacity> */}
+      
       <View style={styles.galaryContainer}>
         {props?.data?.galleries?.length!==0? props?.data?.galleries?.reverse().map((item, index) => {
           if (index < 6) return <ImgComp key={index} path={{item}} />;
         }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Gallery Not Available</Text></View>}
       </View>
 
-      {/* <FlatList 
-    showsVerticalScrollIndicator={false}
-    contentContainerStyle={{alignSelf:'center',}}
-    numColumns={3}
-     data={props.data.data}
-      renderItem={({item,i})=>{
-        return(
-          imgComp(item.media[0].original_url)
-        )
-      }}
-
-     /> */}
+     
     </>
   );
 }

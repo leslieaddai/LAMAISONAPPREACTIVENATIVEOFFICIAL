@@ -48,7 +48,7 @@ const PAGE_SIZE = 40;
 export default function SelectCoverPhoto(props) {
   const user = useSelector(state => state.userData);
 
-  //const [photos, setPhotos]=useState();
+  
   const [selectedImage, setSelectedImage] = useState();
   const [swipeLayout, setSwipeLayout] = useState(false);
   const [name, setName] = useState('');
@@ -107,17 +107,7 @@ export default function SelectCoverPhoto(props) {
     }
   };
 
-  // useEffect(()=>{
-  //   async function runThis () {
-  //     if (Platform.OS === "android" && (await hasAndroidPermission())) {
-  //       showPhotos();
-  //     }
-  //     if (Platform.OS === 'ios') {
-  //       showPhotos();
-  //     }
-  //   }
-  //   runThis();
-  // },[])
+  
 
   async function hasAndroidPermission() {
     const permission =
@@ -128,7 +118,7 @@ export default function SelectCoverPhoto(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
-      //console.log(hasPermission)
+     
       return true;
     }
 
@@ -136,7 +126,7 @@ export default function SelectCoverPhoto(props) {
     if (status === 'granted') {
       setPerm(true);
     }
-    //console.log(status);
+  
     return status === 'granted';
   }
 
@@ -211,23 +201,7 @@ export default function SelectCoverPhoto(props) {
     return status === true;
   }
 
-  // async function showPhotos() {
-  //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-  //   //   return;
-  //   // }
-  //   const result = await CameraRoll.getPhotos({
-  //     first: 20,
-  //     assetType: 'Photos',
-  //   })
-  //   .then(r => {
-  //     setPhotos(r.edges);
-  //   })
-  //   .catch((err) => {
-  //      //Error Loading Images
-  //      console.log(err)
-  //   });
-  //   //console.log(result);
-  // };
+  
 
   return (
     <>
@@ -241,7 +215,7 @@ export default function SelectCoverPhoto(props) {
           <TouchableOpacity
             onPress={
               () => setSwipeLayout(true)
-              // props.navigation.navigate('addCollection')
+         
             }
             style={styles.button}>
             <Text style={styles.nextTxt}>NEXT</Text>
@@ -257,7 +231,7 @@ export default function SelectCoverPhoto(props) {
             resizeMode="cover"
           />
         ) : (
-          //<Text>Select Image</Text>
+       
           <Image
             source={IMAGES.selectIMG}
             style={{width: '100%', height: '100%'}}
@@ -331,21 +305,7 @@ export default function SelectCoverPhoto(props) {
         </View>
       )}
 
-      {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
-       {photos?.map((p, i) => {
-       return (
-         <TouchableOpacity onPress={()=>setSelectedImage(p.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-         <Image
-            key={i}
-            source={{ uri: p.node.image.uri }}
-           style={{width: '100%', height: '100%'}}
-           resizeMode="cover"
-         />
-        {selectedImage===p.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-       </TouchableOpacity>
-       );
-     })}
-     </ScrollView> */}
+   
     </SafeAreaView>
     </>
   );

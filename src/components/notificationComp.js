@@ -50,9 +50,6 @@ export default function NotificationComp(props) {
       : false,
   );
   const user = useSelector(state => state.userData);
-  //console.log(props);
-  //const [followButton,setFollowButton]=useState(false);
-  //console.log(props?.user)
 
   const onFollow = () => {
     setLoadingFollow(true);
@@ -70,15 +67,14 @@ export default function NotificationComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
         setFollow(true);
         setLoadingFollow(false);
         successMessage('Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+     
         errorMessage(errorHandler(error))
       });
   };
@@ -99,15 +95,15 @@ export default function NotificationComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+   
         setFollow(false);
         setLoadingFollow(false);
         successMessage('Done');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+  
         setLoadingFollow(false);
-        //errorMessage('Something went wrong!');
+ 
         errorMessage(errorHandler(error))
       });
   };
@@ -243,14 +239,7 @@ const styles = StyleSheet.create({
     height: wp2(18),
     overflow: 'hidden',
     borderRadius: wp2(4),
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 3,
+
   },
   followBTN: {
     width: wp2(28),

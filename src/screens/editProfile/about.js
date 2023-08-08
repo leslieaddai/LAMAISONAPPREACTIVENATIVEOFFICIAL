@@ -58,14 +58,14 @@ export default function About(props) {
         headers:{'Authorization':`Bearer ${user?.token}`},
     })
     .then(async function (res) {
-       console.log(res.data);
+      
        setDescription(res?.data?.data)
        setLoading(false);   
     }) 
     .catch(function (error) {
-      console.log(error.response.data)
+     
       setLoading(false);
-      //errorMessage('Something went wrong!')
+     
       errorMessage(errorHandler(error))
     });
   },[])
@@ -78,16 +78,15 @@ export default function About(props) {
         headers:{'Authorization':`Bearer ${user?.token}`},
     })
     .then(async function (res) {
-       console.log(res.data);
-       //setStateChange(res.data.data);
+      
+       
        setLoading(false);
        successMessage('Done');   
     }) 
     .catch(function (error) {
-      console.log(error.response.data)
+    
       setLoading(false);
-      //errorMessage('Something went wrong!')
-      //errorMessage(error.response.data.message)
+      
       errorMessage(errorHandler(error))
     });
   }
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
   },
   heading: {

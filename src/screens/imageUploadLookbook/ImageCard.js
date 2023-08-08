@@ -38,7 +38,7 @@ import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {errorMessage} from '../../config/NotificationMessage';
 
 const ImageCard = props => {
-  //console.log(props.item.node)
+
 
   const abc = img => {
     if (img.uri === props.item.node.image.uri) {
@@ -73,7 +73,7 @@ const ImageCard = props => {
   return (
     <TouchableOpacity
       onPress={() =>
-        //abc(e)
+     
         props.state.selectedImage.length !== 4 ||
         props.state.selectedImage.some(e => e.uri === props.item.node.image.uri)
           ? props.state.selectedImage.some(
@@ -84,7 +84,7 @@ const ImageCard = props => {
                   e => e.uri !== props.item.node.image.uri,
                 ),
               )
-            : //(props.state.setSelectedImage([...props.state.selectedImage,{name:props.item.node.image.filename,type:props.item.node.type,uri:props.item.node.image.uri}]))
+            : 
               formatImgObj(props.item.node.image)
           : errorMessage('You cant select more than 4 photos')
       }

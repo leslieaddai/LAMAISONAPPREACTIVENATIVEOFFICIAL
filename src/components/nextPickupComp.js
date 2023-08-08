@@ -34,8 +34,6 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function NextPickupComp(props) {
-  //console.log(props);
-  //console.log(props.item.item.product.product_images[0].image[0].url,'=======>');
   const navigation = useNavigation();
   const user = useSelector(state => state.userData);
   const [loading, setLoading] = useState(false)
@@ -65,7 +63,6 @@ export default function NextPickupComp(props) {
         }
       {props?.item?.item?.product?.product_images?.[0]?.image?.[0]?.url && (
         <Image
-          //source={IMAGES.randomPic}
           
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"

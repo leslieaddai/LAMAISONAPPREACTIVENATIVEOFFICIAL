@@ -49,7 +49,6 @@ import {SkypeIndicator} from 'react-native-indicators';
 
 export default function WardrobeComp(props) {
   const navigation = useNavigation();
-  //console.log(props);
   const [heart, setHeart] = useState(props?.data?.is_liked);
   const [share, setShare] = useState(props?.data?.is_share);
   const [loadingImage, setLoadingImage] = useState(false)
@@ -82,15 +81,12 @@ export default function WardrobeComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
         heart ? setHeart(false) : setHeart(true);
         props?.state?.setLoadingComp(false);
         successMessage('Success');
       })
       .catch(function (error) {
-        console.log(error.response.data);
         props?.state?.setLoadingComp(false);
-        //errorMessage('Something went wrong to like product!');
         errorMessage(errorHandler(error))
       });
   };
@@ -117,16 +113,12 @@ export default function WardrobeComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
-        //!share && setShare(true);
         share ? setShare(false) : setShare(true);
         props?.state?.setLoadingComp(false);
         successMessage('Success');
       })
       .catch(function (error) {
-        console.log(error.response.data);
         props?.state?.setLoadingComp(false);
-        //errorMessage('Something went wrong to share product!');
         errorMessage(errorHandler(error))
       });
   };
@@ -153,7 +145,7 @@ export default function WardrobeComp(props) {
             undefined
                 }
       <Image
-        //source={IMAGES.lookbook}
+   
         progressiveRenderingEnabled={true}
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}
@@ -164,7 +156,7 @@ export default function WardrobeComp(props) {
       />
       <View style={styles.iconWrap}>
         <TouchableOpacity
-          //onPress={()=>{heart?setHeart(false):setHeart(true)}}
+          
           disabled={props?.state?.loadingComp}
           onPress={() => {
             user?.token !== ''
@@ -179,7 +171,7 @@ export default function WardrobeComp(props) {
         </TouchableOpacity>
         <TouchableOpacity
         disabled={props?.state?.loadingComp}
-          //onPress={()=>{share?setShare(false):setShare(true)}}
+          
           onPress={() => {
             user?.token !== ''
               ? productShare()

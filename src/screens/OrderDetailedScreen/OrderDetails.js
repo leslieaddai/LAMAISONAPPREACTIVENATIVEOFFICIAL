@@ -13,12 +13,12 @@ const OrderDetails = ({navigation,route}) => {
     const {orderStatus} = route.params
 
     const onChangeOrderStatus = (indexNo,newStatus) => {
-      //console.log(indexNo,newStatus);
+   
       let tempArr = orderData;
       tempArr[indexNo].status.status=newStatus;
       setOrderData(tempArr);
     }
-    //console.log(orderStatus)
+   
     const [loadingStatusChange, setLoadingStatusChange] = useState(false);
   return (
     <>
@@ -49,10 +49,10 @@ const OrderDetails = ({navigation,route}) => {
             orderStatus={orderStatus}
             addressData={addressData}
             user={item?.product?.user}
-            // orderId={item?.order_id}
+       
             orderId={item?.id}
             loaderState={{loadingStatusChange,setLoadingStatusChange,onChangeOrderStatus}}
-            //onpress={()=>{console.log(item.product_id)}}
+          
             />
       </View>
         )

@@ -49,7 +49,7 @@ export default function DOB(props) {
       };
       useEffect(()=>{
         if(data.user!=''){
-            console.log("user store",data)
+           
             dispatch({
                 type: types.Login,
                 payload: data,
@@ -71,7 +71,7 @@ export default function DOB(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        // console.log("res",res.data)
+       
         setLoading(false);
         updateDataState(res.data);
         successMessage("DOB Update Successfully")
@@ -80,7 +80,7 @@ export default function DOB(props) {
       })
       .catch(function (error) {
         setLoading(false);
-        console.log("error",error.response.data)
+       
       });
     }
   return (
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop:Platform.OS === "ios"? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   heading: {

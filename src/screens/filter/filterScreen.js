@@ -51,7 +51,6 @@ export default function FilterScreen({navigation, route}) {
 
   const dispatch = useDispatch();
 
-  console.log(route.params);
   const settingOptions = (name, navScreen, text) => {
     return (
       <TouchableOpacity
@@ -125,7 +124,6 @@ export default function FilterScreen({navigation, route}) {
           <Text style={styles.resetText}>RESET FILTERS</Text>
         </TouchableOpacity>
 
-        {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
     </>
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginVertical: hp2(4),
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    //marginLeft: wp2(8),
     alignSelf: 'center',
   },
   filters: {

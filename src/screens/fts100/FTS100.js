@@ -53,20 +53,7 @@ export default function FTS100(props) {
   const [dataFts, setDataFts] = useState([]);
   const user = useSelector(state => state.userData);
 
-  // useEffect(() => {
-  //   getStyles();
-  //   getFTS();
-
-  //   props?.navigation.addListener('focus', () => {
-  //     getStyles();
-  //     getFTS();
-  //   });
-
-  //   props?.navigation.addListener('blur', () => {
-  //     setSelected('');
-  //   });
-
-  // },[props?.navigation])
+ 
 
   useEffect(() => {
     getFTS();
@@ -74,19 +61,18 @@ export default function FTS100(props) {
   }, []);
 
   const getStyles = () => {
-    //setLoadingStyles(true);
+   
 
     axios
       .get(StylesUrl)
       .then(async function (res) {
-        console.log(res.data);
+       
         setDataStyles(res.data.data);
         //setLoadingStyles(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //setLoadingStyles(false);
-        //errorMessage('Something went wrong!');
+        
+        
         errorMessage(errorHandler(error))
       });
   };
@@ -97,52 +83,19 @@ export default function FTS100(props) {
     axios
       .get(FTSUrl)
       .then(async function (res) {
-        console.log(res.data);
+       
         setDataFts(res.data.data);
         setLoadingFts(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoadingFts(false);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
   };
 
-  // useEffect(()=>{
-  //   setLoadingStyles(true);
 
-  //   axios
-  //   .get(StylesUrl)
-  //   .then(async function (res) {
-  //      console.log(res.data);
-  //      setDataStyles(res.data.data);
-  //      setLoadingStyles(false);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error.response.data)
-  //     setLoadingStyles(false);
-  //     errorMessage('Something went wrong!')
-  //   });
-
-  // },[])
-
-  // useEffect(()=>{
-  //   setLoadingFts(true);
-
-  //   axios.get(FTSUrl)
-  //   .then(async function (res) {
-  //      console.log(res.data);
-  //      setDataFts(res.data.data);
-  //      setLoadingFts(false);
-  //   })
-  //   .catch(function (error){
-  //      console.log(error.response.data)
-  //      setLoadingFts(false);
-  //      errorMessage('Something went wrong!')
-  //   });
-
-  // },[])
 
   const onSelectStyle = (styleId, name) => {
     if (selected === name) {
@@ -155,14 +108,14 @@ export default function FTS100(props) {
       axios
         .get(FTSUrl + `/${styleId}`)
         .then(async function (res) {
-          console.log(res.data);
+         
           setDataFts(res.data.data);
           setLoadingFts(false);
         })
         .catch(function (error) {
-          console.log(error.response.status);
+         
           setLoadingFts(false);
-          //errorMessage('Something went wrong!');
+         
           errorMessage(errorHandler(error))
         });
     }
@@ -186,7 +139,7 @@ export default function FTS100(props) {
             ) : (
               <>
                 {dataStyles?.map(item => {
-                  //console.log("item=======>",item);
+              
                   return (
                     <>
                       <Category
@@ -198,21 +151,9 @@ export default function FTS100(props) {
                 })}
               </>
             )}
-            {/* <Category text="top 100" state={{selected,setSelected}} />
-        <Category text="streetwear" state={{selected,setSelected}} />
-        <Category text="sportswear" state={{selected,setSelected}} />
-        <Category text="nightlife" state={{selected,setSelected}} />
-        <Category text="formalwear" state={{selected,setSelected}} />
-        <Category text="outdoorswear" state={{selected,setSelected}} />
-        <Category text="beachwear" state={{selected,setSelected}} /> */}
+            
 
-            {/* <Category text="activewear" state={{selected,setSelected}} />
-        <Category text="beachwear" state={{selected,setSelected}} />
-        <Category text="casualwear" state={{selected,setSelected}} />
-        <Category text="formalwear" state={{selected,setSelected}} />
-        <Category text="nightlife" state={{selected,setSelected}} />
-        <Category text="outdoor" state={{selected,setSelected}} />
-        <Category text="streetwear" state={{selected,setSelected}} /> */}
+           
           </ScrollView>
         </View>
 
@@ -223,18 +164,7 @@ export default function FTS100(props) {
             paddingBottom: hp2(12),
             flexGrow: 1,
           }}>
-          {/* <BrandComp rank={1} />      
-        <BrandComp rank={2} /> 
-        <BrandComp rank={3} /> 
-        <BrandComp rank={4} />  
-        <BrandComp rank={5} />  
-        <BrandComp rank={6} />  
-        <BrandComp rank={7} />  
-        <BrandComp rank={8} />  
-        <BrandComp rank={9} />  
-        <BrandComp rank={10} />  
-        <BrandComp rank={11} />  
-        <BrandComp rank={12} />  */}
+          
           {loadingFts ? (
             <View
               style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
@@ -245,7 +175,7 @@ export default function FTS100(props) {
               {dataFts?.length!==0?(
                 <>
                 {dataFts?.map((item, index) => {
-                //console.log("item=======>",item);
+                
                 return (
                   <>
                     <BrandComp data={{item}} key2={index} />
@@ -260,7 +190,7 @@ export default function FTS100(props) {
           )}
         </ScrollView>
 
-        {/* <BottomComp /> */}
+        
       </View>
     </SafeAreaView>
     </>

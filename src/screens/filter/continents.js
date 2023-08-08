@@ -57,14 +57,14 @@ export default function Continents(props) {
     axios
       .get(GetRegionsAll)
       .then(async function (res) {
-        //  console.log(res.data);
+    
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
-        //errorMessage('Something went wrong!');
+   
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -100,10 +100,7 @@ export default function Continents(props) {
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
-            // dispatch({
-            //   type:types.Continetadd,
-            //   payload:selected
-            // })
+           
           }}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
@@ -123,18 +120,13 @@ export default function Continents(props) {
       ) : (
         <>
           {data?.map((item, index) => {
-            //console.log("item=======>",item);
+          
             return <View key={index}>{options(item)}</View>;
           })}
         </>
       )}
 
-      {/* {options('ASIA')}
-      {options('AFRICA')}
-      {options('NORTH AMERICA')}
-      {options('SOUTH AMERICA')}
-      {options('EUROPE')}
-      {options('AUSTRALIA')} */}
+    
     </SafeAreaView>
     </>
   );
@@ -149,7 +141,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+   
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -161,7 +153,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+   
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -172,7 +164,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+   
     borderRadius: 100,
   },
 });

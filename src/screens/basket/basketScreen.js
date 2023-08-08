@@ -53,7 +53,7 @@ export default function BasketScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res?.data);
+      
         setData(res?.data?.data);
         setCount(res?.data?.data?.[0]?.qty);
         dispatch({
@@ -63,7 +63,7 @@ export default function BasketScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error?.response?.data);
+       
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -94,8 +94,7 @@ export default function BasketScreen(props) {
               headers: {Authorization: `Bearer ${user?.token}`},
             })
             .then(async function (res) {
-              console.log(res.data);
-              //getBasket()
+             
               let tempArr = data;
               tempArr[0].qty=tempArr[0].qty+1;
               setCount(count+1)
@@ -103,7 +102,7 @@ export default function BasketScreen(props) {
               setLoading2(false);
             })
             .catch(function (error) {
-              console.log(error.response.data);
+              
               setLoading2(false);
               errorMessage(errorHandler(error))
             });
@@ -130,7 +129,7 @@ export default function BasketScreen(props) {
                   headers: {Authorization: `Bearer ${user?.token}`},
                 })
                 .then(async function (res) { 
-                  console.log(res.data);
+                 
                   dispatch({
                     type: types.RemoveFromBasket
                   });
@@ -138,7 +137,7 @@ export default function BasketScreen(props) {
                   setLoading2(false);
                 })
                 .catch(function (error) {
-                  console.log(error.response.data);
+                 
                   setLoading2(false);
                   errorMessage(errorHandler(error))
                 });
@@ -154,8 +153,7 @@ export default function BasketScreen(props) {
           headers: {Authorization: `Bearer ${user?.token}`},
         })
         .then(async function (res) {
-          console.log(res.data);
-          //getBasket()
+          
           let tempArr = data;
           tempArr[0].qty=tempArr[0].qty-1;
           setCount(count-1);
@@ -163,9 +161,9 @@ export default function BasketScreen(props) {
           setLoading2(false);
         })
         .catch(function (error) {
-          console.log(error.response.data);
+          
           setLoading2(false);
-          //errorMessage('Something went wrong!');
+          
           errorMessage(errorHandler(error))
         });
     }
@@ -351,7 +349,7 @@ export default function BasketScreen(props) {
               onPress={()=>props.navigation.navigate('imageViewScreen',{item:products[0]?.data?.product_images})} 
               style={styles.imageWrap}>
                 <Image
-                  //source={IMAGES.randomPic}
+                 
                   source={{uri:products[0]?.data?.product_images[0].image[0]?.original_url}}
                   style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
@@ -441,8 +439,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    
   },
   basket: {
     color: 'black',

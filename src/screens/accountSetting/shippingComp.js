@@ -78,7 +78,7 @@ export default function ShippingComp(props) {
       axios
         .request(config)
         .then(async function (res) {
-          console.log(res?.data);
+          
           setShow(false);
           props?.state?.getAllRegions();
           setLoading(false);
@@ -143,7 +143,7 @@ export default function ShippingComp(props) {
         </View>
       ) : null}
       <TouchableOpacity 
-       //disabled={props?.disable}
+      
        onPress={() => setShow(true)}
        style={styles.optionWrap}>
         <Text style={{color: 'black'}}>{props?.data?.name}</Text>
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+   
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+    
     borderRadius: 100,
   },
   disclaimerBox: {
@@ -193,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: wp2(3),
     borderWidth: 1,
     marginTop: hp2(20),
-    //borderColor:'#039C8A',
+   
     paddingVertical: hp2(2),
     paddingHorizontal: wp2(4),
   },

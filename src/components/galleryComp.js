@@ -33,7 +33,6 @@ import { useNavigation } from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function GalleryComp(props) {
-  //console.log(props.item.item,'=======>');
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false)
   const onloading = (value,label)=>{
@@ -58,7 +57,6 @@ export default function GalleryComp(props) {
         }
         {props?.item?.item?.media?.[0]?.original_url&&(
         <Image
-          //source={IMAGES.randomPic}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
           progressiveRenderingEnabled={true}

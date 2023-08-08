@@ -61,7 +61,7 @@ export default function Review(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
+       
         setData(res.data.data);
         setUniqDates(
           res?.data?.data
@@ -78,9 +78,9 @@ export default function Review(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         setLoading(false);
-        //errorMessage('Something went wrong!');
+       
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -119,14 +119,11 @@ export default function Review(props) {
           {data?.length!==0? 
           <ScrollView showsVerticalScrollIndicator={false}>
             {uniqDates?.map((item,index)=>{
-            console.log(uniqDates)
+           
             return(
               <>
               <LineComp date={item} key={index} />
-              {/* {data?.map((item2,index2) => {
-            //console.log("item=======>",item);
-            return <ReviewComp data={item} key={index} />;
-          })} */}
+            
           {data?.map((item2, index2) => {
                     if (moment(item2?.created_at).format('MM/YY') === item)
                       return (
@@ -140,7 +137,7 @@ export default function Review(props) {
           :<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Reviews Not Available</Text></View>}
         </>
       )}
-        {/* <BottomComp /> */}
+      
       </View>
     </SafeAreaView>
     </>
@@ -151,15 +148,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+   
   },
   headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
-    //justifyContent: 'center',
+   
     width: wp2(100),
   },
   supportText: {

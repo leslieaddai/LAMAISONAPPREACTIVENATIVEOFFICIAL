@@ -109,7 +109,7 @@ export default function ResetPassScreen(props) {
       axios
         .post(ForgetPasswordUrl, obj)
         .then(async function (res) {
-          console.log(res.data);
+          
 
           setLoading(false);
           setVerifyCode(true);
@@ -118,7 +118,7 @@ export default function ResetPassScreen(props) {
           );
         })
         .catch(function (error) {
-          console.log(error.response.data);
+          
           setLoading(false);
           errorMessage(errorHandler(error))
         });
@@ -139,15 +139,15 @@ export default function ResetPassScreen(props) {
       axios
         .post(VerifyCodeUrl, obj)
         .then(async function (res) {
-          console.log(res.data);
+         
 
           setLoading(false);
           setShowReset(true);
-          //successMessage('Code Has Been Verified!')
+         
           successMessage('Enter your new password');
         })
         .catch(function (error) {
-          console.log(error.response.data);
+         
           setLoading(false);
           errorMessage(errorHandler(error))
         });
@@ -173,18 +173,18 @@ export default function ResetPassScreen(props) {
               axios
                 .post(ResetPasswordUrl, obj)
                 .then(async function (res) {
-                  console.log(res.data);
+                
 
                   setLoading(false);
                   props.navigation.navigate('loginScreen');
                   successMessage('Password Changed Successfully!');
                 })
                 .catch(function (error) {
-                  console.log(error.response.data);
+                
                   setLoading(false);
-                  //errorMessage('Something Went Wrong!');
+                 
                   errorMessage(errorHandler(error))
-                  //errorMessage(errorHandler(error))
+            
                 });
             } else {
               setShowPassNotMatch(true);
@@ -297,10 +297,7 @@ export default function ResetPassScreen(props) {
                 keyboardType={'number-pad'}
               />
             </Animated.View> 
-                  {/* <TouchableOpacity onPress={()=>{onVerifyCode()}} style={styles.button}>
-              <Text style={styles.buttonText}>Resend Code</Text>
-            </TouchableOpacity> */}
-            {/* <CountdownContainer/> */}
+                 
             <TouchableOpacity onPress={onVerifyCode} style={styles.button}>
               <Text style={styles.buttonText}>Verify Code</Text>
             </TouchableOpacity>
@@ -321,7 +318,7 @@ export default function ResetPassScreen(props) {
             </TouchableOpacity>
           </>
         )}
-        {/* </KeyboardAwareScrollView> */}
+     
       </SafeAreaView>
     </>
   );
@@ -331,8 +328,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+   
   },
   resetText: {
     color: 'black',
@@ -373,7 +369,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    //marginVertical:hp(2),
+    
     marginTop: hp2(2),
     alignSelf: 'center',
     marginBottom: hp2(8),

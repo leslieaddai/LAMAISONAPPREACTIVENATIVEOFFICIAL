@@ -45,22 +45,19 @@ import types from '../../Redux/types';
 
 export default function LookbookScreen(props) {
   const dispatch = useDispatch();
-  //const [loading, setLoading] = useState(false);
-  //const [data,setData]=useState([]);
+
   const user = useSelector(state => state.userData);
   const user2 = props?.route?.params?.userData;
-  //console.log(user2)
+ 
 
-  //const {token} = useSelector(state => state.userData);
+
   const [allStates, setAllStates] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
   const [loading, setLoading] = useState(false)
   const onloading = (value,label)=>{
     setLoading(value)
   }
-  // const {GetcollectionLoading} = allLoading;
 
-  // const {Getcollectiontate} = allStates;
 
   const updateState = data => {
     setAllStates(prev => ({...prev, ...data}));
@@ -84,19 +81,17 @@ export default function LookbookScreen(props) {
       .post(
         url,
         {user_id: user2?.userData?.id},
-        // {
-        //   headers: {Authorization: `Bearer ${token}`},
-        // }
+       
       )
       .then(function (response) {
         setAllLoading(false);
         setAllStates(response.data.data.reverse());
-        //console.log(response.data.data)
+       
       })
       .catch(function (error) {
         setAllLoading(false);
-        console.log('CollectionScreen error', error);
-        //errorMessage('Something went wrong!');
+       
+      
         errorMessage(errorHandler(error))
       });
   };
@@ -181,7 +176,7 @@ export default function LookbookScreen(props) {
                             itemscollection={item?.collection_products}
                             uri={{uri: item?.media[0]?.original_url}}
                             user={user2}
-                            //userData={item?.user}
+                            
                           />
                         )}
                       </>
@@ -217,7 +212,7 @@ export default function LookbookScreen(props) {
               </View>
             )}
 
-            {/* <BottomComp /> */}
+         
           </View>
         </>
       )}
@@ -235,7 +230,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+
     justifyContent: 'center',
     marginBottom: hp2(2),
   },

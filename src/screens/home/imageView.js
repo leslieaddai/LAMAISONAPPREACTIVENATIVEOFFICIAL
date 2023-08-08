@@ -39,20 +39,9 @@ export default function ImageView(props) {
 
   itemdata = props?.route?.params?.item
   itemindex = props?.route?.params?.indexValue
-  console.log(itemdata)
 
-  // const ref = useRef();
 
-  // const scrollToIndex = index => {
-  //   ref?.current?.scrollToIndex({
-  //     animated:true,
-  //     index:index,
-  //   });
-  // }
- 
-  // useEffect(()=>{
-  //   scrollToIndex(1);
-  // },[])
+  
 
   return (
     <>
@@ -71,7 +60,7 @@ export default function ImageView(props) {
         <ICONS.AntDesign name="left" size={24} color="black" />
       </TouchableOpacity>
       <FlatList
-        //ref={ref}
+      
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}

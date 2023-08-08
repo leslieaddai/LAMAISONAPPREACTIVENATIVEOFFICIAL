@@ -53,7 +53,7 @@ import LoaderComp from '../../components/loaderComp';
 const PAGE_SIZE = 40;
 
 export default function ImageUploadScreen(props) {
-  //function ImageUploadScreen(props) {
+  
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -62,9 +62,7 @@ export default function ImageUploadScreen(props) {
 
   const [caption, setCaption] = useState('');
 
-  //const dispatch = useDispatch()
-
-  //const [photos, setPhotos]=useState();
+  
   const [selectedImage, setSelectedImage] = useState();
   const [nextButton, setNextButton] = useState(false);
   const [confirmButton, setConfirmButton] = useState(false);
@@ -91,23 +89,11 @@ export default function ImageUploadScreen(props) {
       });
 
       setAfter(page_info.end_cursor);
-      //console.log(page_info.end_cursor,'===========> after')
-      // dispatch({
-      //   type: 'setAfter',
-      //   payload: page_info.end_cursor,
-      // });
+    
       setHasNextPage(page_info.has_next_page);
-      //console.log(page_info.has_next_page,'===========> next page')
-      // dispatch({
-      //   type: 'setHasNextPage',
-      //   payload: page_info.has_next_page,
-      // });
+      
       setPhotos(prevPhotos => [...prevPhotos, ...edges]);
-      //console.log(...edges,'===========> edges')
-      // dispatch({
-      //   type: 'setPhotos',
-      //   payload: [...props.ImageUpload.photos, ...edges],
-      // });
+      
     } catch (error) {
       console.error('Failed to load more photos:', error);
     } finally {
@@ -140,17 +126,7 @@ export default function ImageUploadScreen(props) {
     }
   };
 
-  // useEffect(()=>{
-  // async function runThis () {
-  //   if (Platform.OS === "android" && (await hasAndroidPermission())) {
-  //     showPhotos();
-  //   }
-  //   if (Platform.OS === 'ios') {
-  //     showPhotos();
-  //   }
-  // }
-  // runThis();
-  // },[])
+  
 
   async function hasAndroidPermission() {
     const permission =
@@ -161,7 +137,7 @@ export default function ImageUploadScreen(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
-      //console.log(hasPermission)
+      
       return true;
     }
 
@@ -169,7 +145,7 @@ export default function ImageUploadScreen(props) {
     if (status === 'granted') {
       setPerm(true);
     }
-    //console.log(status);
+    
     return status === 'granted';
   }
 
@@ -244,24 +220,7 @@ export default function ImageUploadScreen(props) {
     return status === true;
   }
 
-  // async function showPhotos() {
-  //   // if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-  //   //   return;
-  //   // }
-  //   const result = await CameraRoll.getPhotos({
-  //     first: 20,
-  //     assetType: 'Photos',
-  //   })
-  //   .then(r => {
-  //     setPhotos(r.edges);
-  //   })
-  //   .catch((err) => {
-  //      //Error Loading Images
-  //      console.log(err)
-  //   });
-  //   //console.log(result);
-  // };
-
+  
   if (uploadButton) {
     return (
       <View
@@ -297,7 +256,7 @@ export default function ImageUploadScreen(props) {
     if (caption !== '' && !confirmButton) {
       setConfirmButton(true);
     } else if (caption !== '' && confirmButton) {
-      //setUploadButton(true)
+ 
       setLoading(true);
 
       var formdata = new FormData();
@@ -305,15 +264,7 @@ export default function ImageUploadScreen(props) {
       formdata.append('caption', caption);
       formdata.append('image', selectedImage);
 
-      //   let obj = {
-      //     user_id: user.userData.id,
-      //     caption: caption,
-      //     image:selectedImage
-      // }
-
-      // console.log(obj)
-
-      //console.log(formdata);
+      
 
       let config = {
         method: 'post',
@@ -330,7 +281,7 @@ export default function ImageUploadScreen(props) {
       axios
         .request(config)
         .then(async function (res) {
-          console.log(res.data);
+          
           setLoading(false);
           successMessage('Upload Success');
           setUploadButton(true);
@@ -340,9 +291,9 @@ export default function ImageUploadScreen(props) {
           }, 3000);
         })
         .catch(function (error) {
-          console.log(error.response.data);
+         
           setLoading(false);
-          //errorMessage('Upload Failed');
+   
           errorMessage(errorHandler(error))
         });
     } else {
@@ -395,7 +346,7 @@ export default function ImageUploadScreen(props) {
               resizeMode="cover"
             />
           ) : (
-            // <Text>Select Image</Text>
+           
             <Image
               source={IMAGES.selectIMG}
               style={{width: '100%', height: '100%'}}
@@ -443,21 +394,13 @@ export default function ImageUploadScreen(props) {
                   onEndReachedThreshold={0.1}
                   renderItem={({item, i}) => {
                     return (
-                      //       <TouchableOpacity onPress={()=>setSelectedImage(item.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-                      //    <Image
-                      //       key={i}
-                      //       source={{ uri: item.node.image.uri }}
-                      //      style={{width: '100%', height: '100%'}}
-                      //      resizeMode="cover"
-                      //    />
-                      //   {selectedImage===item.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-                      //  </TouchableOpacity>
+                     
                       <ImageCard
                         item={item}
                         key={i}
                         state={{selectedImage, setSelectedImage}}
                       />
-                      //<ImageCard item={item} key={i}  />
+                      
                     );
                   }}
                 />
@@ -469,21 +412,7 @@ export default function ImageUploadScreen(props) {
                   </View>
                 )}
 
-                {/* //    <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical: hp2(2),flexDirection:'row',flexWrap:'wrap',paddingHorizontal:wp2(2),}}>
-    //    {photos?.map((p, i) => {
-    //    return (
-    //      <TouchableOpacity onPress={()=>setSelectedImage(p.node.image.uri)} key={i} style={{width:wp2(24),height:wp2(24),overflow:'hidden'}}>
-    //      <Image
-    //         key={i}
-    //         source={{ uri: p.node.image.uri }}
-    //        style={{width: '100%', height: '100%'}}
-    //        resizeMode="cover"
-    //      />
-    //     {selectedImage===p.node.image.uri && ( <ICONS.AntDesign name="checkcircle" size={20} color="#0F2ABA" style={{position:'absolute',right:wp2(2),top:hp2(0.5),zIndex:999}} />)}
-    //    </TouchableOpacity>
-    //    );
-    //  })}
-    //  </ScrollView> */}
+                
               </>
             ) : (
               <View style={styles.noPhotos}>
@@ -496,15 +425,6 @@ export default function ImageUploadScreen(props) {
     </>
   );
 }
-
-// const mapStateToProps = (state) => {
-//   const ImageUpload = state.ImageUpload
-//   return {
-//     ImageUpload,
-//   };
-// };
-
-//export default connect(mapStateToProps, null)(ImageUploadScreen);
 
 const styles = StyleSheet.create({
   container: {

@@ -35,7 +35,7 @@ import {SkypeIndicator} from 'react-native-indicators';
 
 
 export default function Popular(props) {
-  console.log(props?.data);
+ 
   const navigation = useNavigation();
   const user = useSelector(state => state.userData);
   const [loading, setLoading] = useState(false)
@@ -49,16 +49,7 @@ export default function Popular(props) {
           data: {product: {id: props?.data?.product_id}},
         }):navigation.navigate('imageViewScreen',{item:props?.data?.product?.product_images})
       }
-      // onPress={()=>navigation.reset({
-      //   index: 0,
-      //   routes: [{ name: 'dressingRoomScreen' }],
-      // })}
-      // onPress={()=>navigation.navigate('bottomNavigation', {
-      //   screen: 'stackNavComp',
-      //   params: {
-      //     screen: 'dressingRoomScreen',
-      //   },
-      // })}
+    
       style={styles.container}>
       <Text style={{color: 'black', marginLeft: wp2(3)}}>{props?.no + 1}</Text>
       <View style={styles.productImage}>
@@ -76,7 +67,7 @@ export default function Popular(props) {
     undefined
         }
         <Image
-          //source={IMAGES.randomPic}
+        
         progressiveRenderingEnabled={true}
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}

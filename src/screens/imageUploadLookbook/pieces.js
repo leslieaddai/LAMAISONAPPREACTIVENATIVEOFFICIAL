@@ -41,8 +41,7 @@ import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function Pieces(props) {
-  //const [selected,setSelected]=useState('');
-  //console.log(props.route.params.stateChange.pieces)
+ 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -56,14 +55,14 @@ export default function Pieces(props) {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
+       
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Something went wrong!');
+        
         errorMessage(errorHandler(error))
       });
   }, []);
@@ -119,15 +118,10 @@ export default function Pieces(props) {
       ) : (
         <>
           {data?.map(item => {
-            //console.log("item=======>",item);
+           
             return <>{options(item)}</>;
           })}
-          {/* {options('TOPS')}
-      {options('BOTTOMS')}
-      {options('FOOTWEAR')}
-      {options('ACCESSORIES')}
-      {options('JACKETS & COATS')}
-      {options('TRACKSUITS')} */}
+          
         </>
       )}
     </SafeAreaView>
@@ -144,7 +138,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+  
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -156,7 +150,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    //backgroundColor:'red',
+    
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -167,7 +161,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    //backgroundColor:'#D9D9D9',
+    
     borderRadius: 100,
   },
 });

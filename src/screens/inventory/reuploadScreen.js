@@ -126,7 +126,7 @@ export default function ReuploadScreen(props) {
   useEffect(() => {
     let tempArr = [];
     routeitem?.product_variations?.map(item => {
-      //console.log(item.quantity)
+     
       tempArr.push({
         color_id: String(item?.color?.id),
         color: String(item?.color?.color_code),
@@ -136,7 +136,7 @@ export default function ReuploadScreen(props) {
         product_variation_id: item?.id,
       });
     });
-    //console.log(tempArr)
+   
     setQuantity(tempArr);
 
     let tempImgArr = [];
@@ -160,8 +160,7 @@ export default function ReuploadScreen(props) {
         setData(res?.data?.data);
       })
       .catch(function (error) {
-        console.log(error.response.data);
-        //errorMessage('Something went wrong!');
+      
         errorMessage(errorHandler(error))
       });
       getShippingInfo()
@@ -206,8 +205,7 @@ export default function ReuploadScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        //console.log("skjjk",res?.data.data[0].shipping);
-        // setshippingname(res?.data?.data[0]?.shipping.name)
+    
         if (res?.data?.data?.length > 0) {
           setShippingData(res?.data?.data);
           addRegions(res?.data?.data?.[0])
@@ -226,7 +224,7 @@ export default function ReuploadScreen(props) {
           ...regions,
           {regionName: item?.shipping?.name, regionId: item?.shipping_id},
         ]);
-    console.log(regions);
+   
   };
   const verifyQuantity = () => {
     let tempDuplicate = quantity.filter(
@@ -273,7 +271,7 @@ export default function ReuploadScreen(props) {
     let newQuantityArr = [];
 
     quantity.map((item, index) => {
-      console.log(item);
+     
       if (item.product_variation_id === null) {
         newColorArr.push(item.color_id);
         formdata.append('color_new[]', item.color_id);
@@ -330,7 +328,7 @@ export default function ReuploadScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-        console.log(res.data);
+       
         setLoading(false);
         successMessage('Reupload Success');
         setUploadButton(true);
@@ -340,9 +338,9 @@ export default function ReuploadScreen(props) {
         }, 3000);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        
         setLoading(false);
-        //errorMessage('Reupload Failed');
+        
         errorMessage(errorHandler(error))
       });
   };
@@ -392,14 +390,14 @@ export default function ReuploadScreen(props) {
                 axios
                   .request(config)
                   .then(async function (res) {
-                    console.log(res.data);
+                    
                     array[id] = {uri, name: filename, type, id: res?.data?.data?.id};
                     setSelectedImage(array);
                     setLoading2(false);
                     successMessage('Image Updated');
                   })
                   .catch(function (error) {
-                    console.log(error.response.data);
+                    
                     setLoading2(false);
                     errorMessage(errorHandler(error))
                   });
@@ -476,7 +474,7 @@ export default function ReuploadScreen(props) {
                   <SkypeIndicator key={index} color={'black'} />
                 ) : (
                   <Image
-                    //source={IMAGES.randomPic}
+                    
                     key={index}
                     source={{uri: item?.uri}}
                     style={{width: '100%', height: '100%'}}
@@ -488,7 +486,7 @@ export default function ReuploadScreen(props) {
           </Animated.ScrollView>
           <View style={styles.scrollIndicatorWrap}>
             <RNAnimatedScrollIndicators
-              //numberOfCards={props?.route?.params?.data?.product_images?.[0]?.image?.length}
+             
               numberOfCards={selectedImage?.length}
               scrollWidth={wp2(94)}
               activeColor={'#707070'}
@@ -665,7 +663,7 @@ export default function ReuploadScreen(props) {
                   justifyContent: 'space-between',
                 },
               ]}>
-              {/* <Text style={{color:'black',fontWeight:'700',fontSize:rfv(13)}}>SELECT SHIPPING DETAILS</Text> */}
+           
               <Text style={[styles.selectTxt,{width:wp2(70)}]}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
@@ -765,7 +763,7 @@ export default function ReuploadScreen(props) {
           <FlatList
           data={shippingData}
           renderItem={({item,index})=>{
-            console.log(item)
+          
             return(
               <TouchableOpacity
                      onPress={() => {

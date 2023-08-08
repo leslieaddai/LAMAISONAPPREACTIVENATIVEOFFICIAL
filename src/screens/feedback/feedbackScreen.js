@@ -54,7 +54,7 @@ export default function FeedbackScreen(props) {
         </View>
         <LineComp />
         <FeedbackMessageComp />
-        {/* <BottomComp /> */}
+     
       </View>
     </SafeAreaView>
   );
@@ -64,15 +64,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    //alignItems: 'center',
-    //justifyContent: 'center',
+    
   },
   headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
-    //justifyContent: 'center',
+    
     width: wp2(100),
   },
   supportText: {

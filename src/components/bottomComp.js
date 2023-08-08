@@ -40,17 +40,12 @@ import types from '../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 
 export default function BottomComp(props) {
-  //console.log(props);
 
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false);
   const [data,setData]=useState([]);
   const user = useSelector(state => state.userData)
   const basket = useSelector(state => state.basket)
-
-  //console.log(basket.count);
-
-  //console.log(user.userData.role[0].id);
 
   const navigation = useNavigation();
   return (
@@ -72,7 +67,7 @@ export default function BottomComp(props) {
             resizeMode="contain"
           />
         </View>
-        {/* <Text style={styles.iconText}>Discovery</Text> */}
+
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate('homeScreen')} style={{alignItems: 'center'}}>
         <View style={styles.iconWrap}>
@@ -82,7 +77,7 @@ export default function BottomComp(props) {
             resizeMode="contain"
           />
         </View>
-        {/* <Text style={styles.iconText}>Home</Text> */}
+
       </TouchableOpacity>
       {user?.userData?.role?.[0]?.id!==3 && 
       <TouchableOpacity onPress={() => navigation.navigate('basketScreen')} style={{alignItems: 'center'}}>
@@ -98,7 +93,7 @@ export default function BottomComp(props) {
               <Text style={{color:'white',fontSize:rfv(10)}}>{basket?.count}</Text>
           </View>
       }
-      {/* <Text style={styles.iconText}>Basket</Text> */}
+
     </TouchableOpacity>
     }
       <TouchableOpacity onPress={() => user?.userData?.role?.[0]?.id===3?navigation.navigate('brandProfileScreen',{userData:user}):user?.userData?.role?.[0]?.id===2?navigation.navigate('editorProfileScreen',{userData:user}):navigation.navigate('guestScreen')} style={{alignItems: 'center'}}>
@@ -109,7 +104,7 @@ export default function BottomComp(props) {
             resizeMode="contain"
           />
         </View>
-        {/* <Text style={styles.iconText}>Profile</Text> */}
+    
       </TouchableOpacity>
     </View>
   );

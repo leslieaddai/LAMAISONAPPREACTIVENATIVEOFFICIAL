@@ -31,9 +31,7 @@ const BottomSheetView = ({
   countryinfo
 
 }) => {
-  useEffect(() => {
-    console.log("asd",Data?.[0]?.continent_code);
-  }, []);
+  
 
   
 

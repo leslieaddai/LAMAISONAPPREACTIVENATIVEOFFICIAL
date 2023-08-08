@@ -85,7 +85,7 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
+       
         setStateChange({
           address_1: res?.data?.data?.address_1,
           address_2: res?.data?.data?.address_2,
@@ -107,7 +107,7 @@ export default function ShippingAddress(props) {
         setLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -135,13 +135,12 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        console.log(res.data);
-        //setStateChange(res.data.data);
+       
         setLoading(false);
         successMessage('Shipping address saved successfully.');
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         setLoading(false);
         errorMessage(errorHandler(error))
       });
@@ -153,13 +152,12 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        //console.log(res.data);
-        //setStateChange(res.data.data);
+       
         setRegionsData(res?.data?.data);
-        //setLoading(false);
+       
       })
       .catch(function (error) {
-        console.log(error.response.data);
+       
         errorMessage(errorHandler(error))
       });
   };
@@ -187,13 +185,12 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        //console.log(res.data);
-        //setStateChange(res.data.data);
+       
         setCountriesData(res?.data?.data);
         setCountryLoading(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
+      
         errorMessage(errorHandler(error))
         setCountryLoading(false);
       });
@@ -208,12 +205,7 @@ export default function ShippingAddress(props) {
   },[isOpenedRegions])
 
   useEffect(()=>{            
-    // if(isOpenedCountries){
-    //   setTimeout(() => {
-    //     uibottomesheetvisiblity(true)
-    //     setModalData(countriesData)
-    //     }, 1000);
-    // }
+   
     if(isOpenedCountries){
    
         uibottomesheetvisiblity(true)
@@ -252,11 +244,7 @@ export default function ShippingAddress(props) {
         <KeyboardAwareScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{paddingVertical: hp2(4)}}>
-          {/* {textBox('ADDRESS LINE 1')}
-     {textBox('ADDRESS LINE 2')}
-     {textBox('CITY')}
-     {textBox('COUNTRY')}
-     {textBox('POSTCODE')} */}
+         
 
           <View style={styles.inputBox}>
             <TextInput
@@ -288,15 +276,7 @@ export default function ShippingAddress(props) {
             />
           </View>
 
-          {/* <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'REGION'}
-              value={stateChange.region}
-              onChangeText={(val) => updateState({region:val})}
-            />
-          </View> */}
+         
 
           <TouchableOpacity
             onPress={() =>
@@ -359,7 +339,7 @@ export default function ShippingAddress(props) {
               placeholder={'POSTCODE'}
               value={stateChange.postcode}
               onChangeText={val => updateState({postcode: val})}
-              //keyboardType='number-pad'
+              
               maxLength={10}
             />
           </View>
@@ -398,7 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+    
     justifyContent: 'center',
   },
   heading: {

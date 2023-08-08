@@ -39,7 +39,6 @@ export default function CollectionComp(props) {
             collection: props?.itemscollection,
             collectionname: props?.name,
             user:user2,
-            // ,userData:props?.userData
           })
         }
         style={styles.imageContainer}>

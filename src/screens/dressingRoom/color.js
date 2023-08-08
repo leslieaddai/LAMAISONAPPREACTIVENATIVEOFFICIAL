@@ -45,7 +45,7 @@ export default function SelectColor(props) {
     ({color}, index, a) => a.findIndex(e => color.id === e.color.id) === index,
   );
 
-  //console.log(uniq);
+
 
   const color = col => {
     return (
@@ -90,9 +90,9 @@ export default function SelectColor(props) {
       </View>
 
       <View style={styles.colorsWrap}>
-        {/* {props?.route?.params?.data?.product_variations.map((item)=>{ */}
+       
         {uniq.map(item => {
-          //console.log("item=======>",item);
+      
           return <>{color(item)}</>;
         })}
       </View>
@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    //backgroundColor:'red',
+
     justifyContent: 'center',
     width: wp2(100),
   },

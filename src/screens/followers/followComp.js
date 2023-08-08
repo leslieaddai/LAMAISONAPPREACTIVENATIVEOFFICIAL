@@ -37,8 +37,7 @@ export default function FollowComp(props) {
   const onloading = (value,label)=>{
     setLoading(value)
   }
-  //console.log(props?.data)
-  //console.log(props?.list)
+
 
   const navigateScreen = () => {
     if (props?.list === 'follower') {
@@ -111,7 +110,7 @@ export default function FollowComp(props) {
     undefined
         }
         <Image
-          //source={IMAGES.lookbook}
+        
           progressiveRenderingEnabled={true}
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}
@@ -134,10 +133,7 @@ export default function FollowComp(props) {
         props?.data?.item?.followings?.roles[0]?.id === 3 ? 
         props?.data?.item?.followings?.name : props?.data?.item?.followings?.username
         }
-        {/* {props?.list === 'follower'
-          ? props?.data?.item?.followers?.username
-          : props?.data?.item?.followings?.username
-        } */}
+        
       </Text>
     </TouchableOpacity>
   );

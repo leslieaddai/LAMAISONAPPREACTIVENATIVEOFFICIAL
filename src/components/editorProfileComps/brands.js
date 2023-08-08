@@ -62,7 +62,7 @@ export default function BrandComp(props) {
     undefined
         }
       <Image
-        //source={IMAGES.randomPic}
+   
         progressiveRenderingEnabled={true}
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}
