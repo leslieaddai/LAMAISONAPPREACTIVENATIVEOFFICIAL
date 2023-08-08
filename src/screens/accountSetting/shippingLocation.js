@@ -119,7 +119,8 @@ export default function ShippingLocation(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading2 && <LoaderComp />}
       </View>
-
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <KeyboardAwareScrollView

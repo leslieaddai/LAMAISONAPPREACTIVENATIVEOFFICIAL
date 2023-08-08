@@ -163,6 +163,8 @@ const CreateAccountScreen = props => {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(4)}}> */}
         <View style={styles.headWrap}>

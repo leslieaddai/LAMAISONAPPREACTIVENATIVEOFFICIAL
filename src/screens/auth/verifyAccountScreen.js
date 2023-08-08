@@ -80,6 +80,8 @@ export default function VerifyAccountScreen(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         <Text style={styles.resetText}>Verify Account</Text>
             <View

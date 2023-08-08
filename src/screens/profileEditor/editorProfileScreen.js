@@ -71,6 +71,7 @@ export default function EditorProfileScreen(props) {
   const user = useSelector(state => state.userData);
 
   const [follow, setFollow] = useState(false);
+  const {count} = useSelector(state => state.ordercount)
 
   // useEffect(()=>{
   //   setLoading(true);
@@ -288,6 +289,10 @@ export default function EditorProfileScreen(props) {
           <SkypeIndicator color={'black'} />
         </View>
       ) : (
+        <>
+        <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+
         <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
             <View style={styles.editorProfile}>
@@ -309,9 +314,9 @@ export default function EditorProfileScreen(props) {
                       size={44}
                       color="black"
                     />
-                    <View style={styles.notificationBadge}>
-                      <Text style={{color: 'white', fontSize: rfv(10)}}>1</Text>
-                    </View>
+                    {count>0 && <View style={styles.notificationBadge}>
+                      <Text style={{color: 'white', fontSize: rfv(10)}}>{count}</Text>
+                    </View>}
                   </TouchableOpacity>
                 )}
                 <View style={styles.nameContainer}>
@@ -423,6 +428,7 @@ export default function EditorProfileScreen(props) {
             {/* <BottomComp /> */}
           </View>
         </SafeAreaView>
+        </>
       )}
     </>
   );

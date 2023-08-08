@@ -147,6 +147,8 @@ export default function AddCollection(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading2 && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         <Text style={styles.heading}>Select all pieces in collection</Text>
         {selectedProducts.length > 0 && (

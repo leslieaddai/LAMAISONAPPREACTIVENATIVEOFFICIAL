@@ -227,7 +227,8 @@ export default function ShippingAddress(props) {
     <View style={{ position: 'absolute', zIndex: 999 }}>
         {countryLoading && <LoaderComp />}
       </View>
-    
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity

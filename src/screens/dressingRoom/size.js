@@ -97,6 +97,10 @@ export default function SelectSizes(props) {
     );
   };
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -130,6 +134,7 @@ export default function SelectSizes(props) {
         </>
       )}
     </SafeAreaView>
+    </>
   );
 }
 

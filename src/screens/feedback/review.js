@@ -86,6 +86,10 @@ export default function Review(props) {
   }, []);
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.headWrap}>
@@ -139,6 +143,7 @@ export default function Review(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

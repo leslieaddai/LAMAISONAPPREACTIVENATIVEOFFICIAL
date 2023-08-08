@@ -101,6 +101,10 @@ export default function LookbookScreen(props) {
       });
   };
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+ 
     <SafeAreaView style={{flex: 1}}>
       {allLoading ? (
         <SkypeIndicator color="black" />
@@ -218,6 +222,7 @@ export default function LookbookScreen(props) {
         </>
       )}
     </SafeAreaView>
+    </>
   );
 }
 

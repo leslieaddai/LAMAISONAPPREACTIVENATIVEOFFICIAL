@@ -110,6 +110,10 @@ export default function ProductType(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.heading}>Product Type</Text>
@@ -170,6 +174,7 @@ export default function ProductType(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

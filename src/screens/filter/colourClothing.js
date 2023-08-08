@@ -98,6 +98,10 @@ export default function ColourClothing(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+   
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -147,6 +151,7 @@ export default function ColourClothing(props) {
         {color('#F5F5DC')}
       </View> */}
     </SafeAreaView>
+    </>
   );
 }
 

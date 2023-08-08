@@ -37,6 +37,7 @@ import {GetBrandOrders} from '../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import moment from 'moment';
 
 export default function OrderComp(props) {
 
@@ -44,25 +45,42 @@ export default function OrderComp(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
+  const DateFormater = (date) =>{
+    
+    const dateTime = String(date);
+    
+    const formattedDateTime = moment(dateTime).format('MMM/DD/YYYY');
+
+
+    return formattedDateTime 
+      }
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+    onPress={props.onpress}
+    style={styles.container}>
       <View style={styles.imgWrap}>
         <Image
-          //source={IMAGES.randomProfile}
-          source={{uri:props?.data?.product?.product_images?.[0]?.image?.[0]?.original_url}}
+          // source={IMAGES.randomProfile}
+          source={{uri:props?.data?.order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
       </View>
       <View style={{marginLeft: wp2(3)}}>
+        <View style={{flexDirection:'row',justifyContent:'space-between',width:wp2(70)}}>
+        <Text>{props?.data?.order_number}</Text>
+        <TouchableOpacity onPress={props.onpress}>
         <Text style={{color: '#065521', fontWeight: '600', fontSize: rfv(14)}}>
-          {props?.data?.status?.status}
+          {`Details->`}
         </Text>
+        </TouchableOpacity>
+        </View>
+        <Text>{DateFormater(props?.data?.created_at)}</Text>
+
         <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
-        <Text style={{color: 'black'}}>{props?.data?.product?.user?.name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

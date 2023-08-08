@@ -169,6 +169,10 @@ export default function FTS100(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.ftsText}>FTS 100</Text>
@@ -259,6 +263,7 @@ export default function FTS100(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

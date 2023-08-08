@@ -61,7 +61,7 @@ export default function OrderComp2(props) {
       <View style={styles.imgWrap}>
         <Image
           // source={IMAGES.randomProfile}
-          source={{uri:props?.data?.vendor_order_details[0].product?.product_images[0]?.image?.[0]?.original_url}}
+          source={{uri:props?.data?.vendor_order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />

@@ -230,6 +230,10 @@ export default function SelectCoverPhoto(props) {
   // };
 
   return (
+    <>
+   <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+ 
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <Text style={styles.heading}>SELECT COVER PHOTO</Text>
@@ -343,6 +347,7 @@ export default function SelectCoverPhoto(props) {
      })}
      </ScrollView> */}
     </SafeAreaView>
+    </>
   );
 }
 

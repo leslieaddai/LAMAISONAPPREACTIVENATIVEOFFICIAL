@@ -84,6 +84,9 @@ export default function DOB(props) {
       });
     }
   return (
+<>
+<SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
     <SafeAreaView style={styles.container}>
       <View style={{position: 'absolute', zIndex: 999}}>
@@ -151,6 +154,7 @@ export default function DOB(props) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

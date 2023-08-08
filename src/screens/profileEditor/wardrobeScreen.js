@@ -88,7 +88,8 @@ export default function WardrobeScreen(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loadingComp && <LoaderComp />}
       </View>
-
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.headWrap}>

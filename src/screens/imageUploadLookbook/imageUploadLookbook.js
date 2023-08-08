@@ -467,6 +467,8 @@ export default function ImageUploadLookbook(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         {selectedImage?.length !== 0 && !nextButton ? (
           <View style={styles.headWrap}>

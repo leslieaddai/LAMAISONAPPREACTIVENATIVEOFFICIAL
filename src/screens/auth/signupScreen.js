@@ -148,6 +148,10 @@ export default function SignupScreen(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={styles.container}>
       {/* <KeyboardAwareScrollView contentContainerStyle={{paddingBottom:hp2(4)}}> */}
       <Text style={[styles.signupText]}>Create new account</Text>
@@ -216,6 +220,7 @@ export default function SignupScreen(props) {
       </TouchableOpacity>
       {/* </KeyboardAwareScrollView> */}
     </SafeAreaView>
+    </>
   );
 }
 

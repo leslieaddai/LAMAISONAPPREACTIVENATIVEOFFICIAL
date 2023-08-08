@@ -25,6 +25,7 @@ const roleid = user?.userData?.role?.[0]?.id
   const [isOpenedStatus, setIsOpenedStatus] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(props?.status);
   const orderStatusData = props?.orderStatus;
+  const addressData = props?.addressData;
 
     const [loading, setLoading] = useState(false)
     const onloading = (value,label)=>{
@@ -88,7 +89,7 @@ const roleid = user?.userData?.role?.[0]?.id
     },[isOpenedStatus])  
   
   return (
-    <View>
+    <View style={styles.container}>
         <View style={styles.imagecontainer}>
         {loading?
         <View style={{
@@ -116,22 +117,26 @@ const roleid = user?.userData?.role?.[0]?.id
       <View style={{marginLeft:wp2(10)}}>
         <View style={styles.namestyle}>
       <Text style={styles.nametextstyle}>{roleid===3?'Editor Name ':'Brand Name '}</Text>
-      <Text style={styles.nametextstyle}>- Noongoons</Text>
+      <Text style={styles.nametextstyle}>- {props?.user?.name}</Text>
         </View>
-      <Text style={styles.textstyle}>{`Product Name - ${props.productname}`}</Text>
-      <Text style={styles.textstyle}>{`Description - ${props.description}`}</Text>
-      <Text style={styles.textstyle}> {`Quantity - ${props.quantity}`}</Text>
-      <Text style={styles.textstyle}> {`Size - ${props.size}`}</Text>
+      <Text style={styles.textstyle}>{`Product Name - ${props?.productname}`}</Text>
+      <Text style={styles.textstyle}>{`Description - ${props?.description}`}</Text>
+      <Text style={styles.textstyle}>{`Address 1 - ${addressData?.add1}`}</Text>
+      <Text style={styles.textstyle}>{`Address 2 - ${addressData?.add2}`}</Text>
+      <Text style={styles.textstyle}>{`City - ${addressData?.city}`}</Text>
+      <Text style={styles.textstyle}>{`Country - ${addressData?.country}`}</Text>
+      <Text style={styles.textstyle}>{`Quantity - ${props?.quantity}`}</Text>
+      <Text style={styles.textstyle}>{`Size - ${props?.size}`}</Text>
       <View style={styles.colourView}>
-      <Text style={styles.colourText}> Colour - </Text>
-      <View style={{width:wp2(9),height:wp2(5),backgroundColor:`${props.colourcode}`,borderRadius:wp2(2),borderWidth:1}}></View>
+      <Text style={styles.colourText}>Colour - </Text>
+      <View style={{width:wp2(9),height:wp2(5),backgroundColor:`${props?.colourcode}`,borderRadius:wp2(2),borderWidth:1}}></View>
       </View>
-      <Text style={styles.textstyle}> {`Price - £ ${props.price}`}</Text>
+      <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
       {/* <Text style={styles.textstyle} onPress={()=> console.log('hi')}> {`Status - ${props.status}`}</Text> */}
       <TouchableOpacity 
       onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
       style={styles.statusbtn}>
-      <Text style={styles.textstyle}> {`Status - ${selectedStatus}`}
+      <Text style={styles.textstyle}>{`Status - ${selectedStatus}`}
       <View style={styles.iconstyle}>
              <ICONS.FontAwesome
                name={isOpenedStatus ? 'chevron-up' : 'chevron-down'}

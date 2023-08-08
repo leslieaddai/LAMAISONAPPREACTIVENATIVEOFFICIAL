@@ -51,6 +51,10 @@ export default function Username(props) {
         )
     }
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+  
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity onPress={()=>props.navigation.goBack()} style={{position: 'absolute', left: wp2(4)}}>
@@ -68,6 +72,7 @@ export default function Username(props) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

@@ -218,4 +218,5 @@ export const editorScreens = [
    {name:'selectColor',component:SelectColor},
    {name:'selectSizes',component:SelectSizes},
    {name:'imageView',component:ImageView},
+   {name:'OrderDetails',component:OrderDetails}
 ]

@@ -432,6 +432,8 @@ export default function ReuploadScreen(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         <View style={styles.headWrap}>
           <TouchableOpacity

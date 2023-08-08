@@ -716,6 +716,8 @@ export default function DressingRoomScreen(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.headWrap}>

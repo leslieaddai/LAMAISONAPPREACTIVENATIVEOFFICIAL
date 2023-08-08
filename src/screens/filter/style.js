@@ -90,6 +90,10 @@ export default function Style(props) {
     );
   };
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+ 
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -132,6 +136,7 @@ export default function Style(props) {
       {options('WORKWEAR')}
       {options('ACCESSORIES')} */}
     </SafeAreaView>
+    </>
   );
 }
 

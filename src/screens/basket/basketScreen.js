@@ -202,6 +202,10 @@ export default function BasketScreen(props) {
   }
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={{flex:1}}>
       <View style={styles.container}>
       <Text style={styles.basket}>Basket</Text>
@@ -429,6 +433,7 @@ export default function BasketScreen(props) {
       )}
     </View>
     </SafeAreaView>
+    </>
   );
 }
 

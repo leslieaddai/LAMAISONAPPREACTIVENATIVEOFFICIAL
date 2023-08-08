@@ -91,6 +91,10 @@ export default function Continents(props) {
     );
   };
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={styles.container}>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -132,6 +136,7 @@ export default function Continents(props) {
       {options('EUROPE')}
       {options('AUSTRALIA')} */}
     </SafeAreaView>
+    </>
   );
 }
 

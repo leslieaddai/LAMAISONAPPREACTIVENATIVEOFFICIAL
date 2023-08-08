@@ -356,6 +356,9 @@ export default function ImageUploadScreen(props) {
         {loading && <LoaderComp />}
       </View>
 
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+
       <SafeAreaView style={styles.container}>
         {selectedImage && !nextButton ? (
           <View style={styles.headWrap}>

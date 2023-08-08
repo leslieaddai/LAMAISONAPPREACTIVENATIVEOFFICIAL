@@ -36,6 +36,10 @@ import BottomComp from '../../components/bottomComp';
 export default function AccountTypeScreen(props) {
   console.log(props.route.params.data);
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={styles.container}>
       <Text style={styles.accTypeText}>Account Type</Text>
       <TouchableOpacity
@@ -74,6 +78,7 @@ export default function AccountTypeScreen(props) {
       </TouchableOpacity>
       {/* <BottomComp /> */}
     </SafeAreaView>
+    </>
   );
 }
 

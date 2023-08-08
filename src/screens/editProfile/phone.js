@@ -72,6 +72,9 @@ export default function Phone(props) {
       });
     }
   return (
+<>
+<SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
     <SafeAreaView style={styles.container}>
       <View style={{position: 'absolute', zIndex: 999}}>
@@ -137,6 +140,7 @@ export default function Phone(props) {
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
+    </>
   );
 }
 

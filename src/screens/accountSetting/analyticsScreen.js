@@ -88,6 +88,10 @@ export default function AnalyticsScreen(props) {
   // };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <Text style={styles.heading}>Hello {user?.userData?.name}!</Text>
@@ -152,6 +156,7 @@ export default function AnalyticsScreen(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

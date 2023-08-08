@@ -301,6 +301,10 @@ export default function BrandProfileScreen(props) {
           <SkypeIndicator color={'black'} />
         </View>
       ) : (
+        <>
+        <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+        
         <SafeAreaView style={{flex: 1}}>
           <View style={styles.container}>
             <View style={styles.brandLogo}>
@@ -472,6 +476,7 @@ export default function BrandProfileScreen(props) {
             {/* <BottomComp /> */}
           </View>
         </SafeAreaView>
+        </>
       )}
     </>
   );

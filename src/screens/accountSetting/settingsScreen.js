@@ -188,6 +188,8 @@ useEffect(()=>{
       color={'black'}
     />}
       </View>
+      <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
       
    
@@ -221,7 +223,7 @@ useEffect(()=>{
               {settingOptions('PROFILE', '', 'editProfile')}
               {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
               {settingOptions('SHIPPING ADDRESS', '', 'shippingAddress')}
-              {settingOptions('ALL ORDERS', '', 'orderTrackingScreen')}
+              {settingOptions('ALL ORDERS', `${count>0 ? 'blue':''}`, 'orderTrackingScreen')}
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}

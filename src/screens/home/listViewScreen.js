@@ -78,6 +78,10 @@ export default function ListViewScreen(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
         <View style={styles.iconContainer}>
@@ -113,7 +117,7 @@ export default function ListViewScreen(props) {
           <SkypeIndicator color={'black'} />
         </View>
       )}
-      {feedData.length>0?
+     
         <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingVertical:hp2(2)}}
@@ -128,9 +132,11 @@ export default function ListViewScreen(props) {
               );
             }}
           />
-          :
-          <Text style={{color:'black',alignSelf:'center'}}>No Data Available</Text>
-          }
+
+{!loading && feedData?.length === 0 && (
+          <View style={{ alignItems: 'center', flex: 1 }}><Text>No Data Available</Text></View>
+        )}
+         
           {loading && feedData?.length !== 0 && (
             <View
               style={{
@@ -145,6 +151,7 @@ export default function ListViewScreen(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

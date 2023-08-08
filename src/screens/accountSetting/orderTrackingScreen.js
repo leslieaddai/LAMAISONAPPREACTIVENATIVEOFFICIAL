@@ -218,6 +218,10 @@ export default function OrderTrackingScreen(props) {
   };
 
   return (
+    <>
+    <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+    
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.orderText}>Order Tracking</Text>
@@ -252,13 +256,13 @@ export default function OrderTrackingScreen(props) {
                     if (moment(item2?.created_at).format('MM/YY') === item) {
                       return (
                         <>
-                          {item2?.order.map((item3, index3) => {
+                          {item2?.order?.map((item3, index3) => {
                             return (
                               <OrderComp2
                                 orderStatus={orderStatus}
                                 data={item3}
                                 key={index3} 
-                                onpress={() => { props.navigation.navigate('OrderDetails', { item: item3.vendor_order_details, orderStatus: orderStatus })
+                                onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item3?.address1,add2:item3?.address2,country:item3?.country,city:item3?.city}, item: item3.vendor_order_details, orderStatus: orderStatus })
                                }} />
                             )
                           })}
@@ -292,6 +296,7 @@ export default function OrderTrackingScreen(props) {
                         <OrderComp 
                         data={item2} 
                         key={index2} 
+                        onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item2?.address1,add2:item2?.address2,country:item2?.country,city:item2?.city}, item: item2?.order_details })}}
                         />
                       )
                     }
@@ -319,7 +324,11 @@ export default function OrderTrackingScreen(props) {
                   {data?.map((item2, index2) => {
                     if (moment(item2?.created_at).format('MM/YY') === item) {
                       return (
-                        <OrderComp data={item2} key={index2} />
+                        <OrderComp 
+                        data={item2} 
+                        key={index2} 
+                        onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item2?.address1,add2:item2?.address2,country:item2?.country,city:item2?.city}, item: item2?.order_details })}}
+                        />
                       )
                     }
                   })}
@@ -348,6 +357,7 @@ export default function OrderTrackingScreen(props) {
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>
+    </>
   );
 }
 

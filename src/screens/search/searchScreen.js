@@ -178,8 +178,7 @@ const handleInputChange = (text) => {
               <TextInput
                 style={styles.textBoxInput}
                 value={text}
-                  onChangeText={(e)=>{
-                    setText(e)}}
+                  onChangeText={handleInputChange}
               
                 // onSubmitEditing={() => {
                 //   //console.log('submited', text);

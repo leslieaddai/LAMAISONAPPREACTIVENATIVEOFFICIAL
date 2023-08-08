@@ -82,6 +82,9 @@ const DobScreen = (props) => {
         });
       }
     return (
+  <>
+  <SafeAreaView
+        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
   
       <SafeAreaView style={styles.container}>
         <View style={{position: 'absolute', zIndex: 999}}>
@@ -150,6 +153,7 @@ const DobScreen = (props) => {
           </TouchableOpacity>
         </ScrollView>
       </SafeAreaView>
+      </>
     );
 }
 
