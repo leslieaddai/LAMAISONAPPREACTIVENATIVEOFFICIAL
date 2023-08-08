@@ -26,4 +26,5 @@ export default {
   IncreamentQuantity:'IncreamentQuantity',
   DecreamentQuantity:'DecreamentQuantity',
   ClearBasketGuest:'ClearBasketGuest',
+  OrderCount :'OrderCount',
 };

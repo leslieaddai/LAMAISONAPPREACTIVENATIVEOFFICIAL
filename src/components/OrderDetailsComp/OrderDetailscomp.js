@@ -1,6 +1,6 @@
-import { Image, SafeAreaView, Text, View } from 'react-native'
+import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState,useEffect } from 'react'
-import { hp2, wp2 } from '../../theme'
+import { ICONS, hp2, wp2 } from '../../theme'
 import styles from './styles'
 import {BottomSheet} from 'react-native-btr';
 import BottomSheetViewOrderStatus from '../bottomSheet/BottomsheetViewOrderStatus';
@@ -16,18 +16,16 @@ import {SkypeIndicator} from 'react-native-indicators';
 //import LoaderComp from '../loaderComp';
 
 const OrderDetailscomp = (props) => {
-
 const dispatch = useDispatch();
 //const [loadingStatusChange, setLoadingStatusChange] = useState(false);
 const user = useSelector(state => state.userData);
-
+const roleid = user?.userData?.role?.[0]?.id
   const [visible, setVisible] = useState(false);
   const [modalData, setModalData] = useState();
   const [isOpenedStatus, setIsOpenedStatus] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(props?.status);
   const orderStatusData = props?.orderStatus;
 
-  
     const [loading, setLoading] = useState(false)
     const onloading = (value,label)=>{
       setLoading(value)
@@ -116,7 +114,10 @@ const user = useSelector(state => state.userData);
       />
       </View>
       <View style={{marginLeft:wp2(10)}}>
-      <Text style={styles.textstyle}>Brand Name -Noongoons</Text>
+        <View style={styles.namestyle}>
+      <Text style={styles.nametextstyle}>{roleid===3?'Editor Name ':'Brand Name '}</Text>
+      <Text style={styles.nametextstyle}>- Noongoons</Text>
+        </View>
       <Text style={styles.textstyle}>{`Product Name - ${props.productname}`}</Text>
       <Text style={styles.textstyle}>{`Description - ${props.description}`}</Text>
       <Text style={styles.textstyle}> {`Quantity - ${props.quantity}`}</Text>
@@ -127,7 +128,19 @@ const user = useSelector(state => state.userData);
       </View>
       <Text style={styles.textstyle}> {`Price - £ ${props.price}`}</Text>
       {/* <Text style={styles.textstyle} onPress={()=> console.log('hi')}> {`Status - ${props.status}`}</Text> */}
-      <Text style={styles.textstyle} onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}> {`Status - ${selectedStatus}`}</Text>
+      <TouchableOpacity 
+      onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
+      style={styles.statusbtn}>
+      <Text style={styles.textstyle}> {`Status - ${selectedStatus}`}
+      <View style={styles.iconstyle}>
+             <ICONS.FontAwesome
+               name={isOpenedStatus ? 'chevron-up' : 'chevron-down'}
+               color={'#A1A1A1'}
+               size={22}
+             />
+           </View>
+          </Text>
+           </TouchableOpacity>
       </View>
       <BottomSheet
         visible={visible}

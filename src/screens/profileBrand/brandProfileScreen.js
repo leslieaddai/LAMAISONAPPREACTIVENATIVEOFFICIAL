@@ -58,7 +58,6 @@ export default function BrandProfileScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingFollow, setLoadingFollow] = useState(false);
-
   // const [loadingFollowList,setLoadingFollowList]=useState(false);
   // const [followingDataBrand,setFollowingDataBrand]=useState([]);
   // const [followerDataBrand,setFollowerDataBrand]=useState([]);
@@ -67,6 +66,7 @@ export default function BrandProfileScreen(props) {
 
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
+  const {count} = useSelector(state => state.ordercount)
 
   const [follow, setFollow] = useState(false);
 
@@ -339,12 +339,12 @@ export default function BrandProfileScreen(props) {
                         name="menu-outline"
                         size={44}
                         color="black"
-                      />
+                      />{
+                        count>0 &&
                       <View style={styles.notificationBadge}>
-                        <Text style={{color: 'white', fontSize: rfv(10)}}>
-                          1
-                        </Text>
+                        <Text style={{color: 'white', fontSize: rfv(10)}}>{count}</Text>
                       </View>
+                      }
                     </TouchableOpacity>
                   )}
                 </View>

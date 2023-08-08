@@ -404,7 +404,7 @@ export default function CheckoutScreen(props) {
     formdata.append('status_id', 3);
     formdata.append('payment_method', 'stripe');
     formdata.append('address1', address_1);
-    formdata.append('address2', String(address_2));
+    formdata.append('address2', address_2 ==''?null:address_2);
     formdata.append('region', region);
     formdata.append('city', city);
     formdata.append('country', country);
@@ -414,7 +414,6 @@ export default function CheckoutScreen(props) {
     formdata.append('acc_number', card);
     formdata.append('expiry', expiry);
     formdata.append('cvv', cvv);
-
     let config = {
       method: 'post',
       maxBodyLength: Infinity,

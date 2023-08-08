@@ -49,6 +49,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const {count} = useSelector(state => state.ordercount)
 
   const dispatch = useDispatch();
 
@@ -68,7 +69,7 @@ export default function SettingsScreen(props) {
         </Text>
         {badge == 'blue' && (
           <View style={styles.circle}>
-            <Text style={{color: 'white'}}>1</Text>
+            <Text style={{color: 'white'}}>{count}</Text>
           </View>
         )}
         {badge == 'red' && (
@@ -208,7 +209,7 @@ useEffect(()=>{
               {settingOptions('INVENTORY', '', 'inventory')}
               {settingOptions('STANDARD SHIPPING', '', 'shippingLocation')}
               {settingOptions('ANALYTICS', '', 'analyticsScreen')}
-              {settingOptions('ALL ORDERS', 'blue', 'orderTrackingScreen')}
+              {settingOptions('ALL ORDERS', `${count>0 ? 'blue':''}`, 'orderTrackingScreen')}
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}

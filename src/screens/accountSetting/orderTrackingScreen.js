@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
@@ -37,13 +37,13 @@ import LineComp from '../../components/lineComp';
 import OrderComp from '../../components/orderComp';
 import OrderComp2 from '../../components/orderComp2';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import { errorMessage, successMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import {errorHandler} from '../../config/helperFunction';
-import {GetBrandOrders,GetOrdersByEditorAndGuest,OrderStatus} from '../../config/Urls';
-import {useDispatch, useSelector} from 'react-redux';
+import { errorHandler } from '../../config/helperFunction';
+import { GetBrandOrders, GetOrdersByEditorAndGuest, OrderStatus } from '../../config/Urls';
+import { useDispatch, useSelector } from 'react-redux';
 import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
+import { SkypeIndicator } from 'react-native-indicators';
 import moment from 'moment';
 
 export default function OrderTrackingScreen(props) {
@@ -62,17 +62,21 @@ export default function OrderTrackingScreen(props) {
   const [filterDates, setFilterDates] = useState([]);
 
   useEffect(() => {
-    user?.token!==null && user?.userData?.role?.[0]?.id === 3 && getOrderStatus();
-    user?.token!==null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
-    user?.token===null && getOrdersByGuest('1');
+    user?.token !== null && user?.userData?.role?.[0]?.id === 3 && getOrderStatus();
+    user?.token !== null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
+    user?.token === null && getOrdersByGuest('1');
+    dispatch({
+      type: types.OrderCount,
+      payload: 0,
+    });
   }, []);
 
   const getOrderStatus = () => {
     setLoading(true);
 
     axios
-      .get(OrderStatus,{
-        headers:{Authorization:`Bearer ${user?.token}`}
+      .get(OrderStatus, {
+        headers: { Authorization: `Bearer ${user?.token}` }
       })
       .then(async function (res) {
         console.log(res?.data);
@@ -92,8 +96,8 @@ export default function OrderTrackingScreen(props) {
     setLoading(true);
 
     axios
-      .get(GetBrandOrders + page_no , {
-        headers: {Authorization: `Bearer ${user?.token}`},
+      .get(GetBrandOrders + page_no, {
+        headers: { Authorization: `Bearer ${user?.token}` },
       })
       .then(async function (res) {
         console.log(res?.data);
@@ -113,23 +117,23 @@ export default function OrderTrackingScreen(props) {
         //   ]);
 
         tempArr = res?.data?.data
-            .filter(
-              (v, i, a) =>
-                a.findIndex(
-                  v2 =>
-                    moment(v2?.created_at).format('MM/YY') ===
-                    moment(v?.created_at).format('MM/YY'),
-                ) === i,
-            )
-            .map((item, index) => moment(item?.created_at).format('MM/YY')),
+          .filter(
+            (v, i, a) =>
+              a.findIndex(
+                v2 =>
+                  moment(v2?.created_at).format('MM/YY') ===
+                  moment(v?.created_at).format('MM/YY'),
+              ) === i,
+          )
+          .map((item, index) => moment(item?.created_at).format('MM/YY')),
 
           //console.log(filterDates?.includes(tempArr[0]))
-          !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
+          !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
 
-          //setFilterDates([...new Set(uniqDates)])
-          //uniq = [...new Set(uniqDates)];
-          //setFilterDates(uniq);
-          console.log(filterDates);
+        //setFilterDates([...new Set(uniqDates)])
+        //uniq = [...new Set(uniqDates)];
+        //setFilterDates(uniq);
+        console.log(filterDates);
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
@@ -151,20 +155,20 @@ export default function OrderTrackingScreen(props) {
       .then(async function (res) {
         console.log(res?.data);
         setData(prev => [...prev, ...res?.data?.data]);
-        
-        tempArr = res?.data?.data
-        .filter(
-          (v, i, a) =>
-            a.findIndex(
-              v2 =>
-                moment(v2?.created_at).format('MM/YY') ===
-                moment(v?.created_at).format('MM/YY'),
-            ) === i,
-        )
-        .map((item, index) => moment(item?.created_at).format('MM/YY')),
 
-      !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
-      console.log(filterDates);
+        tempArr = res?.data?.data
+          .filter(
+            (v, i, a) =>
+              a.findIndex(
+                v2 =>
+                  moment(v2?.created_at).format('MM/YY') ===
+                  moment(v?.created_at).format('MM/YY'),
+              ) === i,
+          )
+          .map((item, index) => moment(item?.created_at).format('MM/YY')),
+
+          !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
+        console.log(filterDates);
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
@@ -188,18 +192,18 @@ export default function OrderTrackingScreen(props) {
         setData(prev => [...prev, ...res?.data?.data]);
 
         tempArr = res?.data?.data
-        .filter(
-          (v, i, a) =>
-            a.findIndex(
-              v2 =>
-                moment(v2?.created_at).format('MM/YY') ===
-                moment(v?.created_at).format('MM/YY'),
-            ) === i,
-        )
-        .map((item, index) => moment(item?.created_at).format('MM/YY')),
-        
-      !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev,...tempArr])
-      console.log(filterDates);
+          .filter(
+            (v, i, a) =>
+              a.findIndex(
+                v2 =>
+                  moment(v2?.created_at).format('MM/YY') ===
+                  moment(v?.created_at).format('MM/YY'),
+              ) === i,
+          )
+          .map((item, index) => moment(item?.created_at).format('MM/YY')),
+
+          !filterDates?.includes(tempArr[0]) && setFilterDates(prev => [...prev, ...tempArr])
+        console.log(filterDates);
 
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
@@ -214,125 +218,133 @@ export default function OrderTrackingScreen(props) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text style={styles.orderText}>Order Tracking</Text>
 
         {loading && data?.length === 0 && (
           <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
         )}
 
-       {user?.token!== null && user?.userData?.role?.[0]?.id===3 ? (
+        {user?.token !== null && user?.userData?.role?.[0]?.id === 3 ? (
 
           <FlatList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingVertical: hp2(2)}}
-          data={filterDates}
-          onEndReached={() =>
-            !loading && page !== null && getOrdersByBrand(String(pageNo + 1))
-          }
-          onEndReachedThreshold={0.1}
-          renderItem={({item,index}) => {
-           return(
-             <>
-             <LineComp date={item} key={index} />
- 
-             {data?.map((item2,index2)=>{
-               if(moment(item2?.created_at).format('MM/YY') === item){
-                 return(
-                  <>
-                  {item2?.order.map((item3,index3)=>{
-                    return(
-                      <OrderComp2 orderStatus={orderStatus} data={item3} key={index3} onpress={()=>{props.navigation.navigate('OrderDetails',{item:item3.vendor_order_details,orderStatus:orderStatus})}}/>
-                    )
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingVertical: hp2(2) }}
+            data={filterDates}
+            onEndReached={() =>
+              !loading && page !== null && getOrdersByBrand(String(pageNo + 1))
+            }
+            onEndReachedThreshold={0.1}
+            renderItem={({ item, index }) => {
+              return (
+                <>
+                  <LineComp date={item} key={index} />
+
+                  {data?.map((item2, index2) => {
+                    if (moment(item2?.created_at).format('MM/YY') === item) {
+                      return (
+                        <>
+                          {item2?.order.map((item3, index3) => {
+                            return (
+                              <OrderComp2
+                                orderStatus={orderStatus}
+                                data={item3}
+                                key={index3} 
+                                onpress={() => { props.navigation.navigate('OrderDetails', { item: item3.vendor_order_details, orderStatus: orderStatus })
+                               }} />
+                            )
+                          })}
+                        </>
+                      )
+                    }
                   })}
-                  </>
-                 )
-               }
-             })}
-             </>
-           )
-          }}
-        />
+                </>
+              )
+            }}
+          />
 
-       ) : user?.token!== null && user?.userData?.role?.[0]?.id===2 ? (
-      
-         <FlatList
-         showsVerticalScrollIndicator={false}
-         contentContainerStyle={{paddingVertical: hp2(2)}}
-         data={filterDates}
-         onEndReached={() =>
-           !loading && page !== null && getOrdersByEditor(String(pageNo + 1))
-         }
-         onEndReachedThreshold={0.1}
-         renderItem={({item,index}) => {
-           return (
-             <>
-             <LineComp date={item} key={index} />
-
-             {data?.map((item2,index2)=>{
-              if(moment(item2?.created_at).format('MM/YY') === item){
-                return(
-                  <OrderComp data={item2} key={index2} />      
-                )
-              }
-             })}
-             </>
-           );
-         }}
-       />
-
-       ) : (
+        ) : user?.token !== null && user?.userData?.role?.[0]?.id === 2 ? (
 
           <FlatList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingVertical: hp2(2)}}
-          data={filterDates}
-          onEndReached={() =>
-            !loading && page !== null && getOrdersByGuest(String(pageNo + 1))
-          }
-          onEndReachedThreshold={0.1}
-          renderItem={({item,index}) => {
-            return (
-              <>
-              <LineComp date={item} key={index} />
-  
-              {data?.map((item2,index2)=>{
-                if(moment(item2?.created_at).format('MM/YY') === item){
-                  return(
-                    <OrderComp data={item2} key={index2} />      
-                  )
-                }
-               })}
-              </>
-            );
-          }}
-        />
-       
-       )}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingVertical: hp2(2) }}
+            data={filterDates}
+            onEndReached={() =>
+              !loading && page !== null && getOrdersByEditor(String(pageNo + 1))
+            }
+            onEndReachedThreshold={0.1}
+            renderItem={({ item, index }) => {
+              return (
+                <>
+                  <LineComp date={item} key={index} />
 
-{!loading && data?.length === 0 && (
-          <View style={{alignItems:'center',flex:1}}><Text>Orders Not Available</Text></View>
+                  {data?.map((item2, index2) => {
+                    if (moment(item2?.created_at).format('MM/YY') === item) {
+                      return (
+                        <OrderComp 
+                        data={item2} 
+                        key={index2} 
+                        />
+                      )
+                    }
+                  })}
+                </>
+              );
+            }}
+          />
+
+        ) : (
+
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingVertical: hp2(2) }}
+            data={filterDates}
+            onEndReached={() =>
+              !loading && page !== null && getOrdersByGuest(String(pageNo + 1))
+            }
+            onEndReachedThreshold={0.1}
+            renderItem={({ item, index }) => {
+              return (
+                <>
+                  <LineComp date={item} key={index} />
+
+                  {data?.map((item2, index2) => {
+                    if (moment(item2?.created_at).format('MM/YY') === item) {
+                      return (
+                        <OrderComp data={item2} key={index2} />
+                      )
+                    }
+                  })}
+                </>
+              );
+            }}
+          />
+
         )}
 
-          {loading && data?.length !== 0 && (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: hp2(3),
-              }}>
-              <SkypeIndicator size={26} color={'black'} />
-            </View>
-          )}
-        
+        {!loading && data?.length === 0 && (
+          <View style={{ alignItems: 'center', flex: 1 }}><Text>Orders Not Available</Text></View>
+        )}
+
+        {loading && data?.length !== 0 && (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              paddingVertical: hp2(3),
+            }}>
+            <SkypeIndicator size={26} color={'black'} />
+          </View>
+        )}
+
         {/* <BottomComp /> */}
       </View>
     </SafeAreaView>

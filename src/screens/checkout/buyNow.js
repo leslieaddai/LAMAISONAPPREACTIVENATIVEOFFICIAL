@@ -249,7 +249,7 @@ export default function BuyNow(props) {
           })
           .catch(function (error) {
             setLoadingContinue(false);
-            errorMessage(error?.response?.data?.message)
+            errorMessage(errorHandler(error))
           })
       } else {
         errorMessage('Invalid city name')

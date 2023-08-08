@@ -37,6 +37,7 @@ import {GetBrandOrders} from '../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import moment from 'moment';
 
 export default function OrderComp2(props) {
 
@@ -44,14 +45,23 @@ export default function OrderComp2(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
-  console.log("asld",props?.data.order)
-  //console.log("asld array",props?.orderStatus)
+  const DateFormater = (date) =>{
+    
+    const dateTime = String(date);
+    
+    const formattedDateTime = moment(dateTime).format('MMM/DD/YYYY');
+
+
+    return formattedDateTime 
+      }
   return (
-    <View style={styles.container}>
+    <TouchableOpacity 
+    onPress={props.onpress}
+    style={styles.container}>
       <View style={styles.imgWrap}>
         <Image
-          //source={IMAGES.randomProfile}
-          source={{uri:props?.data?.product?.product_images?.[0]?.image?.[0]?.original_url}}
+          // source={IMAGES.randomProfile}
+          source={{uri:props?.data?.vendor_order_details[0].product?.product_images[0]?.image?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
@@ -65,10 +75,11 @@ export default function OrderComp2(props) {
         </Text>
         </TouchableOpacity>
         </View>
+        <Text>{DateFormater(props?.data?.created_at)}</Text>
 
         <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

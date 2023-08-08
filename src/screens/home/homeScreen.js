@@ -92,6 +92,10 @@ export default function HomeScreen(props) {
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
         setLoading(false);
+        dispatch({
+          type: types.OrderCount,
+          payload: 2,
+        });
       })
       .catch(function (error) {
         console.log(error?.response?.data);

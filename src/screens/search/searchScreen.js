@@ -125,8 +125,8 @@ export default function SearchScreen({navigation, route}) {
     axios
       .post(SearchUrl + page_no, obj)
       .then(async function (res) {
-        // console.log(res?.data);
         if(previouspage == res?.data?.current_page){
+          console.log("asda=======>");
         setData([...res?.data?.data]);
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
@@ -152,7 +152,7 @@ export default function SearchScreen({navigation, route}) {
                   getSearchResults(searchTerm,'1');
                   getEditorResults(searchTerm);
     console.log(searchTerm)
-  }, 500);
+  }, 2000);
   let typingTimeout = null;
 const handleInputChange = (text) => {
   setText(text)
@@ -160,7 +160,7 @@ const handleInputChange = (text) => {
 
   typingTimeout = setTimeout(() => {
     debouncedSearch(text); 
-  }, 500);
+  }, 2000);
 }
   
   return (
@@ -178,7 +178,8 @@ const handleInputChange = (text) => {
               <TextInput
                 style={styles.textBoxInput}
                 value={text}
-                  onChangeText={handleInputChange}
+                  onChangeText={(e)=>{
+                    setText(e)}}
               
                 // onSubmitEditing={() => {
                 //   //console.log('submited', text);
