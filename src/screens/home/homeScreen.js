@@ -5,39 +5,29 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  TextInput,
+
   ScrollView,
   Platform,
   SafeAreaView,
   FlatList,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
   IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+ 
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 
-import BottomComp from '../../components/bottomComp';
-import WelcomeScreen from '../welcome/welcomeScreen';
-import SplashScreen from '../splash/splashScreen';
-
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import {errorMessage, } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {Popular,Newsfeed} from '../../config/Urls';
@@ -45,6 +35,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import OneSignal from 'react-native-onesignal';
+
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);

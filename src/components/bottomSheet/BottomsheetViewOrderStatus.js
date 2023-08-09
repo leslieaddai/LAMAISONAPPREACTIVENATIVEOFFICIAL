@@ -1,15 +1,11 @@
-import React, {useCallback, useRef, useMemo, useState, useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
   Text,
-  Button,
+ 
   Dimensions,
-  Image,
-  Pressable,
-  TextInput,
-  SafeAreaView,
-  Alert,
+ 
   ScrollView,
   TouchableOpacity
 } from 'react-native';

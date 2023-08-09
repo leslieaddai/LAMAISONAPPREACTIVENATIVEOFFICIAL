@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback, memo} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,21 +21,14 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {
-  RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
 import {
   IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
   wp2,
   hp2,
-  getFont,
-  FONTS,
 } from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
@@ -43,16 +36,12 @@ import QuantityComp from '../../components/quantityComp';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import ImageCard from './ImageCard';
 import {request, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
-
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {StylesUrl, ProductUploadUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
 import {BottomSheet} from 'react-native-btr';
-import BottomSheetShippingView from '../../components/bottomSheet/BottomSheetShippingView';
 import LoaderComp from '../../components/loaderComp';
 import Icons from '../../theme/icons';
 

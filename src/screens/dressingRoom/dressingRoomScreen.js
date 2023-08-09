@@ -13,28 +13,24 @@ import {
   Alert,
 } from 'react-native';
 import {
-  widthPercentageToDP as wp,
+
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
   IMAGES,
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+  
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
-import BottomComp from '../../components/bottomComp';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -48,7 +44,6 @@ import {
   ProductShare,
   ProductDislike,
   GetAppNotice,
-  GetUserBasket,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';

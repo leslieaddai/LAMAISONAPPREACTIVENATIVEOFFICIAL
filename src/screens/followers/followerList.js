@@ -2,40 +2,33 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
+
   Platform,
   SafeAreaView,
   FlatList,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
-import BottomComp from '../../components/bottomComp';
+
 import FollowComp from './followComp';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {
@@ -44,8 +37,8 @@ import {
   GetEditorFollowerList,
   GetEditorFollowingList,
 } from '../../config/Urls';
-import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
+import { useSelector} from 'react-redux';
+
 import {SkypeIndicator} from 'react-native-indicators';
 
 export default function FollowerList(props) {

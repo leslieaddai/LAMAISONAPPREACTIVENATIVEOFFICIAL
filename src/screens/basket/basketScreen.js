@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
 import {
@@ -23,7 +23,7 @@ import {
 } from '../../theme';
 import BasketComp from '../../components/basketComp';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {GetUserBasket,BasketQuantityIncreamentDecreament, EditorDecrementbasket} from '../../config/Urls';

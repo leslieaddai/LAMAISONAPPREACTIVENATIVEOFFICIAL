@@ -6,36 +6,30 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView,
+
   Animated,
   Platform,
   SafeAreaView,
-  Alert,
+
   FlatList,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
-import BottomComp from '../../components/bottomComp';
+
 import LoaderComp from '../../components/loaderComp';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
@@ -44,7 +38,7 @@ import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {
   GetShippingAddress,
-  ChangeShippingAddress,
+  
   GetRegionsAll,
   GetCountries,
   CreateGuestOrder,

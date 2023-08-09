@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
 import {
@@ -20,7 +20,7 @@ import {
   hp2,
 } from '../../theme';
 import axios from 'react-native-axios';
-import { ChnagePhone, GetPhone } from '../../config/Urls';
+import { ChnagePhone } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';

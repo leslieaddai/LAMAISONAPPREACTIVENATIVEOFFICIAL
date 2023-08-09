@@ -1,16 +1,16 @@
-import { Image, SafeAreaView, Text, TouchableOpacity, View } from 'react-native'
+import { Image,  Text, TouchableOpacity, View } from 'react-native'
 import React, { useState,useEffect } from 'react'
-import { ICONS, hp2, wp2 } from '../../theme'
+import { ICONS,  wp2 } from '../../theme'
 import styles from './styles'
 import {BottomSheet} from 'react-native-btr';
 import BottomSheetViewOrderStatus from '../bottomSheet/BottomsheetViewOrderStatus';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
+import {errorMessage, } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {ChnageOrderStatus} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
+
 import {SkypeIndicator} from 'react-native-indicators';
 
 

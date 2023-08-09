@@ -1,11 +1,12 @@
-import { Image, SafeAreaView, Text, View } from 'react-native'
+import {  SafeAreaView, Text, View } from 'react-native'
 import React,{useState} from 'react'
 import styles from './Styles'
-import { hp2, wp2 } from '../../theme'
+
 import { FlatList } from 'react-native-gesture-handler'
 import OrderDetailscomp from '../../components/OrderDetailsComp/OrderDetailscomp'
 import LoaderComp from '../../components/loaderComp'
 import { COLORS } from '../../theme'
+
 const OrderDetails = ({navigation,route}) => {
   const [orderData,setOrderData]=useState(route?.params?.item);
     const {item} = route.params

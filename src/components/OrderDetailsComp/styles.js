@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
-import { COLORS, hp2, wp2 } from '../../theme'
+import {  StyleSheet } from 'react-native'
+
+import {  hp2, wp2 } from '../../theme'
 import { RFValue } from 'react-native-responsive-fontsize'
 
 const styles = StyleSheet.create({

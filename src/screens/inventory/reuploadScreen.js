@@ -7,7 +7,7 @@ import {
   Text,
   TextInput,
   ScrollView,
-  PermissionsAndroid,
+
   Platform,
   Animated,
   SafeAreaView,
@@ -18,25 +18,22 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+  
   wp2,
   hp2,
-  getFont,
-  FONTS,
+
 } from '../../theme';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
-import ColorBox from '../../components/colorBox';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import QuantityComp from '../../components/quantityComp';
 
@@ -50,12 +47,12 @@ import {
   GetBrandShippingInfo,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
+
 import {SkypeIndicator} from 'react-native-indicators';
 
 import LoaderComp from '../../components/loaderComp';
 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchImageLibrary} from 'react-native-image-picker';
 import { BottomSheet } from 'react-native-btr';
 import Icons from '../../theme/icons';
 import { FlatList } from 'react-native-gesture-handler';

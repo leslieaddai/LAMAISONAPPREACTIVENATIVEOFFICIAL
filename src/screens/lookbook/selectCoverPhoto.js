@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView,
+
   PermissionsAndroid,
   Platform,
   SafeAreaView,
@@ -15,33 +15,27 @@ import {
   Alert,
   Linking,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
   IMAGES,
-  ICONS,
+
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+  
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ImageCard from './ImageCard';
 import {request, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {errorMessage} from '../../config/NotificationMessage';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 
 const PAGE_SIZE = 40;
 

@@ -1,14 +1,11 @@
+import React from 'react'
 import {  
     StyleSheet,
     View,
     Text,
-    Button,
+   
     Dimensions,
-    Image,
-    Pressable,
-    TextInput,
-    SafeAreaView,
-    Alert,
+   
     ScrollView,
     TouchableOpacity} from 'react-native'
 import {
@@ -19,7 +16,6 @@ import {
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
 import icons from '../../theme/icons';
-import React , {useCallback, useRef, useMemo, useState, useEffect}from 'react'
 
 const BottomSheetShippingView = (
 Data,

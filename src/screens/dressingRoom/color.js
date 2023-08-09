@@ -1,44 +1,29 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
+
   Platform,
   SafeAreaView,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+ 
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
-
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
-import axios from 'react-native-axios';
-import {errorHandler} from '../../config/helperFunction';
-import {ColorsUrl} from '../../config/Urls';
-import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
 
 export default function SelectColor(props) {
   let uniq = props?.route?.params?.data?.product_variations.filter(

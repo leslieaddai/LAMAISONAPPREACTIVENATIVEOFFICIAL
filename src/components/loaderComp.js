@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import {wp2, hp2} from '../theme';
 import {SkypeIndicator} from 'react-native-indicators';
 

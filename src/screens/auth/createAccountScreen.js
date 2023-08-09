@@ -2,54 +2,41 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView,
+
   Platform,
-  Button,
+
   SafeAreaView,
-  ActivityIndicator,
-  Modal,
-  Linking,
+
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+  
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+ 
   wp2,
   hp2,
-  getFont,
-  FONTS,
+
 } from '../../theme';
 import CheckBox from '@react-native-community/checkbox';
 import {connect} from 'react-redux';
 import {signup} from '../../store/actions/authAction';
-import {message} from '../../store/message';
+
 import DatePicker from 'react-native-date-picker';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {RegisterUrl} from '../../config/Urls';
-import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
-
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import LoaderComp from '../../components/loaderComp';
 

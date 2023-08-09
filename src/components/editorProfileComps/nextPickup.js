@@ -5,33 +5,22 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
-  FlatList,
+
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
-  ICONS,
-  COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
 
 export function ImgComp(props) {

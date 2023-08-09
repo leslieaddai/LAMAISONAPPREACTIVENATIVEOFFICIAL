@@ -1,37 +1,30 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
+
   Text,
-  TextInput,
-  ScrollView,
+
   Platform,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+ 
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
   IMAGES,
-  ICONS,
+
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+  
 } from '../../theme';
 
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 export default function WelcomeScreen(props) {
   const user = useSelector(state => state.userData)

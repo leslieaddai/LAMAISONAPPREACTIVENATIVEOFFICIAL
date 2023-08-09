@@ -5,18 +5,13 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
+
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../theme/fonts';
+
 import {
   wp2,
   hp2

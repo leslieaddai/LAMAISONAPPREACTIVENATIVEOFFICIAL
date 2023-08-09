@@ -8,16 +8,15 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-import {ICONS, COLORS, wp2, hp2} from '../../theme';
+import { COLORS, wp2, hp2} from '../../theme';
 import {
   RFValue as rfv,
-  RFPercentage as rfp,
+  
 } from 'react-native-responsive-fontsize';
 import auth from '@react-native-firebase/auth';
 import {errorMessage} from '../../config/NotificationMessage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import { LoginManager, AccessToken ,Settings} from 'react-native-fbsdk-next';
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 export default function SignupScreen(props) {
   const [firstName, setFirstName] = useState('');

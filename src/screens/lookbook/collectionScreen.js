@@ -2,41 +2,34 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
-  TextInput,
-  ScrollView,
+
   Platform,
   FlatList,
   SafeAreaView,
   Alert,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+
 } from '../../theme';
-import BottomComp from '../../components/bottomComp';
+
 import CollectionItemsComp from '../../components/collectionItemsComp';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 
 export default function CollectionScreen({navigation, route}) {
   items = route.params;

@@ -1,57 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
   TextInput,
-  ScrollView,
+
   SafeAreaView,
   Platform,
-  Modal,
-  Linking,
+ 
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
-  ICONS,
+
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+ 
   wp2,
   hp2,
-  getFont,
-  FONTS,
+ 
 } from '../../theme';
 import AlertComp from '../../components/alertComp';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {LoginUrl, RegisterGuest,ConnectAccountLink} from '../../config/Urls';
-import {useDispatch, useSelector} from 'react-redux';
+import {LoginUrl, RegisterGuest} from '../../config/Urls';
+import {useDispatch} from 'react-redux';
 import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
-
 import Animated, {Layout} from 'react-native-reanimated';
-
 import LoaderComp from '../../components/loaderComp';
-
-import {getUniqueId, getIpAddress} from 'react-native-device-info';
+import {getUniqueId} from 'react-native-device-info';
 import {NetworkInfo} from 'react-native-network-info';
-
-import WebView from 'react-native-webview';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);

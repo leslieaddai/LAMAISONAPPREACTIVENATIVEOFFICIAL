@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-  Image,
+
   TouchableOpacity,
   Text,
   TextInput,
@@ -10,29 +10,23 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
+
 import {
-  IMAGES,
+
   ICONS,
   COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
+
 } from '../../theme';
 
-import DateComp from './dateComp';
+
 import CommentComp from './commentComp';
 import LineComp from '../../components/lineComp';
 
@@ -41,8 +35,7 @@ import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {AddComment} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
+
 import moment from 'moment';
 
 import LoaderComp from '../../components/loaderComp';

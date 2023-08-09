@@ -1,48 +1,23 @@
-import React, {useState, useEffect, useCallback, memo} from 'react';
+import React, {memo} from 'react';
 import {
-  StyleSheet,
-  View,
+
   Image,
   TouchableOpacity,
-  Text,
-  TextInput,
-  ScrollView,
-  PermissionsAndroid,
+ 
   Platform,
-  SafeAreaView,
-  FlatList,
+
 } from 'react-native';
+
+
 import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-  RFPercentage as rfp,
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-import fonts from '../../theme/fonts';
-import {
-  IMAGES,
+
   ICONS,
-  COLORS,
-  SIZES,
-  screenHeight,
-  screenWidth,
+
   wp2,
   hp2,
-  getFont,
-  FONTS,
-} from '../../theme';
-import {CameraRoll} from '@react-native-camera-roll/camera-roll';
-import FastImage from 'react-native-fast-image';
 
-import {errorMessage, successMessage} from '../../config/NotificationMessage';
-import axios from 'react-native-axios';
-import {errorHandler} from '../../config/helperFunction';
-import {LoginUrl} from '../../config/Urls';
-import {useDispatch, useSelector, connect} from 'react-redux';
-import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
+} from '../../theme';
+
 
 const ImageCard = props => {
 

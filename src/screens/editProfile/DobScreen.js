@@ -10,7 +10,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 import {
-  RFPercentage as rfp,
+
   RFValue as rfv,
 } from 'react-native-responsive-fontsize';
 import {
@@ -21,7 +21,7 @@ import {
 } from '../../theme';
 import DatePicker from 'react-native-date-picker';
 import axios from 'react-native-axios';
-import { ChnageDob, ChnagePhone, GetPhone } from '../../config/Urls';
+import { ChnageDob} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import { successMessage } from '../../config/NotificationMessage';
 import {SkypeIndicator} from 'react-native-indicators';
