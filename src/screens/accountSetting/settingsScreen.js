@@ -202,7 +202,7 @@ useEffect(()=>{
               {settingOptions('PROFILE', '', 'editProfile')}
               {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
               {settingOptions('SHIPPING ADDRESS', '', 'shippingAddress')}
-              {settingOptions('ALL ORDERS', `${count>0 ? 'blue':''}`, 'orderTrackingScreen')}
+              {settingOptions('ALL ORDERS', '', 'orderTrackingScreen')}
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}

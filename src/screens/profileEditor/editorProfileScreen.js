@@ -224,9 +224,6 @@ export default function EditorProfileScreen(props) {
                       size={44}
                       color="black"
                     />
-                    {count>0 && <View style={styles.notificationBadge}>
-                      <Text style={{color: 'white', fontSize: rfv(10)}}>{count}</Text>
-                    </View>}
                   </TouchableOpacity>
                 )}
                 <View style={styles.nameContainer}>

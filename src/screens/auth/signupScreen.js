@@ -191,7 +191,7 @@ export default function SignupScreen(props) {
         style={[styles.button, {width: wp2(48)}]}>
         <Text style={styles.buttonText}>CONTINUE</Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() =>
           onGoogleButtonPress().then(res =>
             console.log('Signed in with Google!',res),
@@ -205,8 +205,8 @@ export default function SignupScreen(props) {
           style={{position: 'absolute', left: wp2(4)}}
         />
         <Text style={styles.button2Text}>continue with Google</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+      </TouchableOpacity> 
+       <TouchableOpacity
         onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
         style={styles.button2}>
         <ICONS.AntDesign
@@ -216,7 +216,7 @@ export default function SignupScreen(props) {
           style={{position: 'absolute', left: wp2(4)}}
         />
         <Text style={styles.button2Text}>continue with facebook</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       
     </SafeAreaView>
     </>
