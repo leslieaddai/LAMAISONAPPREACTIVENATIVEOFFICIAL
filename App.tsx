@@ -18,23 +18,6 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 
 const App = () => {
   
-OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
-
-OneSignal.promptForPushNotificationsWithUserResponse();
-
-OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-  console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-  let notification = notificationReceivedEvent.getNotification();
-  console.log("notification: ", notification);
-  const data = notification.additionalData
-  console.log("additionalData: ", data);
-  notificationReceivedEvent.complete(notification);
-});
-
-OneSignal.setNotificationOpenedHandler(notification => {
-  console.log("OneSignal: notification opened:", notification);
-});
-
 useEffect(() => {
   (async () => {
     LogBox.ignoreLogs([

@@ -25,7 +25,6 @@ const roleid = user?.userData?.role?.[0]?.id
   const [selectedStatus, setSelectedStatus] = useState(props?.status);
   const orderStatusData = props?.orderStatus;
   const addressData = props?.addressData;
-
     const [loading, setLoading] = useState(false)
     const onloading = (value,label)=>{
       setLoading(value)
@@ -103,14 +102,14 @@ const roleid = user?.userData?.role?.[0]?.id
       <View style={{marginLeft:wp2(10)}}>
         <View style={styles.namestyle}>
       <Text style={styles.nametextstyle}>{roleid===3?'Editor Name ':'Brand Name '}</Text>
-      <Text style={styles.nametextstyle}>- {props?.user?.name}</Text>
+      <Text style={styles.nametextstyle}>- {roleid===3?props.name:props?.user?.name}</Text>
         </View>
       <Text style={styles.textstyle}>{`Product Name - ${props?.productname}`}</Text>
       <Text style={styles.textstyle}>{`Description - ${props?.description}`}</Text>
       <Text style={styles.textstyle}>{`Address 1 - ${addressData?.add1}`}</Text>
       <Text style={styles.textstyle}>{`Address 2 - ${addressData?.add2}`}</Text>
       <Text style={styles.textstyle}>{`City - ${addressData?.city}`}</Text>
-      <Text style={styles.textstyle}>{`Country - ${addressData?.country}`}</Text>
+      <Text style={styles.textstyle}>{`Country - ${addressData?.country?.name}`}</Text>
       <Text style={styles.textstyle}>{`Quantity - ${props?.quantity}`}</Text>
       <Text style={styles.textstyle}>{`Size - ${props?.size}`}</Text>
       <View style={styles.colourView}>
@@ -120,16 +119,18 @@ const roleid = user?.userData?.role?.[0]?.id
       <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
     
       <TouchableOpacity 
+      disabled={roleid===3?false:true}
       onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
       style={styles.statusbtn}>
       <Text style={styles.textstyle}>{`Status - ${selectedStatus}`}
+      {roleid===3&&
       <View style={styles.iconstyle}>
              <ICONS.FontAwesome
                name={isOpenedStatus ? 'chevron-up' : 'chevron-down'}
                color={'#A1A1A1'}
                size={22}
              />
-           </View>
+           </View>}
           </Text>
            </TouchableOpacity>
       </View>

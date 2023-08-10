@@ -56,10 +56,6 @@ export default function OrderTrackingScreen(props) {
     user?.token !== null && user?.userData?.role?.[0]?.id === 3 && getOrderStatus();
     user?.token !== null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
     user?.token === null && getOrdersByGuest('1');
-    dispatch({
-      type: types.OrderCount,
-      payload: 0,
-    });
   }, []);
 
   const getOrderStatus = () => {
@@ -239,7 +235,17 @@ export default function OrderTrackingScreen(props) {
                                 orderStatus={orderStatus}
                                 data={item3}
                                 key={index3} 
-                                onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item3?.address1,add2:item3?.address2,country:item3?.country,city:item3?.city}, item: item3.vendor_order_details, orderStatus: orderStatus })
+                                onpress={() => { props.navigation.navigate('OrderDetails', { 
+                                addressData:{
+                                add1:item3?.address1,
+                                add2:item3?.address2,
+                                country:item3?.country,
+                                city:item3?.city
+                              }, 
+                                editorname:item3?.user?.first_name+item3?.user?.last_name,
+                                item: item3.vendor_order_details, 
+                                orderStatus: orderStatus
+                              })
                                }} />
                             )
                           })}
@@ -273,7 +279,15 @@ export default function OrderTrackingScreen(props) {
                         <OrderComp 
                         data={item2} 
                         key={index2} 
-                        onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item2?.address1,add2:item2?.address2,country:item2?.country,city:item2?.city}, item: item2?.order_details })}}
+                        onpress={() => { props.navigation.navigate('OrderDetails', {
+                           addressData:{
+                          add1:item2?.address1,
+                          add2:item2?.address2,
+                          country:item2?.country,
+                          city:item2?.city}, 
+                          item: item2?.order_details, 
+                          orderStatus: orderStatus
+                         })}}
                         />
                       )
                     }

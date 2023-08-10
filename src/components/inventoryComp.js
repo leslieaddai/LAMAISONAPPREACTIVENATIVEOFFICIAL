@@ -60,7 +60,7 @@ export default function InventoryComp(props) {
       <Text
         style={{
           color:
-            props?.data?.product_variations_sum_quantity < 5
+            props?.data?.quantity_percentage < 20
               ? '#EC3030'
               : 'black',
           textAlign: 'center',

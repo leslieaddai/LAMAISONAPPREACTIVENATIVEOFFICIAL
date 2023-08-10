@@ -9,12 +9,10 @@ import { COLORS } from '../../theme'
 
 const OrderDetails = ({navigation,route}) => {
   const [orderData,setOrderData]=useState(route?.params?.item);
-    const {item} = route.params
     const {addressData} = route.params
     const {orderStatus} = route.params
-
+    const {editorname} =route.params
     const onChangeOrderStatus = (indexNo,newStatus) => {
-   
       let tempArr = orderData;
       tempArr[indexNo].status.status=newStatus;
       setOrderData(tempArr);
@@ -34,6 +32,7 @@ const OrderDetails = ({navigation,route}) => {
       <FlatList
       data={orderData}
       renderItem={({item,index})=>{
+        console.log("changes",item?.user)
         return(
         <View style={styles.ConatinerView}>
             <OrderDetailscomp
@@ -49,8 +48,8 @@ const OrderDetails = ({navigation,route}) => {
             status={item?.status?.status}
             orderStatus={orderStatus}
             addressData={addressData}
-            user={item?.product?.user}
-       
+            user={item?.user}
+            name={editorname}
             orderId={item?.id}
             loaderState={{loadingStatusChange,setLoadingStatusChange,onChangeOrderStatus}}
           

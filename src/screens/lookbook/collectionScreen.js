@@ -26,13 +26,16 @@ import {
   hp2,
 
 } from '../../theme';
+import axios from 'react-native-axios';
 
 import CollectionItemsComp from '../../components/collectionItemsComp';
 
 import { useSelector} from 'react-redux';
+import { DeleteCollection } from '../../config/Urls';
 
 export default function CollectionScreen({navigation, route}) {
   items = route.params;
+  console.log(items)
   const user = useSelector(state => state.userData);
  
   const [showDelete, setShowDelete] = useState(false);
@@ -54,6 +57,7 @@ export default function CollectionScreen({navigation, route}) {
           text: 'Yes',
           onPress: () => {
             setShowDelete(false)
+            deletecollection()
           },
         },
       ]);
@@ -62,6 +66,26 @@ export default function CollectionScreen({navigation, route}) {
       setShowDelete(true);
     }
     
+  }
+  const deletecollection = () =>{
+    let config = {
+      method: 'delete',
+      maxBodyLength: Infinity,
+      url: `${DeleteCollection}collection_id`,
+      headers: { 
+        'Authorization': `Bearer ${user?.token}`, 
+        'Accept': 'application/json', 
+      },
+    };
+    axios.request(config)
+    .then((response) => {
+      console.log(response)
+
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+    });
   }
 
   return (

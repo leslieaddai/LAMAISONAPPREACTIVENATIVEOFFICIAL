@@ -80,3 +80,5 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const ChnagePhone = getApi('change/phone')
   export const ChnageDob = getApi('change/dob')
   export const globalSetting = getApi('global-settings')
+  export const getCount = getApi('getCount')
+  export const DeleteCollection = getApi('collection/delete/')

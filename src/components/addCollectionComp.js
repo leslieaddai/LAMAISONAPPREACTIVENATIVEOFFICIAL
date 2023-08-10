@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -21,8 +21,13 @@ import {
   hp2,
 
 } from '../theme';
+import {SkypeIndicator} from 'react-native-indicators';
 
 export default function AddCollectionComp(props) {
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   return (
     <TouchableOpacity
       onPress={() =>
@@ -40,8 +45,24 @@ export default function AddCollectionComp(props) {
       }
       style={styles.imageContainer}>
       <View style={{height: hp2(18), overflow: 'hidden'}}>
+      {loading?
+          <View style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf:'center'
+          }}>
+        <SkypeIndicator
+        color={'black'}
+      /> 
+      </View>
+      :
+      undefined
+          }
         <Image
-      
+         progressiveRenderingEnabled={true}
+         onLoadStart={()=>{onloading(true,"onLoadStart")}}
+         onLoad={()=>onloading(false,"onLoad")}
+         onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={{
             uri: props?.data?.item?.product_images[0]?.image[0]?.original_url,
           }}

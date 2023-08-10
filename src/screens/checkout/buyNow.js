@@ -187,6 +187,7 @@ export default function BuyNow(props) {
     axios
       .get(GetCountries + country_code)
       .then(async function (res) {
+        console.log(res.data.data)
         setCountriesData(res?.data?.data);
         setLoading(false);
       })

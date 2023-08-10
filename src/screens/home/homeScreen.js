@@ -30,7 +30,7 @@ import {
 import {errorMessage, } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {Popular,Newsfeed} from '../../config/Urls';
+import {Popular,Newsfeed, getCount} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -48,6 +48,47 @@ export default function HomeScreen(props) {
   const [postcomloading,setPostcomploading] = useState(false)
   const[productcomploading,setProductcomploading] =useState(false)
   const [prod2comploading,setProd2comploading] = useState(false)
+
+  OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
+  OneSignal.setExternalUserId(String(user.userData.id))
+
+  OneSignal.promptForPushNotificationsWithUserResponse();
+
+OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
+  console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+  let notification = notificationReceivedEvent.getNotification();
+  console.log("notification: ", notification);
+  const data = notification.additionalData
+  console.log("additionalData: ", data);
+  notificationReceivedEvent.complete(notification);
+});
+
+OneSignal.setNotificationOpenedHandler(notification => {
+  console.log("OneSignal: notification opened:", notification);
+});
+
+  useEffect(()=>{
+    user?.token !== null && 
+    user?.userData?.role?.[0]?.id === 3&&
+    getbrandOrderCount()
+  },[])
+
+  const getbrandOrderCount = ()=>{
+    axios
+      .get(getCount, {
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+        dispatch({
+          type: types.OrderCount,
+          payload: res?.data?.order_count,
+        });
+      })
+      .catch(function (error) {
+       
+        errorMessage(errorHandler(error))
+      });
+  }
 
   useEffect(() => {
     setLoading(true);
@@ -83,10 +124,6 @@ export default function HomeScreen(props) {
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
         setLoading(false);
-        dispatch({
-          type: types.OrderCount,
-          payload: 2,
-        });
       })
       .catch(function (error) {
         
@@ -336,25 +373,29 @@ export default function HomeScreen(props) {
         if (notification) {
           console.log("notification",notification)
           const { additionalData = null } = notification;
-          if (additionalData) {
-            // const { signal_id } = additionalData;
-            // dispatch({
-            //   type: types.signalid,
-            //   payload: signal_id,
-            // });
-            console.log("additionalData",additionalData)
-            // navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'NotificationSignal'}],
-            // })
-          }
-          else{
-            console.log("notifiction cheking")
-            // navigation.reset({
-            //   index: 0,
-            //   routes: [{ name: 'Home'}],
-            // })
-          }
+          navigation.reset({
+                index: 0,
+                routes: [{ name: 'notificationScreen'}],
+              })
+          // if (additionalData) {
+          //   // const { signal_id } = additionalData;
+          //   // dispatch({
+          //   //   type: types.signalid,
+          //   //   payload: signal_id,
+          //   // });
+          //   console.log("additionalData",additionalData)
+          //   // navigation.reset({
+          //   //   index: 0,
+          //   //   routes: [{ name: 'NotificationSignal'}],
+          //   // })
+          // }
+          // else{
+          //   console.log("notifiction cheking")
+          //   // navigation.reset({
+          //   //   index: 0,
+          //   //   routes: [{ name: 'Home'}],
+          //   // })
+          // }
         }
       })
 
