@@ -19,6 +19,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import { useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 
 export default function Popular(props) {
@@ -41,15 +42,11 @@ export default function Popular(props) {
       <Text style={{color: 'black', marginLeft: wp2(3)}}>{props?.no + 1}</Text>
       <View style={styles.productImage}>
       {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+       <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+       <View style={styles.skeletonView} />
+       </View>
+       </SkeletonPlaceholder>
     :
     undefined
         }
@@ -86,4 +83,8 @@ const styles = StyleSheet.create({
     borderRadius: wp2(4),
     marginHorizontal: wp2(2),
   },
+  skeletonView:{
+    width: wp2(18),
+    height: wp2(18)
+  }
 });

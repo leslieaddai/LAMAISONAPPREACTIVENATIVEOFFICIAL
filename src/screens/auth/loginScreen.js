@@ -36,10 +36,12 @@ import Animated, {Layout} from 'react-native-reanimated';
 import LoaderComp from '../../components/loaderComp';
 import {getUniqueId} from 'react-native-device-info';
 import {NetworkInfo} from 'react-native-network-info';
+import OneSignal from 'react-native-onesignal';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
   const [errormsg,setError]= useState()
+  const [PlayerId, setPlayerId] = useState('')
 
   const dispatch = useDispatch();
 
@@ -58,18 +60,20 @@ export default function LoginScreen(props) {
     return /\s/.test(str);
   }
 
+
   const onSignIn = () => {
     if (UserName != '' && Password != '') {
+      
       if(!containsWhitespace(UserName)){
         setLoading(true);
       let obj = {
         email: UserName,
         password: Password,
+        player_id:PlayerId
       };
       axios
         .post(LoginUrl, obj)
         .then(async function (res) {
-        
           setLoading(false);
           if (res.data.user.email_verified === false) {
           
@@ -111,6 +115,7 @@ export default function LoginScreen(props) {
         }, 3000);
       }
     } else {
+      if(PlayerId ==''){OneSignal.promptForPushNotificationsWithUserResponse()}
       setError('Please fill all details');
       setShowError(true);
       setTimeout(() => {

@@ -28,6 +28,7 @@ import {GetVirtualWardrobe} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function Wardrobe(props) {
   const navigation = useNavigation();
@@ -71,24 +72,20 @@ const [loadingImage, setLoadingImage] = useState(false)
               }
               key={index} style={styles.imageContainer}>
                 {loadingImage?
-                <View style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  alignSelf:'center'
-                }}>
-              <SkypeIndicator
-              color={'black'}
-            /> 
-            </View>
+                <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={styles.imageContainer} />
+                </View>
+                </SkeletonPlaceholder>
             :
             undefined
                 }
                 <Image
            
                   progressiveRenderingEnabled={true}
-              onLoadStart={()=>{onloading(true,"onLoadStart")}}
-              onLoad={()=>onloading(false,"onLoad")}
-              onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                  onLoadStart={()=>{onloading(true,"onLoadStart")}}
+                  onLoad={()=>onloading(false,"onLoad")}
+                  onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
                   source={{uri: item?.product_image}}
                   style={{width: '100%', height: '100%'}}
                   resizeMode="cover"
@@ -133,7 +130,6 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(1),
     marginTop: hp2(1),
     borderRadius: wp2(4),
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -143,5 +139,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  wardrobeTxt: {color: 'white', fontWeight: '700', fontSize: rfv(24)},
+  wardrobeTxt: {
+    color: 'white', 
+    fontWeight: '700', 
+    fontSize: rfv(24)
+  },
 });

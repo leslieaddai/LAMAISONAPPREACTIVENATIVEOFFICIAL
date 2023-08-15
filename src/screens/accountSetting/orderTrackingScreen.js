@@ -9,6 +9,8 @@ import {
   Platform,
   SafeAreaView,
   FlatList,
+  Animated,
+  TouchableOpacity,
 } from 'react-native';
 
 import {
@@ -36,8 +38,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
 import moment from 'moment';
+import { Swipeable } from 'react-native-gesture-handler';
 
-export default function OrderTrackingScreen(props) {
+export default function OrderTrackingScreen({navigation}) {
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -189,6 +192,15 @@ export default function OrderTrackingScreen(props) {
         errorMessage(errorHandler(error))
       });
   };
+  renderHiddenItem =(person) =>{
+    return (
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => this.deletePerson(person.id)}>
+        <Text style={styles.deleteText}>Delete</Text>
+      </TouchableOpacity>
+    );
+  }
 
   return (
     <>
@@ -230,19 +242,21 @@ export default function OrderTrackingScreen(props) {
                       return (
                         <>
                           {item2?.order?.map((item3, index3) => {
+                            // console.log(item3?.user?.email);
                             return (
                               <OrderComp2
                                 orderStatus={orderStatus}
                                 data={item3}
                                 key={index3} 
-                                onpress={() => { props.navigation.navigate('OrderDetails', { 
+                                onpress={() => { navigation.navigate('OrderDetails', { 
                                 addressData:{
                                 add1:item3?.address1,
                                 add2:item3?.address2,
                                 country:item3?.country,
                                 city:item3?.city
                               }, 
-                                editorname:item3?.user?.first_name+item3?.user?.last_name,
+                                editorname:`${item3?.user?.first_name}${item3?.user?.last_name!=null?item3?.user?.last_name:''}`,
+                                editoremail:item3?.user?.email,
                                 item: item3.vendor_order_details, 
                                 orderStatus: orderStatus
                               })
@@ -272,14 +286,31 @@ export default function OrderTrackingScreen(props) {
               return (
                 <>
                   <LineComp date={item} key={index} />
-
                   {data?.map((item2, index2) => {
                     if (moment(item2?.created_at).format('MM/YY') === item) {
                       return (
+                        <Swipeable
+                        key={index2}
+                        renderRightActions={() => (
+                          <TouchableOpacity
+                            style={{ 
+                              backgroundColor: 'red',
+                               justifyContent: 'center', 
+                               alignItems: 'center', 
+                               width: 100 }}
+                            // onPress={onSwipe}
+                          >
+                            <Text style={{
+                            color:'white',
+                            fontWeight: '600',
+                             fontSize: rfv(14)}}>Cancel</Text>
+                          </TouchableOpacity>
+                        )}
+                        >
                         <OrderComp 
                         data={item2} 
                         key={index2} 
-                        onpress={() => { props.navigation.navigate('OrderDetails', {
+                        onpress={() => { navigation.navigate('OrderDetails', {
                            addressData:{
                           add1:item2?.address1,
                           add2:item2?.address2,
@@ -289,6 +320,7 @@ export default function OrderTrackingScreen(props) {
                           orderStatus: orderStatus
                          })}}
                         />
+                        </Swipeable>
                       )
                     }
                   })}
@@ -318,7 +350,15 @@ export default function OrderTrackingScreen(props) {
                         <OrderComp 
                         data={item2} 
                         key={index2} 
-                        onpress={() => { props.navigation.navigate('OrderDetails', { addressData:{add1:item2?.address1,add2:item2?.address2,country:item2?.country,city:item2?.city}, item: item2?.order_details })}}
+                        onpress={() => {navigation.navigate('OrderDetails', 
+                        { 
+                          addressData:{
+                            add1:item2?.address1,
+                            add2:item2?.address2,
+                            country:item2?.country,
+                            city:item2?.city}, 
+                            item: item2?.order_details }
+                            )}}
                         />
                       )
                     }

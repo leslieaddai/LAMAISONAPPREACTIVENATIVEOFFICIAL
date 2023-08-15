@@ -32,10 +32,11 @@ import CollectionItemsComp from '../../components/collectionItemsComp';
 
 import { useSelector} from 'react-redux';
 import { DeleteCollection } from '../../config/Urls';
+import { successMessage } from '../../config/NotificationMessage';
 
 export default function CollectionScreen({navigation, route}) {
   items = route.params;
-  console.log(items)
+  // console.log(items?.collection[0]?.collection_id)
   const user = useSelector(state => state.userData);
  
   const [showDelete, setShowDelete] = useState(false);
@@ -71,7 +72,7 @@ export default function CollectionScreen({navigation, route}) {
     let config = {
       method: 'delete',
       maxBodyLength: Infinity,
-      url: `${DeleteCollection}collection_id`,
+      url: `${DeleteCollection}${items?.collection[0]?.collection_id}`,
       headers: { 
         'Authorization': `Bearer ${user?.token}`, 
         'Accept': 'application/json', 
@@ -79,9 +80,9 @@ export default function CollectionScreen({navigation, route}) {
     };
     axios.request(config)
     .then((response) => {
-      console.log(response)
-
       console.log(JSON.stringify(response.data));
+      successMessage('Collection Delete Successfully')
+      navigation.goBack()
     })
     .catch((error) => {
       console.log(error.response.data);

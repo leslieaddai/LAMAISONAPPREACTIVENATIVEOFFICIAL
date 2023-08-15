@@ -18,6 +18,7 @@ import {
 } from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function InventoryComp(props) {
   const navigation = useNavigation();
@@ -31,15 +32,11 @@ export default function InventoryComp(props) {
       style={styles.imageContainer}>
       <View style={{height: hp2(22), overflow: 'hidden'}}>
       {loading?
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf:'center'
-          }}>
-        <SkypeIndicator
-        color={'black'}
-      /> 
-      </View>
+          <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.skeletonView} />
+          </View>
+          </SkeletonPlaceholder>
       :
       undefined
           }
@@ -91,4 +88,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     margin: wp2(1),
   },
+  skeletonView:{
+    width: wp2(47),
+    height:hp2(22)
+  }
 });

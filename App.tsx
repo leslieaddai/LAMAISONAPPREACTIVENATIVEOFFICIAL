@@ -17,6 +17,9 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 
 
 const App = () => {
+  OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
+
+  OneSignal.promptForPushNotificationsWithUserResponse();
   
 useEffect(() => {
   (async () => {

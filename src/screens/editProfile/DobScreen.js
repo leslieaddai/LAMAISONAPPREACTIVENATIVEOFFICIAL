@@ -38,12 +38,15 @@ const DobScreen = (props) => {
       const month = `${Birthday.getMonth() + 1}`.padStart(2, "0")
       const [data,setData] = useState({
           access_token:user?.token,
-          user:''
+          user:'',
+          warning:user.warning
       })
       const updateDataState = (response) => {
           setData({
             access_token: user?.token, 
             user: response.user || '', 
+            warning:user.warning
+
           });
         };
         useEffect(()=>{

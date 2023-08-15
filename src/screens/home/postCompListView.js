@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -7,6 +7,7 @@ import {
   Text,
   
   FlatList,
+  Alert,
 } from 'react-native';
 
 
@@ -21,38 +22,209 @@ import {
 
 import { useNavigation } from '@react-navigation/native';
 import moment from 'moment';
-
+import axios from 'react-native-axios';
 import {useDispatch, useSelector} from 'react-redux';
+import { AddWishListUrl, ProductDislike, ProductLike, ProductShare, RemoveFromWishlist } from '../../config/Urls';
+import { errorMessage } from '../../config/NotificationMessage';
+import { errorHandler } from '../../config/helperFunction';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function PostCompListView(props) {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
   const [feedData, setFeedData] = useState([]);
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
-
+  const [loading, setLoading] = useState(false)
+  const onloading = (value,label)=>{
+    setLoading(value)
+  }
   const [showDelete, setShowDelete] = useState(false);
 
   const [heart, setHeart] = useState(false);
   const [share, setShare] = useState(false);
-  const [hanger, setHanger] = useState(false);
+  const [hanger, setHanger] = useState(true);
 
   const navigation = useNavigation();
+  const [likecount,setlikecount] =useState(props?.data?.product_likes_count)
+  const [wishlistcount,setwishlistcount] =useState(props?.data?.product_wishlist_count)
+  const [sharecount , setsharecount] = useState(props?.data?.product_shares_count)
+  useEffect(()=>{
+  setHeart(props?.data?.is_liked? true : false);
+  setHanger(props?.data?.is_wishlisted ? true : false);
+  setShare(props?.data?.is_shared  ? true : false);       
+  },[])
+
+  const AddWishlist = (productId) => {
+    Alert.alert(
+      'Confirmation',
+      'Do you want to add this product into your wishlist?',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('No Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            let data = new FormData()
+            data.append('user_id',user?.userData?.id)
+            data.append('product_id',productId)
+            
+
+            let config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: AddWishListUrl,
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+                Accept: 'application/json',
+              },
+              data: data,
+            };
+
+            axios
+              .request(config)
+              .then(async function (res) {
+                console.log(res)
+                setHanger(true)
+                setwishlistcount(Number(wishlistcount)+1)
+              })
+              .catch(function (error) {
+                console.log(error)
+               
+                errorMessage(errorHandler(error))
+              });
+          },
+        },
+      ],
+    );
+  };
+
+  const RemoveWishlist = (productId) => {  
+    Alert.alert(
+      'Confirmation',
+      'Do you want to remove this product from your wishlist?',
+      [
+        {
+          text: 'No',
+          onPress: () => console.log('No Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            let config = {
+              method: 'delete',
+              maxBodyLength: Infinity,
+              url: RemoveFromWishlist + productId,
+              headers: {
+                Authorization: `Bearer ${user.token}`,
+                Accept: 'application/json',
+              },
+            };
+
+            axios
+              .request(config)
+              .then(async function (res) {
+                console.log(res)
+                setwishlistcount(Number(wishlistcount)-1)
+               setHanger(false)
+              })
+              .catch(function (error) {
+                errorMessage(errorHandler(error))
+              });
+          },
+        },
+      ],
+    );
+  };
+
+  const productLikeDislike = (ProductId) => {
+    
+    let data = new FormData()
+    data.append('user_id',user?.userData?.id)
+    data.append('product_id',ProductId)
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: heart? ProductDislike : ProductLike,
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then(async function (res) {
+        heart ? setHeart(false) : setHeart(true);
+        heart? setlikecount(Number(likecount)) -1 :setlikecount(Number(likecount)+1)
+      })
+      .catch(function (error) {
+      
+        errorMessage(errorHandler(error))
+      });
+  };
+
+  const productShare = (ProductId) => {
+
+    let data = new FormData()
+    data.append('user_id',user?.userData?.id)
+    data.append('product_id',ProductId)
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: ProductShare,
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then(async function (res) {
+        share ? setShare(false) : setShare(true);
+        // sharecount+1
+        share?setsharecount(Number(sharecount)-1):setsharecount(Number(sharecount)+1)
+      })
+      .catch(function (error) {
+        console.log(error.response.data)
+       
+        errorMessage(errorHandler(error))
+      });
+  };
 
   return (
     <View style={{marginVertical: hp2(1)}}>
     <View style={styles.postWrap}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('brandProfileScreen')}
+        onPress={() => navigation.navigate('brandProfileScreen',
+        {
+          userData: {
+            userData: {
+              id: props?.data.user.id,
+              profile_image:
+              props?.data?.user?.profile_image?.original_url,
+              name: props?.data?.user?.name,
+              role: [{id: 3}],
+            },
+          },
+        })}
         style={styles.imageWrap}>
         <Image
-          source={IMAGES.randomProfile}
+          source={props?.data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:props?.data?.user?.profile_image?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           showDelete ? setShowDelete(false) : setShowDelete(true);
         }}>
@@ -69,7 +241,7 @@ export default function PostCompListView(props) {
             style={{marginLeft: wp2(68)}}
           />
         )}
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
 
     <FlatList data={props?.data?.product_images?.[0]?.image} horizontal pagingEnabled showsHorizontalScrollIndicator={false}
@@ -79,8 +251,20 @@ export default function PostCompListView(props) {
         
         onPress={() => navigation.navigate('imageView',{item:props?.data,indexValue:index})}
         style={styles.imageContainer}>
+          {loading?
+       <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+       <View style={styles.skeletonView} />
+       </View>
+       </SkeletonPlaceholder>
+    :
+    undefined
+        }
         <Image
-          
+           progressiveRenderingEnabled={true}
+           onLoadStart={()=>{onloading(true,"onLoadStart")}}
+           onLoad={()=>onloading(false,"onLoad")}
+           onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={{uri:item?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
@@ -93,7 +277,8 @@ export default function PostCompListView(props) {
     <View style={styles.iconWrap}>
       <TouchableOpacity
         onPress={() => {
-          heart ? setHeart(false) : setHeart(true);
+          // 
+          productLikeDislike(props?.data?.id)
         }}>
         <ICONS.AntDesign
           name="heart"
@@ -101,11 +286,16 @@ export default function PostCompListView(props) {
           color={heart ? '#FC0004' : 'black'}
         />
       </TouchableOpacity>
-      <Text style={{color: 'black'}}>1000</Text>
+      <Text style={{color: 'black'}}>{likecount}</Text>
 
       <TouchableOpacity
         onPress={() => {
-          hanger ? setHanger(false) : setHanger(true);
+          user?.userData?.role?.[0]?.id !== 3 && user?.token !== ''
+                      ? hanger 
+                        ? RemoveWishlist(props?.data?.id)
+                        : AddWishlist(props?.data?.id)
+                      : errorMessage('You cant add to wishlist!');
+         
         }}>
         <ICONS.MaterialCommunityIcons
           name="hanger"
@@ -113,11 +303,11 @@ export default function PostCompListView(props) {
           color={hanger ? '#162FAC' : 'black'}
         />
       </TouchableOpacity>
-      <Text style={{color: 'black'}}>1500</Text>
+      <Text style={{color: 'black'}}>{wishlistcount}</Text>
 
       <TouchableOpacity
         onPress={() => {
-          share ? setShare(false) : setShare(true);
+          productShare(props?.data?.id)
         }}>
         <ICONS.FontAwesome
           name="retweet"
@@ -125,7 +315,7 @@ export default function PostCompListView(props) {
           color={share ? '#13D755' : 'black'}
         />
       </TouchableOpacity>
-      <Text style={{color: 'black'}}>3000</Text>
+      <Text style={{color: 'black'}}>{sharecount}</Text>
     </View>
 
     <TouchableOpacity
@@ -167,6 +357,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  skeletonView:{
+    width: wp2(100),
+    height: hp2(36),
   },
   imageContainer: {
     width: wp2(100),

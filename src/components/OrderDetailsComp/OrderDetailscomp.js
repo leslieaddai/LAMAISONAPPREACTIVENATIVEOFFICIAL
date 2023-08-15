@@ -1,4 +1,4 @@
-import { Image,  Text, TouchableOpacity, View } from 'react-native'
+import { Alert, Image,  Text, TouchableOpacity, View } from 'react-native'
 import React, { useState,useEffect } from 'react'
 import { ICONS,  wp2 } from '../../theme'
 import styles from './styles'
@@ -12,6 +12,7 @@ import {ChnageOrderStatus} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 
 const OrderDetailscomp = (props) => {
@@ -40,30 +41,68 @@ const roleid = user?.userData?.role?.[0]?.id
     };
 
     const SelectOrderStatus = (Bool,statusname,statusid)=>{
-
-     
-
-        props?.loaderState?.setLoadingStatusChange(true);
+      if (statusname =='Cancelled'){
+        Alert.alert(
+          'Status change confirmation',
+        'Are you sure you want to cancel that',
+        [
+        {
+          text: 'No',
+          onPress: () =>{
+             setIsOpenedStatus(false)},
+          style: 'cancel',
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            props?.loaderState?.setLoadingStatusChange(true);
       
         axios
           .post(ChnageOrderStatus,{order_detail_id:props?.orderId,status_id:statusid},{
             headers:{Authorization:`Bearer ${user?.token}`}
           })
           .then(async function (res) {
-           
             setSelectedStatus(statusname);
             setIsOpenedStatus(false);
             props?.loaderState?.setLoadingStatusChange(false);
             props?.loaderState?.onChangeOrderStatus(props?.indexValue,statusname);
           })
           .catch(function (error) {
+            console.log("",error.response.data)
+
+            props?.loaderState?.setLoadingStatusChange(false);
+   
+            errorMessage(errorHandler(error))
+          });
+          }
+        }
+        ]
+        
+        )
+      }
+      else{
+        props?.loaderState?.setLoadingStatusChange(true);
+        
+        axios
+          .post(ChnageOrderStatus,{order_detail_id:props?.orderId,status_id:statusid},{
+            headers:{Authorization:`Bearer ${user?.token}`}
+          })
+          .then(async function (res) {
+            setSelectedStatus(statusname);
+            setIsOpenedStatus(false);
+            props?.loaderState?.setLoadingStatusChange(false);
+            props?.loaderState?.onChangeOrderStatus(props?.indexValue,statusname);
+          })
+          .catch(function (error) {
+            console.log("",error.response.data)
           
             props?.loaderState?.setLoadingStatusChange(false);
    
             errorMessage(errorHandler(error))
           });
-
+        }
     }
+    // console.log(typeof(selectedStatus))
 
     useEffect(()=>{            
       if(isOpenedStatus){
@@ -71,21 +110,17 @@ const roleid = user?.userData?.role?.[0]?.id
         uibottomesheetvisiblity(true)
   
       }
-    },[isOpenedStatus])  
+    },[isOpenedStatus]) 
   
   return (
     <View style={styles.container}>
         <View style={styles.imagecontainer}>
         {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.skeletonView} />
+        </View>
+        </SkeletonPlaceholder>
     :
     undefined
         }
@@ -106,8 +141,9 @@ const roleid = user?.userData?.role?.[0]?.id
         </View>
       <Text style={styles.textstyle}>{`Product Name - ${props?.productname}`}</Text>
       <Text style={styles.textstyle}>{`Description - ${props?.description}`}</Text>
+      <Text style={styles.textstyle}>{`Email - ${roleid ===3?props?.email:props?.user?.email}`}</Text>
       <Text style={styles.textstyle}>{`Address 1 - ${addressData?.add1}`}</Text>
-      <Text style={styles.textstyle}>{`Address 2 - ${addressData?.add2}`}</Text>
+      {addressData.add2 != 'null'&&<Text style={styles.textstyle}>{`Address 2 - ${addressData.add2}`}</Text>}
       <Text style={styles.textstyle}>{`City - ${addressData?.city}`}</Text>
       <Text style={styles.textstyle}>{`Country - ${addressData?.country?.name}`}</Text>
       <Text style={styles.textstyle}>{`Quantity - ${props?.quantity}`}</Text>
@@ -119,7 +155,7 @@ const roleid = user?.userData?.role?.[0]?.id
       <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
     
       <TouchableOpacity 
-      disabled={roleid===3?false:true}
+      disabled={roleid===3?selectedStatus=='Cancelled'?true:false:true}
       onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
       style={styles.statusbtn}>
       <Text style={styles.textstyle}>{`Status - ${selectedStatus}`}

@@ -22,6 +22,7 @@ import {
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function FollowComp(props) {
   const navigation = useNavigation();
@@ -89,15 +90,11 @@ export default function FollowComp(props) {
     <TouchableOpacity onPress={navigateScreen} style={styles.container}>
       <View style={styles.imageContainer}>
       {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.skeletonView} />
+        </View>
+        </SkeletonPlaceholder>
     :
     undefined
         }
@@ -160,4 +157,8 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textTransform: 'uppercase',
   },
+  skeletonView:{
+    width: wp2(28),
+    height: hp2(18),
+  }
 });

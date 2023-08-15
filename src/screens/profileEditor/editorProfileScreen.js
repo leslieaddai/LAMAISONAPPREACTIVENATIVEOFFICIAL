@@ -125,6 +125,9 @@ export default function EditorProfileScreen(props) {
 
   const onFollow = () => {
     setLoadingFollow(true);
+    let data = new FormData()
+    data.append('follower_id',user?.userData?.id)
+    data.append('following_id',props?.route?.params?.userData?.userData?.id)
 
     let config = {
       method: 'post',
@@ -133,10 +136,7 @@ export default function EditorProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data: {
-        follower_id: user?.userData?.id,
-        following_id: props?.route?.params?.userData?.userData?.id,
-      },
+      data: data,
     };
 
     axios
@@ -157,6 +157,9 @@ export default function EditorProfileScreen(props) {
 
   const onUnFollow = () => {
     setLoadingFollow(true);
+    let data = new FormData()
+    data.append('follower_id',user?.userData?.id)
+    data.append('following_id',props?.route?.params?.userData?.userData?.id)
 
     let config = {
       method: 'post',
@@ -165,10 +168,7 @@ export default function EditorProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data: {
-        follower_id: user?.userData?.id,
-        following_id: props?.route?.params?.userData?.userData?.id,
-      },
+      data: data,
     };
 
     axios

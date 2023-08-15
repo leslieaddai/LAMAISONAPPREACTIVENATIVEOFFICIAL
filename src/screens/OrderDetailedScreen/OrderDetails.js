@@ -12,6 +12,7 @@ const OrderDetails = ({navigation,route}) => {
     const {addressData} = route.params
     const {orderStatus} = route.params
     const {editorname} =route.params
+    const{editoremail}  = route.params
     const onChangeOrderStatus = (indexNo,newStatus) => {
       let tempArr = orderData;
       tempArr[indexNo].status.status=newStatus;
@@ -32,7 +33,6 @@ const OrderDetails = ({navigation,route}) => {
       <FlatList
       data={orderData}
       renderItem={({item,index})=>{
-        console.log("changes",item?.user)
         return(
         <View style={styles.ConatinerView}>
             <OrderDetailscomp
@@ -50,6 +50,7 @@ const OrderDetails = ({navigation,route}) => {
             addressData={addressData}
             user={item?.user}
             name={editorname}
+            email={editoremail}
             orderId={item?.id}
             loaderState={{loadingStatusChange,setLoadingStatusChange,onChangeOrderStatus}}
           

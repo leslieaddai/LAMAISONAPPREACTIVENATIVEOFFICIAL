@@ -34,12 +34,14 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import { useNavigation } from '@react-navigation/native';
+import OneSignal from 'react-native-onesignal';
 
 
 export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const {count} = useSelector(state => state.ordercount)
+  // const user = useSelector(state => state.userData);
 
   const dispatch = useDispatch();
 
@@ -107,12 +109,13 @@ export default function SettingsScreen(props) {
                 dispatch({
                   type: types.Logout,
                 });
+                OneSignal.removeExternalUserId()
 
                 setLoading(false);
                 successMessage('Logout Success');
               })
               .catch(function (error) {
-               
+               console.log(error.response)
                 setLoading(false);
                 errorMessage(errorHandler(error))
               });
@@ -177,7 +180,7 @@ useEffect(()=>{
               {settingOptions('PROFILE', '', 'editProfile')}
               {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
               {settingOptions('IMAGE/PRODUCT UPLOAD', '', 'destinationScreen')}
-              {settingOptions('INVENTORY', '', 'inventory')}
+              {settingOptions('INVENTORY', `${props?.route?.params?.user.warning?'red':''}`, 'inventory')}
               {settingOptions('STANDARD SHIPPING', '', 'shippingLocation')}
               {settingOptions('ANALYTICS', '', 'analyticsScreen')}
               {settingOptions('ALL ORDERS', `${count>0 ? 'blue':''}`, 'orderTrackingScreen')}

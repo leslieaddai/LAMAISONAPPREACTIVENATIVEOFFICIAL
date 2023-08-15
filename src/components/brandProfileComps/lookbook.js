@@ -18,6 +18,7 @@ import {
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export function ImgComp(props) {
   const navigation = useNavigation();
@@ -28,15 +29,11 @@ export function ImgComp(props) {
   return (
     <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.media?.[0]?.original_url}]}]})} style={styles.imageContainer}>
       {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={styles.skeletonView} />
+        </View>
+        </SkeletonPlaceholder>
     :
     undefined
         }
@@ -98,4 +95,9 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(1),
     marginTop: hp2(1),
   },
+  skeletonView:{
+    width: wp2(28),
+    height: hp2(12),
+    overflow: 'hidden',
+  }
 });

@@ -24,6 +24,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import moment from 'moment';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function OrderComp2(props) {
 
@@ -40,13 +41,28 @@ export default function OrderComp2(props) {
 
     return formattedDateTime 
       }
+      const onloading = (value,label)=>{
+        setLoading(value)
+      }
   return (
     <TouchableOpacity 
     onPress={props.onpress}
     style={styles.container}>
       <View style={styles.imgWrap}>
+      {loading?
+           <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+           <View style={{flexDirection: 'row', alignItems: 'center'}}>
+           <View style={styles.skeletonView} />
+           </View>
+           </SkeletonPlaceholder>
+      :
+      undefined
+          }
         <Image
-       
+          progressiveRenderingEnabled={true}
+          onLoadStart={()=>{onloading(true,"onLoadStart")}}
+          onLoad={()=>onloading(false,"onLoad")}
+          onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={{uri:props?.data?.vendor_order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
@@ -92,4 +108,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  skeletonView:{
+    width: wp2(16),
+    height: wp2(18),
+    borderRadius: wp2(4),
+  }
 });

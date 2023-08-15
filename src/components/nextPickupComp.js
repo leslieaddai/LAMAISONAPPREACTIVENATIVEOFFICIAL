@@ -18,6 +18,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import { useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function NextPickupComp(props) {
   const navigation = useNavigation();
@@ -35,15 +36,11 @@ export default function NextPickupComp(props) {
       }
       style={styles.imageContainer}>
         {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
+    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={styles.imageContainer} />
     </View>
+    </SkeletonPlaceholder>
     :
     undefined
         }

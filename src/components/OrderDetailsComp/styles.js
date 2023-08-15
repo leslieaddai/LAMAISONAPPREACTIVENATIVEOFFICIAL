@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
         shadowRadius: 20,
         elevation: 5
     },
+    skeletonView:{
+        width: wp2(60),
+        height: hp2(30),
+        borderRadius: 20,
+    },
     textstyle: {
         color: 'black',
         fontSize: hp2(2),

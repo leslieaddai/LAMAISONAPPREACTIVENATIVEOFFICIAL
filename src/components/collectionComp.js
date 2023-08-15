@@ -15,6 +15,7 @@ import {
 import {wp2, hp2} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function CollectionComp(props) {
   const navigation = useNavigation();
@@ -39,15 +40,11 @@ export default function CollectionComp(props) {
         }
         style={styles.imageContainer}>
           {loading?
-          <View style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf:'center'
-          }}>
-        <SkypeIndicator
-        color={'black'}
-      /> 
-      </View>
+          <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <View style={styles.skeletonView} />
+          </View>
+          </SkeletonPlaceholder>
       :
       undefined
           }
@@ -83,4 +80,9 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(3),
     marginTop: hp2(1),
   },
+  skeletonView:{
+    width: wp2(48),
+    height: hp2(30),
+    borderRadius: wp2(6),
+  }
 });

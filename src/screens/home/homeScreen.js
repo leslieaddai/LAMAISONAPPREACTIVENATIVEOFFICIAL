@@ -29,12 +29,13 @@ import {
 
 import {errorMessage, } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import {errorHandler} from '../../config/helperFunction';
+import {OneSignalMessage, errorHandler} from '../../config/helperFunction';
 import {Popular,Newsfeed, getCount} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import OneSignal from 'react-native-onesignal';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
@@ -48,15 +49,13 @@ export default function HomeScreen(props) {
   const [postcomloading,setPostcomploading] = useState(false)
   const[productcomploading,setProductcomploading] =useState(false)
   const [prod2comploading,setProd2comploading] = useState(false)
-
-  OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
   OneSignal.setExternalUserId(String(user.userData.id))
-
-  OneSignal.promptForPushNotificationsWithUserResponse();
 
 OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
   console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
+  
   let notification = notificationReceivedEvent.getNotification();
+  OneSignalMessage("La Maison",notification.body)
   console.log("notification: ", notification);
   const data = notification.additionalData
   console.log("additionalData: ", data);
@@ -65,6 +64,15 @@ OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent =
 
 OneSignal.setNotificationOpenedHandler(notification => {
   console.log("OneSignal: notification opened:", notification);
+  if (notification) {
+    const { additionalData = null } = notification.notification;
+    if(additionalData !=null){
+      props.navigation.navigate('orderTrackingScreen')
+    }
+    else{
+      props.navigation.navigate('notificationScreen')
+    }
+  }
 });
 
   useEffect(()=>{
@@ -104,13 +112,12 @@ OneSignal.setNotificationOpenedHandler(notification => {
        
       })
       .catch(function (error) {
-        
+        console.log("res home",error.response.data)
         setLoading(false);
        
         errorMessage(errorHandler(error))
       });
   }, []);
-
   const getNewsfeed = page_no => {
     !loading && setLoading(true);
 
@@ -119,7 +126,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
+        // console.log("saasd",res?.data?.data?.newsfeed?.data[0]?.user)
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
@@ -137,7 +144,20 @@ OneSignal.setNotificationOpenedHandler(notification => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('brandProfileScreen',{userData:{userData:{id:data?.user_id}}})}
+          onPress={() => 
+            props.navigation.navigate('brandProfileScreen',{
+            userData: {
+              userData: {
+                id: data?.brand?.id,
+                profile_image:
+                  data?.brand?.profile_image?.original_url,
+                name: data?.brand?.name,
+                role: [{id: 3}],
+              },
+            },
+          })
+         
+        }
           style={styles.brandImage}>
           <Image
          
@@ -175,6 +195,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
     const onloading = (value,label)=>{
       setPostcomploading(value)
     }
+    // console.log("post comp",data.user)
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -182,7 +203,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
             onPress={() => props.navigation.navigate('editorProfileScreen')}
             style={styles.imageWrap}>
             <Image
-              source={IMAGES.randomProfile}
+              source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
@@ -193,24 +214,20 @@ OneSignal.setNotificationOpenedHandler(notification => {
             color={'black'}
             style={{marginHorizontal: wp2(4)}}
           />
-          <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
         </View>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
           style={styles.imageContainer}>
             {postcomloading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
-    :
-    undefined
-        }
+            <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.skeletonView} />
+            </View>
+            </SkeletonPlaceholder>
+          :
+          undefined
+              }
           <Image
           
             progressiveRenderingEnabled={true}
@@ -234,13 +251,23 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('brandProfileScreen')}
+          onPress={() => props.navigation.navigate('brandProfileScreen',{
+            userData: {
+              userData: {
+                id: data.user.id,
+                profile_image:
+                  data?.user?.profile_image?.original_url,
+                name: data?.user?.name,
+                role: [{id: 3}],
+              },
+            },
+          })}
           style={[
             styles.imageWrap,
            
           ]}>
           <Image
-            source={IMAGES.randomProfile}
+            source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="contain"
           />
@@ -251,7 +278,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
             color={'black'}
             style={{marginHorizontal: wp2(4)}}
           />
-          <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
         </View>
 
         <View style={styles.productContainer}>
@@ -262,15 +289,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
             onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer}>
                {productcomploading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.productskeletonView} />
+            </View>
+            </SkeletonPlaceholder>
     :
     undefined
         }
@@ -300,13 +323,23 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('brandProfileScreen')}
+          onPress={() => props.navigation.navigate('brandProfileScreen',{
+            userData: {
+              userData: {
+                id: data.user.id,
+                profile_image:
+                  data?.user?.profile_image?.original_url,
+                name: data?.user?.name,
+                role: [{id: 3}],
+              },
+            },
+          })}
           style={[
             styles.imageWrap,
            
           ]}>
           <Image
-            source={IMAGES.randomProfile}
+            source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="contain"
           />
@@ -318,7 +351,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
             color={'black'}
             style={{marginHorizontal: wp2(4)}}
           />
-          <Text style={{color: 'black'}}>ICEY.B Shared</Text>
+          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
           </View>
 
         <View
@@ -335,15 +368,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
             onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
             style={styles.productImageContainer2}>
               {prod2comploading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+       <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+       <View style={styles.productskeletonView2} />
+       </View>
+       </SkeletonPlaceholder>
     :
     undefined
         }
@@ -366,40 +395,6 @@ OneSignal.setNotificationOpenedHandler(notification => {
     );
   };
 
-  useEffect(()=>{
-    typeof OneSignal.setNotificationOpenedHandler == 'function'
-    && OneSignal.setNotificationOpenedHandler((nitificationresponse)=>{
-      const { notification } = nitificationresponse;
-        if (notification) {
-          console.log("notification",notification)
-          const { additionalData = null } = notification;
-          navigation.reset({
-                index: 0,
-                routes: [{ name: 'notificationScreen'}],
-              })
-          // if (additionalData) {
-          //   // const { signal_id } = additionalData;
-          //   // dispatch({
-          //   //   type: types.signalid,
-          //   //   payload: signal_id,
-          //   // });
-          //   console.log("additionalData",additionalData)
-          //   // navigation.reset({
-          //   //   index: 0,
-          //   //   routes: [{ name: 'NotificationSignal'}],
-          //   // })
-          // }
-          // else{
-          //   console.log("notifiction cheking")
-          //   // navigation.reset({
-          //   //   index: 0,
-          //   //   routes: [{ name: 'Home'}],
-          //   // })
-          // }
-        }
-      })
-
-  },[])
 
 
   return (
@@ -768,6 +763,10 @@ const styles = StyleSheet.create({
    
     marginTop: hp2(1),
   },
+  skeletonView:{
+    width: wp2(100),
+    height: hp2(30),
+  },
   text: {
     fontWeight: '600',
     fontSize: rfv(18),
@@ -795,6 +794,10 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(1),
     marginTop: hp2(2),
   },
+  productskeletonView:{
+    width: wp2(47),
+    height: hp2(18),
+  },
   productImageContainer2: {
     width: wp2(48),
     height: hp2(32),
@@ -802,4 +805,8 @@ const styles = StyleSheet.create({
    
     marginTop: hp2(1),
   },
+  productskeletonView2:{
+    width: wp2(48),
+    height: hp2(32),
+  }
 });

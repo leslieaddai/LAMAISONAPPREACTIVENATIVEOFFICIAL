@@ -32,6 +32,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function WardrobeComp(props) {
   const navigation = useNavigation();
@@ -118,15 +119,11 @@ export default function WardrobeComp(props) {
       }
       style={styles.imageContainer}>
         {loadingImage?
-                <View style={{
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  alignSelf:'center'
-                }}>
-              <SkypeIndicator
-              color={'black'}
-            /> 
-            </View>
+               <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+               <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={styles.skeletonView} />
+               </View>
+               </SkeletonPlaceholder>
             :
             undefined
                 }
@@ -197,4 +194,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
+  skeletonView:{
+    width: wp2(45),
+    height: hp2(22),
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    borderRadius: wp2(4)
+  }
 });

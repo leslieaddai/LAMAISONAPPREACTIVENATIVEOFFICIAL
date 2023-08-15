@@ -238,6 +238,7 @@ export default function DressingRoomScreen(props) {
   };
 
   const AddWishlist = () => {
+    console.log(props?.route?.params?.data?.product?.id)
     Alert.alert(
       'Confirmation',
       'Do you want to add this product into your wishlist?',
@@ -252,11 +253,13 @@ export default function DressingRoomScreen(props) {
           onPress: () => {
           
             setLoading(true);
-
-            let obj = {
-              user_id: user?.userData?.id,
-              product_id: props?.route?.params?.data?.product?.id,
-            };
+            let data = new FormData()
+            // data.append('user_id',user?.userData?.id)
+            data.append('product_id',props?.route?.params?.data?.product?.id)
+            
+            let obj={
+              product_id:props?.route?.params?.data?.product?.id
+            }
 
             let config = {
               method: 'post',
@@ -266,13 +269,13 @@ export default function DressingRoomScreen(props) {
                 Authorization: `Bearer ${user.token}`,
                 Accept: 'application/json',
               },
-              data: obj,
+              data: data,
             };
 
             axios
               .request(config)
               .then(async function (res) {
-                
+                console.log(res.data)
                
 
                 axios
@@ -322,7 +325,7 @@ export default function DressingRoomScreen(props) {
            
               })
               .catch(function (error) {
-               
+               console.log(error.response.data)
                 setLoading(false);
                
                 errorMessage(errorHandler(error))
@@ -436,14 +439,10 @@ export default function DressingRoomScreen(props) {
   }
 
   const productLikeDislike = () => {
-    
-
     setLoading(true);
-
-    let obj = {
-      user_id: user?.userData?.id,
-      product_id: props?.route?.params?.data?.product?.id,
-    };
+    let data = new FormData()
+    data.append('user_id',user?.userData?.id)
+    data.append('product_id',props?.route?.params?.data?.product?.id)
 
     let config = {
       method: 'post',
@@ -453,7 +452,7 @@ export default function DressingRoomScreen(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: obj,
+      data: data,
     };
 
     axios
@@ -515,11 +514,9 @@ export default function DressingRoomScreen(props) {
   
 
     setLoading(true);
-
-    let obj = {
-      user_id: user?.userData?.id,
-      product_id: props?.route?.params?.data?.product?.id,
-    };
+    let data = new FormData()
+    data.append('user_id',user?.userData?.id)
+    data.append('product_id',props?.route?.params?.data?.product?.id)
 
     let config = {
       method: 'post',
@@ -529,7 +526,7 @@ export default function DressingRoomScreen(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: obj,
+      data: data,
     };
 
     axios

@@ -35,6 +35,7 @@ import axios from 'react-native-axios';
 import {errorMessage, } from '../../config/NotificationMessage';
 import {errorHandler} from '../../config/helperFunction';
 import {useDispatch, useSelector} from 'react-redux';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 
 export default function LookbookScreen(props) {
@@ -126,15 +127,11 @@ export default function LookbookScreen(props) {
                   }
                   style={styles.imageContainer}>
                     {loading?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.skeletonView} />
+                    </View>
+                    </SkeletonPlaceholder>
                 :
                 undefined
                     }
@@ -256,6 +253,11 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignSelf: 'center',
     marginVertical: hp2(1),
+  },
+  skeletonView:{
+    width: wp2(84),
+    height: hp2(22),
+    borderRadius: wp2(6),
   },
   button: {
     width: wp2(48),

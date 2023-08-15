@@ -18,6 +18,7 @@ import {
 } from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
@@ -36,15 +37,15 @@ export default function BrandComp(props) {
       })}
       style={styles.brandImage}>
         {loading?
-        <View style={{
-          alignItems: 'center',
-          justifyContent: 'center',
-          alignSelf:'center'
-        }}>
-      <SkypeIndicator
-      color={'black'}
-    /> 
-    </View>
+        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+        <SkeletonPlaceholder.Item flexDirection="row" alignItems="center">
+        <SkeletonPlaceholder.Item width={100} height={100} borderRadius={6} />
+        <SkeletonPlaceholder.Item marginLeft={20}>
+        <SkeletonPlaceholder.Item width={120} height={20} />
+        <SkeletonPlaceholder.Item marginTop={6} width={80} height={20} />
+        </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder.Item>
+        </SkeletonPlaceholder>
     :
     undefined
         }

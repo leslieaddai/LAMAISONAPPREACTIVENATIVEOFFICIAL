@@ -53,9 +53,6 @@ export default function AddReview(props) {
         review: desc,
         feeling: selected,
       };
-
-   
-
       axios
         .post(PostReview, obj, {
           headers: {

@@ -3,6 +3,7 @@ import types from '../types';
 const initial_state = {
   userData: {},
   token: '',
+  warning:0
 };
 
 export default function (state = initial_state, action) {
@@ -12,12 +13,14 @@ export default function (state = initial_state, action) {
       return {
         userData: data.user,
         token: data.access_token,
+        warning:data.warning
       };
       break;
     case types.Logout:
       return {
         userData: {},
         token: '',
+        warning:0
       };
       break;
     case types.UpdateProfilePicture:

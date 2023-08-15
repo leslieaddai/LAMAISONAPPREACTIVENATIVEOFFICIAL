@@ -658,8 +658,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+         {/* <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -705,8 +705,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+         {/* <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
        </View>
            <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}
@@ -1008,8 +1008,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+         {/* <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -1055,8 +1055,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+         {/* <Text style={styles.text}>Total</Text>
+         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
        </View>
 
            <View style={styles.inputBox}>
