@@ -1,4 +1,6 @@
+import { Platform } from 'react-native';
 import {showMessage} from 'react-native-flash-message';
+import { hp2 } from '../theme';
 
 export const errorMessage = description => {
   showMessage({
@@ -8,7 +10,7 @@ export const errorMessage = description => {
     description: description,
     floating: true,
     backgroundColor: 'red',
-    style: {alignItems: 'center'},
+    style: {alignItems: 'center',marginTop:Platform.OS ==='android'&&hp2(4)},
   });
 };
 
@@ -20,6 +22,6 @@ export const successMessage = description => {
     description: description,
     floating: true,
     backgroundColor: '#039C8A',
-    style: {alignItems: 'center'},
+    style: {alignItems: 'center',marginTop:Platform.OS ==='android'&&hp2(4)},
   });
 };

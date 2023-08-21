@@ -8,6 +8,7 @@ import {
   
   FlatList,
   Alert,
+  Platform,
 } from 'react-native';
 
 
@@ -35,10 +36,15 @@ export default function PostCompListView(props) {
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
+  const [profileloading,setprofileloading] = useState(false)
   const [loading, setLoading] = useState(false)
   const onloading = (value,label)=>{
     setLoading(value)
   }
+  const onprofileloading = (value,label)=>{
+    setprofileloading(value)
+  }
+
   const [showDelete, setShowDelete] = useState(false);
 
   const [heart, setHeart] = useState(false);
@@ -68,10 +74,10 @@ export default function PostCompListView(props) {
         {
           text: 'Yes',
           onPress: () => {
-            let data = new FormData()
-            data.append('user_id',user?.userData?.id)
-            data.append('product_id',productId)
-            
+            let obj ={
+              user_id:user?.userData?.id,
+              product_id:productId
+            }
 
             let config = {
               method: 'post',
@@ -81,7 +87,7 @@ export default function PostCompListView(props) {
                 Authorization: `Bearer ${user.token}`,
                 Accept: 'application/json',
               },
-              data: data,
+              data: obj,
             };
 
             axios
@@ -142,10 +148,10 @@ export default function PostCompListView(props) {
   };
 
   const productLikeDislike = (ProductId) => {
-    
-    let data = new FormData()
-    data.append('user_id',user?.userData?.id)
-    data.append('product_id',ProductId)
+    let obj ={
+      user_id:user?.userData?.id,
+      product_id:ProductId
+    }
 
     let config = {
       method: 'post',
@@ -155,14 +161,14 @@ export default function PostCompListView(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
       .request(config)
       .then(async function (res) {
         heart ? setHeart(false) : setHeart(true);
-        heart? setlikecount(Number(likecount)) -1 :setlikecount(Number(likecount)+1)
+        heart? setlikecount(Number(likecount)-1) :setlikecount(Number(likecount)+1)
       })
       .catch(function (error) {
       
@@ -171,10 +177,10 @@ export default function PostCompListView(props) {
   };
 
   const productShare = (ProductId) => {
-
-    let data = new FormData()
-    data.append('user_id',user?.userData?.id)
-    data.append('product_id',ProductId)
+    let obj ={
+      user_id:user?.userData?.id,
+      product_id:ProductId
+    }
 
     let config = {
       method: 'post',
@@ -184,7 +190,7 @@ export default function PostCompListView(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
@@ -218,7 +224,20 @@ export default function PostCompListView(props) {
           },
         })}
         style={styles.imageWrap}>
+           {profileloading?
+       <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+       <View style={{flexDirection: 'row', alignItems: 'center'}}>
+       <View style={styles.skeletonView} />
+       </View>
+       </SkeletonPlaceholder>
+    :
+    undefined
+        }
         <Image
+           progressiveRenderingEnabled={true}
+           onLoadStart={()=>{onprofileloading(true,"onLoadStart")}}
+           onLoad={()=>onprofileloading(false,"onLoad")}
+           onLoadEnd={()=>{onprofileloading(false,"onLoadEnd")}}
           source={props?.data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:props?.data?.user?.profile_image?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
@@ -317,7 +336,6 @@ export default function PostCompListView(props) {
       </TouchableOpacity>
       <Text style={{color: 'black'}}>{sharecount}</Text>
     </View>
-
     <TouchableOpacity
       onPress={() => navigation.navigate('commentScreen',{product_id:props?.data?.id,comments:props?.data?.product_comments})}>
       <View style={{flexDirection: 'row', marginLeft: wp2(2)}}>
@@ -348,6 +366,7 @@ const styles = StyleSheet.create({
     width: wp2(14),
     height: wp2(14),
     borderRadius: wp2(5),
+    backgroundColor:Platform.OS == 'android'&&'white',
     overflow: 'hidden',
     shadowColor: '#000',
     shadowOffset: {

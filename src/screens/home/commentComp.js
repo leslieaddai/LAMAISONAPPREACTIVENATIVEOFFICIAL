@@ -5,6 +5,7 @@ import {
   Image,
 
   Text,
+  Platform,
 
 } from 'react-native';
 
@@ -22,11 +23,12 @@ import {
 } from '../../theme';
 
 export default function CommentComp(props) {
+  // console.log(props?.data?.user?.profile_image?.original_url)
   return (
     <View style={styles.container}>
       <View style={styles.imageWrap}>
         <Image
-          source={IMAGES.randomProfile}
+          source={props?.data?.user?.profile_image == null?IMAGES.profileIcon3:{uri:props?.data?.user?.profile_image?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
@@ -55,6 +57,7 @@ const styles = StyleSheet.create({
     height: wp2(18),
     borderRadius: wp2(4),
     overflow: 'hidden',
+    backgroundColor:Platform.OS == 'android'&&'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

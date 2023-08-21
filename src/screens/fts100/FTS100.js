@@ -34,10 +34,12 @@ import {FTSUrl, StylesUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function FTS100(props) {
   const [selected, setSelected] = useState('');
-
+let categorydata = [{},{},{},{},{}]
+let ftsdata = [{},{},{},{},{},{}]
   const dispatch = useDispatch();
   const [loadingStyles, setLoadingStyles] = useState(false);
   const [loadingFts, setLoadingFts] = useState(false);
@@ -48,22 +50,21 @@ export default function FTS100(props) {
  
 
   useEffect(() => {
-    getFTS();
     getStyles();
+    getFTS();
   }, []);
 
   const getStyles = () => {
-   
-
+   setLoadingStyles(true)
     axios
       .get(StylesUrl)
       .then(async function (res) {
        
         setDataStyles(res.data.data);
-        //setLoadingStyles(false);
+        setLoadingStyles(false);
       })
       .catch(function (error) {
-        
+        setLoadingStyles(false);
         
         errorMessage(errorHandler(error))
       });
@@ -125,9 +126,14 @@ export default function FTS100(props) {
         <View style={{height: hp2(7)}}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {loadingStyles ? (
-              <View style={{width: wp2(100), alignItems: 'center'}}>
-                <SkypeIndicator color={'black'} />
-              </View>
+               <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+               <View style={{marginTop:hp2(2),flexDirection: 'row', alignItems: 'center'}}>
+                {categorydata.map((item,key)=>(
+                  <View key={key} style={styles.skeletonView} />
+                ))}
+               </View>
+               
+               </SkeletonPlaceholder>
             ) : (
               <>
                 {dataStyles?.map(item => {
@@ -158,10 +164,14 @@ export default function FTS100(props) {
           }}>
           
           {loadingFts ? (
-            <View
-              style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-              <SkypeIndicator color={'black'} />
+           <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+            {ftsdata.map((item,key)=>(
+            <View key={key} style={{marginTop:hp2(2),flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.SekeletonprofileView}/>
+            <View style={styles.textView}/>
             </View>
+            ))}
+           </SkeletonPlaceholder>
           ) : (
             <>
               {dataFts?.length!==0?(
@@ -201,4 +211,23 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignSelf: 'center',
   },
+  skeletonView:{
+    minWidth: wp2(30),
+    height: hp2(5),
+    paddingHorizontal:wp2(2),
+    marginHorizontal:wp2(1),
+    borderRadius: wp2(6),
+  },
+  SekeletonprofileView:{
+    width: wp2(24),
+    height: hp2(8),
+    borderRadius: wp2(10),
+    marginLeft:wp2(2)
+  },
+  textView:{
+    width:wp2(50),
+    height:hp2(3),
+    borderRadius:5,
+    marginHorizontal:wp2(2)
+  }
 });

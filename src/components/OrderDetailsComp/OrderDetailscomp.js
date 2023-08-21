@@ -8,7 +8,7 @@ import BottomSheetViewOrderStatus from '../bottomSheet/BottomsheetViewOrderStatu
 import {errorMessage, } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {ChnageOrderStatus} from '../../config/Urls';
+import {ChnageOrderStatus, OrderStatus} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
@@ -24,8 +24,10 @@ const roleid = user?.userData?.role?.[0]?.id
   const [modalData, setModalData] = useState();
   const [isOpenedStatus, setIsOpenedStatus] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(props?.status);
-  const orderStatusData = props?.orderStatus;
   const addressData = props?.addressData;
+  const [mainLoading,setMainLoading] = useState(false)
+  const [orderStatus, setOrderStatus] = useState([]);
+  let data =[{},{},{},{},{},{},{},{},{},{},{},{}]
     const [loading, setLoading] = useState(false)
     const onloading = (value,label)=>{
       setLoading(value)
@@ -102,18 +104,50 @@ const roleid = user?.userData?.role?.[0]?.id
           });
         }
     }
-    // console.log(typeof(selectedStatus))
 
     useEffect(()=>{            
       if(isOpenedStatus){
-        setModalData(orderStatusData)
+        setModalData(orderStatus)
         uibottomesheetvisiblity(true)
   
       }
     },[isOpenedStatus]) 
+
+    const getOrderStatus = (productId) => {
+      console.log(productId)
+      setMainLoading(true);
+      axios
+        .get(OrderStatus, {
+          headers: { Authorization: `Bearer ${user?.token}` }
+        })
+        .then(async function (res) {
+          setMainLoading(false);
+          setOrderStatus(res?.data?.data)
+          isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)
+        })
+        .catch(function (error) {
+         
+          setMainLoading(false);
+         
+          errorMessage(errorHandler(error))
+        });
+    }
   
   return (
     <View style={styles.container}>
+      {mainLoading?
+      <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd' >
+      <View style={{flexDirection: 'row', alignItems: 'center',alignSelf:'center'}}>
+      <View style={styles.skeletonView} />
+      </View>
+      {data.map((item,key)=>{
+        return(
+          <View key={key} style={styles.skeletonnameView}/>
+        )
+      })}
+      </SkeletonPlaceholder>
+      :
+      <>
         <View style={styles.imagecontainer}>
         {loading?
         <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
@@ -155,8 +189,11 @@ const roleid = user?.userData?.role?.[0]?.id
       <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
     
       <TouchableOpacity 
-      disabled={roleid===3?selectedStatus=='Cancelled'?true:false:true}
-      onPress={()=> isOpenedStatus?setIsOpenedStatus(false):setIsOpenedStatus(true)}
+      disabled={roleid===3?selectedStatus=='Cancelled'||selectedStatus =='Delivered'?true:false:true}
+      onPress={()=> 
+      {
+        getOrderStatus(props.alldata.product_id)}
+      }
       style={styles.statusbtn}>
       <Text style={styles.textstyle}>{`Status - ${selectedStatus}`}
       {roleid===3&&
@@ -183,6 +220,8 @@ const roleid = user?.userData?.role?.[0]?.id
         />
 
         </BottomSheet>
+        </>
+        }
     </View>
   )
 }

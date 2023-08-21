@@ -45,7 +45,6 @@ export default function OrderTrackingScreen({navigation}) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
-  const [orderStatus, setOrderStatus] = useState([]);
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
 
@@ -56,31 +55,10 @@ export default function OrderTrackingScreen({navigation}) {
   const [filterDates, setFilterDates] = useState([]);
 
   useEffect(() => {
-    user?.token !== null && user?.userData?.role?.[0]?.id === 3 && getOrderStatus();
+    user?.token !== null && user?.userData?.role?.[0]?.id === 3 && getOrdersByBrand('1');
     user?.token !== null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
     user?.token === null && getOrdersByGuest('1');
   }, []);
-
-  const getOrderStatus = () => {
-    setLoading(true);
-
-    axios
-      .get(OrderStatus, {
-        headers: { Authorization: `Bearer ${user?.token}` }
-      })
-      .then(async function (res) {
-       
-        setOrderStatus(res?.data?.data)
-        getOrdersByBrand('1')
-       
-      })
-      .catch(function (error) {
-       
-        setLoading(false);
-       
-        errorMessage(errorHandler(error))
-      });
-  }
 
   const getOrdersByBrand = page_no => {
     setLoading(true);
@@ -245,7 +223,6 @@ export default function OrderTrackingScreen({navigation}) {
                             // console.log(item3?.user?.email);
                             return (
                               <OrderComp2
-                                orderStatus={orderStatus}
                                 data={item3}
                                 key={index3} 
                                 onpress={() => { navigation.navigate('OrderDetails', { 
@@ -257,8 +234,7 @@ export default function OrderTrackingScreen({navigation}) {
                               }, 
                                 editorname:`${item3?.user?.first_name}${item3?.user?.last_name!=null?item3?.user?.last_name:''}`,
                                 editoremail:item3?.user?.email,
-                                item: item3.vendor_order_details, 
-                                orderStatus: orderStatus
+                                item: item3.vendor_order_details
                               })
                                }} />
                             )
@@ -316,8 +292,7 @@ export default function OrderTrackingScreen({navigation}) {
                           add2:item2?.address2,
                           country:item2?.country,
                           city:item2?.city}, 
-                          item: item2?.order_details, 
-                          orderStatus: orderStatus
+                          item: item2?.order_details
                          })}}
                         />
                         </Swipeable>

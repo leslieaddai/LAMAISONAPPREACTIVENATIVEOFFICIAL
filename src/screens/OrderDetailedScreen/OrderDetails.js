@@ -10,7 +10,6 @@ import { COLORS } from '../../theme'
 const OrderDetails = ({navigation,route}) => {
   const [orderData,setOrderData]=useState(route?.params?.item);
     const {addressData} = route.params
-    const {orderStatus} = route.params
     const {editorname} =route.params
     const{editoremail}  = route.params
     const onChangeOrderStatus = (indexNo,newStatus) => {
@@ -46,12 +45,12 @@ const OrderDetails = ({navigation,route}) => {
             colourcode={item?.color?.color_code}
             price={item?.price}
             status={item?.status?.status}
-            orderStatus={orderStatus}
             addressData={addressData}
             user={item?.user}
             name={editorname}
             email={editoremail}
             orderId={item?.id}
+            alldata={item}
             loaderState={{loadingStatusChange,setLoadingStatusChange,onChangeOrderStatus}}
           
             />

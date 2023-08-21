@@ -29,8 +29,7 @@ import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {Newsfeed} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-
-import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonViewMainComp from '../../components/SkeletonViewComponents/SkeletonViewMainComp';
 
 export default function ListViewScreen(props) {
   const dispatch = useDispatch();
@@ -39,7 +38,7 @@ export default function ListViewScreen(props) {
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
-
+  let data =[{},{},{},{}]
   useEffect(() => {
     getNewsfeed('1');
   }, []);
@@ -97,14 +96,16 @@ export default function ListViewScreen(props) {
         </View>
 
         {loading && feedData?.length === 0 && (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
+        <FlatList
+        data={data}
+        renderItem={()=>{
+          return(
+            <SkeletonViewMainComp
+            nametag={true}
+            postcomp={true}
+            />
+          )}}
+          />
       )}
      
         <FlatList
@@ -127,14 +128,16 @@ export default function ListViewScreen(props) {
         )}
          
           {loading && feedData?.length !== 0 && (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: hp2(3),
-              }}>
-              <SkypeIndicator size={26} color={'black'} />
-            </View>
+           <FlatList
+           data={data}
+           renderItem={()=>{
+             return(
+               <SkeletonViewMainComp
+               nametag={true}
+               postcomp={true}
+               />
+             )}}
+             />
           )}
 
       </View>

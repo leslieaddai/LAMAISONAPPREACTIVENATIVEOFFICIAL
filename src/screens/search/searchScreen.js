@@ -39,8 +39,11 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
 import { debounce } from 'lodash'
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonViewSearchComp from '../../components/SkeletonViewComponents/SkeletonViewSearchComp';
 
 export default function SearchScreen({navigation, route}) {
+  let skeletonArr = [{},{},{}]
   const [selected, setSelected] = useState('brands');
   const [text, setText] = useState(route?.params);
 
@@ -124,7 +127,8 @@ export default function SearchScreen({navigation, route}) {
         setData([...res?.data?.data]);
         setPage(res?.data?.next_page_url);
         setPageNo(res?.data?.current_page);
-        setLoading(false);
+        // setLoading(false);
+        setLoading(true);
       }else{
         setData(prev => [...prev, ...res?.data?.data]);
         setPage(res?.data?.next_page_url);
@@ -212,25 +216,25 @@ const handleInputChange = (text) => {
           </View>
 
           {loading && data?.length === 0 && selected==='brands' && (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginVertical: hp2(6),
-              }}>
-              <SkypeIndicator color={'black'} />
-            </View>
+            <FlatList
+            data={skeletonArr}
+            renderItem={()=>{
+              return(
+              <SkeletonViewSearchComp/>
+              )
+            }}
+            />
           )}
 
           {loading2 && dataEditor?.length === 0 && selected==='editors' && (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginVertical: hp2(6),
-              }}>
-              <SkypeIndicator color={'black'} />
-            </View>
+            <FlatList
+            data={skeletonArr}
+            renderItem={()=>{
+              return(
+              <SkeletonViewSearchComp/>
+              )
+            }}
+            />
           )}
 
           {selected==='brands'?(
@@ -335,5 +339,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp2(2),
     fontSize: rfv(13),
     fontWeight: '700',
-  },
+  }
 });

@@ -44,6 +44,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonBrandProfileViewComp from '../../components/SkeletonViewComponents/SkeletonBrandProfileViewComp';
 
 export default function BrandProfileScreen(props) {
   const dispatch = useDispatch();
@@ -117,11 +118,14 @@ export default function BrandProfileScreen(props) {
   };
 
   const onFollow = () => {
+    console.log(props?.route?.params?.userData?.userData?.id)
     setLoadingFollow(true);
-    let data = new FormData()
-    data.append('follower_id',user?.userData?.id)
-    data.append('following_id',props?.route?.params?.userData?.userData?.id)
+    let obj ={
+      follower_id:user?.userData?.id,
+      following_id:props?.route?.params?.userData?.userData?.id
+    }
 
+    console.log("data",data);
     let config = {
       method: 'post',
       url: FollowUrl,
@@ -129,7 +133,7 @@ export default function BrandProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data:data
+      data:obj
     };
 
     axios.request(config)
@@ -150,10 +154,10 @@ export default function BrandProfileScreen(props) {
 
   const onUnFollow = () => {
     setLoadingFollow(true);
-    let data = new FormData()
-    data.append('follower_id',user?.userData?.id)
-    data.append('following_id',props?.route?.params?.userData?.userData?.id)
-
+    let obj ={
+      follower_id:user?.userData?.id,
+      following_id:props?.route?.params?.userData?.userData?.id
+    }
     let config = {
       method: 'post',
       url: UnfollowUrl,
@@ -161,7 +165,7 @@ export default function BrandProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data:data
+      data:obj
     };
 
     axios
@@ -181,10 +185,10 @@ export default function BrandProfileScreen(props) {
   };
 
   return (
-    <>
+    <ScrollView>
       {loading ? (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <SkypeIndicator color={'black'} />
+        <View style={{flex: 1}}>
+          <SkeletonBrandProfileViewComp/>
         </View>
       ) : (
         <>
@@ -349,7 +353,7 @@ export default function BrandProfileScreen(props) {
         </SafeAreaView>
         </>
       )}
-    </>
+    </ScrollView>
   );
 }
 

@@ -33,9 +33,9 @@ import {OneSignalMessage, errorHandler} from '../../config/helperFunction';
 import {Popular,Newsfeed, getCount} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-import {SkypeIndicator} from 'react-native-indicators';
 import OneSignal from 'react-native-onesignal';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonViewMainComp from '../../components/SkeletonViewComponents/SkeletonViewMainComp';
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
@@ -49,6 +49,7 @@ export default function HomeScreen(props) {
   const [postcomloading,setPostcomploading] = useState(false)
   const[productcomploading,setProductcomploading] =useState(false)
   const [prod2comploading,setProd2comploading] = useState(false)
+  let data =[{},{},{},{}]
   OneSignal.setExternalUserId(String(user.userData.id))
 
 OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
@@ -150,7 +151,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
               userData: {
                 id: data?.brand?.id,
                 profile_image:
-                  data?.brand?.profile_image?.original_url,
+                data?.brand?.profile_image?.original_url,
                 name: data?.brand?.name,
                 role: [{id: 3}],
               },
@@ -174,7 +175,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View
-          style={[styles.brandImage,{backgroundColor:data?.color?.color_code}]}>
+          style={styles.brandImage}>
+            <Image
+            source={{uri:data.product.product_images[0].image[0].original_url}}
+            style={{width:'100%',height:'100%'}}
+            />
         </View>
       </View>
     );
@@ -184,8 +189,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View
-          style={[styles.brandImage,{backgroundColor:'lightgray',alignItems:'center',justifyContent:'center',}]}>
-            <Text style={{fontSize:rfv(14),color:'black'}} >{data?.piece?.piece_name}</Text>
+          style={styles.brandImage}>
+            <Image
+            source={{uri:data.product.product_images[0].image[0].original_url}}
+            style={{width:'100%',height:'100%'}}
+            />
         </View>
       </View>
     );
@@ -200,7 +208,18 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('editorProfileScreen')}
+            onPress={() => props.navigation.navigate('brandProfileScreen',{
+                userData: {
+                  userData: {
+                    id: data?.user?.id,
+                    profile_image:
+                    data?.user?.profile_image?.original_url,
+                    name: data?.user?.name,
+                    role: [{id: 3}],
+                  },
+                },
+              })
+            }
             style={styles.imageWrap}>
             <Image
               source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
@@ -251,7 +270,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('brandProfileScreen',{
+          onPress={() => 
+            props.navigation.navigate('brandProfileScreen',{
             userData: {
               userData: {
                 id: data.user.id,
@@ -261,7 +281,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
                 role: [{id: 3}],
               },
             },
-          })}
+          })
+        }
           style={[
             styles.imageWrap,
            
@@ -323,7 +344,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('brandProfileScreen',{
+          onPress={() => 
+            props.navigation.navigate('brandProfileScreen',{
             userData: {
               userData: {
                 id: data.user.id,
@@ -333,7 +355,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
                 role: [{id: 3}],
               },
             },
-          })}
+          })
+        }
           style={[
             styles.imageWrap,
            
@@ -428,15 +451,19 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
       {user?.token!==''?(
         <>
-        {loading && feedData?.length === 0 && (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
+        {loading && feedData?.length === 0 && 
+        (
+        <FlatList
+        data={data}
+        renderItem={()=>{
+          return(
+            <SkeletonViewMainComp
+            nametag={true}
+            />
+          )
+        }}
+        />
+       
       )}
 
       {!loading && feedData?.length === 0 ? (
@@ -633,27 +660,30 @@ OneSignal.setNotificationOpenedHandler(notification => {
       )}
 
        {loading && feedData?.length !== 0 && (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                paddingVertical: hp2(3),
-              }}>
-              <SkypeIndicator size={26} color={'black'} />
-            </View>
+            <FlatList
+            data={data}
+            renderItem={()=>{
+              return(
+                <SkeletonViewMainComp
+                nametag={true}
+                />
+              )}}
+              />
+            
           )}
         </>
       ):(
         <>
         {loading ? (
-           <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
+           <FlatList
+           data={data}
+           renderItem={()=>{
+             return(
+               <SkeletonViewMainComp
+               nametag={true}
+               />
+             )}}
+             />
         ) : (
                   <ScrollView
         showsVerticalScrollIndicator={false}
@@ -747,7 +777,8 @@ const styles = StyleSheet.create({
     height: wp2(14),
     borderRadius: wp2(5),
     overflow: 'hidden',
-    shadowColor: '#000',
+    backgroundColor:Platform.OS =='android'&&'white'
+,    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -765,7 +796,7 @@ const styles = StyleSheet.create({
   },
   skeletonView:{
     width: wp2(100),
-    height: hp2(30),
+    height: hp2(30)
   },
   text: {
     fontWeight: '600',
@@ -779,6 +810,7 @@ const styles = StyleSheet.create({
     width: wp2(34),
     height: hp2(16),
     overflow: 'hidden',
+    backgroundColor:Platform.OS =='android'&&'white',
     marginHorizontal: wp2(1),
   },
   productContainer: {

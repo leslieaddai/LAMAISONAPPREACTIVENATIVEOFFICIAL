@@ -93,6 +93,7 @@ export default function CheckoutScreen(props) {
   const [modalData, setModalData] = useState()
 
   const [total, setTotal] = useState(0);
+  const [estimate,setEstimate] = useState(0)
   const [commission, setCommission] = useState(2.9);
   useEffect(()=>{
     if(loading){
@@ -161,15 +162,21 @@ export default function CheckoutScreen(props) {
       if(stateChange?.region !== null && stateChange?.region !== ''){
         if(user?.token!==''){
             let val = 0;
+            let totalvalue = 0
+            let encounteredUserIds = {};
             props?.route?.params?.data.map((item,index)=>{
               val=val+Number(item?.product?.price*item?.qty)
+              totalvalue = totalvalue+Number(item?.product?.price*item?.qty)
               item?.product?.product_region?.map((item,index)=>{
                 if(stateChange?.region === item?.region_id){
-                  val = val + Number(item?.shipping_price?.price)
+                  if (!encounteredUserIds[item?.shipping_price?.user_id]) {
+                    val = val + Number(item?.shipping_price?.price);
+                    encounteredUserIds[item?.shipping_price?.user_id] = true; 
+                  }
                 }
               })
             })
-           
+           setEstimate(totalvalue)
             setTotal(val);
         }else{
           let val = 0;
@@ -177,7 +184,13 @@ export default function CheckoutScreen(props) {
           val=val+Number(item?.data?.price*item?.Quantity)
           item?.data?.product_region?.map((item,index)=>{
             if(stateChange?.region === item?.region_id){
-              val = val + Number(item?.price)
+              if (!encounteredUserIds[item?.user_id]) {
+                console.log("shipping fee",item);
+                val = val + Number(item?.price)
+                encounteredUserIds[item?.user_id] = true; 
+              }
+              
+              // val = val + Number(item?.price)
             }
           })
         })
@@ -658,8 +671,11 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         {/* <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
+          {/* 
+          Second Screen Component 
+          */}
+         <Text style={styles.text}>Sub Total</Text>
+         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -705,8 +721,11 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         {/* <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
+          {/* 
+          First Screen Component 
+          */}
+         <Text style={styles.text}>Sub Total</Text>
+         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
        </View>
            <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}

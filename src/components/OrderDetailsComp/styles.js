@@ -74,6 +74,12 @@ const styles = StyleSheet.create({
     namestyle:{
         flexDirection:'row',
         marginHorizontal:wp2(10)
+    },
+    skeletonnameView:{
+        width:wp2(60),
+        height:hp2(2),
+        marginTop: hp2(2),
+        alignSelf:'center'
     }
 })
 export default (styles)

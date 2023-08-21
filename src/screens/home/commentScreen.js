@@ -49,7 +49,7 @@ export default function CommentScreen(props) {
   pid = props?.route?.params?.product_id;
   commentsArr = props?.route?.params?.comments;
   const [desc, setDesc] = useState('');
-
+// console.log(props?.route?.params?.comments)
   
 
   const onSend = () => {

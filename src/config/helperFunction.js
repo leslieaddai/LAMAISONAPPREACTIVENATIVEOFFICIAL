@@ -27,7 +27,7 @@ export const OneSignalMessage = (message,description) => {
     floating: true,
     backgroundColor: 'white',
     color:'black',
-    style: {alignItems: 'center'},
+    style: {alignItems: 'center',marginTop:Platform.OS ==='android'&&hp2(4)},
   });
 }
 

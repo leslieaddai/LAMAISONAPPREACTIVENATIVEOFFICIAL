@@ -52,6 +52,8 @@ import {SkypeIndicator} from 'react-native-indicators';
 import LoaderComp from '../../components/loaderComp';
 
 import RenderHtml from 'react-native-render-html';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import SkeletonViewDressingComp from '../../components/SkeletonViewComponents/SkeletonViewDressingComp';
 
 export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(null);
@@ -74,12 +76,26 @@ export default function DressingRoomScreen(props) {
   const [sizeId, setSizeId] = useState(null);
 
   const [appNotice, setAppNotice] = useState(null);
+  const [brandImageload,setBrandImageload] = useState(false)
+  const [firstImageLoad,setfirstImageLoad] = useState(false)
+  const [secoundImageLoad,setSecoundImageLoad] = useState(false)
+  const [thirdImageLoad,setThirdImageLoad] = useState(false)
   const [loadingimag, setLoadingImage] = useState(false)
   const onloading = (value,label)=>{
     setLoadingImage(value)
   }
-
-  
+  const onBrandloading = (value,label)=>{
+    setBrandImageload(value)
+  }
+  const onFirstloading = (value,label)=>{
+    setfirstImageLoad(value)
+  }
+  const onSecoundloading = (value,label)=>{
+    setSecoundImageLoad(value)
+  }
+  const onThirdloading = (value,label)=>{
+    setThirdImageLoad(value)
+  }
 
   useEffect(() => {
     axios
@@ -253,9 +269,6 @@ export default function DressingRoomScreen(props) {
           onPress: () => {
           
             setLoading(true);
-            let data = new FormData()
-            // data.append('user_id',user?.userData?.id)
-            data.append('product_id',props?.route?.params?.data?.product?.id)
             
             let obj={
               product_id:props?.route?.params?.data?.product?.id
@@ -269,7 +282,7 @@ export default function DressingRoomScreen(props) {
                 Authorization: `Bearer ${user.token}`,
                 Accept: 'application/json',
               },
-              data: data,
+              data: obj,
             };
 
             axios
@@ -440,9 +453,10 @@ export default function DressingRoomScreen(props) {
 
   const productLikeDislike = () => {
     setLoading(true);
-    let data = new FormData()
-    data.append('user_id',user?.userData?.id)
-    data.append('product_id',props?.route?.params?.data?.product?.id)
+    let obj ={
+      user_id:user?.userData?.id,
+      product_id:props?.route?.params?.data?.product?.id
+    }
 
     let config = {
       method: 'post',
@@ -452,7 +466,7 @@ export default function DressingRoomScreen(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
@@ -514,9 +528,10 @@ export default function DressingRoomScreen(props) {
   
 
     setLoading(true);
-    let data = new FormData()
-    data.append('user_id',user?.userData?.id)
-    data.append('product_id',props?.route?.params?.data?.product?.id)
+    let obj ={
+      user_id:user?.userData?.id,
+      product_id:props?.route?.params?.data?.product?.id
+    }
 
     let config = {
       method: 'post',
@@ -526,7 +541,7 @@ export default function DressingRoomScreen(props) {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
@@ -606,6 +621,7 @@ export default function DressingRoomScreen(props) {
                 BuyNowButton();
               }}>
               {loading3 ? (
+                //FOR SUBMIT BTTON LOADER SHOWING ON PRESS
                 <SkypeIndicator size={24} color={'white'} />
               ) : (
                 <Text style={{color: 'white'}}>Submit</Text>
@@ -616,7 +632,10 @@ export default function DressingRoomScreen(props) {
       ) : null}
 
       <View style={{position: 'absolute', zIndex: 999}}>
-        {loading && <LoaderComp />}
+        {loading && 
+        <ScrollView style={{flex:1}}>
+            <SkeletonViewDressingComp/>
+            </ScrollView>}
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
@@ -631,14 +650,9 @@ export default function DressingRoomScreen(props) {
             <Text style={styles.dressingText}>DRESSING ROOM</Text>
           </View>
           {loading2 ? (
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginVertical: hp2(6),
-              }}>
-              <SkypeIndicator color={'black'} />
-            </View>
+            <ScrollView style={{flex:1}}>
+            <SkeletonViewDressingComp/>
+            </ScrollView>
           ) : (
             <ScrollView
               showsVerticalScrollIndicator={false}
@@ -662,24 +676,20 @@ export default function DressingRoomScreen(props) {
                       })
                     }
                     style={[styles.brandImage,{backgroundColor:'white'}]}>
-                      {loadingimag?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                      {brandImageload?
+                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.skeletonView} />
+                    </View>
+                    </SkeletonPlaceholder>
                 :
                 undefined
                     }
                     <Image
                     progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                    onLoad={()=>onloading(false,"onLoad")}
-                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                    onLoadStart={()=>{onBrandloading(true,"onLoadStart")}}
+                    onLoad={()=>onBrandloading(false,"onLoad")}
+                    onLoadEnd={()=>{onBrandloading(false,"onLoadEnd")}}
                      
                       source={data?.user?.profile_image!==null?{uri: data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
                       style={{width: '100%', height: '100%'}}
@@ -750,24 +760,20 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
                       ]}>
-                        {loadingimag?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                      {firstImageLoad?
+                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.skeletonFistImage} />
+                    </View>
+                    </SkeletonPlaceholder>
                 :
                 undefined
                     }
                       <Image
                       progressiveRenderingEnabled={true}
-                      onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                      onLoad={()=>onloading(false,"onLoad")}
-                      onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                      onLoadStart={()=>{onFirstloading(true,"onLoadStart")}}
+                      onLoad={()=>onFirstloading(false,"onLoad")}
+                      onLoadEnd={()=>{onFirstloading(false,"onLoadEnd")}}
                       
                         source={{
                           uri: data?.product_images?.[0]?.image?.[0]
@@ -891,25 +897,21 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                        {loadingimag?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                    {secoundImageLoad?
+                   <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                   <View style={styles.skeletonImage} />
+                   </View>
+                   </SkeletonPlaceholder>
                 :
                 undefined
                     }
                       <Image
                        
                         progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                    onLoad={()=>onloading(false,"onLoad")}
-                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                    onLoadStart={()=>{onSecoundloading(true,"onLoadStart")}}
+                    onLoad={()=>onSecoundloading(false,"onLoad")}
+                    onLoadEnd={()=>{onSecoundloading(false,"onLoadEnd")}}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -940,25 +942,20 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                        {loadingimag?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                    {thirdImageLoad?
+                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.skeletonImage} />
+                    </View>
+                    </SkeletonPlaceholder>
                 :
                 undefined
                     }
                       <Image
-                        
                         progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                    onLoad={()=>onloading(false,"onLoad")}
-                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                        onLoadStart={()=>{onThirdloading(true,"onLoadStart")}}
+                        onLoad={()=>onThirdloading(false,"onLoad")}
+                        onLoadEnd={()=>{onThirdloading(false,"onLoadEnd")}}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -993,16 +990,12 @@ export default function DressingRoomScreen(props) {
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                        {loadingimag?
-                    <View style={{
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      alignSelf:'center'
-                    }}>
-                  <SkypeIndicator
-                  color={'black'}
-                /> 
-                </View>
+                    {loadingimag?
+                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={styles.skeletonImage} />
+                    </View>
+                    </SkeletonPlaceholder>
                 :
                 undefined
                     }
@@ -1174,6 +1167,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  skeletonView:{
+    width: wp2(16),
+    height: hp2(8),
+    borderRadius: wp2(6),
+  },
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -1292,5 +1290,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: hp2(1),
+  },
+  skeletonFistImage:{
+    width: wp2(54), 
+    height: hp2(28), 
+    borderRadius: wp2(2)
+  },
+  skeletonImage:{
+    width: wp2(34), 
+    height: hp2(14), 
+    borderRadius: wp2(2)
   },
 });

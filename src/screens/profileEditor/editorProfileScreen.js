@@ -47,6 +47,7 @@ import {
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import SkeletonEditorProfileComp from '../../components/SkeletonViewComponents/SkeletonEditorProfileComp';
 
 export default function EditorProfileScreen(props) {
  
@@ -125,10 +126,10 @@ export default function EditorProfileScreen(props) {
 
   const onFollow = () => {
     setLoadingFollow(true);
-    let data = new FormData()
-    data.append('follower_id',user?.userData?.id)
-    data.append('following_id',props?.route?.params?.userData?.userData?.id)
-
+    let obj ={
+      follower_id:user?.userData?.id,
+      following_id:props?.route?.params?.userData?.userData?.id
+    }
     let config = {
       method: 'post',
       url: FollowUrl,
@@ -136,7 +137,7 @@ export default function EditorProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
@@ -157,9 +158,10 @@ export default function EditorProfileScreen(props) {
 
   const onUnFollow = () => {
     setLoadingFollow(true);
-    let data = new FormData()
-    data.append('follower_id',user?.userData?.id)
-    data.append('following_id',props?.route?.params?.userData?.userData?.id)
+    let obj ={
+      follower_id:user?.userData?.id,
+      following_id:props?.route?.params?.userData?.userData?.id
+    }
 
     let config = {
       method: 'post',
@@ -168,7 +170,7 @@ export default function EditorProfileScreen(props) {
         Authorization: `Bearer ${user?.token}`,
         Accept: 'application/json',
       },
-      data: data,
+      data: obj,
     };
 
     axios
@@ -188,10 +190,11 @@ export default function EditorProfileScreen(props) {
   };
 
   return (
-    <>
+    <ScrollView>
       {loading ? (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-          <SkypeIndicator color={'black'} />
+        <View style={{flex: 1}}>
+          {/* <SkypeIndicator color={'black'} /> */}
+          <SkeletonEditorProfileComp/>
         </View>
       ) : (
         <>
@@ -322,7 +325,7 @@ export default function EditorProfileScreen(props) {
         </SafeAreaView>
         </>
       )}
-    </>
+    </ScrollView>
   );
 }
 

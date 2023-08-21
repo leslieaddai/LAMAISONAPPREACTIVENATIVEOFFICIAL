@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react'
-import { LogBox,  } from 'react-native'
+import { LogBox, useColorScheme,  } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store,persistor } from './src/Redux/Reducer';
@@ -17,6 +17,8 @@ import { StripeProvider } from '@stripe/stripe-react-native';
 
 
 const App = () => {
+  const colortheme = useColorScheme()
+  console.log(colortheme)
   OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
 
   OneSignal.promptForPushNotificationsWithUserResponse();
