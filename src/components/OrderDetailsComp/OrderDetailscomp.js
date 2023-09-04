@@ -113,11 +113,11 @@ const roleid = user?.userData?.role?.[0]?.id
       }
     },[isOpenedStatus]) 
 
-    const getOrderStatus = (productId) => {
-      console.log(productId)
+    const getOrderStatus = (productId,order_id) => {
+      // console.log("order_id",order_id,productId)
       setMainLoading(true);
       axios
-        .get(OrderStatus, {
+        .get(OrderStatus+order_id+'/'+productId,{
           headers: { Authorization: `Bearer ${user?.token}` }
         })
         .then(async function (res) {
@@ -192,7 +192,7 @@ const roleid = user?.userData?.role?.[0]?.id
       disabled={roleid===3?selectedStatus=='Cancelled'||selectedStatus =='Delivered'?true:false:true}
       onPress={()=> 
       {
-        getOrderStatus(props.alldata.product_id)}
+        getOrderStatus(props.alldata.product_id,props?.orderId)}
       }
       style={styles.statusbtn}>
       <Text style={styles.textstyle}>{`Status - ${selectedStatus}`}

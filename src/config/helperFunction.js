@@ -2,7 +2,7 @@ import {store} from '../Redux/Reducer';
 import axios from 'react-native-axios';
 import { RegisterUrl } from './Urls';
 import { useDispatch } from 'react-redux';
-import { IMAGES } from '../theme';
+import { IMAGES, hp2 } from '../theme';
 import { Image } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 
@@ -21,7 +21,10 @@ export const errorHandler = err => {
 export const OneSignalMessage = (message,description) => {
   showMessage({
     type: 'success',
-    icon: props => <Image source={IMAGES.logo} style={{ width:40,height:40,marginHorizontal:20}}/>,
+    icon: props => <Image source={IMAGES.logoblack} 
+    style={{ width:40,height:40,marginHorizontal:20}}
+    resizeMode='contain'
+    />,
     message: message,
     description: description,
     floating: true,

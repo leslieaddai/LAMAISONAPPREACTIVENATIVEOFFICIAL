@@ -268,7 +268,7 @@ export default function PostCompListView(props) {
       return (
         <TouchableOpacity key={index}
         
-        onPress={() => navigation.navigate('imageView',{item:props?.data,indexValue:index})}
+        onPress={() => navigation.navigate('imageView',{item:props?.data?.id})}
         style={styles.imageContainer}>
           {loading?
        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>

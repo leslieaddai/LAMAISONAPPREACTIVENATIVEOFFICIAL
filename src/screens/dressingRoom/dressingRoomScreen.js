@@ -634,7 +634,8 @@ export default function DressingRoomScreen(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && 
         <ScrollView style={{flex:1}}>
-            <SkeletonViewDressingComp/>
+            {/* <SkeletonViewDressingComp/> */}
+            <LoaderComp/>
             </ScrollView>}
       </View>
       <SafeAreaView

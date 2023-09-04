@@ -8,7 +8,7 @@ export default function LoaderComp(props) {
       style={{
         width: wp2(100),
         height: hp2(100),
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: props?.bg?'':'rgba(0, 0, 0, 0.5)',
         alignItems: 'center',
         justifyContent: 'center',
       }}

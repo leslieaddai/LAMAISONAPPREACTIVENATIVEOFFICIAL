@@ -86,6 +86,7 @@ export default function LoginScreen(props) {
             props.navigation.navigate('connectStripe',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
           }
             else {
+            OneSignal.setExternalUserId(String(res?.data?.user?.id))
             successMessage('Login Successfully');
             dispatch({
               type: types.CartCount,

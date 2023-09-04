@@ -36,6 +36,7 @@ import types from '../../Redux/types';
 import OneSignal from 'react-native-onesignal';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewMainComp from '../../components/SkeletonViewComponents/SkeletonViewMainComp';
+import LoaderComp from '../../components/loaderComp';
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
@@ -67,8 +68,13 @@ OneSignal.setNotificationOpenedHandler(notification => {
   console.log("OneSignal: notification opened:", notification);
   if (notification) {
     const { additionalData = null } = notification.notification;
+    console.log("additionalData",additionalData)
     if(additionalData !=null){
+      if(additionalData.order ==="less_than_20"){
+        props.navigation.navigate('inventory')
+      }else{
       props.navigation.navigate('orderTrackingScreen')
+    }
     }
     else{
       props.navigation.navigate('notificationScreen')
@@ -127,14 +133,14 @@ OneSignal.setNotificationOpenedHandler(notification => {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        // console.log("saasd",res?.data?.data?.newsfeed?.data[0]?.user)
+        // console.log("saasd",res?.data?.data?.newsfeed?.data)
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
         setLoading(false);
       })
       .catch(function (error) {
-        
+        console.log(error.response.data);
         setLoading(false);
       
         errorMessage(errorHandler(error))
@@ -173,7 +179,14 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
   const colorComp = data => {
     return (
-      <View style={{marginVertical: hp2(2)}}>
+      <TouchableOpacity 
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
+        props?.navigation.navigate('dressingRoomScreen', {
+          data: {product: {id: data?.product?.product_images[0]?.product_id}},
+        }):
+        props.navigation.navigate('imageViewScreen',{item:data?.product?.product_images})
+      }
+      style={{marginVertical: hp2(2)}}>
         <View
           style={styles.brandImage}>
             <Image
@@ -181,13 +194,20 @@ OneSignal.setNotificationOpenedHandler(notification => {
             style={{width:'100%',height:'100%'}}
             />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
   const pieceComp = data => {
     return (
-      <View style={{marginVertical: hp2(2)}}>
+      <TouchableOpacity 
+      onPress={() => user?.userData?.role?.[0]?.id!==3?
+        props?.navigation.navigate('dressingRoomScreen', {
+          data: {product: {id: data?.product?.product_images[0]?.product_id}},
+        }):
+        props.navigation.navigate('imageViewScreen',{item:data?.product?.product_images})
+      }
+      style={{marginVertical: hp2(2)}}>
         <View
           style={styles.brandImage}>
             <Image
@@ -195,7 +215,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
             style={{width:'100%',height:'100%'}}
             />
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -203,7 +223,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
     const onloading = (value,label)=>{
       setPostcomploading(value)
     }
-    // console.log("post comp",data.user)
+    // console.log("post comp",data)
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
@@ -227,6 +247,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
               resizeMode="contain"
             />
           </TouchableOpacity>
+          {data.is_shared&&
+          <>
           <ICONS.FontAwesome
             name="retweet"
             size={24}
@@ -234,6 +256,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             style={{marginHorizontal: wp2(4)}}
           />
           <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+          </>
+        }
         </View>
         <TouchableOpacity
           onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
@@ -293,6 +317,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             resizeMode="contain"
           />
         </TouchableOpacity>
+        {data.is_shared&&
+        <>
         <ICONS.FontAwesome
             name="retweet"
             size={24}
@@ -300,6 +326,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             style={{marginHorizontal: wp2(4)}}
           />
           <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+          </>
+        }
         </View>
 
         <View style={styles.productContainer}>
@@ -367,7 +395,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             resizeMode="contain"
           />
         </TouchableOpacity>
-
+        {data.is_shared&&
+        <>
         <ICONS.FontAwesome
             name="retweet"
             size={24}
@@ -375,6 +404,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             style={{marginHorizontal: wp2(4)}}
           />
           <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+          </>
+        }
           </View>
 
         <View
@@ -660,15 +691,14 @@ OneSignal.setNotificationOpenedHandler(notification => {
       )}
 
        {loading && feedData?.length !== 0 && (
-            <FlatList
-            data={data}
-            renderItem={()=>{
-              return(
-                <SkeletonViewMainComp
-                nametag={true}
-                />
-              )}}
-              />
+        <View style={{
+          width:wp2(2),
+          height:hp2(2),
+          marginVertical:hp2(2)
+          }}>
+            <LoaderComp
+            bg={true}/>
+            </View>
             
           )}
         </>

@@ -23,12 +23,15 @@ import {
 } from '../../theme';
 
 export default function CommentComp(props) {
-  // console.log(props?.data?.user?.profile_image?.original_url)
   return (
     <View style={styles.container}>
       <View style={styles.imageWrap}>
         <Image
-          source={props?.data?.user?.profile_image == null?IMAGES.profileIcon3:{uri:props?.data?.user?.profile_image?.original_url}}
+          source={props?.data?.user?.profile_image == null?IMAGES.profileIcon3:
+          {uri:typeof(props?.data?.user?.profile_image)==='string'?
+          props?.data?.user?.profile_image:
+          props?.data?.user?.profile_image?.original_url
+        }}
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
     height: wp2(18),
     borderRadius: wp2(4),
     overflow: 'hidden',
-    backgroundColor:Platform.OS == 'android'&&'white',
+    backgroundColor:'white',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

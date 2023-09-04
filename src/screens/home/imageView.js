@@ -29,26 +29,50 @@ import { AddWishListUrl,
          ProductDislike, 
          ProductLike, 
          ProductShare, 
-         RemoveFromWishlist } from '../../config/Urls';
+         RemoveFromWishlist, 
+         getproductdetail} from '../../config/Urls';
 import { errorMessage } from '../../config/NotificationMessage';
 import { errorHandler } from '../../config/helperFunction';
 
 export default function ImageView(props) {
   const user = useSelector(state => state.userData);
   itemdata = props?.route?.params?.item
-  itemindex = props?.route?.params?.indexValue
   const navigation = useNavigation();
   const [heart, setHeart] = useState(false);
   const [share, setShare] = useState(false);
-  const [hanger, setHanger] = useState(true);
-  const [likecount,setlikecount] =useState(itemdata?.product_likes_count)
-  const [wishlistcount,setwishlistcount] =useState(itemdata?.product_wishlist_count)
-  const [sharecount , setsharecount] = useState(itemdata?.product_shares_count)
+  const [hanger, setHanger] = useState(false);
+  const [likecount,setlikecount] =useState(0)
+  const [wishlistcount,setwishlistcount] =useState(0)
+  const [sharecount , setsharecount] = useState(0)
+  const [data,setData] =useState()
   const [loading, setLoading] = useState(false)
+  const getdetail = page_no => {
+    setLoading(true);
+
+    axios
+      .get(getproductdetail+itemdata,{
+        headers: {Authorization: `Bearer ${user?.token}`},
+      })
+      .then(async function (res) {
+       setData(res?.data?.data)
+       setHeart(res.data.data?.is_liked? true : false);
+       setHanger(res.data.data?.is_wishlisted ? true : false);
+       setShare(res.data.data?.is_shared  ? true : false);
+       setlikecount(res?.data?.data?.product_likes_count)
+       setwishlistcount(res?.data?.data?.product_wishlist_count)
+       setsharecount(res?.data?.data?.product_shares_count)
+        setLoading(false);
+      })
+      .catch(function (error) {
+       
+        setLoading(false);
+ 
+        errorMessage(errorHandler(error))
+      });
+  };
   useEffect(()=>{
-    setHeart(itemdata?.is_liked? true : false);
-    setHanger(itemdata?.is_wishlisted ? true : false);
-    setShare(itemdata?.is_shared  ? true : false);       
+    getdetail()
+           
     },[])
     
   const AddWishlist = (productId) => {
@@ -233,11 +257,10 @@ export default function ImageView(props) {
         horizontal
         pagingEnabled
         showsHorizontalScrollIndicator={false}
-        data={itemdata?.product_images?.[0]?.image}
+        data={data?.product_images?.[0]?.image}
         getItemLayout={(data, index) => (
           {length: wp2(100), offset: wp2(100) * index, index}
         )}
-        initialScrollIndex={itemindex}
         renderItem={({item,index})=>{
           return(
             <View key={index} style={{width: wp2(100), height: hp2(100)}}>
@@ -255,16 +278,16 @@ export default function ImageView(props) {
        <TouchableOpacity 
        disabled={loading?true:false}
        onPress={() => navigation.navigate('commentScreen',{
-        product_id:itemdata?.id,
-        comments:itemdata?.product_comments})}>
+        product_id:data?.id,
+        comments:data?.product_comments})}>
        <ICONS.MaterialIcons name="mode-comment" size={34} color="white" />
        </TouchableOpacity>
-       <Text style={styles.toolBarText}>{itemdata?.product_comments?.length}</Text>
+       <Text style={styles.toolBarText}>{data?.product_comments?.length}</Text>
 
        <TouchableOpacity 
        disabled={loading?true:false}
        onPress={()=>{
-        productLikeDislike(itemdata?.id)
+        productLikeDislike(data?.id)
        }}>
        <ICONS.Ionicons name="heart" size={34}  color={heart ? '#FC0004' : 'white'} />
        </TouchableOpacity>
@@ -274,10 +297,10 @@ export default function ImageView(props) {
        disabled={loading?true:false}
        onPress={() => {
         user?.userData?.role?.[0]?.id !== 3 && user?.token !== ''
-                    ? hanger 
-                      ? RemoveWishlist(itemdata?.id)
-                      : AddWishlist(itemdata?.id)
-                    : errorMessage('You cant add to wishlist!');
+            ? hanger 
+            ? RemoveWishlist(data?.id)
+            : AddWishlist(data?.id)
+            : errorMessage('You cant add to wishlist!');
               }}>
        <ICONS.MaterialCommunityIcons name="hanger" size={34} color={hanger ? '#162FAC' : 'white'} />
        </TouchableOpacity>
@@ -286,7 +309,7 @@ export default function ImageView(props) {
        <TouchableOpacity 
        disabled={loading?true:false}
        onPress={()=>{
-         productShare(itemdata.id)
+         productShare(data.id)
        }}>
        <ICONS.FontAwesome5 name="retweet" size={34} color={share ? '#13D755' : 'white'} />
        </TouchableOpacity>

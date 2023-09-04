@@ -30,8 +30,11 @@ import {errorHandler} from '../../config/helperFunction';
 import {Newsfeed} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import SkeletonViewMainComp from '../../components/SkeletonViewComponents/SkeletonViewMainComp';
+import LoaderComp from '../../components/loaderComp';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ListViewScreen(props) {
+  const navigation = useNavigation()
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [feedData, setFeedData] = useState([]);
@@ -42,10 +45,18 @@ export default function ListViewScreen(props) {
   useEffect(() => {
     getNewsfeed('1');
   }, []);
+  useEffect(()=>{
+    const unsubscribe = navigation.addListener('focus', () => {
+      if(page !== ''){
+      setFeedData([])
+      getNewsfeed('1');
+    }
+    });
+    return unsubscribe;
+  },[navigation])
 
   const getNewsfeed = page_no => {
     setLoading(true);
-
     axios
       .get(Newsfeed+page_no,{
         headers: {Authorization: `Bearer ${user?.token}`},
@@ -74,7 +85,7 @@ export default function ListViewScreen(props) {
       <View style={styles.container}>
         <View style={styles.iconContainer}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('homeScreen')}
+            onPress={() => navigation.navigate('homeScreen')}
             style={styles.iconWrap2}>
             <Image
               source={IMAGES.gridView}
@@ -85,7 +96,7 @@ export default function ListViewScreen(props) {
           <View style={styles.line}></View>
           <TouchableOpacity
           disabled={user?.token!==''?false:true}
-            onPress={() => props.navigation.navigate('listViewScreen')}
+            onPress={() => navigation.navigate('listViewScreen')}
             style={styles.iconWrap2}>
             <Image
               source={IMAGES.listView}
@@ -128,16 +139,14 @@ export default function ListViewScreen(props) {
         )}
          
           {loading && feedData?.length !== 0 && (
-           <FlatList
-           data={data}
-           renderItem={()=>{
-             return(
-               <SkeletonViewMainComp
-               nametag={true}
-               postcomp={true}
-               />
-             )}}
-             />
+            <View style={{
+              width:wp2(2),
+              height:hp2(2),
+              marginVertical:hp2(2)
+              }}>
+                <LoaderComp
+                bg={true}/>
+                </View>
           )}
 
       </View>

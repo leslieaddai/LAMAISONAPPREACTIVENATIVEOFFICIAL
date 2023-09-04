@@ -39,6 +39,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
 
 import LoaderComp from '../../components/loaderComp';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 export default function CommentScreen(props) {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export default function CommentScreen(props) {
   pid = props?.route?.params?.product_id;
   commentsArr = props?.route?.params?.comments;
   const [desc, setDesc] = useState('');
-// console.log(props?.route?.params?.comments)
+// console.log(user.userData)
   
 
   const onSend = () => {
@@ -72,7 +73,7 @@ export default function CommentScreen(props) {
         })
         .then(async function (res) {
           
-          commentsArr?.push({comment:desc,created_at:new Date()});
+          commentsArr?.push({comment:desc,created_at:new Date(),user:user.userData});
           setDesc('');
           setLoading(false);
           successMessage('Comment Added!');
@@ -95,6 +96,7 @@ export default function CommentScreen(props) {
       </View>
 
     <View style={styles.container}>
+    <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(2)}}>
       <SafeAreaView></SafeAreaView>
       <View style={styles.headWrap}>
         <TouchableOpacity
@@ -104,28 +106,27 @@ export default function CommentScreen(props) {
         </TouchableOpacity>
         <Text style={styles.commentText}>Comments</Text>
       </View>
-
+      
       <>
           {commentsArr?.length!==0? 
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2),height:hp2(65)}}>
             
             {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
           
             return(
-              <>
+              <ScrollView key={index}>
               <LineComp date={item} key={index} />
-
           {commentsArr?.map((item2, index2) => {
                     if (moment(item2?.created_at).format('MM/YY') === item)
                       return (
                         <CommentComp data={item2} key={index2} />
                       );
                   })}
-              </>
+              </ScrollView>
             )
           })}
           </ScrollView>
-          :<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Comments Not Available</Text></View>}
+          :<View style={{alignItems:'center',justifyContent:'center',height:hp2(65)}}><Text>Comments Not Available</Text></View>}
       </>
 
       <View style={styles.textBox}>
@@ -141,6 +142,7 @@ export default function CommentScreen(props) {
       <TouchableOpacity onPress={onSend} style={styles.button}>
         <Text style={styles.buttonText}>Add your comment</Text>
       </TouchableOpacity>
+      </KeyboardAwareScrollView>
     </View>
   </>
   );
