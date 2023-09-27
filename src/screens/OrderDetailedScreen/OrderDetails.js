@@ -32,6 +32,7 @@ const OrderDetails = ({navigation,route}) => {
       <FlatList
       data={orderData}
       renderItem={({item,index})=>{
+        // console.log("asdas",item)
         return(
         <View style={styles.ConatinerView}>
             <OrderDetailscomp

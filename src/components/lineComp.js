@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   lineWrap: {
     flexDirection: 'row',
     width: wp2(100),
-    height: hp2(4),
+    height: hp2(2),
     alignItems: 'center',
     marginVertical: hp2(1),
   },

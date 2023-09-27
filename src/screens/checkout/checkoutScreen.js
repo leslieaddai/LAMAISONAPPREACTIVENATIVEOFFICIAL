@@ -180,8 +180,11 @@ export default function CheckoutScreen(props) {
             setTotal(val);
         }else{
           let val = 0;
+          let encounteredUserIds = {};
+          let totalvalue = 0
         products.map((item,index)=>{
           val=val+Number(item?.data?.price*item?.Quantity)
+          totalvalue = totalvalue+Number(item?.data?.price*item?.Quantity)
           item?.data?.product_region?.map((item,index)=>{
             if(stateChange?.region === item?.region_id){
               if (!encounteredUserIds[item?.user_id]) {
@@ -194,7 +197,7 @@ export default function CheckoutScreen(props) {
             }
           })
         })
-      
+        setEstimate(totalvalue)
         setTotal(val);
         }
       }
@@ -1027,8 +1030,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         {/* <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
+         <Text style={styles.text}>Sub Total</Text>
+         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
        </View>
             <View style={styles.inputBox}>
        <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
@@ -1074,8 +1077,8 @@ export default function CheckoutScreen(props) {
            paddingRight: wp2(2),
            marginVertical: hp2(1),
          }}>
-         {/* <Text style={styles.text}>Total</Text>
-         <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text> */}
+         <Text style={styles.text}>Sub Total</Text>
+         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
        </View>
 
            <View style={styles.inputBox}>

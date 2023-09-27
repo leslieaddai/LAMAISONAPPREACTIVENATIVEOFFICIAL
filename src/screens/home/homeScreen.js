@@ -133,7 +133,15 @@ OneSignal.setNotificationOpenedHandler(notification => {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        // console.log("saasd",res?.data?.data?.newsfeed?.data)
+        // console.log("saasd",res?.data?.data)
+        dispatch({
+          type: types.Warning,
+          payload: res?.data?.data,
+        });
+        if(res?.data?.data?.shared_products !== []){
+          console.log("asdsadsa")
+          setFeedData (prev=> [...prev, ...res?.data?.data?.shared_products])
+        }
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);

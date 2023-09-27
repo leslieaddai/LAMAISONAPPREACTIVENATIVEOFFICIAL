@@ -186,7 +186,7 @@ const roleid = user?.userData?.role?.[0]?.id
       <Text style={styles.colourText}>Colour - </Text>
       <View style={{width:wp2(9),height:wp2(5),backgroundColor:`${props?.colourcode}`,borderRadius:wp2(2),borderWidth:1}}></View>
       </View>
-      <Text style={styles.textstyle}>{`Price - £ ${props?.price}`}</Text>
+      <Text style={styles.textstyle}>{`Price - £ ${Number(props?.price*props?.quantity).toFixed(2)}`}</Text>
     
       <TouchableOpacity 
       disabled={roleid===3?selectedStatus=='Cancelled'||selectedStatus =='Delivered'?true:false:true}

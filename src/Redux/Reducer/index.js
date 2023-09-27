@@ -15,6 +15,7 @@ import ContinentReducer from './ContinentReducer';
 import GuestBasket from './GuestBasket';
 import GloabalDataReducer from './GloabalDataReducer';
 import OrderCountReducer from './OrderCountReducer';
+import WarningReducer from './WarningReducer';
 
 const persistConfig1 = {
   key: 'auth',
@@ -49,6 +50,11 @@ const orderconfig = {
   storage:AsyncStorage,
   whitelist:'ordercount'
 }
+const warningconfig = {
+  key: 'warningcheck',
+  storage:AsyncStorage,
+  whitelist:'warningcheck'
+}
 
 export const store = configureStore({
   reducer: {
@@ -66,6 +72,7 @@ export const store = configureStore({
     Continent:ContinentReducer,
     GuestBasket:persistReducer(persistConfig4,GuestBasket),
     ordercount: persistReducer(orderconfig, OrderCountReducer),
+    warningcheck: persistReducer(warningconfig,WarningReducer)
   },
 });
 export const persistor = persistStore(store);

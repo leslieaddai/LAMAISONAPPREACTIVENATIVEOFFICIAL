@@ -107,27 +107,31 @@ export default function CommentScreen(props) {
         <Text style={styles.commentText}>Comments</Text>
       </View>
       
-      <>
+      <View style ={{height:hp2(65)}}>
           {commentsArr?.length!==0? 
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2),height:hp2(65)}}>
+          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}} nestedScrollEnabled={true}>
             
-            {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
+            {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>
+            moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,
+              index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
           
             return(
-              <ScrollView key={index}>
+              <View key={index}>
               <LineComp date={item} key={index} />
-          {commentsArr?.map((item2, index2) => {
+              <ScrollView>
+                {commentsArr?.map((item2, index2) => {
                     if (moment(item2?.created_at).format('MM/YY') === item)
                       return (
-                        <CommentComp data={item2} key={index2} />
+                        <CommentComp data={item2} key={index2}/>
                       );
                   })}
-              </ScrollView>
+                  </ScrollView>
+              </View>
             )
           })}
           </ScrollView>
           :<View style={{alignItems:'center',justifyContent:'center',height:hp2(65)}}><Text>Comments Not Available</Text></View>}
-      </>
+      </View>
 
       <View style={styles.textBox}>
         <TextInput

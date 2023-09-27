@@ -41,6 +41,7 @@ export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const {count} = useSelector(state => state.ordercount)
+  const {warning} = useSelector(state => state.warningcheck)
   // const user = useSelector(state => state.userData);
 
   const dispatch = useDispatch();
@@ -180,7 +181,7 @@ useEffect(()=>{
               {settingOptions('PROFILE', '', 'editProfile')}
               {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
               {settingOptions('IMAGE/PRODUCT UPLOAD', '', 'destinationScreen')}
-              {settingOptions('INVENTORY', `${props?.route?.params?.user.warning?'red':''}`, 'inventory')}
+              {settingOptions('INVENTORY', `${warning?'red':''}`, 'inventory')}
               {settingOptions('STANDARD SHIPPING', '', 'shippingLocation')}
               {settingOptions('ANALYTICS', '', 'analyticsScreen')}
               {settingOptions('ALL ORDERS', `${count>0 ? 'blue':''}`, 'orderTrackingScreen')}
