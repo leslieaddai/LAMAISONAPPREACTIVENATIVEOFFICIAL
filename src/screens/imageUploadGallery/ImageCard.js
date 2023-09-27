@@ -17,6 +17,7 @@ import {
   hp2,
 
 } from '../../theme';
+import { errorMessage } from '../../config/NotificationMessage';
 
 
 const ImageCard = props => {
@@ -32,20 +33,46 @@ const ImageCard = props => {
     const ext = match?.[1];
     const type = match ? `image/${match[1]}` : `image`;
 
-    props.state.setSelectedImage({
-      uri,
-      name: filename,
-      type,
-    });
+    // props.state.setSelectedImage({
+    //   uri,
+    //   name: filename,
+    //   type,
+    // });
+
+    props.state.setSelectedImage([
+      ...props.state.selectedImage,
+      {
+        uri,
+        name: filename,
+        type,
+      },
+    ]);
+
   };
 
   return (
     <TouchableOpacity
-      onPress={
-        () =>
+      // onPress={
+      //   () =>
          
-          formatImgObj(props.item.node.image)
+      //     formatImgObj(props.item.node.image)
         
+      // }
+      onPress={() =>
+     
+        props.state.selectedImage.length !== 4 ||
+        props.state.selectedImage.some(e => e.uri === props.item.node.image.uri)
+          ? props.state.selectedImage.some(
+              e => e.uri === props.item.node.image.uri,
+            )
+            ? props.state.setSelectedImage(
+                props.state.selectedImage.filter(
+                  e => e.uri !== props.item.node.image.uri,
+                ),
+              )
+            : 
+              formatImgObj(props.item.node.image)
+          : errorMessage('You cant select more than 4 photos')
       }
       
       key={props.key}
@@ -58,7 +85,8 @@ const ImageCard = props => {
       />
      
       
-      {props?.state?.selectedImage?.uri === props?.item?.node?.image?.uri && (
+      {/* {props?.state?.selectedImage?.uri === props?.item?.node?.image?.uri && ( */}
+      {props.state.selectedImage.some(e => e.uri === props.item.node.image.uri,) && (
         <ICONS.AntDesign
           name="checkcircle"
           size={20}

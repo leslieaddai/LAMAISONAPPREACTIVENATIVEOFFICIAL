@@ -14,6 +14,7 @@ import {
   ActivityIndicator,
   Alert,
   Linking,
+  Animated,
 } from 'react-native';
 
 import {
@@ -40,6 +41,7 @@ import {errorHandler} from '../../config/helperFunction';
 import {CreateGalleryUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import LoaderComp from '../../components/loaderComp';
+import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 
 const PAGE_SIZE = 40;
 
@@ -53,8 +55,9 @@ export default function ImageUploadScreen(props) {
 
   const [caption, setCaption] = useState('');
 
-  
-  const [selectedImage, setSelectedImage] = useState();
+  const scrollX = new Animated.Value(0);
+  //const [selectedImage, setSelectedImage] = useState();
+  const [selectedImage, setSelectedImage] = useState([]);
   const [nextButton, setNextButton] = useState(false);
   const [confirmButton, setConfirmButton] = useState(false);
   const [uploadButton, setUploadButton] = useState(false);
@@ -253,7 +256,10 @@ export default function ImageUploadScreen(props) {
       var formdata = new FormData();
       formdata.append('user_id', user?.userData?.id);
       formdata.append('caption', caption);
-      formdata.append('image', selectedImage);
+      //formdata.append('image', selectedImage);
+      selectedImage.map((item, index) => {
+        formdata.append('image[]', item);
+      });
 
       
 
@@ -302,7 +308,8 @@ export default function ImageUploadScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
       <SafeAreaView style={styles.container}>
-        {selectedImage && !nextButton ? (
+        {/* {selectedImage && !nextButton ? ( */}
+           {selectedImage?.length !== 0 && !nextButton ? (
           <View style={styles.headWrap}>
             <TouchableOpacity onPress={() => props.navigation.goBack()}>
               <ICONS.AntDesign name="left" size={24} color="black" />
@@ -329,7 +336,7 @@ export default function ImageUploadScreen(props) {
           </View>
         )}
 
-        <View style={styles.imageContainer}>
+        {/* <View style={styles.imageContainer}>
           {selectedImage ? (
             <Image
               source={{uri: selectedImage?.uri}}
@@ -344,7 +351,48 @@ export default function ImageUploadScreen(props) {
               resizeMode="cover"
             />
           )}
-        </View>
+        </View> */}
+
+        {selectedImage?.length !== 0 ? (
+          <View style={styles.scrollViewWrap}>
+            <Animated.ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onScroll={Animated.event(
+                [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                {useNativeDriver: true},
+              )}>
+              {selectedImage?.map((item, index) => (
+                <View key={index} style={styles.imageContainer}>
+                  <Image
+                    source={{uri: item.uri}}
+                    style={{width: '100%', height: '100%'}}
+                    resizeMode="cover"
+                  />
+                </View>
+              ))}
+            </Animated.ScrollView>
+            <View style={styles.scrollIndicatorWrap}>
+              <RNAnimatedScrollIndicators
+                numberOfCards={selectedImage?.length}
+                scrollWidth={wp2(94)}
+                activeColor={'#707070'}
+                inActiveColor={'#D9D9D9'}
+                scrollAnimatedValue={scrollX}
+              />
+            </View>
+          </View>
+        ) : (
+          <View style={styles.imageContainer}>
+           
+            <Image
+              source={IMAGES.selectIMG}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          </View>
+        )}
 
         {nextButton ? (
           <ScrollView contentContainerStyle={{paddingVertical: hp2(1)}}>
@@ -491,5 +539,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: wp2(2),
     fontSize: rfv(13),
     fontWeight: '700',
+  },
+    scrollViewWrap: {
+    width: wp2(94),
+    height: hp2(36),
+    overflow: 'hidden',
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+    scrollIndicatorWrap: {
+    width: wp2(94),
+    position: 'absolute',
+    zIndex: 999,
+    bottom: hp2(1),
   },
 });
