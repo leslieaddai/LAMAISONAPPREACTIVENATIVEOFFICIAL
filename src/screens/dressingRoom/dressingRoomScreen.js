@@ -44,6 +44,7 @@ import {
   ProductShare,
   ProductDislike,
   GetAppNotice,
+  API_BASED_URL,
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
@@ -54,6 +55,7 @@ import LoaderComp from '../../components/loaderComp';
 import RenderHtml from 'react-native-render-html';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewDressingComp from '../../components/SkeletonViewComponents/SkeletonViewDressingComp';
+import OneSignal from 'react-native-onesignal';
 
 export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(null);
@@ -107,7 +109,6 @@ export default function DressingRoomScreen(props) {
         });
       })
       .catch(function (error) {
-       
         
         errorMessage(errorHandler(error))
       });
@@ -126,7 +127,7 @@ export default function DressingRoomScreen(props) {
         if (user?.token !== '') {
           axios
             .get(
-              `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
+              `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
             )
             .then(async function (res) {
             
@@ -139,7 +140,6 @@ export default function DressingRoomScreen(props) {
 
             })
             .catch(function (e) {
-            
               setLoading2(false);
             
               errorMessage(errorHandler(error))
@@ -149,7 +149,6 @@ export default function DressingRoomScreen(props) {
         }
       })
       .catch(function (error) {
-       
         setLoading2(false);
         
         errorMessage(errorHandler(error))
@@ -212,6 +211,15 @@ export default function DressingRoomScreen(props) {
                   setLoading(false);
                   
                   errorMessage(errorHandler(error))
+                  if(error.response.data.message === 'Unauthenticated.'){
+                    dispatch({
+                            type: types.Clearcart,
+                          });
+                          dispatch({
+                            type: types.Logout,
+                          });
+                      OneSignal.removeExternalUserId()
+                  }
                 });
             },
           },
@@ -302,7 +310,7 @@ export default function DressingRoomScreen(props) {
                     if (user?.token !== '') {
                       axios
                         .get(
-                          `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
+                          `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
                           
@@ -391,7 +399,7 @@ export default function DressingRoomScreen(props) {
                     if (user?.token !== '') {
                       axios
                         .get(
-                          `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
+                          `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
                          
@@ -452,7 +460,7 @@ export default function DressingRoomScreen(props) {
   }
 
   const productLikeDislike = () => {
-    setLoading(true);
+    
     let obj ={
       user_id:user?.userData?.id,
       product_id:props?.route?.params?.data?.product?.id
@@ -484,7 +492,7 @@ export default function DressingRoomScreen(props) {
             if (user?.token !== '') {
               axios
                 .get(
-                  `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
+                  `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                 )
                 .then(async function (res) {
                   setHeart(res?.data?.data?.is_liked > 0 ? true : null);

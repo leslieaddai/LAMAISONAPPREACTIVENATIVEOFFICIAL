@@ -57,11 +57,14 @@ OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent =
   console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
   
   let notification = notificationReceivedEvent.getNotification();
+  if(Platform.OS === 'android'){
   OneSignalMessage("La Maison",notification.body)
+  }
   console.log("notification: ", notification);
   const data = notification.additionalData
   console.log("additionalData: ", data);
   notificationReceivedEvent.complete(notification);
+
 });
 
 OneSignal.setNotificationOpenedHandler(notification => {
@@ -125,22 +128,23 @@ OneSignal.setNotificationOpenedHandler(notification => {
         errorMessage(errorHandler(error))
       });
   }, []);
+  
   const getNewsfeed = page_no => {
     !loading && setLoading(true);
-
     axios
       .get(Newsfeed+page_no,{
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        // console.log("saasd",res?.data?.data)
         dispatch({
           type: types.Warning,
           payload: res?.data?.data,
         });
-        if(res?.data?.data?.shared_products !== []){
-          console.log("asdsadsa")
+        if(res?.data?.data?.shared_products.length !==0){
           setFeedData (prev=> [...prev, ...res?.data?.data?.shared_products])
+        }
+        if(res.data.data?.ownNewsfeed.length !==0){
+          setFeedData (prev=> [...prev, ...res.data.data?.ownNewsfeed])
         }
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
@@ -149,8 +153,16 @@ OneSignal.setNotificationOpenedHandler(notification => {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        setLoading(false);
-      
+        setLoading(false);  
+        if(error.response.data.message === 'Unauthenticated.'){
+          dispatch({
+            type: types.Clearcart,
+          });
+          dispatch({
+            type: types.Logout,
+          });
+          OneSignal.removeExternalUserId()
+        }
         errorMessage(errorHandler(error))
       });
   };
@@ -231,22 +243,38 @@ OneSignal.setNotificationOpenedHandler(notification => {
     const onloading = (value,label)=>{
       setPostcomploading(value)
     }
-    // console.log("post comp",data)
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
           <TouchableOpacity
-            onPress={() => props.navigation.navigate('brandProfileScreen',{
+            onPress={() => {
+              console.log("post comp",data.user.roles[0].id)
+              {data.user.roles[0].id == 3?
+                props.navigation.navigate('brandProfileScreen',{
                 userData: {
                   userData: {
-                    id: data?.user?.id,
+                    id: data.user.id,
                     profile_image:
-                    data?.user?.profile_image?.original_url,
+                      data?.user?.profile_image?.original_url,
                     name: data?.user?.name,
                     role: [{id: 3}],
                   },
                 },
               })
+              :
+              props.navigation.navigate('editorProfileScreen',{
+                userData: {
+                  userData: {
+                    id: data.user.id,
+                    profile_image:
+                      data?.user?.profile_image?.original_url,
+                    name: data?.user?.name,
+                    role: [{id: 2}],
+                  },
+                },
+              })
+            }
+              }
             }
             style={styles.imageWrap}>
             <Image
@@ -255,13 +283,14 @@ OneSignal.setNotificationOpenedHandler(notification => {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          {data.is_shared&&
+          {data.is_shared&&  
           <>
           <ICONS.FontAwesome
             name="retweet"
             size={24}
             color={'black'}
             style={{marginHorizontal: wp2(4)}}
+            
           />
           <Text style={{color: 'black'}}>{data?.user?.name}</Text>
           </>
@@ -278,9 +307,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
             </SkeletonPlaceholder>
           :
           undefined
-              }
+            }
           <Image
-          
             progressiveRenderingEnabled={true}
             onLoadStart={()=>{onloading(true,"onLoadStart")}}
             onLoad={()=>onloading(false,"onLoad")}
@@ -298,22 +326,41 @@ OneSignal.setNotificationOpenedHandler(notification => {
     const onloading = (value,label)=>{
       setProductcomploading(value)
     }
+
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => 
-            props.navigation.navigate('brandProfileScreen',{
-            userData: {
+          onPress={() => {
+            console.log('====================================');
+            console.log("second here",data.user.roles[0].id);
+            console.log('====================================');
+            {data.user.roles[0].id == 3?
+              props.navigation.navigate('brandProfileScreen',{
               userData: {
-                id: data.user.id,
-                profile_image:
-                  data?.user?.profile_image?.original_url,
-                name: data?.user?.name,
-                role: [{id: 3}],
+                userData: {
+                  id: data.user.id,
+                  profile_image:
+                    data?.user?.profile_image?.original_url,
+                  name: data?.user?.name,
+                  role: [{id: 3}],
+                },
               },
-            },
-          })
+            })
+            :
+            props.navigation.navigate('editorProfileScreen',{
+              userData: {
+                userData: {
+                  id: data.user.id,
+                  profile_image:
+                    data?.user?.profile_image?.original_url,
+                  name: data?.user?.name,
+                  role: [{id: 2}],
+                },
+              },
+            })
+          }
+        }
         }
           style={[
             styles.imageWrap,
@@ -380,7 +427,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
         <TouchableOpacity
-          onPress={() => 
+          onPress={() => {
+            console.log('====================================');
+            console.log("third here",data.user.roles[0].id);
+            console.log('====================================');
+            {data.user.roles[0].id == 3?
             props.navigation.navigate('brandProfileScreen',{
             userData: {
               userData: {
@@ -392,6 +443,21 @@ OneSignal.setNotificationOpenedHandler(notification => {
               },
             },
           })
+          :
+          props.navigation.navigate('editorProfileScreen',{
+            userData: {
+              userData: {
+                id: data.user.id,
+                profile_image:
+                  data?.user?.profile_image?.original_url,
+                name: data?.user?.name,
+                role: [{id: 2}],
+              },
+            },
+          })
+        }
+
+        }
         }
           style={[
             styles.imageWrap,
@@ -600,8 +666,8 @@ OneSignal.setNotificationOpenedHandler(notification => {
                     {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
                     {index === 0 && (
                       <>
-                              <Text style={styles.text}>Popular Brands</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                      <Text style={styles.text}>Popular Brands</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {popularData?.brands?.map((item,index)=>{
             return(
               <>

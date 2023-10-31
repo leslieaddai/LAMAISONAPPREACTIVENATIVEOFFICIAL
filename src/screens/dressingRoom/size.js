@@ -29,6 +29,7 @@ import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {SkypeIndicator} from 'react-native-indicators';
+import { API_BASED_URL } from '../../config/Urls';
 
 export default function SelectSizes(props) {
   const [loading, setLoading] = useState(false);
@@ -41,7 +42,7 @@ export default function SelectSizes(props) {
 
     axios
       .get(
-        `https://lamaison.clickysoft.net/api/v1/product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`,
+        `${API_BASED_URL}product/${props?.route?.params?.data?.id}/color/${props?.route?.params?.color?.id}`,
       )
       .then(async function (res) {
        

@@ -121,7 +121,7 @@ const DobScreen = (props) => {
                   fontWeight: '700',
                 }}
                 editable={false}
-                placeholder={'CURRENT PHONE NUMBER'}
+                placeholder={'CURRENT DOB'}
                 onChangeText={(e)=>{setPrevNumber(e)}}
                 value={prevnumber}
                

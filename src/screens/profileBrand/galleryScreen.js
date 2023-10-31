@@ -37,9 +37,7 @@ export default function GalleryScreen(props) {
   const [loading, setLoading] = useState(false);
   
   const user = useSelector(state => state.userData);
-  const [data, setData] = useState(props?.route?.params?.data?.galleries);
-
-
+  const [data, setData] = useState(props?.route?.params?.data);
 
   return (
     <>
@@ -94,7 +92,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-  
   },
   headWrap: {
     flexDirection: 'row',

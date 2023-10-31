@@ -62,9 +62,6 @@ export default function CommentScreen(props) {
         product_id:pid,
         comment: desc,
       };
-
-     
-
       axios
         .post(AddComment, obj, {
           headers: {
@@ -130,7 +127,7 @@ export default function CommentScreen(props) {
             )
           })}
           </ScrollView>
-          :<View style={{alignItems:'center',justifyContent:'center',height:hp2(65)}}><Text>Comments Not Available</Text></View>}
+          :<View style={{alignItems:'center',justifyContent:'center',height:hp2(65)}}><Text>Comments  Not Available</Text></View>}
       </View>
 
       <View style={styles.textBox}>
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#D9D9D9',
     height: hp2(6),
-    
+    marginTop:hp2(-2),
   },
   button: {
     width: wp2(88),

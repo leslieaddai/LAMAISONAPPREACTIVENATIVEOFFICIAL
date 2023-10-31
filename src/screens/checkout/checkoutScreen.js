@@ -164,15 +164,20 @@ export default function CheckoutScreen(props) {
             let val = 0;
             let totalvalue = 0
             let encounteredUserIds = {};
+         
             props?.route?.params?.data.map((item,index)=>{
               val=val+Number(item?.product?.price*item?.qty)
               totalvalue = totalvalue+Number(item?.product?.price*item?.qty)
-              item?.product?.product_region?.map((item,index)=>{
-                if(stateChange?.region === item?.region_id){
-                  if (!encounteredUserIds[item?.shipping_price?.user_id]) {
-                    val = val + Number(item?.shipping_price?.price);
-                    encounteredUserIds[item?.shipping_price?.user_id] = true; 
-                  }
+              
+              item?.product?.product_region?.map((item2,index)=>{
+                if(stateChange?.region === item2?.region_id){
+                //   console.log('====================================');
+                // console.log("shipping fee User here=========>",item.product.shipping_price);
+                // console.log('====================================');
+                if (!encounteredUserIds[item?.product?.shipping_price?.user_id]) {
+                  val = val + Number(item?.product?.shipping_price?.price);
+                  encounteredUserIds[item?.product?.shipping_price?.user_id] = true; 
+                }
                 }
               })
             })
@@ -188,7 +193,7 @@ export default function CheckoutScreen(props) {
           item?.data?.product_region?.map((item,index)=>{
             if(stateChange?.region === item?.region_id){
               if (!encounteredUserIds[item?.user_id]) {
-                console.log("shipping fee",item);
+                console.log("shipping fee Guest =======>",item);
                 val = val + Number(item?.price)
                 encounteredUserIds[item?.user_id] = true; 
               }
@@ -445,7 +450,6 @@ export default function CheckoutScreen(props) {
         successMessage('Order Done');
       })
       .catch(function (error) {
-       
         setLoading(false);
        
         errorMessage(errorHandler(error))
@@ -477,7 +481,6 @@ export default function CheckoutScreen(props) {
   useEffect(()=>{            
    
     if(isOpenedCountries){
-     
       uibottomesheetvisiblity(true)
       setModalData(countriesData)
     
@@ -510,154 +513,72 @@ export default function CheckoutScreen(props) {
     <SafeAreaView style={{flex:1}}>
        <View style={styles.container}>
       <View style={styles.headWrap}>
-        <TouchableOpacity onPress={()=>goBackFunction()} style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>goBackFunction()} style={{position: 'absolute', left: wp2(4)}}><ICONS.AntDesign name="left" size={24} color="black" /></TouchableOpacity>
         <Text style={styles.checkout}>Check Out</Text>
         <ICONS.Entypo name="lock" size={30} color="black" />
       </View>
      {loadingAddress ? (
-      <View
-      style={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: hp2(6),
-      }}>
+      <View style={{alignItems: 'center',justifyContent: 'center',marginVertical: hp2(6)}}>
       <SkypeIndicator color={'black'} />
-    </View>
+      </View>
      ) : (
       <>
       {user?.token!==''?(
-       <KeyboardAwareScrollView
-       showsVerticalScrollIndicator={false}
-       contentContainerStyle={{paddingTop: hp2(2), paddingBottom: hp2(12)}}>
-       <View style={styles.checkoutWrap}>
-       <FlatList
-           horizontal
-          
-           showsHorizontalScrollIndicator={true}
-           pagingEnabled
-           data={props?.route?.params?.data}
-           renderItem={({item, index}) => {
-             return (
-               <View style={styles.dataWrap}>
-             
-             
-
-             <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
-            
-
-      <GestureHandlerScrollView
-      horizontal
-      pagingEnabled
-      showsHorizontalScrollIndicator={false}
-      >
-
-         {item?.product?.product_images[0]?.image?.map((item,index)=>{
-            return(
+       <KeyboardAwareScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingTop: hp2(2), paddingBottom: hp2(12)}}>
+        <View style={styles.checkoutWrap}>
+        <FlatList horizontal showsHorizontalScrollIndicator={true} pagingEnabled data={props?.route?.params?.data}
+        renderItem={({item, index}) => {
+        return (
+        <View style={styles.dataWrap}>
+        <View style={{width:wp2(36),height:hp2(20),overflow:'hidden',borderRadius:wp2(4),alignSelf:'center',}}>
+        <GestureHandlerScrollView horizontal pagingEnabled showsHorizontalScrollIndicator={false}>
+          {item?.product?.product_images[0]?.image?.map((item,index)=>{
+          return(
           <View key={index} style={styles.productImage}>
-          <Image
-            source={{uri:item?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
+          <Image source={{uri:item?.original_url}} style={{width: '100%', height: '100%'}} resizeMode="cover"/>
+          </View>
+          )})}
+        </GestureHandlerScrollView>
+        {item?.product?.product_images[0]?.image?.length>1 && (
+        <View style={{width: wp2(36),position: 'absolute',bottom: hp2(1),zIndex: 999}}>
+          <RNAnimatedScrollIndicators numberOfCards={item?.product?.product_images[0]?.image?.length} scrollWidth={wp2(36)} activeColor={'#D9D9D9'} inActiveColor={'#D9D9D9'} scrollAnimatedValue={scrollX}/>
         </View>
-          )
-          })}
-
-      </GestureHandlerScrollView>
-
-     {item?.product?.product_images[0]?.image?.length>1 && (
-       <View
-       style={{
-         width: wp2(36),
-         position: 'absolute',
-         bottom: hp2(1),
-         zIndex: 999,
-       }}>
-       <RNAnimatedScrollIndicators
-         numberOfCards={item?.product?.product_images[0]?.image?.length}
-         scrollWidth={wp2(36)}
-        
-         activeColor={'#D9D9D9'}
-         inActiveColor={'#D9D9D9'}
-         scrollAnimatedValue={scrollX}
-       />
-     </View>
-     )}
-             </View>
-     
-         <View style={styles.itemArea}>
-           <Text style={styles.text}>{item?.product?.name}</Text>
-
-           
-
-           <View style={{flexDirection:'row',alignItems:'center'}}>
-         <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {item?.size?.size}</Text>
-         </View>
-
-         <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.qty}</Text>
-         <View
-             style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-             <Text style={styles.text}>price</Text>
-             <Text style={styles.text}>£{item?.product?.price}</Text>
-           </View>
+        )}
+        </View>
+        <View style={styles.itemArea}>
+          <Text style={styles.text}>{item?.product?.name}</Text>
+        <View style={{flexDirection:'row',alignItems:'center'}}>
+          <View style={{width:wp2(9),height:wp2(9),backgroundColor:item?.color?.color_code,borderRadius:wp2(2),borderWidth:1}}></View>
+          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold',marginLeft:wp2(2)}}>SIZE : {item?.size?.size}</Text>
+        </View>
+          <Text style={{color:'black',fontSize:rfv(12),fontWeight:'bold'}}>Quantity: {item?.qty}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={styles.text}>price</Text>
+          <Text style={styles.text}>£{item?.product?.price}</Text>
+        </View>
            {continueButton === 'purchase' && 
-           <View
-           style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
            <Text style={styles.text}>Shipping</Text>
-           <Text style={styles.text}>{item?.product?.product_region.map((item,index)=>{
-             if(stateChange?.region === item?.region_id){
-             
-               return (
-                 '£'+item?.shipping_price?.price
-               )
-             }
-           })}</Text>
-         </View>
-         }
-         </View>
-               </View>
-             )
-           }}
-         />
-       </View>
+           <Text style={styles.text}>{'£'+item?.product?.shipping_price?.price}</Text>
+           
+          </View>
+            }
+        </View>
+        </View>
+          )}}/>
+        </View>
 
        {continueButton === 'purchase' && 
        <>
-       <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(42),
-           paddingRight: wp2(6),
-           marginVertical: hp2(1),
-         }}>
+       <View style={{flexDirection: 'row',justifyContent: 'space-between',paddingLeft: wp2(42),paddingRight: wp2(6),marginVertical: hp2(1)}}>
          <Text style={styles.text}>Sub Total</Text>
          <Text style={styles.text}>£{total.toFixed(3)}</Text>
        </View>
-
-       <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(42),
-           paddingRight: wp2(6),
-           marginVertical: hp2(1),
-         }}>
+       <View style={{ flexDirection: 'row',justifyContent: 'space-between',paddingLeft: wp2(42),paddingRight: wp2(6), marginVertical: hp2(1),}}>
          <Text style={styles.text}>Stripe Fee</Text>
          <Text style={styles.text}>£{Number(total*(commission/100)+0.3).toFixed(3)}</Text>
        </View>
-
-       <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(42),
-           paddingRight: wp2(6),
-           marginVertical: hp2(1),
-         }}>
+       <View style={{flexDirection: 'row',justifyContent: 'space-between',paddingLeft: wp2(42),paddingRight: wp2(6),marginVertical: hp2(1),}}>
          <Text style={styles.text}>Total</Text>
          <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
        </View>
@@ -665,143 +586,71 @@ export default function CheckoutScreen(props) {
        }
 
        {continueButton == 'confirm' ? (
-         <View style={styles.detailInputArea}>
-          <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(39),
-           paddingRight: wp2(2),
-           marginVertical: hp2(1),
-         }}>
-          {/* 
-          Second Screen Component 
-          */}
-         <Text style={styles.text}>Sub Total</Text>
-         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
-       </View>
-            <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email}
-             onChangeText={val => updateState({email: val})}  />
-     </View>
-     <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={name}
-             onChangeText={val => updateState({name: val})}/>
-     </View>
-     <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={card}
-             onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={16}/>
-     </View>
-       <View
-         style={{
-           flexDirection: 'row',
-           alignSelf: 'center',
-           justifyContent: 'space-between',
-           width: wp2(80),
-         }}>
-         <View style={[styles.inputBox, {width: wp2(48)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry}
-           keyboardType={'number-pad'}
-             onChangeText={text => 
-             updateState({expiry: text.length === 3 && !text.includes("/")
-             ? `${text.substring(0, 2)}/${text.substring(2)}`
-             : text})} />
-         </View>
-         <View style={[styles.inputBox, {width: wp2(28)}]}>
-           <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={cvv}
-             onChangeText={val => updateState({cvv: val})}/>
-         </View>
-       </View>
-         </View>
-       ) : continueButton == 'continue' ? (
-         <View style={[styles.detailInputArea2]}>
-          
-           <View
-         style={{
-           flexDirection: 'row',
-           justifyContent: 'space-between',
-           paddingLeft: wp2(39),
-           paddingRight: wp2(2),
-           marginVertical: hp2(1),
-         }}>
-          {/* 
-          First Screen Component 
-          */}
-         <Text style={styles.text}>Sub Total</Text>
-         <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
-       </View>
-           <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1}
-             onChangeText={val => updateState({address_1: val})}  />
-     </View>
-     <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2 (Optional)'}  placeholderTextColor={'grey'} value={address_2}
-             onChangeText={val => updateState({address_2: val})}  />
-     </View>
-     <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={city}
-             onChangeText={val => updateState({city: val})} />
-     </View>
+        <View style={styles.detailInputArea}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp2(39), paddingRight: wp2(2),marginVertical: hp2(1),}}>
+          {/* Second Screen Component */}
+          <Text style={styles.text}>Sub Total</Text>
+          <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'EMAIL'}  placeholderTextColor={'grey'}  value={email} onChangeText={val => updateState({email: val})}  />
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'NAME ON CARD'}  placeholderTextColor={'grey'}  value={name} onChangeText={val => updateState({name: val})}/>
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'CARD NUMBER'}  placeholderTextColor={'grey'}  value={card} onChangeText={val => updateState({card: val})} keyboardType='number-pad' maxLength={16}/>
+        </View>
+        <View style={{ flexDirection: 'row',alignSelf: 'center',justifyContent: 'space-between',width: wp2(80)}}>
+        <View style={[styles.inputBox, {width: wp2(48)}]}>
+          <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="EXPIRY DATE MM/YY" maxLength={5} value={expiry} keyboardType={'number-pad'}
+            onChangeText={text => updateState({expiry: text.length === 3 && !text.includes("/") ? `${text.substring(0, 2)}/${text.substring(2)}`: text})} />
+        </View>
+        <View style={[styles.inputBox, {width: wp2(28)}]}>
+          <TextInput style={styles.textInput} placeholderTextColor={'grey'} placeholder="CVV" keyboardType='number-pad' maxLength={4}  value={cvv} onChangeText={val => updateState({cvv: val})}/>
+        </View>
+        </View>
+        </View>
+        ) 
+        : 
+        continueButton == 'continue' ? (
+        <View style={[styles.detailInputArea2]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingLeft: wp2(39), paddingRight: wp2(2), marginVertical: hp2(1)}}>
+        {/* First Screen Component */}
+          <Text style={styles.text}>Sub Total</Text>
+          <Text style={styles.text}>£{Number(estimate).toFixed(3)}</Text>
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 1'}  placeholderTextColor={'grey'} value={address_1} onChangeText={val => updateState({address_1: val})}  />
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'ADDRESS LINE 2 (Optional)'}  placeholderTextColor={'grey'} value={address_2} onChangeText={val => updateState({address_2: val})}  />
+        </View>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'CITY'}  placeholderTextColor={'grey'} value={city} onChangeText={val => updateState({city: val})} />
+        </View>
 
-     <TouchableOpacity
-           onPress={() =>
-             isOpenedRegions
-               ? setIsOpenedRegions(false)
-               : setIsOpenedRegions(true)
-           }
-           style={[
-             styles.inputBox,
-             {
-               flexDirection: 'row',
-               alignItems: 'center',
-               paddingHorizontal: wp2(2),
-               justifyContent: 'space-between',
-             },
-           ]}>
-           <Text
-             style={{color: 'black', fontWeight: '700', fontSize: rfv(13)}}>
-             {selectedRegion}
-           </Text>
-           <View>
-             <ICONS.FontAwesome
-               name={isOpenedRegions ? 'chevron-up' : 'chevron-down'}
-               color={'#A1A1A1'}
-               size={22}
-             />
-           </View>
-         </TouchableOpacity>
+        <TouchableOpacity onPress={() => isOpenedRegions ? setIsOpenedRegions(false) : setIsOpenedRegions(true)} style={[ styles.inputBox,{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: wp2(2), justifyContent:'space-between'}]}>
+          <Text style={{color: 'black', fontWeight: '700', fontSize: rfv(13)}}> {selectedRegion} </Text>
+        <View>
+          <ICONS.FontAwesome name={isOpenedRegions ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22}/>
+        </View>
+        </TouchableOpacity>
 
-         <TouchableOpacity
-           disabled={selectedRegion === 'SELECT REGION' ? true : false}
-           onPress={() =>
-             isOpenedCountries
-               ? setIsOpenedCountries(false)
-               : setIsOpenedCountries(true)
-           }
-           style={[
-             styles.inputBox,
-             {
-               flexDirection: 'row',
-               alignItems: 'center',
-               paddingHorizontal: wp2(2),
-               justifyContent: 'space-between',
-             },
-           ]}>
-           <Text style={styles.selectedTxt}>{selectedCountry}</Text>
-           <View>
-             <ICONS.FontAwesome
-               name={isOpenedCountries ? 'chevron-up' : 'chevron-down'}
-               color={'#A1A1A1'}
-               size={22}
-             />
-           </View>
-         </TouchableOpacity>
-     <View style={styles.inputBox}>
-       <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={postcode}
-             onChangeText={val => updateState({postcode: val})} maxLength={10} />
-     </View>
-         </View> 
-       ) : (
+        <TouchableOpacity style={[ styles.inputBox,{flexDirection: 'row',alignItems: 'center',paddingHorizontal: wp2(2),justifyContent: 'space-between'}]}
+          disabled={selectedRegion === 'SELECT REGION' ? true : false}
+          onPress={() => isOpenedCountries ? setIsOpenedCountries(false) : setIsOpenedCountries(true)} >
+          <Text style={styles.selectedTxt}>{selectedCountry}</Text>
+          <View>
+            <ICONS.FontAwesome name={isOpenedCountries ? 'chevron-up' : 'chevron-down'} color={'#A1A1A1'} size={22}/>
+          </View>
+        </TouchableOpacity>
+        <View style={styles.inputBox}>
+          <TextInput style={styles.textInput} placeholder={'POSTCODE'}  placeholderTextColor={'grey'}  value={postcode} onChangeText={val => updateState({postcode: val})} maxLength={10} />
+        </View>
+        </View> 
+        ) 
+        : (
          <>
            <View style={[styles.detailInputArea2]}>
           

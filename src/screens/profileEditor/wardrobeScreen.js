@@ -104,7 +104,7 @@ export default function WardrobeScreen(props) {
               <SkypeIndicator color={'black'} />
             </View>
           )}
-
+          {data.length!==0 ?( 
           <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -128,6 +128,11 @@ export default function WardrobeScreen(props) {
               );
             }}
           />
+
+          )
+          : <View style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>No product added yet</Text></View>
+        }
+         
 
           {loading && data?.length !== 0 && (
             <View

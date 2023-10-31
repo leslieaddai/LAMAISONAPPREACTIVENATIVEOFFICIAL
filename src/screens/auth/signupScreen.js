@@ -8,7 +8,7 @@ import {
   Platform,
   SafeAreaView,
 } from 'react-native';
-import { COLORS, wp2, hp2} from '../../theme';
+import { COLORS, wp2, hp2, ICONS} from '../../theme';
 import {
   RFValue as rfv,
   
@@ -45,7 +45,6 @@ export default function SignupScreen(props) {
       'public_profile',
       'email',
     ]);
-
     if (result.isCancelled) {
       throw 'User cancelled the login process';
     }
@@ -77,7 +76,8 @@ export default function SignupScreen(props) {
       // Get the users ID token
       const data = await GoogleSignin.signIn();
 
-      console.log("data",data)
+      // console.log("data",data)
+      props.navigation.navigate('accountTypeSocial', {data: data});
 
       // Create a Google credential with the token
       const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
@@ -85,7 +85,7 @@ export default function SignupScreen(props) {
       // console.log("googleCredential of login", googleCredential);
 
       // Sign-in the user with the credential
-      return auth().signInWithCredential(googleCredential);
+      // return auth().signInWithCredential(googleCredential);
     } catch (error) {
       console.log('Google sign-in error:', error.code, error.message);
     }
@@ -109,8 +109,6 @@ export default function SignupScreen(props) {
     }
   
   }
-  
-  
 
   const onContinue = () => {
     if (firstName != '' && lastName != '' && email != '') {
@@ -190,7 +188,7 @@ export default function SignupScreen(props) {
         style={[styles.button, {width: wp2(48)}]}>
         <Text style={styles.buttonText}>CONTINUE</Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={() =>
           onGoogleButtonPress().then(res =>
             console.log('Signed in with Google!',res),
@@ -205,7 +203,7 @@ export default function SignupScreen(props) {
         />
         <Text style={styles.button2Text}>continue with Google</Text>
       </TouchableOpacity> 
-       <TouchableOpacity
+       {/* <TouchableOpacity
         onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
         style={styles.button2}>
         <ICONS.AntDesign

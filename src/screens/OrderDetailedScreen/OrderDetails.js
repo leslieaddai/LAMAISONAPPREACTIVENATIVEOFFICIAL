@@ -17,7 +17,6 @@ const OrderDetails = ({navigation,route}) => {
       tempArr[indexNo].status.status=newStatus;
       setOrderData(tempArr);
     }
-   
     const [loadingStatusChange, setLoadingStatusChange] = useState(false);
   return (
     <>
@@ -29,10 +28,15 @@ const OrderDetails = ({navigation,route}) => {
     <SafeAreaView style={{flex: 1}}>
     <View style={styles.container}>
       <Text style={styles.orderText}>Order Details</Text>
-      <FlatList
+      <View style={{justifyContent:'center',flex: 1,}}>
+      {
+        orderData.length === 0
+        ?
+        <Text style={styles.nodatatext}>Order Detail Not Found</Text>
+        :
+        <FlatList
       data={orderData}
       renderItem={({item,index})=>{
-        // console.log("asdas",item)
         return(
         <View style={styles.ConatinerView}>
             <OrderDetailscomp
@@ -59,7 +63,9 @@ const OrderDetails = ({navigation,route}) => {
         )
       }}
       />
-      
+      }
+        
+        </View>
       </View>
       </SafeAreaView>
 

@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -23,13 +23,14 @@ import {
  
   wp2,
   hp2,
+  ICONS,
  
 } from '../../theme';
 import AlertComp from '../../components/alertComp';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {LoginUrl, RegisterGuest} from '../../config/Urls';
+import {Googlelogin, LoginUrl, RegisterGuest} from '../../config/Urls';
 import {useDispatch} from 'react-redux';
 import types from '../../Redux/types';
 import Animated, {Layout} from 'react-native-reanimated';
@@ -37,6 +38,8 @@ import LoaderComp from '../../components/loaderComp';
 import {getUniqueId} from 'react-native-device-info';
 import {NetworkInfo} from 'react-native-network-info';
 import OneSignal from 'react-native-onesignal';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
@@ -60,6 +63,60 @@ export default function LoginScreen(props) {
     return /\s/.test(str);
   }
 
+  useEffect(() => {
+    GoogleSignin.configure({
+      scopes: ['email'],
+      webClientId:
+        '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
+        iosClientId:
+        '74975728118-k752rb5vodjvsfrk6bo0p0evvvg2ae6u.apps.googleusercontent.com',
+      offlineAccess: true,
+    });
+  }, []);
+
+  async function onFacebookButtonPress() {
+    // Attempt login with permissions
+    const result = await LoginManager.logInWithPermissions([
+      'public_profile',
+      'email',
+    ]);
+    if (result.isCancelled) {
+      throw 'User cancelled the login process';
+    }
+
+    // Once signed in, get the users AccesToken
+    const data = await AccessToken.getCurrentAccessToken();
+    console.log("result", result,data)
+    if (!data) {
+      throw 'Something went wrong obtaining access token';
+    }
+
+    // Create a Firebase credential with the AccessToken
+    const facebookCredential = auth.FacebookAuthProvider.credential(
+      data.accessToken,
+    );
+
+    console.log('facebookCredential of login', facebookCredential);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(facebookCredential);
+  };
+  
+
+  async function onGoogleButtonPress() {
+    try {
+      // Check if your device supports Google Play
+      await GoogleSignin.hasPlayServices();
+
+      // Get the users ID token
+      const data = await GoogleSignin.signIn();
+
+      googlelogin(data)
+      
+    } catch (error) {
+      console.log('Google sign-in error:', error.code, error.message);
+    }
+  };
 
   const onSignIn = () => {
     if (UserName != '' && Password != '') {
@@ -75,14 +132,13 @@ export default function LoginScreen(props) {
         .post(LoginUrl, obj)
         .then(async function (res) {
           setLoading(false);
+          console.log(res.data.user.role[0]);
           if (res.data.user.email_verified === false) {
           
             props.navigation.navigate('verifyAccountScreen',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
             errorMessage('Please verify your email');
           } 
           else if (res?.data?.user?.stripe_account?.charges_enabled === false || res?.data?.user?.stripe_account?.details_submitted === false){
-          
-            
             props.navigation.navigate('connectStripe',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
           }
             else {
@@ -124,6 +180,43 @@ export default function LoginScreen(props) {
       }, 3000);
     }
   };
+  
+  const googlelogin = (data) =>{
+    setLoading(true);
+    let obj = {
+      google_id:data.user.id,
+      email: data.user.email,
+      first_name:data.user.givenName,
+      last_name:data.user.familyName,
+      name:data.user.name,
+      username:data.user.name
+    };
+    axios
+    .post(Googlelogin, obj)
+    .then(async function (res) {
+      setLoading(false);
+      if (res?.data?.user?.stripe_account?.charges_enabled === false || res?.data?.user?.stripe_account?.details_submitted === false){
+        props.navigation.navigate('connectStripe',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});
+      }
+      else {
+        OneSignal.setExternalUserId(String(res?.data?.user?.id))
+        successMessage('Login Successfully');
+        dispatch({
+          type: types.CartCount,
+          payload: res.data.user.basket_count,
+        });
+        dispatch({
+          type: types.Login,
+          payload: res.data,
+        });
+      }
+    })
+    .catch(function (error) {
+      console.log(error.response.data);
+      setLoading(false);
+      errorMessage(errorHandler(error))
+    });
+  }
 
   const registerGuest = () => {
     try {
@@ -173,9 +266,6 @@ export default function LoginScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-
-    
-
         <View style={{flexGrow: 1}}>
           <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
           {showError && <AlertComp text={errormsg} />}
@@ -216,7 +306,7 @@ export default function LoginScreen(props) {
               onPress={() => {props.navigation.navigate('signupScreen'),
               updateState({UserName:''}),
               updateState({Password:''})}}
-              style={[styles.button, {width: wp2(48), marginTop: hp2(10)}]}>
+              style={[styles.button, {width: wp2(54), marginTop: hp2(6)}]}>
               <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -227,6 +317,22 @@ export default function LoginScreen(props) {
               style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
               <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
             </TouchableOpacity>
+
+            <Text style={styles.orstyle}>Or</Text>
+            <TouchableOpacity
+          onPress={() =>
+          onGoogleButtonPress().then(res =>
+            console.log('Signed in with Google!',res),
+          )
+        }
+        style={styles.button2}>
+        <ICONS.AntDesign
+          name="google"
+          size={hp2(3)}
+          color="black"
+        />
+        <Text style={styles.button2Text}>continue with Google</Text>
+      </TouchableOpacity> 
           </Animated.View>
         </View>
       </SafeAreaView>
@@ -287,7 +393,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginTop: hp2(3),
+    // marginTop: hp2(3),
     alignSelf: 'center',
   },
   buttonText: {
@@ -316,4 +422,46 @@ const styles = StyleSheet.create({
       alignItems:'flex-end',
       paddingHorizontal:wp2(1),
     },
+    soccialbuttons:{
+      flexDirection:'row',
+      justifyContent:'space-evenly',
+    },
+    roundbutton:{
+      backgroundColor:'black',
+      width:wp2(16),
+      height:hp2(8),
+      borderRadius:20,
+      alignItems:'center',
+      justifyContent:'center'
+    },
+    orstyle:{
+      color:'black',
+      fontSize:hp2(3),
+      alignSelf:'center',
+      marginTop:hp2(2)
+    },
+    button2: {
+      width: wp2(68),
+      height: hp2(6),
+      borderRadius: wp2(3),
+      alignItems: 'center',
+      justifyContent: 'center',
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 4,
+      },
+      shadowOpacity: 0.3,
+      shadowRadius: 4.65,
+      marginTop: hp2(2),
+      alignSelf: 'center',
+      flexDirection: 'row',
+    },
+    button2Text: {
+      color: 'black',
+      fontWeight: '700',
+      fontSize: rfv(11),
+      textTransform: 'uppercase',
+      marginLeft:wp2(2)
+    }
 });

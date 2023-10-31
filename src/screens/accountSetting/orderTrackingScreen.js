@@ -33,7 +33,7 @@ import OrderComp2 from '../../components/orderComp2';
 import { errorMessage } from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import { errorHandler } from '../../config/helperFunction';
-import { GetBrandOrders, GetOrdersByEditorAndGuest, OrderStatus } from '../../config/Urls';
+import { CancelOrder, GetBrandOrders, GetOrdersByEditorAndGuest, OrderStatus } from '../../config/Urls';
 import { useDispatch, useSelector } from 'react-redux';
 import types from '../../Redux/types';
 import { SkypeIndicator } from 'react-native-indicators';
@@ -55,10 +55,15 @@ export default function OrderTrackingScreen({navigation}) {
   const [filterDates, setFilterDates] = useState([]);
 
   useEffect(() => {
+  callApi();
+  }, []);
+
+  const callApi = () =>{
+    setData([])
     user?.token !== null && user?.userData?.role?.[0]?.id === 3 && getOrdersByBrand('1');
     user?.token !== null && user?.userData?.role?.[0]?.id === 2 && getOrdersByEditor('1');
     user?.token === null && getOrdersByGuest('1');
-  }, []);
+  };
 
   const getOrdersByBrand = page_no => {
     setLoading(true);
@@ -68,11 +73,7 @@ export default function OrderTrackingScreen({navigation}) {
         headers: { Authorization: `Bearer ${user?.token}` },
       })
       .then(async function (res) {
-       
         setData(prev => [...prev, ...res?.data?.data]);
-
-       
-
         tempArr = res?.data?.data
           .filter(
             (v, i, a) =>
@@ -170,15 +171,35 @@ export default function OrderTrackingScreen({navigation}) {
         errorMessage(errorHandler(error))
       });
   };
-  renderHiddenItem =(person) =>{
-    return (
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => this.deletePerson(person.id)}>
-        <Text style={styles.deleteText}>Delete</Text>
-      </TouchableOpacity>
-    );
-  }
+
+  const orderCancel = (orderId) =>{
+    setLoading(true);
+    var data = new FormData()
+      data.append("order_id",orderId)
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: CancelOrder,
+        data: data,
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+  
+      axios
+        .request(config)
+        .then(async function (res) {
+          console.log(res.data);
+        setLoading(false);
+        callApi()
+        })
+        .catch(function (error) {
+          console.log(error.response);
+          setLoading(false);
+          errorMessage(errorHandler(error));
+        });
+  };
 
   return (
     <>
@@ -220,18 +241,17 @@ export default function OrderTrackingScreen({navigation}) {
                       return (
                         <>
                           {item2?.order?.map((item3, index3) => {
-                            // console.log(item3?.user?.email);
                             return (
                               <OrderComp2
                                 data={item3}
                                 key={index3} 
-                                onpress={() => { navigation.navigate('OrderDetails', { 
+                                onpress={() => { navigation.navigate('OrderDetails',{ 
                                 addressData:{
                                 add1:item3?.address1,
                                 add2:item3?.address2,
                                 country:item3?.country,
                                 city:item3?.city
-                              }, 
+                                }, 
                                 editorname:`${item3?.user?.first_name}${item3?.user?.last_name!=null?item3?.user?.last_name:''}`,
                                 editoremail:item3?.user?.email,
                                 item: item3.vendor_order_details
@@ -274,7 +294,7 @@ export default function OrderTrackingScreen({navigation}) {
                                justifyContent: 'center', 
                                alignItems: 'center', 
                                width: 100 }}
-                            // onPress={onSwipe}
+                            onPress={()=>{orderCancel(item2.id)}}
                           >
                             <Text style={{
                             color:'white',

@@ -44,9 +44,14 @@ import { RFValue } from 'react-native-responsive-fontsize'
     alignItems:'center', 
     marginHorizontal:wp2(10),
     marginTop:hp2(2)
-},
-ConatinerView:{
-    marginTop:hp2(2)
-}
+    },
+    ConatinerView:{
+        marginTop:hp2(2),
+        flex:1
+    },
+        nodatatext:{
+        color:'black',
+        alignSelf:'center',
+    }
  })
  export default(styles)

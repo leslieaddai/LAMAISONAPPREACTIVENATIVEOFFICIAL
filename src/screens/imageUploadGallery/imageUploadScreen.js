@@ -288,7 +288,10 @@ export default function ImageUploadScreen(props) {
           }, 3000);
         })
         .catch(function (error) {
-         
+
+        console.log('====================================');
+        console.log(error.response);
+        console.log('====================================');
           setLoading(false);
    
           errorMessage(errorHandler(error))

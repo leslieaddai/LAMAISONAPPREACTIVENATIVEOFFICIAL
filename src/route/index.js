@@ -47,7 +47,7 @@ const AppNavigatior = () => {
         });
       })
       .catch(function (error) {
-        console.log("response splash error", error?.response?.data);
+        console.log("response splash error", error?.response);
       });
   };
 

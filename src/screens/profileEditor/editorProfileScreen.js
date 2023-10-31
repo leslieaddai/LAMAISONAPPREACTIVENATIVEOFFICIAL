@@ -42,6 +42,8 @@ import {
 
   FollowUrl,
   UnfollowUrl,
+  BlockUser,
+  UnblockUser,
 
 } from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
@@ -62,6 +64,8 @@ export default function EditorProfileScreen(props) {
   const user = useSelector(state => state.userData);
 
   const [follow, setFollow] = useState(false);
+  const [blockData,setBlockData] = useState(null)
+  const [isBlocked,setIsBlocked] = useState(false)
   const {count} = useSelector(state => state.ordercount)
 
   
@@ -85,10 +89,13 @@ export default function EditorProfileScreen(props) {
         } else {
           setFollow(true);
         }
+        if(res?.data?.data?.is_blocked !== null){
+          setBlockData(res?.data?.data?.is_blocked)
+          setIsBlocked(true)
+        }
         setLoading(false);
       })
       .catch(function (error) {
-       
         setLoading(false);
     
         errorMessage(errorHandler(error))
@@ -112,8 +119,14 @@ export default function EditorProfileScreen(props) {
           setFollow(false);
         } else {
           setFollow(true);
-        }
+        }    
         //setLoading(false);
+        if(res?.data?.data?.is_blocked !== null){
+          setBlockData(res?.data?.data?.is_blocked)
+          setIsBlocked(true)
+        }else{
+          setIsBlocked(false)
+        }
       })
       .catch(function (error) {
        
@@ -156,6 +169,7 @@ export default function EditorProfileScreen(props) {
       });
   };
 
+
   const onUnFollow = () => {
     setLoadingFollow(true);
     let obj ={
@@ -189,6 +203,55 @@ export default function EditorProfileScreen(props) {
       });
   };
 
+
+  const blockUser = () =>{
+    // setLoadingFollow(true);
+    let config = {
+      method: 'post',
+      url: BlockUser + props?.route?.params?.userData?.userData?.id,
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    axios
+      .request(config)
+      .then(async function (res) {
+        getEditorData();
+        setIsBlocked(true)
+        // setLoadingFollow(false);
+      })
+      .catch(function (error) {
+        console.log(error.response.data)
+
+        errorMessage(errorHandler(error))
+      });
+  }
+
+
+  const unBlockUser = () =>{
+    let config = {
+      method: 'post',
+      url: UnblockUser + props?.route?.params?.userData?.userData?.id,
+      headers: {
+        Authorization: `Bearer ${user?.token}`,
+        Accept: 'application/json',
+      },
+    };
+
+    axios
+      .request(config)
+      .then(async function (res) {
+        getEditorData();
+      })
+      .catch(function (error) {
+        console.log(error.response.data)
+
+        errorMessage(errorHandler(error))
+      });
+  }
+
   return (
     <ScrollView>
       {loading ? (
@@ -210,7 +273,7 @@ export default function EditorProfileScreen(props) {
                 style={{width: '100%', height: '100%'}}
                 resizeMode="contain">
                 {props?.route?.params?.userData?.userData?.id ===
-                  user?.userData?.id && (
+                  user?.userData?.id ? (
                   <TouchableOpacity
                     onPress={() =>
                       props.navigation.navigate('settingsScreen', {user: user})
@@ -222,14 +285,39 @@ export default function EditorProfileScreen(props) {
                       color="black"
                     />
                   </TouchableOpacity>
-                )}
+                ):
+                blockData?.blocked_user_id !== user?.userData?.id &&
+                (
+                <TouchableOpacity style={[
+                styles.followButton,
+                { backgroundColor: isBlocked ? 'white' : 'white',
+                position: 'absolute', 
+                right: wp2(4) },
+              ]}
+              onPress={() => {
+                if (isBlocked) {
+                  unBlockUser();
+                } else {
+                  blockUser();
+                }
+              }}
+              >
+                <Text style={{
+                  fontWeight: '500',
+                  color: isBlocked? 'black' : 'black',
+                  fontSize: rfv(13),
+                }}>{isBlocked ? 'Unblock User' : 'Block User'}</Text>
+
+              </TouchableOpacity>)
+                
+                }
                 <View style={styles.nameContainer}>
                 
                   <Text style={styles.usernameTxt}>{data?.username}</Text>
                   {props?.route?.params?.userData?.userData?.id !==
                     user?.userData?.id && (
                     <>
-                      {user?.token !== '' && (
+                      {user?.token !== '' && !isBlocked && (
                         <TouchableOpacity
                           disabled={loadingFollow}
                           onPress={() => {
@@ -264,9 +352,13 @@ export default function EditorProfileScreen(props) {
                 </View>
               </ImageBackground>
             </View>
-
-          
-
+            {
+            isBlocked? 
+            <Text style ={styles.blockedtext}>
+            {blockData?.blocked_user_id === user?.userData?.id ? 'This user blocked you' : 'You blocked this user'}
+            </Text>
+            :
+            <>
             <View style={styles.followersContainer}>
               <TouchableOpacity
                 style={{flexDirection: 'row'}}
@@ -319,7 +411,8 @@ export default function EditorProfileScreen(props) {
                   <NextPickup data={data} />
               )}
             </ScrollView>
-
+            </>
+          }
        
           </View>
         </SafeAreaView>
@@ -376,7 +469,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderWidth: 1,
-    borderColor: '#162FAC',
 
     shadowColor: '#000',
     shadowOffset: {
@@ -404,4 +496,11 @@ const styles = StyleSheet.create({
     marginLeft: wp2(4),
     marginVertical: hp2(1),
   },
+  blockedtext:{
+    color: 'black',
+    fontWeight: '700',
+    alignSelf:'center',
+    marginTop:hp2(20),
+    fontSize: rfv(15),
+  }
 });

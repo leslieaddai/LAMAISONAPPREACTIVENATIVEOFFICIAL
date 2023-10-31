@@ -75,7 +75,7 @@ export default function NextPickup(props) {
       <View style={styles.galaryContainer}>
         {props?.data?.wishlists?.length!==0? props?.data?.wishlists?.reverse().map((item, index) => {
           if (index < 6) return <ImgComp key={index} path={{item}} />;
-        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Next Pick Up Not Available</Text></View>}
+        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>No product added yet</Text></View>}
       </View>
 
       <TouchableOpacity

@@ -73,7 +73,6 @@ export default function ProductType(props) {
         updateState({[state]: response?.data?.data});
       })
       .catch(function (error) {
-       
         errorMessage(errorHandler(error))
       });
   };

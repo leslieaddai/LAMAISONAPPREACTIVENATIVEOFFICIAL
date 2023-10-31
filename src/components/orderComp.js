@@ -58,12 +58,34 @@ export default function OrderComp(props) {
       :
       undefined
           }
-        <Image
+          {props?.data?.order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url=== undefined?
+          <Image
+          progressiveRenderingEnabled={true}
+          onLoadStart={()=>{onloading(true,"onLoadStart")}}
+          onLoad={()=>onloading(false,"onLoad")}
+          onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+           source={require('../assets/placeholder.jpg')}
+           style={{width: '100%', height: '90%',marginTop:hp2(0.5)}}
+           resizeMode="cover"
+         />
+          :
+          <Image
          progressiveRenderingEnabled={true}
          onLoadStart={()=>{onloading(true,"onLoadStart")}}
          onLoad={()=>onloading(false,"onLoad")}
          onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
           source={{uri:props?.data?.order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url}}
+          style={{width: '100%', height: '100%'}}
+          resizeMode="cover"
+        />}
+        <Image
+         progressiveRenderingEnabled={true}
+         onLoadStart={()=>{onloading(true,"onLoadStart")}}
+         onLoad={()=>onloading(false,"onLoad")}
+         onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+          source={props?.data?.order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url=== undefined?
+          require('../assets/placeholder.jpg')
+          :{uri:props?.data?.order_details?.[0]?.product?.product_images[0]?.image?.[0]?.original_url}}
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
         />
@@ -79,7 +101,7 @@ export default function OrderComp(props) {
         </View>
         <Text>{DateFormater(props?.data?.created_at)}</Text>
 
-        <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
+        <Text style={{color: 'black'}}>{`Total: ${props.data.order_amount}`}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -29,7 +29,7 @@ import {
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {LogoutUrl} from '../../config/Urls';
+import {DeleteAccount, LogoutUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -133,6 +133,61 @@ export default function SettingsScreen(props) {
       </TouchableOpacity>
     );
   };
+
+
+  const DeleteButton = () => {
+    const DeleteHandler = () => {
+      Alert.alert("Confirmation ","Are you sure you want to delete this account? This action will result in the permanent deletion of your account.", [
+        {
+           text:'Cancel',
+        style:'cancel',
+        onPress:()=>{
+          console.log("Cancel")
+        }
+        },
+        {
+          text: 'Yes',
+          onPress: () => {
+            setLoading(true);
+            let config = {
+              method: 'post',
+              maxBodyLength: Infinity,
+              url: DeleteAccount+props?.route?.params?.user?.userData?.id,
+              headers: {
+                Authorization: `Bearer ${props?.route?.params?.user?.token}`,
+              },
+            };
+            axios
+              .request(config)
+              .then(async function (res) {
+                
+                dispatch({
+                  type: types.Clearcart,
+                });
+                dispatch({
+                  type: types.Logout,
+                });
+                OneSignal.removeExternalUserId()
+
+                setLoading(false);
+                successMessage('Delete Account Successfully');
+              })
+              .catch(function (error) {
+                setLoading(false);
+                errorMessage(errorHandler(error))
+              });
+          },
+        },
+      ]);
+    };
+
+    return (
+      <TouchableOpacity onPress={DeleteHandler} style={styles.filters}>
+        <Text style={{color: '#EB1414', fontWeight: '700'}}>Delete Account</Text>
+      </TouchableOpacity>
+    );
+  };
+
 useEffect(()=>{
   if(loading){
   const parent = props.navigation.setOptions({
@@ -146,7 +201,6 @@ useEffect(()=>{
 },[loading])
   return (
     <>
-    
       <View style={{position: 'absolute', zIndex: 999}}>
       {loading &&
      
@@ -188,7 +242,7 @@ useEffect(()=>{
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}
-             
+              {DeleteButton()}
               {logoutButton()}
             </>
           ) : (
@@ -200,7 +254,7 @@ useEffect(()=>{
               {settingOptions('TERM OF USE', '', 'termsScreen')}
               {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
               {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}
-              
+              {DeleteButton()}
               {logoutButton()}
             </>
           )}

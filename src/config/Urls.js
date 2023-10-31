@@ -1,4 +1,5 @@
-export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
+// export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
+export const API_BASED_URL = 'https://admin.la-maison-app.com/api/v1/';
 
   export const getApi = endpoint => API_BASED_URL + endpoint;
 
@@ -83,3 +84,9 @@ export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
   export const getCount = getApi('getCount')
   export const DeleteCollection = getApi('collection/delete/')
   export const getproductdetail = getApi('product-detail/')
+  export const DeleteAccount = getApi('delete-account/')
+  export const BlockUser = getApi('users/block/')
+  export const UnblockUser = getApi('users/unblock/')
+  export const CancelOrder = getApi('order-cancel')
+  export const GoogleRegister = getApi('google/register')
+  export const Googlelogin = getApi('google/login')

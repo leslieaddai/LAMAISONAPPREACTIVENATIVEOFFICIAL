@@ -40,8 +40,6 @@ export default function ImageViewScreen(props) {
         style={{
           marginLeft: wp2(3),
           marginTop: hp2(4),
-          position: 'absolute',
-          zIndex: 999,
         }}>
         <ICONS.AntDesign name="left" size={24} color="black" />
       </TouchableOpacity>
@@ -57,7 +55,7 @@ export default function ImageViewScreen(props) {
           {itemdata[0]?.image?.map((item,index)=>{
             
             return(
-            <View key={index} style={{width: wp2(100), height: hp2(100)}}>
+            <View key={index} style={{width: wp2(100), height: hp2(90),alignSelf:'center'}}>
             <Image
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}
@@ -83,7 +81,7 @@ export default function ImageViewScreen(props) {
         initialScrollIndex={itemindex}
         renderItem={({item,index})=>{
           return(
-            <View key={index} style={{width: wp2(100), height: hp2(100)}}>
+            <View key={index} style={{width: wp2(100), height: hp2(90),alignSelf:'center'}}>
             <Image
               source={{uri:item?.original_url}}
               style={{width: '100%', height: '100%'}}

@@ -27,7 +27,7 @@ import {useNavigation} from '@react-navigation/native';
 import {errorMessage} from '../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../config/helperFunction';
-import {BasketQuantityIncreamentDecreament} from '../config/Urls';
+import {API_BASED_URL, BasketQuantityIncreamentDecreament} from '../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
@@ -126,7 +126,7 @@ Alert.alert(
         setLoading2(true);
 
         axios
-          .delete(`https://lamaison.clickysoft.net/api/v1/baskets/${basketId}`, {
+          .delete(`${API_BASED_URL}baskets/${basketId}`, {
             headers: {Authorization: `Bearer ${user?.token}`},
           })
           .then(async function (res) { 

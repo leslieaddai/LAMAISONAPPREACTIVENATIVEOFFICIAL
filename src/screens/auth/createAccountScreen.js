@@ -86,7 +86,7 @@ const CreateAccountScreen = props => {
                   let obj = {
                     first_name: props.route.params.data.firstName,
                     last_name: props.route.params.data.lastName,
-                    name: BrandName,
+                    name: props?.route?.params?.user=='editor'?UserName:BrandName,
                     username: UserName,
                     dob: Birthday.toISOString().split('T')[0],
                     email: props.route.params.data.email,
@@ -263,6 +263,8 @@ const CreateAccountScreen = props => {
             value={checkBox}
             onValueChange={setCheckBox}
             tintColors={{true: 'black', false: 'black'}}
+            style={{
+              marginBottom:Platform.OS === 'android'?hp2(-0.5):hp2(0)}}
           />
 
           <TouchableOpacity
@@ -371,14 +373,14 @@ const styles = StyleSheet.create({
   checkBoxWrap: {
     flexDirection: 'row',
     marginLeft: wp2(8),
-   
     alignItems: 'flex-end',
     marginVertical: hp2(3),
   },
   termsTxt: {
     color: 'black',
     fontWeight: '700',
+    fontSize:rfv(12),
     textDecorationLine: 'underline',
-    marginLeft: wp2(2),
+    marginLeft:Platform.OS === 'android'? wp2(0) : wp2(2),
   },
 });

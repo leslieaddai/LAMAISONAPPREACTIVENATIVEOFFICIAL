@@ -79,7 +79,7 @@ export default function OrderComp2(props) {
         </View>
         <Text>{DateFormater(props?.data?.created_at)}</Text>
 
-        <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
+        <Text style={{color: 'black'}}>{`Total amount: ${props?.data?.order_amount}`}</Text>
       </View>
     </TouchableOpacity>
   );

@@ -92,7 +92,7 @@ const [loadingImage, setLoadingImage] = useState(false)
                 />
               </TouchableOpacity>
             );
-        }):!loading?<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Wardrobe Not Available</Text></View>:null}
+        }):!loading?<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>No product added yet</Text></View>:null}
       </View>
 
       <TouchableOpacity

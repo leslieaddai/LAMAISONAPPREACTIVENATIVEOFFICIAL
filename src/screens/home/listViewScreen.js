@@ -38,16 +38,19 @@ export default function ListViewScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [feedData, setFeedData] = useState([]);
-  const [page, setPage] = useState();
+  const [page, setPage] = useState(null);
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
   let data =[{},{},{},{}]
-  useEffect(() => {
-    getNewsfeed('1');
-  }, []);
+  // useEffect(() => {
+  //   getNewsfeed('1');
+  // }, []);
   useEffect(()=>{
     const unsubscribe = navigation.addListener('focus', () => {
-      if(page !== ''){
+      if(page !== null){
+      setFeedData([])
+      getNewsfeed('1');
+    }else{
       setFeedData([])
       getNewsfeed('1');
     }
@@ -62,7 +65,12 @@ export default function ListViewScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
+        if(res?.data?.data?.shared_products.length !==0){
+          setFeedData (prev=> [...prev, ...res?.data?.data?.shared_products])
+        }
+        if(res.data.data?.ownNewsfeed.length !==0){
+          setFeedData (prev=> [...prev, ...res.data.data?.ownNewsfeed])
+        }
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
         setPageNo(res?.data?.data?.newsfeed?.current_page);
@@ -134,8 +142,8 @@ export default function ListViewScreen(props) {
             }}
           />
 
-{!loading && feedData?.length === 0 && (
-          <View style={{ alignItems: 'center', flex: 1 }}><Text>No Data Available</Text></View>
+        {!loading && feedData?.length === 0 && (
+          <View style={{ alignItems: 'center', flex: 1 }}><Text>No posts added yet</Text></View>
         )}
          
           {loading && feedData?.length !== 0 && (
@@ -144,9 +152,8 @@ export default function ListViewScreen(props) {
               height:hp2(2),
               marginVertical:hp2(2)
               }}>
-                <LoaderComp
-                bg={true}/>
-                </View>
+              <LoaderComp bg={true}/>
+            </View>
           )}
 
       </View>

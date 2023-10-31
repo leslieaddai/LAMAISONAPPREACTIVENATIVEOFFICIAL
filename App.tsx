@@ -57,7 +57,7 @@ useEffect(() => {
   
   return (
 <StripeProvider 
-publishableKey="pk_test_51M5W9vIM397QIZ0dUbeanZ7eh3Nr3Dj2IoAME2VdO0SgosRvWEjvuFve4TqjGfGiTD0ujvnez33CIgVImHqxMCIw00ghLGR6Lz"
+publishableKey="pk_live_51M5W9vIM397QIZ0dNEcinW5xkRVb0oLNxei4sDwOuqBtCC1Djr33b2wSTTG25EBDRFkM3fAg6Lb4u7nxfAEpdP0C00KrfcB1t3"
 >
 <Provider store={store}>
         <PersistGate persistor={persistor}>

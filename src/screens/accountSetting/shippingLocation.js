@@ -43,7 +43,6 @@ export default function ShippingLocation(props) {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
-
   const [shippingDescription, setShippingDescription] = useState(
     user?.userData?.Shipping_information?.description
       ? user?.userData?.Shipping_information?.description
@@ -89,7 +88,6 @@ export default function ShippingLocation(props) {
           },
         })
         .then(async function (res) {
-         
           dispatch({
             type: types.UpdateShippingInfo,
             payload: shippingDescription,
@@ -98,9 +96,9 @@ export default function ShippingLocation(props) {
           successMessage('Shipping Information Added Successfully');
         })
         .catch(function (error) {
-         
+         console.log("error shipping ",error);
           setLoading2(false);
-          errorMessage(errorHandler(error))
+          // errorMessage(errorHandler(error))
         });
     } else {
       errorMessage('Please enter shipping information');

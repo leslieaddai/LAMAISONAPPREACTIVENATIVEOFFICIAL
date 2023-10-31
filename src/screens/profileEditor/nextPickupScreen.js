@@ -64,7 +64,7 @@ export default function NextPickupScreen(props) {
             }}>
             <SkypeIndicator color={'black'} />
           </View>
-        ) : data ? (
+        ) : data.length!==0 ? (
           <FlatList
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
@@ -78,7 +78,7 @@ export default function NextPickupScreen(props) {
               return <NextPickupComp key={i} item={{item}} />;
             }}
           />
-        ) : null}
+        ) : <View style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>No product added yet</Text></View>}
 
       </View>
     </SafeAreaView>

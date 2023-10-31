@@ -27,7 +27,7 @@ export function ImgComp(props) {
     setLoading(value)
   }
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.media?.[0]?.original_url}]}]})} style={styles.imageContainer}>
+    <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.items?.original_url}]}]})} style={styles.imageContainer}>
       {loading?
         <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -37,7 +37,7 @@ export function ImgComp(props) {
     :
     undefined
         }
-        {props?.path?.item?.media?.[0]?.original_url&&(
+        {props?.path?.item?.items?.original_url&&(
       <Image
      
         style={{width: '100%', height: '100%'}}
@@ -46,7 +46,7 @@ export function ImgComp(props) {
         onLoadStart={()=>{onloading(true,"onLoadStart")}}
         onLoad={()=>onloading(false,"onLoad")}
         onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-        source={{uri: props?.path?.item?.media?.[0]?.original_url}}
+        source={{uri: props?.path?.item?.items?.original_url}}
       />
         )}
     </TouchableOpacity>
@@ -56,14 +56,13 @@ export function ImgComp(props) {
 export default function Lookbook(props) {
   
   const navigation = useNavigation();
-
   return (
     <>
       
       <View style={styles.galaryContainer}>
-        {props?.data?.galleries?.length!==0? props?.data?.galleries?.reverse().map((item, index) => {
+        {props?.data?.length!==0? props?.data?.reverse().map((item, index) => {
           if (index < 6) return <ImgComp key={index} path={{item}} />;
-        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>Gallery Not Available</Text></View>}
+        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>No images added yet</Text></View>}
       </View>
 
      

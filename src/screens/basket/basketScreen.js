@@ -30,6 +30,7 @@ import {GetUserBasket,BasketQuantityIncreamentDecreament, EditorDecrementbasket}
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import OneSignal from 'react-native-onesignal';
 
 export default function BasketScreen(props) {
 
@@ -53,7 +54,6 @@ export default function BasketScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-      
         setData(res?.data?.data);
         setCount(res?.data?.data?.[0]?.qty);
         dispatch({
@@ -63,9 +63,18 @@ export default function BasketScreen(props) {
         setLoading(false);
       })
       .catch(function (error) {
-       
+        console.log(error.response);
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
+        if(error.response.data.message === 'Unauthenticated.'){
+          dispatch({
+            type: types.Clearcart,
+          });
+          dispatch({
+            type: types.Logout,
+          });
+          OneSignal.removeExternalUserId()
+        }
       });
   }
 

@@ -58,7 +58,7 @@ export default function PostCompListView(props) {
   useEffect(()=>{
   setHeart(props?.data?.is_liked? true : false);
   setHanger(props?.data?.is_wishlisted ? true : false);
-  setShare(props?.data?.is_shared  ? true : false);       
+  setShare(props?.data?.is_shared ? props?.data?.user?.id=== user.userData?.id && true : false);  
   },[])
 
   const AddWishlist = (productId) => {
@@ -206,23 +206,37 @@ export default function PostCompListView(props) {
         errorMessage(errorHandler(error))
       });
   };
-
   return (
     <View style={{marginVertical: hp2(1)}}>
     <View style={styles.postWrap}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('brandProfileScreen',
-        {
-          userData: {
+        onPress={() => 
+          {props.data.user.roles[0].id == 3?
+          navigation.navigate('brandProfileScreen',{
             userData: {
-              id: props?.data.user.id,
-              profile_image:
-              props?.data?.user?.profile_image?.original_url,
-              name: props?.data?.user?.name,
-              role: [{id: 3}],
+              userData: {
+                id: props?.data.user.id,
+                profile_image:
+                props?.data?.user?.profile_image?.original_url,
+                name: props?.data?.user?.name,
+                role: [{id: 3}],
+              },
             },
-          },
-        })}
+          })
+          :
+        navigation.navigate('editorProfileScreen',{
+            userData: {
+              userData: {
+                id: props?.data.user.id,
+                profile_image:
+                props?.data?.user?.profile_image?.original_url,
+                name: props?.data?.user?.name,
+                role: [{id: 2}],
+              },
+            },
+          })
+        }
+      }
         style={styles.imageWrap}>
            {profileloading?
        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>

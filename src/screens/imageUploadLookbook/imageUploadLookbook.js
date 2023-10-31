@@ -439,7 +439,6 @@ export default function ImageUploadLookbook(props) {
         }, 3000);
       })
       .catch(function (error) {
-       
         setLoading(false);
        
         errorMessage(errorHandler(error))
@@ -533,7 +532,7 @@ export default function ImageUploadLookbook(props) {
                 placeholder="PRODUCT NAME"
                 placeholderTextColor={'grey'}
                 value={stateChange.productName}
-                maxLength={20}
+                maxLength={50}
                 onChangeText={val => updateState({productName: val})}
               />
             </View>
@@ -596,7 +595,7 @@ export default function ImageUploadLookbook(props) {
                 style={styles.inputTxt}
                 placeholder="PRICE (£)"
                 placeholderTextColor={'grey'}
-                keyboardType="number-pad"
+                keyboardType="decimal-pad"
                 value={stateChange.price}
                 onChangeText={val => updateState({price: val})}
               />

@@ -66,6 +66,7 @@ import ImageView from "../screens/home/imageView";
 import OrderDetails from "../screens/OrderDetailedScreen/OrderDetails";
 import ConnectStripe from "../screens/auth/connectStripe";
 import DobScreen from "../screens/editProfile/DobScreen";
+import AccountTypeSocial from "../screens/auth/accountTypeSocial";
 import { BottomNavigationBrand,BottomNavigationEditor,BottomNavigationGuest } from "./BottomNavigator";
 
 export const stackRouteList = [
@@ -76,6 +77,7 @@ export const stackRouteList = [
     {name:"resetPassScreen", component:ResetPassScreen},
     {name:"feedbackScreen", component:FeedbackScreen},
     {name:"accountTypeScreen", component:AccountTypeScreen},
+    {name:"accountTypeSocial", component:AccountTypeSocial},
     {name:"splashScreen", component:SplashScreen},
     {name:"welcomeScreen", component:WelcomeScreen},
     {name:"notificationScreen", component:NotificationScreen},
@@ -140,6 +142,7 @@ export const guestScreens = [
     {name:"signupScreen", component:SignupScreen},
     {name:"resetPassScreen", component:ResetPassScreen},
     {name:"accountTypeScreen", component:AccountTypeScreen},
+    {name:"accountTypeSocial", component:AccountTypeSocial},
     {name:"splashScreen", component:SplashScreen},
     {name:"welcomeScreen", component:WelcomeScreen},
     {name:'imageViewScreen',component:ImageViewScreen},

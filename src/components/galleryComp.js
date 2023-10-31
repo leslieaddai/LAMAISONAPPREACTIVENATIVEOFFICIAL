@@ -27,7 +27,7 @@ export default function GalleryComp(props) {
   }
   return (
     <TouchableOpacity onPress={() =>
-      navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.item?.item?.media?.[0]?.original_url}]}]})
+      navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.item?.item?.items?.original_url}]}]})
     } style={styles.imageContainer}>
        {loading?
         <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
@@ -38,7 +38,7 @@ export default function GalleryComp(props) {
     :
     undefined
         }
-        {props?.item?.item?.media?.[0]?.original_url&&(
+        {props?.item?.item?.items?.original_url&&(
         <Image
           style={{width: '100%', height: '100%'}}
           resizeMode="cover"
@@ -46,7 +46,7 @@ export default function GalleryComp(props) {
           onLoadStart={()=>{onloading(true,"onLoadStart")}}
           onLoad={()=>onloading(false,"onLoad")}
           onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-          source={{uri: props?.item?.item?.media?.[0]?.original_url}}
+          source={{uri: props?.item?.item?.items?.original_url}}
         />
         )}
      

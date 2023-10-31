@@ -29,7 +29,7 @@ export default function (state = initial_state, action) {
       break;
     case types.UpdateShippingInfo:
       const Desc = action.payload;
-      return {...state, userData: {...state.userData,Shipping_information:{...state.userData.Shipping_information,description:Desc}}};
+      return {...state, userData: {...state?.userData,Shipping_information:{...state?.userData?.Shipping_information,description:Desc}}};
       break;
     default:
       return {...state};
