@@ -100,11 +100,12 @@ export default function ResetPassScreen(props) {
         .then(async function (res) {
           
 
-          setLoading(false);
-          setVerifyCode(true);
+          // setLoading(false);
+          // setVerifyCode(true);
           successMessage(
             'Verification code is sent to your email. Please check.',
           );
+          props.navigation.navigate('passwordconfirm',{email:email})
         })
         .catch(function (error) {
           

@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react'
-import { LogBox, useColorScheme,  } from 'react-native'
+import { LogBox, Text, useColorScheme,  } from 'react-native'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 import { store,persistor } from './src/Redux/Reducer';
@@ -14,12 +14,12 @@ import AppNavigatior from './src/route'
 import OneSignal from 'react-native-onesignal';
 
 import { StripeProvider } from '@stripe/stripe-react-native';
-
+import {PRIVATE_KEY, ONESIGNAL_APP_ID} from '@env'
 
 const App = () => {
   const colortheme = useColorScheme()
   console.log(colortheme)
-  OneSignal.setAppId('846ceb6d-8445-4ba5-b9f7-ac7660c6d60a');
+  OneSignal.setAppId(`${ONESIGNAL_APP_ID}`);
 
   OneSignal.promptForPushNotificationsWithUserResponse();
   
@@ -54,14 +54,12 @@ useEffect(() => {
   useEffect(()=>{
     NetworkCheck()
   },[NetworkCheck()])
-  
   return (
 <StripeProvider 
-publishableKey="pk_live_51M5W9vIM397QIZ0dNEcinW5xkRVb0oLNxei4sDwOuqBtCC1Djr33b2wSTTG25EBDRFkM3fAg6Lb4u7nxfAEpdP0C00KrfcB1t3"
+publishableKey={`${PRIVATE_KEY}`}
 >
 <Provider store={store}>
         <PersistGate persistor={persistor}>
-      
         <AppNavigatior/>
         
         </PersistGate>

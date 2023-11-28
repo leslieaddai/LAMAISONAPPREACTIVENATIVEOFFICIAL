@@ -35,13 +35,14 @@ export default function GuestScreen(props) {
   const registerGuest = () => {
     try {
       setLoading(true);
-      NetworkInfo.getIPAddress().then(ipAddress => {
-        
-        getUniqueId().then(uniqueId => {
+      fetch('https://api64.ipify.org?format=json')
+      .then(response => response.json())
+      .then(data => {
+         getUniqueId().then(uniqueId => {
          
 
           axios
-            .post(RegisterGuest, {device_id: uniqueId, ip_address: ipAddress})
+            .post(RegisterGuest, {device_id: uniqueId, ip_address: data.ip})
             .then(async function (res) {
              
               dispatch({
@@ -55,10 +56,13 @@ export default function GuestScreen(props) {
             .catch(function (error) {
              
               setLoading(false);
-              errorMessage(errorHandler(error))
+              errorMessage(errorHandler(error));
             });
         });
-      });
+    })
+    .catch(error => {
+      console.error('Error fetching public IP address:', error);
+    });
     } catch {
       errorMessage('Something went wrong!');
     }
