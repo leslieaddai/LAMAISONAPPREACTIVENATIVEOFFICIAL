@@ -96,17 +96,19 @@ export default function SignupScreen(props) {
 
   function ValidateEmail(input) {
 
-    var validRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    var validRegex =/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,})?)$/;
+    const isValidEmail = validRegex.test(input);
+
+    // if (isValidEmail) {
+     
   
-    if (input.match(validRegex)) {
+    // } else {
   
-      return true;
+    //   return false;
   
-    } else {
-  
-      return false;
-  
-    }
+    // }
+
+    return isValidEmail;
   
   }
 

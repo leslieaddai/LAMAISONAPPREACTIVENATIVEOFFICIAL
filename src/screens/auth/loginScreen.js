@@ -132,7 +132,7 @@ export default function LoginScreen(props) {
         .post(LoginUrl, obj)
         .then(async function (res) {
           setLoading(false);
-          console.log(res.data.user.role[0]);
+          console.log(res.data);
           if (res.data.user.email_verified === false) {
           
             props.navigation.navigate('verifyAccountScreen',{role:res?.data?.user?.role?.[0]?.id,data:res?.data?.user?.stripe_account});

@@ -101,7 +101,7 @@ const CreateAccountScreen = props => {
                   axios
                     .post(RegisterUrl, obj)
                     .then(async function (res) {
-                      
+                      console.log(res);
                       setLoading(false);
                      
                       props.navigation.navigate('verifyAccountScreen',{role:props?.route?.params?.user == 'editor' ? 2 : 3,data:res?.data?.user?.stripe_account});
@@ -112,6 +112,7 @@ const CreateAccountScreen = props => {
                     })
                     .catch(function (error) {
                       setLoading(false);
+                      console.log(error?.response?.data);
                       errorMessage(errorHandler(error))
                     });
                 } else {
