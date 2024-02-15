@@ -10,45 +10,54 @@ import {
 
 
 
-import {
- 
-  wp2,
-  hp2,
 
-} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
+import {
+  
+  wp2,
+  hp2,
+  
+  IMAGES,
+} from '../../theme';
+
 export function ImgComp(props) {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false)
-  const onloading = (value,label)=>{
-    setLoading(value)
-  }
+  const [loading, setLoading] = useState(false);
+  const onLoading = (value, label) => {
+    setLoading(value);
+  };
+    const [imageError, setImageError] = useState(false);
+
+  console.log('Image URL:', props.path.original_url); // Debugging line
+ const onImageError = () => {
+  setImageError(true)
+ 
+};
+
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.path?.item?.items?.original_url}]}]})} style={styles.imageContainer}>
-      {loading?
-        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View style={styles.skeletonView} />
-        </View>
-        </SkeletonPlaceholder>
-    :
-    undefined
-        }
-        {props?.path?.item?.items?.original_url&&(
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('imageViewScreen', {
+          item: [{image: [{original_url: props.path.original_url}]}],
+        })
+      }
+      style={styles.imageContainer}>
       <Image
-     
         style={{width: '100%', height: '100%'}}
         resizeMode="cover"
         progressiveRenderingEnabled={true}
-        onLoadStart={()=>{onloading(true,"onLoadStart")}}
-        onLoad={()=>onloading(false,"onLoad")}
-        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-        source={{uri: props?.path?.item?.items?.original_url}}
+        onLoadStart={() => onLoading(true)}
+        onLoadEnd={() => onLoading(false)}
+        onError={onImageError} // Handle image load error
+        source={
+          imageError || props.path.original_url==null
+            ? IMAGES.notFoundImage
+            : {uri: props.path.original_url}
+        }
       />
-        )}
     </TouchableOpacity>
   );
 }
@@ -58,10 +67,9 @@ export default function Lookbook(props) {
   const navigation = useNavigation();
   return (
     <>
-      
       <View style={styles.galaryContainer}>
         {props?.data?.length!==0? props?.data?.reverse().map((item, index) => {
-          if (index < 6) return <ImgComp key={index} path={{item}} />;
+          if (index < 6) return <ImgComp key={index} path={item.items} />;
         }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>No images added yet</Text></View>}
       </View>
 

@@ -176,9 +176,7 @@ const handleInputChange = (text) => {
               <TextInput
                 style={styles.textBoxInput}
                 value={text}
-                  onChangeText={handleInputChange}
-              
-               
+                onChangeText={handleInputChange}
                 placeholderTextColor={'grey'}
                 returnKeyLabel="done"
                 returnKeyType="done"
@@ -186,9 +184,7 @@ const handleInputChange = (text) => {
               />
             </View>
             <TouchableOpacity
-              onPress={() => navigation.navigate('filterScreen', text)}
-              
-            >
+              onPress={() => navigation.navigate('filterScreen', text)}>
               <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />
             </TouchableOpacity>
           </View>
@@ -215,61 +211,78 @@ const handleInputChange = (text) => {
             </TouchableOpacity>
           </View>
 
-          {loading && data?.length === 0 && selected==='brands' && (
+          {loading && data?.length === 0 && selected === 'brands' && (
             <FlatList
-            data={skeletonArr}
-            renderItem={()=>{
-              return(
-              <SkeletonViewSearchComp/>
-              )
-            }}
+              data={skeletonArr}
+              renderItem={() => {
+                return <SkeletonViewSearchComp />;
+              }}
             />
           )}
 
-          {loading2 && dataEditor?.length === 0 && selected==='editors' && (
+          {loading2 && dataEditor?.length === 0 && selected === 'editors' && (
             <FlatList
-            data={skeletonArr}
-            renderItem={()=>{
-              return(
-              <SkeletonViewSearchComp/>
-              )
-            }}
+              data={skeletonArr}
+              renderItem={() => {
+                return <SkeletonViewSearchComp />;
+              }}
             />
           )}
 
-          {selected==='brands'?(
+          {selected === 'brands' ? (
+            loading && data.length === 0 ? (
+              // Show skeleton loader when data is being fetched
+              <FlatList
+                data={skeletonArr}
+                renderItem={() => {
+                  return <SkeletonViewSearchComp />;
+                }}
+              />
+            ) : data.length === 0 ? (
+              // Show "No Items Found" when loading is finished and data is empty
+              <View style={styles.centerMessage}>
+                <Text style={{fontSize:20}}>No Items Found</Text>
+              </View>
+            ) : (
+              // Render the FlatList when data is available
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  paddingVertical: hp2(2),
+                  alignSelf: 'center',
+                }}
+                key={'_'}
+                keyExtractor={data => '_' + data.id}
+                data={data}
+                numColumns={3}
+                onEndReached={() =>
+                  !loading &&
+                  page !== null &&
+                  getSearchResults(String(pageNo + 1))
+                }
+                onEndReachedThreshold={0.1}
+                renderItem={({item, index}) => {
+                  return <SearchComp key={index} data={item} />;
+                }}
+              />
+            )
+          ) : (
+            // Render the editors' FlatList
             <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingVertical: hp2(2),
-              alignSelf: 'center',
-            }}
-            data={data}
-            numColumns={3}
-            onEndReached={() =>
-              !loading && page !== null && getSearchResults(String(pageNo + 1))
-            }
-            onEndReachedThreshold={0.1}
-            renderItem={({item,index}) => {
-              return <SearchComp key={index} data={item} />;
-            }}
-          />
-          ):(
-            <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingVertical: hp2(2),
-              alignSelf: 'center',
-            }}
-            data={dataEditor}
-            numColumns={3}
-            renderItem={({item,index}) => {
-              return <SearchComp2 key={index} data={item} />;
-            }}
-          />
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingVertical: hp2(2),
+                alignSelf: 'center',
+              }}
+              data={dataEditor}
+              numColumns={3}
+              renderItem={({item, index}) => {
+                return <SearchComp2 key={index} data={item} />;
+              }}
+            />
           )}
 
-          {loading && data?.length !== 0 && selected==='brands' && (
+          {loading && data.length !== 0 && selected === 'brands' && (
             <View
               style={{
                 alignItems: 'center',
@@ -279,8 +292,6 @@ const handleInputChange = (text) => {
               <SkypeIndicator size={26} color={'black'} />
             </View>
           )}
-
-   
         </View>
       </SafeAreaView>
     </>
@@ -288,6 +299,13 @@ const handleInputChange = (text) => {
 }
 
 const styles = StyleSheet.create({
+  centerMessage: {
+  flex: 1,
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontWeight:'700',
+  fontSize:20
+},
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,

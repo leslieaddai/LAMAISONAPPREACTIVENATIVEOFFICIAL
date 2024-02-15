@@ -26,37 +26,49 @@ import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
 export default function SearchComp2(props) {
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false)
-  const onloading = (value,label)=>{
-    setLoading(value)
-  }
+  const [loading, setLoading] = useState(false);
+  const [imageError, setImageError] = useState(false); // State to track image loading error
+
+  const onImageLoadStart = () => setLoading(true);
+  const onImageLoad = () => setLoading(false);
+  const onImageLoadError = () => {
+    setLoading(false);
+    setImageError(true); // Set the error state to true
+  };
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('editorProfileScreen',{
-        userData: {
+      onPress={() =>
+        navigation.navigate('editorProfileScreen', {
           userData: {
-            id: props?.data?.id,
+            userData: {
+              id: props?.data?.id,
+            },
           },
-        },
-      })}
+        })
+      }
       style={styles.container}>
       <View style={styles.imageContainer}>
-      {loading?
-        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <View style={styles.skeletonView} />
-        </View>
-        </SkeletonPlaceholder>
-    :
-    undefined
-        }
+        {loading && !imageError && (
+          <SkeletonPlaceholder
+            borderRadius={4}
+            alignItems="center"
+            backgroundColor="#dddddd">
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={styles.skeletonView} />
+            </View>
+          </SkeletonPlaceholder>
+        )}
         <Image
-          
-          progressiveRenderingEnabled={true}
-        onLoadStart={()=>{onloading(true,"onLoadStart")}}
-        onLoad={()=>onloading(false,"onLoad")}
-        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-          source={props?.data?.profile_image!==null?{uri:props?.data?.profile_image?.original_url}:IMAGES.profileIcon3}
+          onLoadStart={onImageLoadStart}
+          onLoad={onImageLoad}
+          onLoadEnd={onImageLoad}
+          onError={onImageLoadError} // Handle image load error
+          source={
+            imageError || !props?.data?.profile_image
+              ? IMAGES.profileIcon3
+              : {uri: props?.data?.profile_image?.original_url}
+          }
           style={{width: '100%', height: '100%'}}
           resizeMode="contain"
         />
