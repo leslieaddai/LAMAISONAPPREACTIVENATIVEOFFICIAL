@@ -28,7 +28,8 @@ import { useSelector } from 'react-redux';
 
 export default function WelcomeScreen(props) {
   const user = useSelector(state => state.userData)
- 
+  console.log('2222');
+ console.log(user?.userData?.profile_image);
   return (
     <View style={styles.container}>
         <Text style={styles.text}>{'Hi '+user.userData.username}</Text>

@@ -1,3 +1,6 @@
+const {
+  createSentryMetroSerializer,
+} = require('@sentry/react-native/dist/js/tools/sentryMetroSerializer');
 /**
  * Metro configuration for React Native
  * https://github.com/facebook/react-native
@@ -13,5 +16,9 @@ module.exports = {
         inlineRequires: true,
       },
     }),
+  },
+
+  serializer: {
+    customSerializer: createSentryMetroSerializer(),
   },
 };

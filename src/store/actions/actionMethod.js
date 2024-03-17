@@ -3,7 +3,7 @@ import { store } from "../index";
 
 export const postData=async (dispatch, url,data, header ,types,successMsg, callback,successNotifyStatus='success')=> {
     try {
-    
+    console.log('postttttt');
         if(typeof url !== 'string') return alert (url.toString())
         dispatch({type:types})
        console.log("cccccccccccccccccccccccccc",data, header)

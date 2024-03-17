@@ -35,6 +35,7 @@ export default function SearchComp2(props) {
     setLoading(false);
     setImageError(true); // Set the error state to true
   };
+        console.log(props?.data?.profile_image?.original_url);
 
   return (
     <TouchableOpacity
@@ -65,7 +66,9 @@ export default function SearchComp2(props) {
           onLoadEnd={onImageLoad}
           onError={onImageLoadError} // Handle image load error
           source={
-            imageError || !props?.data?.profile_image
+            imageError ||
+            !props?.data?.profile_image ||
+            props?.data?.profile_image?.original_url==undefined
               ? IMAGES.profileIcon3
               : {uri: props?.data?.profile_image?.original_url}
           }

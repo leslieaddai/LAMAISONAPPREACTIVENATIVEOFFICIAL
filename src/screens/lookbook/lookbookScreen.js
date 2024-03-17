@@ -36,6 +36,7 @@ import {errorMessage, } from '../../config/NotificationMessage';
 import {errorHandler} from '../../config/helperFunction';
 import {useDispatch, useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import MyImageComponent from './MyImageComponent';
 
 
 export default function LookbookScreen(props) {
@@ -135,12 +136,12 @@ export default function LookbookScreen(props) {
                 :
                 undefined
                     }
-                  <Image
+                  <MyImageComponent
                     progressiveRenderingEnabled={true}
                     onLoadStart={()=>{onloading(true,"onLoadStart")}}
                     onLoad={()=>onloading(false,"onLoad")}
                     onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-                    source={{uri: allStates[0]?.media[0]?.original_url}}
+                    allStates={ allStates}
                     style={{width: '100%', height: '100%'}}
                     resizeMode="contain"
                   />
@@ -159,6 +160,7 @@ export default function LookbookScreen(props) {
                   showsHorizontalScrollIndicator={false}
                   data={allStates}
                   renderItem={({item, index}) => {
+                    console.log('ss');
                     return (
                       <>
                         {index > 0 && (

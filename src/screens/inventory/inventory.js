@@ -92,6 +92,7 @@ export default function Inventory(props) {
             data={data}
             numColumns={2}
             renderItem={({item, index}) => {
+              console.log(item);
               return <InventoryComp data={item} />;
             }}
           />

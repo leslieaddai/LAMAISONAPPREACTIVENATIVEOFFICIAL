@@ -1,30 +1,21 @@
-import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
+import React, {useState} from 'react';
+import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 
-} from 'react-native';
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-import {
-
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
- 
-  wp2,
-  hp2,
-  
-} from '../../theme';
+import {IMAGES, wp2, hp2} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
+import ImageCompWithErrorProfile from './ImageCompWithErrorProfile';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
- 
+console.log(props?.data?.item?.user?.profile_image?.original_url);
+  // State to manage the image source URI
+  const [imageUri, setImageUri] = useState(
+    props?.data?.item?.user?.profile_image?.original_url || IMAGES.profileIcon3,
+  );
+
+
   return (
     <TouchableOpacity
       onPress={() =>
@@ -32,8 +23,7 @@ export default function BrandComp(props) {
           userData: {
             userData: {
               id: props?.data?.item?.user?.id,
-              profile_image:
-                props?.data?.item?.user?.profile_image?.original_url,
+              profile_image: imageUri, // Use state-managed URI
               name: props?.data?.item?.user?.name,
               role: [{id: 3}],
             },
@@ -59,12 +49,9 @@ export default function BrandComp(props) {
           {props?.key2 + 1}
         </Text>
         <View style={styles.brandLogo}>
-          <Image
-        
-            source={props?.data?.item?.user?.profile_image!==null?{uri: props?.data?.item?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
+          <ImageCompWithErrorProfile
+            uri={{uri: imageUri}}></ImageCompWithErrorProfile>
+
         </View>
       </View>
       <Text style={{color: 'black', fontSize: rfv(18)}}>
@@ -73,6 +60,13 @@ export default function BrandComp(props) {
     </TouchableOpacity>
   );
 }
+
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
   button: {

@@ -240,7 +240,7 @@ export default function BrandProfileScreen(props) {
       });
   }
 
-
+console.log(data?.profile_image?.original_url);
   return (
     <ScrollView>
       {loading ? (
@@ -407,6 +407,7 @@ export default function BrandProfileScreen(props) {
                 contentContainerStyle={{ paddingBottom: hp2(2) }}>
                 <Text style={styles.popularTxt}>POPULAR</Text>
                 {data?.popular_products?.length !== 0 ? data?.popular_products?.map((item, index) => {
+
                   return <Popular key={index} data={item} no={index} />;
                 }) : <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1, }}><Text>Popular Products Not Added Yet</Text></View>}
 

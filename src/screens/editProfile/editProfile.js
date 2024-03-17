@@ -50,6 +50,7 @@ export default function EditProfile(props) {
       
       if(result?.assets[0].type !== 'image/gif'){
         if(result?.assets[0].fileSize < 1572864){
+          console.log('entereddd');
           const uri = Platform.OS === "android" ? result?.assets[0]?.uri : result?.assets[0]?.uri.replace("file://", "");
           const filename = result?.assets[0]?.uri.split("/").pop();
           const match = /\.(\w+)$/.exec(filename);
@@ -109,13 +110,15 @@ axios.request(config)
 .catch(function (error) {
   
   setLoading(false);
-
+console.log('err');
+console.log(error);
   errorMessage(errorHandler(error))
 });
 
   }
 
   const settingOptions = (name, navScreen) => {
+    console.log(user);
     return (
       <>
       {name == 'DISPLAY PHOTO' ? (

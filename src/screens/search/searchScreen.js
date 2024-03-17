@@ -234,6 +234,7 @@ const handleInputChange = (text) => {
               // Show skeleton loader when data is being fetched
               <FlatList
                 data={skeletonArr}
+                numColumns={3} // Example numColumns for brands
                 renderItem={() => {
                   return <SkeletonViewSearchComp />;
                 }}
@@ -241,11 +242,12 @@ const handleInputChange = (text) => {
             ) : data.length === 0 ? (
               // Show "No Items Found" when loading is finished and data is empty
               <View style={styles.centerMessage}>
-                <Text style={{fontSize:20}}>No Items Found</Text>
+                <Text style={{fontSize: 20}}>No Items Found</Text>
               </View>
             ) : (
               // Render the FlatList when data is available
               <FlatList
+              
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   paddingVertical: hp2(2),
@@ -270,6 +272,7 @@ const handleInputChange = (text) => {
             // Render the editors' FlatList
             <FlatList
               showsVerticalScrollIndicator={false}
+              
               contentContainerStyle={{
                 paddingVertical: hp2(2),
                 alignSelf: 'center',
@@ -277,6 +280,7 @@ const handleInputChange = (text) => {
               data={dataEditor}
               numColumns={3}
               renderItem={({item, index}) => {
+              
                 return <SearchComp2 key={index} data={item} />;
               }}
             />

@@ -131,7 +131,8 @@ export default function CollectionScreen({navigation, route}) {
           data={items?.collection}
           numColumns={2}
           renderItem={({item}) => {
-           
+           console.log(item?.product?.product_images[0].media[0]);
+           console.log(item?.product?.name);
             return (
               <CollectionItemsComp
                 

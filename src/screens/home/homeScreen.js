@@ -5,38 +5,28 @@ import {
   Image,
   TouchableOpacity,
   Text,
-
   ScrollView,
   Platform,
   SafeAreaView,
   FlatList,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
+import {IMAGES, ICONS, COLORS, wp2, hp2} from '../../theme';
 
-import {
-  IMAGES,
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
- 
-} from '../../theme';
-
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {OneSignalMessage, errorHandler} from '../../config/helperFunction';
-import {Popular,Newsfeed, getCount} from '../../config/Urls';
+import {Popular, Newsfeed, getCount} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import OneSignal from 'react-native-onesignal';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewMainComp from '../../components/SkeletonViewComponents/SkeletonViewMainComp';
 import LoaderComp from '../../components/loaderComp';
+import ImageCompWithError from './ImageCompWithError';
+import ImageCompWithErrorProfile from '../../components/FTS100Comps/ImageCompWithErrorProfile';
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
@@ -46,52 +36,55 @@ export default function HomeScreen(props) {
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
   const user = useSelector(state => state.userData);
-  const [loadingImage, setLoadingImage] = useState(false)
-  const [postcomloading,setPostcomploading] = useState(false)
-  const[productcomploading,setProductcomploading] =useState(false)
-  const [prod2comploading,setProd2comploading] = useState(false)
-  let data =[{},{},{},{}]
-  OneSignal.setExternalUserId(String(user.userData.id))
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [postcomloading, setPostcomploading] = useState(false);
+  const [productcomploading, setProductcomploading] = useState(false);
+  const [prod2comploading, setProd2comploading] = useState(false);
+  let data = [{}, {}, {}, {}];
+  OneSignal.setExternalUserId(String(user.userData.id));
 
-OneSignal.setNotificationWillShowInForegroundHandler(notificationReceivedEvent => {
-  console.log("OneSignal: notification will show in foreground:", notificationReceivedEvent);
-  
-  let notification = notificationReceivedEvent.getNotification();
-  if(Platform.OS === 'android'){
-  OneSignalMessage("La Maison",notification.body)
-  }
-  console.log("notification: ", notification);
-  const data = notification.additionalData
-  console.log("additionalData: ", data);
-  notificationReceivedEvent.complete(notification);
+  OneSignal.setNotificationWillShowInForegroundHandler(
+    notificationReceivedEvent => {
+      console.log(
+        'OneSignal: notification will show in foreground:',
+        notificationReceivedEvent,
+      );
 
-});
+      let notification = notificationReceivedEvent.getNotification();
+      if (Platform.OS === 'android') {
+        OneSignalMessage('La Maison', notification.body);
+      }
+      console.log('notification: ', notification);
+      const data = notification.additionalData;
+      console.log('additionalData: ', data);
+      notificationReceivedEvent.complete(notification);
+    },
+  );
 
-OneSignal.setNotificationOpenedHandler(notification => {
-  console.log("OneSignal: notification opened:", notification);
-  if (notification) {
-    const { additionalData = null } = notification.notification;
-    console.log("additionalData",additionalData)
-    if(additionalData !=null){
-      if(additionalData.order ==="less_than_20"){
-        props.navigation.navigate('inventory')
-      }else{
-      props.navigation.navigate('orderTrackingScreen')
+  OneSignal.setNotificationOpenedHandler(notification => {
+    console.log('OneSignal: notification opened:', notification);
+    if (notification) {
+      const {additionalData = null} = notification.notification;
+      console.log('additionalData', additionalData);
+      if (additionalData != null) {
+        if (additionalData.order === 'less_than_20') {
+          props.navigation.navigate('inventory');
+        } else {
+          props.navigation.navigate('orderTrackingScreen');
+        }
+      } else {
+        props.navigation.navigate('notificationScreen');
+      }
     }
-    }
-    else{
-      props.navigation.navigate('notificationScreen')
-    }
-  }
-});
+  });
 
-  useEffect(()=>{
-    user?.token !== null && 
-    user?.userData?.role?.[0]?.id === 3&&
-    getbrandOrderCount()
-  },[])
+  useEffect(() => {
+    user?.token !== null &&
+      user?.userData?.role?.[0]?.id === 3 &&
+      getbrandOrderCount();
+  }, []);
 
-  const getbrandOrderCount = ()=>{
+  const getbrandOrderCount = () => {
     axios
       .get(getCount, {
         headers: {Authorization: `Bearer ${user?.token}`},
@@ -103,10 +96,9 @@ OneSignal.setNotificationOpenedHandler(notification => {
         });
       })
       .catch(function (error) {
-       
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -116,23 +108,21 @@ OneSignal.setNotificationOpenedHandler(notification => {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        
         setPopularData(res?.data?.data);
-        user?.token!==''?getNewsfeed('1'):setLoading(false)
-       
+        user?.token !== '' ? getNewsfeed('1') : setLoading(false);
       })
       .catch(function (error) {
-        console.log("res home",error.response.data)
+        console.log('res home', error.response.data);
         setLoading(false);
-       
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
-  
+
   const getNewsfeed = page_no => {
     !loading && setLoading(true);
     axios
-      .get(Newsfeed+page_no,{
+      .get(Newsfeed + page_no, {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
@@ -140,11 +130,11 @@ OneSignal.setNotificationOpenedHandler(notification => {
           type: types.Warning,
           payload: res?.data?.data,
         });
-        if(res?.data?.data?.shared_products.length !==0){
-          setFeedData (prev=> [...prev, ...res?.data?.data?.shared_products])
+        if (res?.data?.data?.shared_products.length !== 0) {
+          setFeedData(prev => [...prev, ...res?.data?.data?.shared_products]);
         }
-        if(res.data.data?.ownNewsfeed.length !==0){
-          setFeedData (prev=> [...prev, ...res.data.data?.ownNewsfeed])
+        if (res.data.data?.ownNewsfeed.length !== 0) {
+          setFeedData(prev => [...prev, ...res.data.data?.ownNewsfeed]);
         }
         setFeedData(prev => [...prev, ...res?.data?.data?.newsfeed?.data]);
         setPage(res?.data?.data?.newsfeed?.next_page_url);
@@ -153,17 +143,17 @@ OneSignal.setNotificationOpenedHandler(notification => {
       })
       .catch(function (error) {
         console.log(error.response.data);
-        setLoading(false);  
-        if(error.response.data.message === 'Unauthenticated.'){
+        setLoading(false);
+        if (error.response.data.message === 'Unauthenticated.') {
           dispatch({
             type: types.Clearcart,
           });
           dispatch({
             type: types.Logout,
           });
-          OneSignal.removeExternalUserId()
+          OneSignal.removeExternalUserId();
         }
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -171,27 +161,24 @@ OneSignal.setNotificationOpenedHandler(notification => {
     return (
       <View style={{marginVertical: hp2(2)}}>
         <TouchableOpacity
-          onPress={() => 
-            props.navigation.navigate('brandProfileScreen',{
-            userData: {
+          onPress={() =>
+            props.navigation.navigate('brandProfileScreen', {
               userData: {
-                id: data?.brand?.id,
-                profile_image:
-                data?.brand?.profile_image?.original_url,
-                name: data?.brand?.name,
-                role: [{id: 3}],
+                userData: {
+                  id: data?.brand?.id,
+                  profile_image: data?.brand?.profile_image?.original_url,
+                  name: data?.brand?.name,
+                  role: [{id: 3}],
+                },
               },
-            },
-          })
-         
-        }
+            })
+          }
           style={styles.brandImage}>
-          <Image
-         
-            source={data?.brand?.profile_image!==null?{uri:data?.brand?.profile_image?.original_url}:IMAGES.profileIcon3}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
+          <ImageCompWithErrorProfile
+            uri={
+              data?.brand?.profile_image?.original_url
+            }></ImageCompWithErrorProfile>
+      
         </TouchableOpacity>
       </View>
     );
@@ -199,20 +186,23 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
   const colorComp = data => {
     return (
-      <TouchableOpacity 
-      onPress={() => user?.userData?.role?.[0]?.id!==3?
-        props?.navigation.navigate('dressingRoomScreen', {
-          data: {product: {id: data?.product?.product_images[0]?.product_id}},
-        }):
-        props.navigation.navigate('imageViewScreen',{item:data?.product?.product_images})
-      }
-      style={{marginVertical: hp2(2)}}>
-        <View
-          style={styles.brandImage}>
-            <Image
-            source={{uri:data.product.product_images[0].image[0].original_url}}
-            style={{width:'100%',height:'100%'}}
-            />
+      <TouchableOpacity
+        onPress={() =>
+          user?.userData?.role?.[0]?.id !== 3
+            ? props?.navigation.navigate('dressingRoomScreen', {
+                data: {
+                  product: {id: data?.product?.product_images[0]?.product_id},
+                },
+              })
+            : props.navigation.navigate('imageViewScreen', {
+                item: data?.product?.product_images,
+              })
+        }
+        style={{marginVertical: hp2(2)}}>
+        <View style={styles.brandImage}>
+          <ImageCompWithError
+            uri={data.product.product_images[0]?.image[0]?.original_url||null}
+          />
         </View>
       </TouchableOpacity>
     );
@@ -220,100 +210,126 @@ OneSignal.setNotificationOpenedHandler(notification => {
 
   const pieceComp = data => {
     return (
-      <TouchableOpacity 
-      onPress={() => user?.userData?.role?.[0]?.id!==3?
-        props?.navigation.navigate('dressingRoomScreen', {
-          data: {product: {id: data?.product?.product_images[0]?.product_id}},
-        }):
-        props.navigation.navigate('imageViewScreen',{item:data?.product?.product_images})
-      }
-      style={{marginVertical: hp2(2)}}>
-        <View
-          style={styles.brandImage}>
-            <Image
-            source={{uri:data.product.product_images[0].image[0].original_url}}
-            style={{width:'100%',height:'100%'}}
-            />
+      <TouchableOpacity
+        onPress={() =>
+          user?.userData?.role?.[0]?.id !== 3
+            ? props?.navigation.navigate('dressingRoomScreen', {
+                data: {
+                  product: {id: data?.product?.product_images[0]?.product_id},
+                },
+              })
+            : props.navigation.navigate('imageViewScreen', {
+                item: data?.product?.product_images,
+              })
+        }
+        style={{marginVertical: hp2(2)}}>
+        <View style={styles.brandImage}>
+          <ImageCompWithError
+            uri={
+              data.product?.product_images[0]?.image[0]?.original_url ??
+              null
+            }
+          />
         </View>
       </TouchableOpacity>
     );
   };
 
-  const postComp = (data) => {
-    const onloading = (value,label)=>{
-      setPostcomploading(value)
-    }
+  const postComp = data => {
+    const onloading = (value, label) => {
+      setPostcomploading(value);
+    };
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
           <TouchableOpacity
             onPress={() => {
-              console.log("post comp",data.user.roles[0].id)
-              {data.user.roles[0].id == 3?
-                props.navigation.navigate('brandProfileScreen',{
-                userData: {
-                  userData: {
-                    id: data.user.id,
-                    profile_image:
-                      data?.user?.profile_image?.original_url,
-                    name: data?.user?.name,
-                    role: [{id: 3}],
-                  },
-                },
-              })
-              :
-              props.navigation.navigate('editorProfileScreen',{
-                userData: {
-                  userData: {
-                    id: data.user.id,
-                    profile_image:
-                      data?.user?.profile_image?.original_url,
-                    name: data?.user?.name,
-                    role: [{id: 2}],
-                  },
-                },
-              })
-            }
+              console.log('post comp', data.user.roles[0].id);
+              {
+                data.user.roles[0].id == 3
+                  ? props.navigation.navigate('brandProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 3}],
+                        },
+                      },
+                    })
+                  : props.navigation.navigate('editorProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 2}],
+                        },
+                      },
+                    });
               }
-            }
+            }}
             style={styles.imageWrap}>
             <Image
-              source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
+              source={
+                data?.user?.profile_image == null
+                  ? IMAGES.profileIcon3
+                  : {uri: data.user?.profile_image?.original_url}
+              }
               style={{width: '100%', height: '100%'}}
               resizeMode="contain"
             />
           </TouchableOpacity>
-          {data.is_shared&&  
-          <>
-          <ICONS.FontAwesome
-            name="retweet"
-            size={24}
-            color={'black'}
-            style={{marginHorizontal: wp2(4)}}
-            
-          />
-          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
-          </>
-        }
+          {data.is_shared && (
+            <>
+              <ICONS.FontAwesome
+                name="retweet"
+                size={24}
+                color={'black'}
+                style={{marginHorizontal: wp2(4)}}
+              />
+              <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+            </>
+          )}
         </View>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:data?.product_images?.[0]?.image?.[0]?.original_url}]}]})}
+          onPress={() =>
+            props.navigation.navigate('imageViewScreen', {
+              item: [
+                {
+                  image: [
+                    {
+                      original_url:
+                        data?.product_images?.[0]?.image?.[0]?.original_url,
+                    },
+                  ],
+                },
+              ],
+            })
+          }
           style={styles.imageContainer}>
-            {postcomloading?
-            <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={styles.skeletonView} />
-            </View>
+          {postcomloading ? (
+            <SkeletonPlaceholder
+              borderRadius={4}
+              alignItems="center"
+              backgroundColor="#dddddd">
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={styles.skeletonView} />
+              </View>
             </SkeletonPlaceholder>
-          :
-          undefined
-            }
+          ) : undefined}
           <Image
             progressiveRenderingEnabled={true}
-            onLoadStart={()=>{onloading(true,"onLoadStart")}}
-            onLoad={()=>onloading(false,"onLoad")}
-            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-            source={{uri:data?.product_images?.[0]?.image?.[0]?.original_url}}
+            onLoadStart={() => {
+              onloading(true, 'onLoadStart');
+            }}
+            onLoad={() => onloading(false, 'onLoad')}
+            onLoadEnd={() => {
+              onloading(false, 'onLoadEnd');
+            }}
+            source={{uri: data?.product_images?.[0]?.image?.[0]?.original_url}}
             style={{width: '100%', height: '100%'}}
             resizeMode="cover"
           />
@@ -322,165 +338,174 @@ OneSignal.setNotificationOpenedHandler(notification => {
     );
   };
 
-  const productComp = (data) => {
-    const onloading = (value,label)=>{
-      setProductcomploading(value)
-    }
+  const productComp = data => {
+    const onloading = (value, label) => {
+      setProductcomploading(value);
+    };
 
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('====================================');
-            console.log("second here",data.user.roles[0].id);
-            console.log('====================================');
-            {data.user.roles[0].id == 3?
-              props.navigation.navigate('brandProfileScreen',{
-              userData: {
-                userData: {
-                  id: data.user.id,
-                  profile_image:
-                    data?.user?.profile_image?.original_url,
-                  name: data?.user?.name,
-                  role: [{id: 3}],
-                },
-              },
-            })
-            :
-            props.navigation.navigate('editorProfileScreen',{
-              userData: {
-                userData: {
-                  id: data.user.id,
-                  profile_image:
-                    data?.user?.profile_image?.original_url,
-                  name: data?.user?.name,
-                  role: [{id: 2}],
-                },
-              },
-            })
-          }
-        }
-        }
-          style={[
-            styles.imageWrap,
-           
-          ]}>
-          <Image
-            source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        {data.is_shared&&
-        <>
-        <ICONS.FontAwesome
-            name="retweet"
-            size={24}
-            color={'black'}
-            style={{marginHorizontal: wp2(4)}}
-          />
-          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
-          </>
-        }
+          <TouchableOpacity
+            onPress={() => {
+              console.log('====================================');
+              console.log('second here', data.user.roles[0].id);
+              console.log('====================================');
+              {
+                data.user.roles[0].id == 3
+                  ? props.navigation.navigate('brandProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 3}],
+                        },
+                      },
+                    })
+                  : props.navigation.navigate('editorProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 2}],
+                        },
+                      },
+                    });
+              }
+            }}
+            style={[styles.imageWrap]}>
+            <Image
+              source={
+                data?.user?.profile_image == null
+                  ? IMAGES.profileIcon3
+                  : {uri: data.user?.profile_image?.original_url}
+              }
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          {data.is_shared && (
+            <>
+              <ICONS.FontAwesome
+                name="retweet"
+                size={24}
+                color={'black'}
+                style={{marginHorizontal: wp2(4)}}
+              />
+              <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+            </>
+          )}
         </View>
 
         <View style={styles.productContainer}>
-          {data?.product_images?.[0]?.image?.map((item,index)=>{
-            return(
+          {data?.product_images?.[0]?.image?.map((item, index) => {
+            return (
               <TouchableOpacity
-              key={index}
-            onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
-            style={styles.productImageContainer}>
-               {productcomploading?
-        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <View style={styles.productskeletonView} />
-            </View>
-            </SkeletonPlaceholder>
-    :
-    undefined
-        }
-            <Image
-            progressiveRenderingEnabled={true}
-            onLoadStart={()=>{onloading(true,"onLoadStart")}}
-            onLoad={()=>onloading(false,"onLoad")}
-            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-            
-              source={{uri:item?.original_url}}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-            )
+                key={index}
+                onPress={() =>
+                  props.navigation.navigate('imageViewScreen', {
+                    item: [{image: [{original_url: item?.original_url}]}],
+                  })
+                }
+                style={styles.productImageContainer}>
+                {productcomploading ? (
+                  <SkeletonPlaceholder
+                    borderRadius={4}
+                    alignItems="center"
+                    backgroundColor="#dddddd">
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <View style={styles.productskeletonView} />
+                    </View>
+                  </SkeletonPlaceholder>
+                ) : undefined}
+                <Image
+                  progressiveRenderingEnabled={true}
+                  onLoadStart={() => {
+                    onloading(true, 'onLoadStart');
+                  }}
+                  onLoad={() => onloading(false, 'onLoad')}
+                  onLoadEnd={() => {
+                    onloading(false, 'onLoadEnd');
+                  }}
+                  source={{uri: item?.original_url}}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            );
           })}
         </View>
       </View>
     );
   };
 
-  const productComp2 = (data) => {
-    const onloading = (value,label)=>{
-      setProd2comploading(value)
-    }
+  const productComp2 = data => {
+    const onloading = (value, label) => {
+      setProd2comploading(value);
+    };
     return (
       <View style={{marginVertical: hp2(2)}}>
         <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('====================================');
-            console.log("third here",data.user.roles[0].id);
-            console.log('====================================');
-            {data.user.roles[0].id == 3?
-            props.navigation.navigate('brandProfileScreen',{
-            userData: {
-              userData: {
-                id: data.user.id,
-                profile_image:
-                  data?.user?.profile_image?.original_url,
-                name: data?.user?.name,
-                role: [{id: 3}],
-              },
-            },
-          })
-          :
-          props.navigation.navigate('editorProfileScreen',{
-            userData: {
-              userData: {
-                id: data.user.id,
-                profile_image:
-                  data?.user?.profile_image?.original_url,
-                name: data?.user?.name,
-                role: [{id: 2}],
-              },
-            },
-          })
-        }
+          <TouchableOpacity
+            onPress={() => {
+              console.log('====================================');
+              console.log('third here', data.user.roles[0].id);
+              console.log('====================================');
+              {
+                data.user.roles[0].id == 3
+                  ? props.navigation.navigate('brandProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 3}],
+                        },
+                      },
+                    })
+                  : props.navigation.navigate('editorProfileScreen', {
+                      userData: {
+                        userData: {
+                          id: data.user.id,
+                          profile_image:
+                            data?.user?.profile_image?.original_url,
+                          name: data?.user?.name,
+                          role: [{id: 2}],
+                        },
+                      },
+                    });
+              }
+            }}
+            style={[styles.imageWrap]}>
 
-        }
-        }
-          style={[
-            styles.imageWrap,
-           
-          ]}>
-          <Image
-            source={data?.user?.profile_image==null?IMAGES.profileIcon3:{uri:data.user?.profile_image?.original_url}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        {data.is_shared&&
-        <>
-        <ICONS.FontAwesome
-            name="retweet"
-            size={24}
-            color={'black'}
-            style={{marginHorizontal: wp2(4)}}
-          />
-          <Text style={{color: 'black'}}>{data?.user?.name}</Text>
-          </>
-        }
-          </View>
+              
+            <Image
+              source={
+                data?.user?.profile_image == null
+                  ? IMAGES.profileIcon3
+                  : {uri: data.user?.profile_image?.original_url}
+              }
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          {data.is_shared && (
+            <>
+              <ICONS.FontAwesome
+                name="retweet"
+                size={24}
+                color={'black'}
+                style={{marginHorizontal: wp2(4)}}
+              />
+              <Text style={{color: 'black'}}>{data?.user?.name}</Text>
+            </>
+          )}
+        </View>
 
         <View
           style={{
@@ -488,42 +513,46 @@ OneSignal.setNotificationOpenedHandler(notification => {
             width: wp2(100),
             justifyContent: 'space-between',
           }}>
-
-            {data?.product_images?.[0]?.image?.map((item,index)=>{
-            return(
+          {data?.product_images?.[0]?.image?.map((item, index) => {
+            return (
               <TouchableOpacity
-              key={index}
-            onPress={() => props.navigation.navigate('imageViewScreen',{item:[{image:[{original_url:item?.original_url}]}]})}
-            style={styles.productImageContainer2}>
-              {prod2comploading?
-       <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-       <View style={{flexDirection: 'row', alignItems: 'center'}}>
-       <View style={styles.productskeletonView2} />
-       </View>
-       </SkeletonPlaceholder>
-    :
-    undefined
-        }
-            <Image
-            
-            progressiveRenderingEnabled={true}
-            onLoadStart={()=>{onloading(true,"onLoadStart")}}
-            onLoad={()=>onloading(false,"onLoad")}
-            onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-              source={{uri:item?.original_url}}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-            )
+                key={index}
+                onPress={() =>
+                  props.navigation.navigate('imageViewScreen', {
+                    item: [{image: [{original_url: item?.original_url}]}],
+                  })
+                }
+                style={styles.productImageContainer2}>
+                {prod2comploading ? (
+                  <SkeletonPlaceholder
+                    borderRadius={4}
+                    alignItems="center"
+                    backgroundColor="#dddddd">
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <View style={styles.productskeletonView2} />
+                    </View>
+                  </SkeletonPlaceholder>
+                ) : undefined}
+                <Image
+                  progressiveRenderingEnabled={true}
+                  onLoadStart={() => {
+                    onloading(true, 'onLoadStart');
+                  }}
+                  onLoad={() => onloading(false, 'onLoad')}
+                  onLoadEnd={() => {
+                    onloading(false, 'onLoadEnd');
+                  }}
+                  source={{uri: item?.original_url}}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            );
           })}
-
         </View>
       </View>
     );
   };
-
-
 
   return (
     <View style={styles.container}>
@@ -543,7 +572,7 @@ OneSignal.setNotificationOpenedHandler(notification => {
         </TouchableOpacity>
         <View style={styles.line}></View>
         <TouchableOpacity
-        disabled={user?.token!==''?false:true}
+          disabled={user?.token !== '' ? false : true}
           onPress={() => props.navigation.navigate('listViewScreen')}
           style={styles.iconWrap}>
           <Image
@@ -554,283 +583,230 @@ OneSignal.setNotificationOpenedHandler(notification => {
         </TouchableOpacity>
       </View>
 
-      {user?.token!==''?(
+      {user?.token !== '' ? (
         <>
-        {loading && feedData?.length === 0 && 
-        (
-        <FlatList
-        data={data}
-        renderItem={()=>{
-          return(
-            <SkeletonViewMainComp
-            nametag={true}
+          {loading && feedData?.length === 0 && (
+            <FlatList
+              data={data}
+              renderItem={() => {
+                return <SkeletonViewMainComp nametag={true} />;
+              }}
             />
-          )
-        }}
-        />
-       
-      )}
+          )}
 
-      {!loading && feedData?.length === 0 ? (
-           <ScrollView
-           showsVerticalScrollIndicator={false}
-           contentContainerStyle={{paddingBottom: hp2(2)}}>
+          {!loading && feedData?.length === 0 ? (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: hp2(2)}}>
+              <Text style={styles.text}>Popular Brands</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.brands?.map((item, index) => {
+                  return <>{brandComp(item)}</>;
+                })}
+              </ScrollView>
 
-           <Text style={styles.text}>Popular Brands</Text>
-           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-             {popularData?.brands?.map((item,index)=>{
-               return(
-                 <>
-                 {brandComp(item)}
-                 </>
-               )
-             })}
-           </ScrollView>
-         
-           <Text style={styles.text}>Popular Pieces</Text>
-           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-             {popularData?.pieces?.map((item,index)=>{
-               return(
-                 <>
-                 {pieceComp(item)}
-                 </>
-               )
-             })}
-           </ScrollView>
-         
-           <Text style={styles.text}>Popular Colour</Text>
-           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-             {popularData?.colors?.map((item,index)=>{
-               return(
-                 <>
-                 {colorComp(item)}
-                 </>
-               )
-             })}
-           </ScrollView>
-          
-         </ScrollView>   
-      ):(
-        <FlatList
-            showsVerticalScrollIndicator={false}
-            data={feedData}
-            onEndReached={() =>
-              !loading && page !== null && getNewsfeed(String(pageNo + 1))
-            }
-            onEndReachedThreshold={0.1}
-            renderItem={({item,index}) => {
-              if(feedData?.length===1){
-                return(
-                  <>
-                {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
+              <Text style={styles.text}>Popular Pieces</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.pieces?.map((item, index) => {
+                  return <>{pieceComp(item)}</>;
+                })}
+              </ScrollView>
 
-                <Text style={styles.text}>Popular Brands</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.brands?.map((item,index)=>{
-            return(
-              <>
-              {brandComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-
-        <Text style={styles.text}>Popular Pieces</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.pieces?.map((item,index)=>{
-            return(
-              <>
-              {pieceComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-
-        <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-          {popularData?.colors?.map((item,index)=>{
-            return(
-              <>
-              {colorComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                </>
-                )
+              <Text style={styles.text}>Popular Colour</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.colors?.map((item, index) => {
+                  return <>{colorComp(item)}</>;
+                })}
+              </ScrollView>
+            </ScrollView>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              data={feedData}
+              onEndReached={() =>
+                !loading && page !== null && getNewsfeed(String(pageNo + 1))
               }
+              onEndReachedThreshold={0.1}
+              renderItem={({item, index}) => {
+                if (feedData?.length === 1) {
+                  return (
+                    <>
+                      {item?.product_images?.[0]?.image?.length === 1
+                        ? postComp(item)
+                        : item?.product_images?.[0]?.image?.length === 2
+                        ? productComp2(item)
+                        : productComp(item)}
 
-             else if(feedData?.length===2){
-                return(
-                  <>
-                    {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
-                    {index === 0 && (
-                      <>
                       <Text style={styles.text}>Popular Brands</Text>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.brands?.map((item,index)=>{
-            return(
-              <>
-              {brandComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                      </>
-                    )}
-                     {index === 1 && (
-                      <>
-                       <Text style={styles.text}>Popular Pieces</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.pieces?.map((item,index)=>{
-            return(
-              <>
-              {pieceComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}>
+                        {popularData?.brands?.map((item, index) => {
+                          return <>{brandComp(item)}</>;
+                        })}
+                      </ScrollView>
 
-        <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}> 
-          {popularData?.colors?.map((item,index)=>{
-            return(
-              <>
-              {colorComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                      </>
-                    )}        
-                </>
-                 
-                )
-              }
+                      <Text style={styles.text}>Popular Pieces</Text>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}>
+                        {popularData?.pieces?.map((item, index) => {
+                          return <>{pieceComp(item)}</>;
+                        })}
+                      </ScrollView>
 
-              else if(feedData?.length>=3){
-                return(
-                  <>
-                    {item?.product_images?.[0]?.image?.length===1?postComp(item):item?.product_images?.[0]?.image?.length===2?productComp2(item):productComp(item)}
-                    {index === 0 && (
-                      <>
-                              <Text style={styles.text}>Popular Brands</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.brands?.map((item,index)=>{
-            return(
-              <>
-              {brandComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                      </>
-                    )}
-                     {index === 1 && (
-                      <>
-                       <Text style={styles.text}>Popular Pieces</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.pieces?.map((item,index)=>{
-            return(
-              <>
-              {pieceComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                      </>
-                    )} 
-          {index === 2 && (
-                      <>
-                       <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.colors?.map((item,index)=>{
-            return(
-              <>
-              {colorComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-                      </>
-                    )}                       
-                </>
-                 
-                )
-              }
+                      <Text style={styles.text}>Popular Colour</Text>
+                      <ScrollView
+                        horizontal
+                        showsHorizontalScrollIndicator={false}>
+                        {popularData?.colors?.map((item, index) => {
+                          return <>{colorComp(item)}</>;
+                        })}
+                      </ScrollView>
+                    </>
+                  );
+                } else if (feedData?.length === 2) {
+                  return (
+                    <>
+                      {item?.product_images?.[0]?.image?.length === 1
+                        ? postComp(item)
+                        : item?.product_images?.[0]?.image?.length === 2
+                        ? productComp2(item)
+                        : productComp(item)}
+                      {index === 0 && (
+                        <>
+                          <Text style={styles.text}>Popular Brands</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.brands?.map((item, index) => {
+                              return <>{brandComp(item)}</>;
+                            })}
+                          </ScrollView>
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <Text style={styles.text}>Popular Pieces</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.pieces?.map((item, index) => {
+                              return <>{pieceComp(item)}</>;
+                            })}
+                          </ScrollView>
 
-             
-            }}
-          />
-      )}
+                          <Text style={styles.text}>Popular Colour</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.colors?.map((item, index) => {
+                              return <>{colorComp(item)}</>;
+                            })}
+                          </ScrollView>
+                        </>
+                      )}
+                    </>
+                  );
+                } else if (feedData?.length >= 3) {
+                  return (
+                    <>
+                      {item?.product_images?.[0]?.image?.length === 1
+                        ? postComp(item)
+                        : item?.product_images?.[0]?.image?.length === 2
+                        ? productComp2(item)
+                        : productComp(item)}
+                      {index === 0 && (
+                        <>
+                          <Text style={styles.text}>Popular Brands</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.brands?.map((item, index) => {
+                              return <>{brandComp(item)}</>;
+                            })}
+                          </ScrollView>
+                        </>
+                      )}
+                      {index === 1 && (
+                        <>
+                          <Text style={styles.text}>Popular Pieces</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.pieces?.map((item, index) => {
+                              return <>{pieceComp(item)}</>;
+                            })}
+                          </ScrollView>
+                        </>
+                      )}
+                      {index === 2 && (
+                        <>
+                          <Text style={styles.text}>Popular Colour</Text>
+                          <ScrollView
+                            horizontal
+                            showsHorizontalScrollIndicator={false}>
+                            {popularData?.colors?.map((item, index) => {
+                              return <>{colorComp(item)}</>;
+                            })}
+                          </ScrollView>
+                        </>
+                      )}
+                    </>
+                  );
+                }
+              }}
+            />
+          )}
 
-       {loading && feedData?.length !== 0 && (
-        <View style={{
-          width:wp2(2),
-          height:hp2(2),
-          marginVertical:hp2(2)
-          }}>
-            <LoaderComp
-            bg={true}/>
+          {loading && feedData?.length !== 0 && (
+            <View
+              style={{
+                width: wp2(2),
+                height: hp2(2),
+                marginVertical: hp2(2),
+              }}>
+              <LoaderComp bg={true} />
             </View>
-            
           )}
         </>
-      ):(
+      ) : (
         <>
-        {loading ? (
-           <FlatList
-           data={data}
-           renderItem={()=>{
-             return(
-               <SkeletonViewMainComp
-               nametag={true}
-               />
-             )}}
-             />
-        ) : (
-                  <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{paddingBottom: hp2(2)}}>
+          {loading ? (
+            <FlatList
+              data={data}
+              renderItem={() => {
+                return <SkeletonViewMainComp nametag={true} />;
+              }}
+            />
+          ) : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{paddingBottom: hp2(2)}}>
+              <Text style={styles.text}>Popular Brands</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.brands?.map((item, index) => {
+                  return <>{brandComp(item)}</>;
+                })}
+              </ScrollView>
 
-        <Text style={styles.text}>Popular Brands</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.brands?.map((item,index)=>{
-            return(
-              <>
-              {brandComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
+              <Text style={styles.text}>Popular Pieces</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.pieces?.map((item, index) => {
+                  return <>{pieceComp(item)}</>;
+                })}
+              </ScrollView>
 
-        <Text style={styles.text}>Popular Pieces</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.pieces?.map((item,index)=>{
-            return(
-              <>
-              {pieceComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-          
-        <Text style={styles.text}>Popular Colour</Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {popularData?.colors?.map((item,index)=>{
-            return(
-              <>
-              {colorComp(item)}
-              </>
-            )
-          })}
-        </ScrollView>
-        
-      </ScrollView>
-        )}
+              <Text style={styles.text}>Popular Colour</Text>
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {popularData?.colors?.map((item, index) => {
+                  return <>{colorComp(item)}</>;
+                })}
+              </ScrollView>
+            </ScrollView>
+          )}
         </>
       )}
-
     </View>
   );
 }
@@ -852,7 +828,7 @@ const styles = StyleSheet.create({
     width: wp2(44),
     height: hp2(8),
     flexDirection: 'row',
-   
+
     justifyContent: 'space-between',
     alignItems: 'center',
     alignSelf: 'center',
@@ -870,7 +846,7 @@ const styles = StyleSheet.create({
   headWrap: {
     width: wp2(94),
     height: hp2(7),
-    
+
     flexDirection: 'row',
     alignSelf: 'center',
     alignItems: 'center',
@@ -881,8 +857,8 @@ const styles = StyleSheet.create({
     height: wp2(14),
     borderRadius: wp2(5),
     overflow: 'hidden',
-    backgroundColor:Platform.OS =='android'&&'white'
-,    shadowColor: '#000',
+    backgroundColor: Platform.OS == 'android' && 'white',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -895,12 +871,12 @@ const styles = StyleSheet.create({
     width: wp2(100),
     height: hp2(30),
     overflow: 'hidden',
-   
+
     marginTop: hp2(1),
   },
-  skeletonView:{
+  skeletonView: {
     width: wp2(100),
-    height: hp2(30)
+    height: hp2(30),
   },
   text: {
     fontWeight: '600',
@@ -914,7 +890,7 @@ const styles = StyleSheet.create({
     width: wp2(34),
     height: hp2(16),
     overflow: 'hidden',
-    backgroundColor:Platform.OS =='android'&&'white',
+    backgroundColor: Platform.OS == 'android' && 'white',
     marginHorizontal: wp2(1),
   },
   productContainer: {
@@ -930,7 +906,7 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(1),
     marginTop: hp2(2),
   },
-  productskeletonView:{
+  productskeletonView: {
     width: wp2(47),
     height: hp2(18),
   },
@@ -938,11 +914,12 @@ const styles = StyleSheet.create({
     width: wp2(48),
     height: hp2(32),
     overflow: 'hidden',
-   
+
     marginTop: hp2(1),
   },
-  productskeletonView2:{
+  productskeletonView2: {
     width: wp2(48),
     height: hp2(32),
-  }
+  },
 });
+

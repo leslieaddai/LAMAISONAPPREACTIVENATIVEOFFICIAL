@@ -59,7 +59,6 @@ let ftsdata = [{},{},{},{},{},{}]
     axios
       .get(StylesUrl)
       .then(async function (res) {
-       
         setDataStyles(res.data.data);
         setLoadingStyles(false);
       })
@@ -76,7 +75,7 @@ let ftsdata = [{},{},{},{},{},{}]
     axios
       .get(FTSUrl)
       .then(async function (res) {
-       
+   
         setDataFts(res.data.data);
         setLoadingFts(false);
       })

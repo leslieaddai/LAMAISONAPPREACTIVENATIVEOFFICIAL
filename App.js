@@ -16,7 +16,18 @@ import OneSignal from 'react-native-onesignal';
 import { StripeProvider } from '@stripe/stripe-react-native';
 import {PRIVATE_KEY, ONESIGNAL_APP_ID} from '@env'
 
+
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://4c48c81399eeeae1a219b44661eb46a3@o4506812522692608.ingest.us.sentry.io/4506898683789312',
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+  // We recommend adjusting this value in production.
+  tracesSampleRate: 1.0,
+});
+
 const App = () => {
+
   const colortheme = useColorScheme()
   console.log(colortheme)
   OneSignal.setAppId(`${ONESIGNAL_APP_ID}`);

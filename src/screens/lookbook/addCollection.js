@@ -53,15 +53,17 @@ export default function AddCollection(props) {
 
   useEffect(() => {
     setLoading(true);
+
+    console.log('load branddd');
     axios
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
-  
+  console.log(res.data.data);
         setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
-    
+    console.log('err brand');
         setLoading(false);
       
         errorMessage(errorHandler(error))

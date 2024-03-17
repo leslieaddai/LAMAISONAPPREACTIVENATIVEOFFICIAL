@@ -23,6 +23,8 @@ import {
 } from '../../theme';
 
 export default function CommentComp(props) {
+  console.log('test prop');
+  console.log(props?.data?.user?.profile_image);
   return (
     <View style={styles.container}>
       <View style={styles.imageWrap}>

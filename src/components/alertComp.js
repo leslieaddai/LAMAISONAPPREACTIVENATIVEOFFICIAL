@@ -23,7 +23,7 @@ export default function AlertComp(props) {
 
   return (
     <Animated.View
-      entering={FadeInUp.duration(1000)}
+      entering={FadeInUp.duration(1000)}//
       exiting={FadeOutUp.duration(500)}
       style={styles.errorWrap}>
       <Text style={styles.errorText}>{props.text}</Text>
