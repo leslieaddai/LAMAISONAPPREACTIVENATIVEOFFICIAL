@@ -1,4 +1,16 @@
 export const IMAGES = {
+  setting:require('../assets/settings.png'),
+  list: require('../assets/list.png'),
+ book:  require('../assets/book.png'),
+  lamasion_cont: require('../assets/lamasion_cont.png'),
+
+  searc_icon: require('../assets/searc_icon.png'),
+  setingsIcon: require('../assets/setings.png'),
+
+  nosearch: require('../assets/nosearch.png'),
+  nobacket: require('../assets/nobasket.png'),
+  nonotif: require('../assets/nonotif.png'),
+
   temp: require('../assets/temp-logo-img.png'),
   logo: require('../assets/logo.png'),
   randomProfile: require('../assets/profile.jpg'),
@@ -8,7 +20,15 @@ export const IMAGES = {
   search: require('../assets/search.png'),
   bag: require('../assets/bag.png'),
   editoricon: require('../assets/editoricon.png'),
+  editor2icon: require('../assets/profile2.png'),
+  calender: require('../assets/Calendar2.png'),
+
+  dangerRed: require('../assets/danger_red.png'),
+  dangerBlack: require('../assets/danger_black.png'),
+
   brandicon: require('../assets/brandicon.png'),
+  brand2icon: require('../assets/brand2.png'),
+
   splashlogo: require('../assets/splashlogo.png'),
   rightArrow: require('../assets/rightarrow.png'),
   lookbook: require('../assets/lookbook.jpg'),
@@ -30,7 +50,29 @@ export const IMAGES = {
   bag2: require('../assets/bag2.png'),
   logoblack: require('../assets/logoblack.png'),
   logowhite: require('../assets/logowhite.png'),
+
+  googleIcon: require('../assets/google.png'),
+
   lamaisonname: require('../assets/lamaisonname.png'),
   profileIcon3: require('../assets/profileIcon3.png'),
   notFoundImage: require('../assets/not_found_image.png'),
+
+  profile: require('../assets/profile.png'),
+  notification: require('../assets/notification.png'),
+  orders: require('../assets/orders.png'),
+  policy: require('../assets/policy.png'),
+  location: require('../assets/location.png'),
+  logout: require('../assets/logout.png'),
+  security: require('../assets/security.png'),
+  menu: require('../assets/menu.png'),
+  support: require('../assets/support.png'),
+
+  home: require('../assets/home.png'),
+  fts_bottom: require('../assets/fts_bottom.png'),
+  profile_bottom: require('../assets/profile_bottom.png'),
+    profile_bottom: require('../assets/profile_bottom.png'),
+
+  fts_bottom: require('../assets/fts_bottom.png'),
+  basket: require('../assets/basket.png'),
+  search_bottom: require('../assets/search_bottom.png'),
 };

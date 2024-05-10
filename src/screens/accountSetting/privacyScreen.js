@@ -25,6 +25,7 @@ import {
   hp2,
   
 } from '../../theme';
+import HeaderComponent from '../auth/componnets/HeaderComponnet';
 
 export default function PrivacyScreen(props) {
   return (
@@ -33,14 +34,8 @@ export default function PrivacyScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
     
     <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>Privacy & Security</Text>
-      </View>
+    <HeaderComponent title={'Privacy & Security'} onTap={() => props.navigation.goBack()}></HeaderComponent>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{

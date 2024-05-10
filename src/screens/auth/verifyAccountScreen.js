@@ -30,6 +30,9 @@ import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {VerifyAccount} from '../../config/Urls';
 import LoaderComp from '../../components/loaderComp';
+import LogoComponent from './componnets/LogoComponent';
+import TextEditingComponent from './componnets/TexteditingComponent';
+import ContinueButton from './componnets/ContinueBtn';
 
 export default function VerifyAccountScreen(props) {
 
@@ -72,21 +75,23 @@ export default function VerifyAccountScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.resetText}>Verify Account</Text>
-            <View
-              style={styles.inputBox}>
-              <TextInput
+        <LogoComponent txt={'Verify Account'}></LogoComponent>
+             <View
+           >
+              <TextEditingComponent
                 style={styles.inputTxt}
                 placeholderTextColor={'grey'}
-                placeholder="VERIFY CODE"
+                placeholder="Verify Code"
                 value={code}
                 onChangeText={val => setCode(val)}
                 keyboardType={'number-pad'}
               />
             </View>
-            <TouchableOpacity onPress={onVerifyCode} style={styles.button}>
-              <Text style={styles.buttonText}>Verify Account</Text>
-            </TouchableOpacity>
+            <ContinueButton onPress={onVerifyCode} style={{width:'90%' ,marginHorizontal:20,marginTop:10}}
+        
+        text={'Verify Account'} ></ContinueButton>
+
+      
       </SafeAreaView>
     </>
   );

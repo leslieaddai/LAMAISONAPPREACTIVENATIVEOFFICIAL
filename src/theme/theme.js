@@ -1,6 +1,6 @@
 export const COLORS = {
     white:'#ffffff',
-    appBackground:'#F6F5F3',
+    appBackground:'#ffffff',
 
     bgLight:'#f7f7f6',
     danger: '#F32013',

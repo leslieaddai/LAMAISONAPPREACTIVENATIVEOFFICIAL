@@ -1,49 +1,52 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
+import {StyleSheet, View, Image, Text, Platform} from 'react-native';
 
-  Text,
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  Platform,
-} from 'react-native';
+import {IMAGES, COLORS, wp2, hp2} from '../../theme';
 
-import {
- 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
-
-  COLORS,
-
-  wp2,
-  hp2,
-  
-} from '../../theme';
-
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import LogoComponent from '../auth/componnets/LogoComponent';
+import fonts from '../../theme/fonts';
+import SmallLogoComponnet from './smallLogoComp';
 
 export default function WelcomeScreen(props) {
-  const user = useSelector(state => state.userData)
+  const user = useSelector(state => state.userData);
   console.log('2222');
- console.log(user?.userData?.profile_image);
+  console.log(user?.userData);
   return (
     <View style={styles.container}>
-        <Text style={styles.text}>{'Hi '+user.userData.username}</Text>
-      <View style={[styles.imgWrap,{backgroundColor:Platform.OS =='android'&&'white'}]}>
+      {/* <Text style={styles.text}>{'Hi '+user.userData.username}</Text> */}
+      <View style={{padding:20}}>
+
+      <SmallLogoComponnet></SmallLogoComponnet>
+      </View>
+      <View
+        style={[
+          styles.imgWrap,
+          {backgroundColor: Platform.OS == 'android' && 'white'},
+        ]}>
         <Image
-          source={user?.userData?.profile_image!==''?{uri:user?.userData?.profile_image}:IMAGES.profileIcon3}
-          style={{width: '100%', height: '100%'}}
+          source={
+            user?.userData?.profile_image !== ''
+              ? {uri: user?.userData?.profile_image}
+              : IMAGES.profileIcon3
+          }
+          style={[
+
+            {
+            width: '100%',
+            height: '100%',
+            alignItems: 'center',
+
+            borderRadius: 200, // Ensure the image stays within the circle
+          }]}
           resizeMode="contain"
         />
       </View>
-      <Text style={[styles.text,{fontSize:rfv(28),textAlign:'center'}]}>Welcome Back</Text>
-      <View style={{width:wp2(100),height:hp2(8),position:'absolute',bottom:hp2(2),elevation:5}}>
-        <Text style={{fontSize:rfv(18),alignSelf:'center',color:'gray'}}>LA MAISON APP</Text>
-      </View>
+      <Text style={styles.largeText}>Hi {user?.userData?.name} 👋</Text>
+      <Text style={styles.smallText}>Welcome Back </Text>
+    
     </View>
   );
 }
@@ -53,25 +56,55 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    // justifyContent: 'space-evenly',
   },
   imgWrap: {
+    // paddingBottom:20,
     width: wp2(50),
-    height: wp2(60),
+    height: wp2(50),
     overflow: 'hidden',
-    borderRadius: wp2(8),
+    borderRadius: 100,
     shadowColor: '#000',
+    alignItems: 'center',
+
     shadowOffset: {
       width: 2,
       height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation:5
+    elevation: 1,
   },
-  text:{
-    color:'black',
-    fontWeight:'700',
-    fontSize:rfv(34),
+
+  text: {
+    color: 'black',
+    fontWeight: '700',
+    fontSize: rfv(34),
   },
+  largeText: {
+    paddingTop:40,
+    fontFamily: fonts.PoppinsMedium,
+    // fontWeight: '400',
+    fontSize: rfv(34),
+    textAlign: 'center',
+    color: 'black',
+  },
+  smallText: {
+    paddingTop:20,
+
+    fontFamily: fonts.PoppinsRegular,
+    fontWeight: '400',
+    fontSize: rfv(18),
+    // lineHeight: 18,
+    textAlign: 'center',
+    color: 'black',
+  },
+  // text: {
+  //   fontFamily: 'Open Sans',
+  //   fontWeight: '400',
+  //   fontSize: 20,
+  //   lineHeight: 27.24,
+  //   textAlign: 'center',
+  //   color: 'gray',
+  // },
 });

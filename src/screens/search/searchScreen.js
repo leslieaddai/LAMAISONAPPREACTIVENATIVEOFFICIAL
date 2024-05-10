@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
- 
+ Image,
   SafeAreaView,
   Platform,
   FlatList,
@@ -24,6 +24,7 @@ import {
 
   wp2,
   hp2,
+  IMAGES,
  
 } from '../../theme';
 
@@ -41,6 +42,10 @@ import {SkypeIndicator} from 'react-native-indicators';
 import { debounce } from 'lodash'
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewSearchComp from '../../components/SkeletonViewComponents/SkeletonViewSearchComp';
+import HeaderComponent from '../auth/componnets/HeaderComponnet';
+import { useNavigation } from '@react-navigation/native';
+import TextEditingComponent from '../auth/componnets/TexteditingComponent';
+import SearchComponnetTextEditCont from '../auth/componnets/searchComp';
 
 export default function SearchScreen({navigation, route}) {
   let skeletonArr = [{},{},{}]
@@ -58,6 +63,7 @@ export default function SearchScreen({navigation, route}) {
   const user = useSelector(state => state.userData);
 
   const [loadingComp, setLoadingComp] = useState(false);
+  const navi= useNavigation()
 
   const {Price} = useSelector(state => state.Price);
   const color = useSelector(state => state.Colour);
@@ -170,11 +176,14 @@ const handleInputChange = (text) => {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+            <HeaderComponent title={'Discover'}  ></HeaderComponent>
         <View style={styles.container}>
+
           <View style={styles.headWrap}>
-            <View style={styles.inputBox}>
-              <TextInput
-                style={styles.textBoxInput}
+
+            <View style={{width:hp2(39),paddingHorizontal:15}}>
+              <SearchComponnetTextEditCont
+                styles={styles.textBoxInput}
                 value={text}
                 onChangeText={handleInputChange}
                 placeholderTextColor={'grey'}
@@ -183,9 +192,12 @@ const handleInputChange = (text) => {
                 placeholder="what do you want to wear?"
               />
             </View>
+
             <TouchableOpacity
               onPress={() => navigation.navigate('filterScreen', text)}>
-              <ICONS.FontAwesome5 name="sliders-h" size={34} color="black" />
+            <Image
+            style={{height:45,width:45,paddingLeft:10}}
+            source={IMAGES.setingsIcon}></Image>
             </TouchableOpacity>
           </View>
 
@@ -219,6 +231,13 @@ const handleInputChange = (text) => {
               }}
             />
           )}
+{/* 
+          {!loading &&data?.length === 0 && (
+            <View >
+            <Text style={{fontSize: 20}}>No Items Found</Text>
+          </View>
+
+          )} */}
 
           {loading2 && dataEditor?.length === 0 && selected === 'editors' && (
             <FlatList
@@ -331,9 +350,10 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(0),
     alignItems: 'center',
-    justifyContent: 'space-around',
+    // width:20
+    // justifyContent: 'space-around',
   },
   iconContainer: {
     width: wp2(50),
@@ -356,10 +376,8 @@ const styles = StyleSheet.create({
 
   },
   textBoxInput: {
-    flex: 1,
-    color: 'black',
-    paddingHorizontal: wp2(2),
-    fontSize: rfv(13),
-    fontWeight: '700',
+    // flex: ,
+    
+// paddingHorizontal:100
   }
 });

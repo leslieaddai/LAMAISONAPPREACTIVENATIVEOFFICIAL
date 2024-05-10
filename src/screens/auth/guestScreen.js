@@ -78,66 +78,80 @@ export default function GuestScreen(props) {
         <View style={styles.logoWrap}>
           <Image
             source={IMAGES.logowhite}
-            style={{width: '100%', height: '100%'}}
+            style={{width: '50%', height: '50%'}}
             resizeMode="cover"
           />
         </View>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('signupScreen')}
-          style={styles.button}>
-          <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
-        </TouchableOpacity>
+<View style={{
+  width:'100%',
+  paddingHorizontal:20
+}}>
+
+
+
         <TouchableOpacity
           onPress={() => props.navigation.navigate('loginScreen')}
           style={styles.button}>
-          <Text style={styles.buttonText}>SIGN IN</Text>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => props.navigation.navigate('signupScreen')}
+          style={styles.button}>
+          <Text style={styles.buttonText}>Create Account</Text>
+        </TouchableOpacity>
+      
         <TouchableOpacity
          
           onPress={() => registerGuest()}
          
-          style={{marginTop: hp2(12)}}>
-          <Text style={styles.guestText}>CONTINUE AS GUEST</Text>
+          style={styles.button}>
+          <Text style={styles.buttonText}>Continue As Guest</Text>
         </TouchableOpacity>
+        </View>
       </View>
     </>
   );
 }
 
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
+    // justifyContent: 'center',
     alignItems: 'center',
-   
   },
   logoWrap: {
     width: wp2(60),
     height: hp2(20),
+    // paddingBottom:100,
     overflow: 'hidden',
-    marginTop: hp2(24),
+    marginTop: hp2(15), 
+    marginBottom:hp2(10), 
+       justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   button: {
-    width: wp2(70),
-    height: hp2(7),
-    backgroundColor: 'black',
-    borderRadius: wp2(8),
-    alignItems: 'center',
+    width: '100%', // Width set to fill available space
+    height: 50,
+    paddingHorizontal: 20, // Horizontal padding
+
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D4D4D8',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-    marginVertical: hp2(2),
+    alignItems: 'center',
+    marginBottom:10,
+    
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: rfv(20),
+    fontSize: 16,
+    // fontWeight: '400',
+    color: 'black',
+    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
+
+
   },
   guestText: {
     color: 'black',

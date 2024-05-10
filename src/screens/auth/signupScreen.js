@@ -7,8 +7,9 @@ import {
   TextInput,
   Platform,
   SafeAreaView,
+  Image,
 } from 'react-native';
-import { COLORS, wp2, hp2, ICONS} from '../../theme';
+import { COLORS, wp2, hp2, ICONS, IMAGES} from '../../theme';
 import {
   RFValue as rfv,
   
@@ -17,6 +18,7 @@ import auth from '@react-native-firebase/auth';
 import {errorMessage} from '../../config/NotificationMessage';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
+import LogoComponent from './componnets/LogoComponent';
 
 export default function SignupScreen(props) {
   const [firstName, setFirstName] = useState('');
@@ -152,58 +154,57 @@ export default function SignupScreen(props) {
     
     <SafeAreaView style={styles.container}>
     
-      <Text style={[styles.signupText]}>Create new account</Text>
+    <LogoComponent txt="Create New Account"></LogoComponent>
       <View style={styles.inputWrap}>
-        <View style={[styles.inputBox, {width: wp2(36)}]}>
+        <View style={[styles.inputBox, ]}>
           <TextInput
             style={styles.inputTxt}
-            placeholder="FIRST NAME"
+            placeholder="First Name"
             placeholderTextColor={'grey'}
             onChangeText={val => setFirstName(val.replace(/\s+/g, ' ').trim())}
           />
         </View>
-        <View style={[styles.inputBox, {width: wp2(36)}]}>
+        <View style={[styles.inputBox, ]}>
           <TextInput
             style={styles.inputTxt}
-            placeholder="LAST NAME"
+            placeholder="Last Name"
             placeholderTextColor={'grey'}
             onChangeText={val => setLastName(val.replace(/\s+/g, ' ').trim())}
           />
         </View>
       </View>
-      <Text style={styles.text}>
-        I hope you trust us but this is so we know we can trust you
-      </Text>
+     
       <View style={styles.inputBox}>
         <TextInput
           style={styles.inputTxt}
-          placeholder="EMAIL"
+          placeholder="Email"
           placeholderTextColor={'grey'}
           onChangeText={val => setEmail(val)}
         />
       </View>
-      <Text style={styles.text}>
-        This has to be real so we can stay in contact with you
-      </Text>
+     
       <TouchableOpacity
         onPress={onContinue}
-        style={[styles.button, {width: wp2(48)}]}>
-        <Text style={styles.buttonText}>CONTINUE</Text>
+        style={[styles.button, {marginTop:10}]}>
+        <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
+      <View style={styles.divider} />
+
       <TouchableOpacity
         onPress={() =>
           onGoogleButtonPress().then(res =>
             console.log('Signed in with Google!',res),
           )
         }
-        style={styles.button2}>
-        <ICONS.AntDesign
-          name="google"
-          size={24}
-          color="black"
-          style={{position: 'absolute', left: wp2(4)}}
+        style={[styles.buttonWhite,{   flexDirection: 'row', // Display the icon and text in a row
+        alignItems: 'center',}]}>
+        <Image
+        source={IMAGES.googleIcon}
+         style={{marginHorizontal:10}}
+
+        resizeMode="cover"
         />
-        <Text style={styles.button2Text}>continue with Google</Text>
+        <Text style={styles.buttonTextBlack}>continue with Google</Text>
       </TouchableOpacity> 
        {/* <TouchableOpacity
         onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
@@ -225,23 +226,44 @@ export default function SignupScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.appBackground,
    
+
+    backgroundColor: COLORS.appBackground,
   },
-  signupText: {
+  logoWrap: {
+    // width: wp2(30),
+    height: hp2(10),
+    // paddingBottom:100,
+    overflow: 'hidden',
+    marginTop: hp2(10), 
+    marginBottom:hp2(5), 
+       justifyContent:'center',
+    alignItems: 'center',
+    alignContent: 'center',
+
+  },
+  signinText: {
     color: 'black',
-    fontSize: rfv(22),
-    fontWeight: '700',
-    marginVertical: hp2(4),
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    marginLeft: wp2(8),
+    fontSize: 22, // Assuming rfv() returns the font size in pixels
+    fontFamily: 'Poppins-Regular', // Use the Poppins font
+    fontWeight: '400', // Font weight 400
+    lineHeight: 33, // Line height 33px
+    marginVertical: 8, // Adjust margin as needed
+    marginTop: Platform.OS === 'ios' ? 0 : 4, // Adjust margin top based on platform
+    justifyContent:'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    textAlign:'center',
+    marginBottom:50
   },
   inputBox: {
-    width: wp2(80),
-    height: hp2(6),
-    backgroundColor: 'white',
-    borderRadius: wp2(4),
-    shadowColor: '#000',
+    // width: 374,
+    width: '90%',paddingHorizontal:10 ,
+    marginBottom:10,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    shadowColor: '#0000',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -249,21 +271,53 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginVertical: hp2(2),
+    marginVertical: 2,
     alignSelf: 'center',
+    // padding: '16px 20px', // Padding top, right, bottom, left
+    borderWidth: 1,
+    borderColor: '#D4D4D4',
+    // position: 'absolute',
+
   },
-  text: {
+  forgetText: {
+    color: '#000000', // Black color
+    fontWeight: '400', // Font weight 400
+    fontSize: 14, // Font size 14 pixels
+    fontFamily: 'Poppins-Medium', // Use the Poppins font
+    lineHeight: 21, // Line height 21 pixels
+    marginVertical: 2, // Adjust margin as needed
+    alignSelf: 'center', // Center text horizontally
+    marginBottom:20
+  },
+
+  buttonWhite: {
+    width: '90%',paddingHorizontal:10 ,
+    height: 50,
+    // paddingHorizontal: 20, // Horizontal padding
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D4D4D8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:10,
+    alignSelf: 'center',
+
+  },
+  buttonTextBlack: {
+    fontSize: 16,
+    // fontWeight: '400',
     color: 'black',
-    fontWeight: '700',
-    marginHorizontal: wp2(11),
-    marginVertical: hp2(1),
-    fontSize: rfv(8.5),
+    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
+
+
   },
   button: {
-    width: wp2(28),
-    height: hp2(7),
-    backgroundColor: 'black',
-    borderRadius: wp2(10),
+    width: '90%',paddingHorizontal:10 ,
+    height: 50,
+    backgroundColor: '#5D5FEF',
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -274,20 +328,66 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    
-    marginTop: hp2(2),
     alignSelf: 'center',
-    marginBottom: hp2(8),
+  
   },
   buttonText: {
+    fontSize: 16,
+    // fontWeight: '400',
     color: 'white',
+    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
+
+
+  },
+
+  divider: {
+    marginVertical:40,
+    height: 2,
+    backgroundColor: '#D9D9D9',
+    marginHorizontal:70 ,
+  },
+  inputTxt: {
+    flex: 1,
+    color: 'black',
+    paddingHorizontal: wp2(2),
+    fontSize: rfv(13),
     fontWeight: '400',
-    fontSize: rfv(14),
+  },
+
+  modal: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContainer: {
+    width: '100%',
+    height: '75%',
+  },
+  cancelButton: {
+    alignItems: 'flex-end',
+    paddingHorizontal: wp2(1),
+  },
+  soccialbuttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+  },
+  roundbutton: {
+    backgroundColor: 'black',
+    width: wp2(16),
+    height: hp2(8),
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  orstyle: {
+    color: 'black',
+    fontSize: hp2(3),
+    alignSelf: 'center',
+    marginTop: hp2(2),
   },
   button2: {
-    width: wp2(78),
+    width: wp2(68),
     height: hp2(6),
-    backgroundColor: 'white',
     borderRadius: wp2(3),
     alignItems: 'center',
     justifyContent: 'center',
@@ -298,8 +398,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
-    elevation: 8,
-   
     marginTop: hp2(2),
     alignSelf: 'center',
     flexDirection: 'row',
@@ -309,18 +407,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: rfv(11),
     textTransform: 'uppercase',
-  },
-  inputWrap: {
-    flexDirection: 'row',
-    width: wp2(80),
-    justifyContent: 'space-between',
-    alignSelf: 'center',
-  },
-  inputTxt: {
-    flex: 1,
-    color: 'black',
-    paddingHorizontal: wp2(2),
-    fontSize: rfv(13),
-    fontWeight: '700',
+    marginLeft: wp2(2),
   },
 });

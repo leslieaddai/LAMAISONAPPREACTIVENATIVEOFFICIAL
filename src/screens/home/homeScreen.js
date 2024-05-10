@@ -27,6 +27,12 @@ import SkeletonViewMainComp from '../../components/SkeletonViewComponents/Skelet
 import LoaderComp from '../../components/loaderComp';
 import ImageCompWithError from './ImageCompWithError';
 import ImageCompWithErrorProfile from '../../components/FTS100Comps/ImageCompWithErrorProfile';
+import fonts from '../../theme/fonts';
+import HeaderComponent from '../auth/componnets/HeaderComponnet';
+import LogoComponent from '../auth/componnets/LogoComponent';
+import SmallLogoComponnet from '../welcome/smallLogoComp';
+import { Divider } from 'react-native-paper';
+import LamaisonBar from './lamaisonHomebarComponnet';
 
 export default function HomeScreen(props) {
   const dispatch = useDispatch();
@@ -159,7 +165,7 @@ export default function HomeScreen(props) {
 
   const brandComp = data => {
     return (
-      <View style={{marginVertical: hp2(2)}}>
+      <View style={{marginVertical: hp2(2),paddingHorizontal:20}}>
         <TouchableOpacity
           onPress={() =>
             props.navigation.navigate('brandProfileScreen', {
@@ -178,7 +184,6 @@ export default function HomeScreen(props) {
             uri={
               data?.brand?.profile_image?.original_url
             }></ImageCompWithErrorProfile>
-      
         </TouchableOpacity>
       </View>
     );
@@ -201,7 +206,7 @@ export default function HomeScreen(props) {
         style={{marginVertical: hp2(2)}}>
         <View style={styles.brandImage}>
           <ImageCompWithError
-            uri={data.product.product_images[0]?.image[0]?.original_url||null}
+            uri={data.product.product_images[0]?.image[0]?.original_url || null}
           />
         </View>
       </TouchableOpacity>
@@ -222,12 +227,11 @@ export default function HomeScreen(props) {
                 item: data?.product?.product_images,
               })
         }
-        style={{marginVertical: hp2(2)}}>
+        style={{marginVertical: hp2(2),paddingHorizontal:20}}>
         <View style={styles.brandImage}>
           <ImageCompWithError
             uri={
-              data.product?.product_images[0]?.image[0]?.original_url ??
-              null
+              data.product?.product_images[0]?.image[0]?.original_url ?? null
             }
           />
         </View>
@@ -482,8 +486,6 @@ export default function HomeScreen(props) {
               }
             }}
             style={[styles.imageWrap]}>
-
-              
             <Image
               source={
                 data?.user?.profile_image == null
@@ -557,31 +559,25 @@ export default function HomeScreen(props) {
   return (
     <View style={styles.container}>
       <SafeAreaView></SafeAreaView>
-      <View style={styles.logoWrap}>
-        <Text style={{fontSize: rfv(18), color: 'gray'}}>LA MAISON APP</Text>
-      </View>
-      <View style={styles.iconContainer}>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('homeScreen')}
-          style={styles.iconWrap}>
-          <Image
-            source={IMAGES.gridView}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-        <View style={styles.line}></View>
-        <TouchableOpacity
-          disabled={user?.token !== '' ? false : true}
-          onPress={() => props.navigation.navigate('listViewScreen')}
-          style={styles.iconWrap}>
-          <Image
-            source={IMAGES.listView}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
-          />
-        </TouchableOpacity>
-      </View>
+      <HeaderComponent
+        mystyle={{paddingLeft: 60}}
+        title={'Home'}
+        disableback={true}
+        customComponent={
+          <TouchableOpacity
+            disabled={user?.token !== '' ? false : true}
+            onPress={() => props.navigation.navigate('settingsScreen')}
+            style={styles.custom}>
+            <Image
+              source={IMAGES.setting}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+        }>
+        {' '}
+      </HeaderComponent>
+  <LamaisonBar navigation={props.navigation} user={user}></LamaisonBar>
 
       {user?.token !== '' ? (
         <>
@@ -598,21 +594,37 @@ export default function HomeScreen(props) {
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{paddingBottom: hp2(2)}}>
-              <Text style={styles.text}>Popular Brands</Text>
+              <View
+                style={{
+                  alignItems: 'center', // Align items vertically in the center
+                  justifyContent: 'center', // Align items horizontally to the start
+                }}>
+                <SmallLogoComponnet
+                mysyles={{
+                  marginTop:50, 
+                }}
+                  height={100}
+                  width={140}></SmallLogoComponnet>
+                <Text style={styles.textBig}>Welcome to La Maison App</Text>
+                <Text style={styles.textsmall}>Welcome to La Maison App</Text>
+
+              </View>
+              <Divider style={{marginTop:40,marginBottom:10}}></Divider>
+              <Text style={styles.textpop}>Popular Brands</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {popularData?.brands?.map((item, index) => {
                   return <>{brandComp(item)}</>;
                 })}
               </ScrollView>
 
-              <Text style={styles.text}>Popular Pieces</Text>
+              <Text style={styles.textpop}>Popular Pieces</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {popularData?.pieces?.map((item, index) => {
                   return <>{pieceComp(item)}</>;
                 })}
               </ScrollView>
 
-              <Text style={styles.text}>Popular Colour</Text>
+              <Text style={styles.textpop}>Popular Colour</Text>
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 {popularData?.colors?.map((item, index) => {
                   return <>{colorComp(item)}</>;
@@ -812,6 +824,69 @@ export default function HomeScreen(props) {
 }
 
 const styles = StyleSheet.create({
+  textBig: {
+    textAlign: 'center', // Center text within the container
+    fontFamily: fonts.PoppinsBold,
+    marginVertical: 10,
+    fontSize: rfv(14),
+    color: 'black',
+  },
+  textpop: {
+    textAlign: 'center', // Center text within the container
+    fontFamily: fonts.PoppinsMedium,
+    marginVertical: 10,
+    fontSize: rfv(15),
+    color: 'black',
+  },
+  textsmall: {
+    textAlign: 'center', // Center text within the container
+    fontFamily: fonts.PoppinsMedium,
+    // marginVertical:10,
+    fontSize: rfv(10),
+    color: '#A1A1AA',
+  },
+  containerla: {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)', // Grey background color
+    borderRadius: 10, // Adjust the borderRadius value as needed
+    // padding: 10, // Add padding for better spacing
+    alignItems: 'center', // Center content horizontally
+    justifyContent: 'center', // Center content vertically
+    paddingVertical: 25,
+    paddingHorizontal: 50,
+    // marginHorizontal:20,
+    marginRight: 20,
+  },
+  textla: {
+    textAlign: 'center', // Center text within the container
+    fontFamily: fonts.PoppinsRegular,
+    fontSize: rfv(13),
+  },
+  lamasionCont: {
+    paddingVertical: 10,
+    marginHorizontal: 0,
+    // top: 90,
+    // left: 32,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    marginHorizontal: 10,
+    alignItems: 'center', // Align items vertically in the center
+    justifyContent: 'center', // Align items horizontally to the start
+  },
+  mycontainer: {
+    flexDirection: 'row',
+    alignItems: 'center', // Align items vertically in the center
+    justifyContent: 'center', // Align items horizontally to the start
+
+    paddingVertical: 10,
+    marginHorizontal: 20,
+    // paddingBottom:30,
+    // marginTop:100,
+    // marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.1)', // Set border color to black with 50% opacity
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
@@ -833,9 +908,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
   },
+  custom: {
+    width: wp2(5),
+    height: hp2(2),
+    // marginRight: 5,
+    overflow: 'hidden',
+    // justifyContent: 'flex-end', // Align items to the end of the header
+    left: 110,
+  },
   iconWrap: {
     width: wp2(12),
     height: hp2(8),
+    marginRight: 5,
     overflow: 'hidden',
   },
   line: {
@@ -892,6 +976,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: Platform.OS == 'android' && 'white',
     marginHorizontal: wp2(1),
+    borderRadius:15,
   },
   productContainer: {
     width: wp2(100),
@@ -922,4 +1007,3 @@ const styles = StyleSheet.create({
     height: hp2(32),
   },
 });
-

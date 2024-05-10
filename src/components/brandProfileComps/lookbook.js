@@ -1,27 +1,14 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  
-} from 'react-native';
-
-
-
+import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-import {
-  
-  wp2,
-  hp2,
-  
-  IMAGES,
-} from '../../theme';
+import {wp2, hp2, IMAGES} from '../../theme';
+import NothingListedComponnet from '../../screens/profileBrand/nothingListedComponnet';
+import fonts from '../../theme/fonts';
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
 export function ImgComp(props) {
   const navigation = useNavigation();
@@ -29,13 +16,12 @@ export function ImgComp(props) {
   const onLoading = (value, label) => {
     setLoading(value);
   };
-    const [imageError, setImageError] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   console.log('Image URL:', props.path.original_url); // Debugging line
- const onImageError = () => {
-  setImageError(true)
- 
-};
+  const onImageError = () => {
+    setImageError(true);
+  };
 
   return (
     <TouchableOpacity
@@ -53,7 +39,7 @@ export function ImgComp(props) {
         onLoadEnd={() => onLoading(false)}
         onError={onImageError} // Handle image load error
         source={
-          imageError || props.path.original_url==null
+          imageError || props.path.original_url == null
             ? IMAGES.notFoundImage
             : {uri: props.path.original_url}
         }
@@ -63,22 +49,45 @@ export function ImgComp(props) {
 }
 
 export default function Lookbook(props) {
-  
   const navigation = useNavigation();
   return (
     <>
+      {
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate('lookbookScreen', {
+              userData: props?.route?.params?.userData,
+            })
+          }
+     >
+          <Text style={[styles.popularTxt,{paddingTop:20}]}>Gallery</Text>
+        </TouchableOpacity>
+      }
       <View style={styles.galaryContainer}>
-        {props?.data?.length!==0? props?.data?.reverse().map((item, index) => {
-          if (index < 6) return <ImgComp key={index} path={item.items} />;
-        }):<View style={{alignItems:'center',justifyContent:'center',flex:1,}}><Text>No images added yet</Text></View>}
-      </View>
+        {props?.data?.length !== 0 ? (
+          props?.data?.reverse().map((item, index) => {
+            if (index < 6) return;
 
-     
+            <ImgComp key={index} path={item.items} />;
+          })
+        ) : (
+          <NothingListedComponnet></NothingListedComponnet>
+        )}
+      </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
+  popularTxt: {
+    fontFamily: fonts.PoppinsMedium,
+    paddingHorizontal: 20,
+
+    fontSize: rfv(15),
+
+    color: 'black',
+    // marginLeft: wp2(3),
+  },
   lookbook: {
     width: wp2(80),
     height: hp2(5),
@@ -102,9 +111,9 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(1),
     marginTop: hp2(1),
   },
-  skeletonView:{
+  skeletonView: {
     width: wp2(28),
     height: hp2(12),
     overflow: 'hidden',
-  }
+  },
 });

@@ -23,6 +23,7 @@ import {
  
   wp2,
   hp2,
+  IMAGES,
  
 } from '../../theme';
 
@@ -37,6 +38,9 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
 import moment from 'moment';
+import EmptyWidget from '../../components/emptyWidget';
+import { useNavigation } from '@react-navigation/native';
+import HeaderComponent from '../auth/componnets/HeaderComponnet';
 
 export default function NotificationScreen(props) {
   const dispatch = useDispatch();
@@ -44,6 +48,7 @@ export default function NotificationScreen(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const [uniqDates, setUniqDates] = useState();
+  const navigation = useNavigation()
 
   useEffect(() => {
     setLoading(true);
@@ -84,15 +89,12 @@ export default function NotificationScreen(props) {
 
     <SafeAreaView style={{flex: 1}}>
       <View style={styles.container}>
-        <View style={styles.headWrap}>
-          <TouchableOpacity
-            onPress={() => props.navigation.goBack()}
-            style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
-            <ICONS.AntDesign name="left" size={24} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.notificationText}>Notifications</Text>
-        </View>
+      
+<HeaderComponent
+title={'Notification'}
+>
 
+</HeaderComponent>
         {loading ? (
           <View
             style={{
@@ -133,9 +135,13 @@ export default function NotificationScreen(props) {
             }}
           />
           ):(
-            <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
-              <Text>No notifications received yet</Text>
-            </View>
+            <EmptyWidget
+            image={IMAGES.nonotif}
+              upperText="No Current Notifications"
+              lowerText="We’ll notify you when something arrives!"
+              buttonText="Got it"
+              onButtonPress={() => props.navigation.goBack()}
+            />
           )}
           </>
         )}

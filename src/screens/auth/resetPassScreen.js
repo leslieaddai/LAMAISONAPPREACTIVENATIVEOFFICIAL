@@ -37,6 +37,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import LoaderComp from '../../components/loaderComp';
 import Animated, {FadeInUp, FadeOutUp, Layout} from 'react-native-reanimated';
 import CountDown from 'react-native-countdown-component';
+import LogoComponent from './componnets/LogoComponent';
+import TextEditingComponent from './componnets/TexteditingComponent';
+import ContinueButton from './componnets/ContinueBtn';
 
 const CountdownContainer = () => {
   const initialCountdown = 20; // You can set any initial countdown time here
@@ -202,11 +205,12 @@ export default function ResetPassScreen(props) {
         <Animated.View
           entering={FadeInUp.duration(1000)}
           exiting={FadeOutUp.duration(500)}
-          style={styles.inputBox}>
-          <TextInput
+          >
+          <TextEditingComponent
+          isPassword={true}
             style={styles.inputTxt}
             placeholderTextColor={'grey'}
-            placeholder="ENTER PASSWORD"
+            placeholder="Enter Password"
             value={newPassword}
             onChangeText={val => setNewPassword(val)}
             secureTextEntry={true}
@@ -215,47 +219,24 @@ export default function ResetPassScreen(props) {
         <Animated.View
           entering={FadeInUp.duration(1000)}
           exiting={FadeOutUp.duration(500)}
-          style={styles.inputBox}>
-          <TextInput
+     >
+          <TextEditingComponent
             style={styles.inputTxt}
+            isPassword={true}
+
             placeholderTextColor={'grey'}
-            placeholder="RE-ENTER PASSWORD"
+            placeholder="Re-Enter Password"
             value={confirmPassword}
             onChangeText={val => setConfirmPassword(val)}
             secureTextEntry={true}
           />
         </Animated.View>
 
-        <Animated.View
-          entering={FadeInUp.duration(1000)}
-          exiting={FadeOutUp.duration(500)}
-          style={{alignSelf: 'center', marginTop: hp2(2), width: wp2(80)}}>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: newPassword.length >= 8 ? COLORS.green : COLORS.red},
-            ]}>
-            Must be at least 8 characters
-          </Text>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: numeric.test(newPassword) ? COLORS.green : COLORS.red},
-            ]}>
-            Must include at least 1 Numerical character
-          </Text>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: newPassword.match(special) ? COLORS.green : COLORS.red},
-            ]}>
-            Must include at least 1 special character ( Examples !”£$)
-          </Text>
-        </Animated.View>
+        <ContinueButton onPress={onResetPassword} style={{width:'90%' ,marginHorizontal:20,marginTop:10}}
+        
+        text={'Reset Password'} ></ContinueButton>
 
-        <TouchableOpacity onPress={onResetPassword} style={styles.button}>
-          <Text style={styles.buttonText}>Reset Password</Text>
-        </TouchableOpacity>
+      
         {showPassNotMatch && errorMessage("Password Does not Match")}
       </Animated.View>
     );
@@ -269,16 +250,21 @@ export default function ResetPassScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <Text style={styles.resetText}>Reset Password</Text>
-        {showReset ? (
+       <LogoComponent  txt={'Reset Password'}></LogoComponent>
+        {
+        showReset
+        //  true
+        ? (
           resetPasswordComp()
         ) : verifyCode ? (
           <>
             <Animated.View
               entering={FadeInUp.duration(1000)}
               exiting={FadeOutUp.duration(500)}
-              style={styles.inputBox}>
-              <TextInput
+             >
+                
+              <TextEditingComponent
+            
                 style={styles.inputTxt}
                 placeholderTextColor={'grey'}
                 placeholder="VERIFY CODE"
@@ -288,24 +274,23 @@ export default function ResetPassScreen(props) {
               />
             </Animated.View> 
                  
-            <TouchableOpacity onPress={onVerifyCode} style={styles.button}>
-              <Text style={styles.buttonText}>Verify Code</Text>
-            </TouchableOpacity>
+
+
+            <ContinueButton onPress={onVerifyCode}  style={{width:'90%' ,marginHorizontal:20,marginTop:10}} text={'Verify Code'} ></ContinueButton>
+
           </>
         ) : (
           <>
-            <View style={styles.inputBox}>
-              <TextInput
+              <TextEditingComponent
                 style={styles.inputTxt}
                 placeholderTextColor={'grey'}
-                placeholder="EMAIL ADDRESS"
+                placeholder="Email Address"
                 value={email}
                 onChangeText={val => setEmail(val)}
               />
-            </View>
-            <TouchableOpacity onPress={sendEmail} style={styles.button}>
-              <Text style={styles.buttonText}>Send link to email address</Text>
-            </TouchableOpacity>
+        
+        <ContinueButton onPress={sendEmail} style={{width:'90%' ,marginHorizontal:20,marginTop:10}} text={'Send link to email address'} ></ContinueButton>
+          
           </>
         )}
      

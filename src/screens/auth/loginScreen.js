@@ -7,11 +7,13 @@ import {
   TextInput,
   SafeAreaView,
   Platform,
+  Image,
+  ScrollView,
 } from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-import {COLORS, wp2, hp2, ICONS} from '../../theme';
+import {COLORS, wp2, hp2, ICONS, IMAGES} from '../../theme';
 import AlertComp from '../../components/alertComp';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -124,11 +126,11 @@ export default function LoginScreen(props) {
               errorMessage('Please verify your email');
             }
                // STRIPE CONDITION
-             else if (
-              res?.data?.user?.stripe_account?.charges_enabled === false ||
-              res?.data?.user?.stripe_account?.details_submitted === false
-            ){
-            // else if (false) {
+            //  else if (
+            //   res?.data?.user?.stripe_account?.charges_enabled === false ||
+            //   res?.data?.user?.stripe_account?.details_submitted === false
+            // ){
+            else if (false) {
               props.navigation.navigate('connectStripe', {
                 role: res?.data?.user?.role?.[0]?.id,
                 data: res?.data?.user?.stripe_account,
@@ -189,11 +191,11 @@ export default function LoginScreen(props) {
         setLoading(false);
 
         // STRIPE CONDITION
-        if (
-          res?.data?.user?.stripe_account?.charges_enabled === false ||
-          res?.data?.user?.stripe_account?.details_submitted === false
-        ){
-        // if (false) {
+        // if (
+        //   res?.data?.user?.stripe_account?.charges_enabled === false ||
+        //   res?.data?.user?.stripe_account?.details_submitted === false
+        // ){
+        if (false) {
           props.navigation.navigate('connectStripe', {
             role: res?.data?.user?.role?.[0]?.id,
             data: res?.data?.user?.stripe_account,
@@ -260,16 +262,25 @@ export default function LoginScreen(props) {
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+              <ScrollView> 
+
       <SafeAreaView style={styles.container}>
         <View style={{flexGrow: 1}}>
-          <Text style={[styles.signinText]}>Sign in - Welcome Back</Text>
+        <View style={styles.logoWrap}>
+          <Image
+            source={IMAGES.logowhite}
+            style={{width: '22%', height: '75%'}}
+            resizeMode="cover"
+          />
+        </View>
+          <Text style={[styles.signinText]}>Sign In - Welcome Back!</Text>
           {showError && <AlertComp text={errormsg} />}
 
           <Animated.View layout={Layout.duration(1000)}>
-            <View style={styles.inputBox}>
+          <View style={[styles.inputBox, {}]}>
               <TextInput
                 style={styles.inputTxt}
-                placeholder="USERNAME"
+                placeholder="Username"
                 placeholderTextColor={'grey'}
                 value={stateChange.UserName}
                 onChangeText={val => updateState({UserName: val})}
@@ -278,7 +289,7 @@ export default function LoginScreen(props) {
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
-                placeholder="PASSWORD"
+                placeholder="Password"
                 secureTextEntry={true}
                 placeholderTextColor={'grey'}
                 value={stateChange.Password}
@@ -296,16 +307,18 @@ export default function LoginScreen(props) {
               </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={onSignIn} style={styles.button}>
-              <Text style={styles.buttonText}>SIGN IN</Text>
+              <Text style={styles.buttonText}>Sign In</Text>
             </TouchableOpacity>
+             <View style={styles.divider} />
+
             <TouchableOpacity
               onPress={() => {
                 props.navigation.navigate('signupScreen'),
                   updateState({UserName: ''}),
                   updateState({Password: ''});
               }}
-              style={[styles.button, {width: wp2(54), marginTop: hp2(6)}]}>
-              <Text style={styles.buttonText}>CREATE ACCOUNT</Text>
+              style={[styles.buttonWhite, ]}>
+              <Text style={styles.buttonTextBlack}>Create Account</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
@@ -313,8 +326,8 @@ export default function LoginScreen(props) {
                   updateState({UserName: ''}),
                   updateState({Password: ''});
               }}
-              style={[styles.button, {width: wp2(54), marginTop: hp2(4)}]}>
-              <Text style={styles.buttonText}>CONTINUE AS GUEST</Text>
+              style={[styles.buttonWhite,]}>
+              <Text style={styles.buttonTextBlack}>Continue As Guest</Text>
             </TouchableOpacity>
 
             <Text style={styles.orstyle}>Or</Text>
@@ -329,8 +342,10 @@ export default function LoginScreen(props) {
               <Text style={styles.button2Text}>continue with Google</Text>
             </TouchableOpacity>
           </Animated.View>
+          
         </View>
       </SafeAreaView>
+      </ScrollView>
     </>
   );
 }
@@ -338,22 +353,44 @@ export default function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+   
+
     backgroundColor: COLORS.appBackground,
+  },
+  logoWrap: {
+    // width: wp2(30),
+    height: hp2(10),
+    // paddingBottom:100,
+    overflow: 'hidden',
+    marginTop: hp2(10), 
+    marginBottom:hp2(5), 
+       justifyContent:'center',
+    alignItems: 'center',
+    alignContent: 'center',
+
   },
   signinText: {
     color: 'black',
-    fontSize: rfv(22),
-    fontWeight: '700',
-    marginVertical: hp2(4),
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    marginLeft: wp2(8),
+    fontSize: 22, // Assuming rfv() returns the font size in pixels
+    fontFamily: 'Poppins-Regular', // Use the Poppins font
+    fontWeight: '400', // Font weight 400
+    lineHeight: 33, // Line height 33px
+    marginVertical: 8, // Adjust margin as needed
+    marginTop: Platform.OS === 'ios' ? 0 : 4, // Adjust margin top based on platform
+    justifyContent:'center',
+    alignItems: 'center',
+    alignContent: 'center',
+    textAlign:'center',
+    marginBottom:50
   },
   inputBox: {
-    width: wp2(80),
-    height: hp2(6),
-    backgroundColor: 'white',
-    borderRadius: wp2(4),
-    shadowColor: '#000',
+    // width: 374,
+    width: '90%',paddingHorizontal:10 ,
+    marginBottom:10,
+    height: 50,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    shadowColor: '#0000',
     shadowOffset: {
       width: 0,
       height: 4,
@@ -361,23 +398,53 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    marginVertical: hp2(2),
+    marginVertical: 2,
     alignSelf: 'center',
+    // padding: '16px 20px', // Padding top, right, bottom, left
+    borderWidth: 1,
+    borderColor: '#D4D4D4',
+    // position: 'absolute',
+
   },
   forgetText: {
-    color: 'black',
-    fontWeight: '700',
-    fontSize: rfv(13),
-    textDecorationLine: 'underline',
-    textTransform: 'uppercase',
-    marginVertical: hp2(2),
+    color: '#000000', // Black color
+    fontWeight: '400', // Font weight 400
+    fontSize: 14, // Font size 14 pixels
+    fontFamily: 'Poppins-Medium', // Use the Poppins font
+    lineHeight: 21, // Line height 21 pixels
+    marginVertical: 2, // Adjust margin as needed
+    alignSelf: 'center', // Center text horizontally
+    marginBottom:20
+  },
+
+  buttonWhite: {
+    width: '90%',paddingHorizontal:10 ,
+    height: 50,
+    // paddingHorizontal: 20, // Horizontal padding
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#D4D4D8',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom:10,
     alignSelf: 'center',
+
+  },
+  buttonTextBlack: {
+    fontSize: 16,
+    // fontWeight: '400',
+    color: 'black',
+    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
+
+
   },
   button: {
-    width: wp2(28),
-    height: hp2(7),
-    backgroundColor: 'black',
-    borderRadius: wp2(10),
+    width: '90%',paddingHorizontal:10 ,
+    height: 50,
+    backgroundColor: '#5D5FEF',
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     shadowColor: '#000',
@@ -388,20 +455,30 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    // marginTop: hp2(3),
     alignSelf: 'center',
+  
   },
   buttonText: {
+    fontSize: 16,
+    // fontWeight: '400',
     color: 'white',
-    fontWeight: '400',
-    fontSize: rfv(14),
+    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
+
+
+  },
+
+  divider: {
+    marginVertical:40,
+    height: 2,
+    backgroundColor: '#D9D9D9',
+    marginHorizontal:70 ,
   },
   inputTxt: {
     flex: 1,
     color: 'black',
     paddingHorizontal: wp2(2),
     fontSize: rfv(13),
-    fontWeight: '700',
+    fontWeight: '400',
   },
 
   modal: {

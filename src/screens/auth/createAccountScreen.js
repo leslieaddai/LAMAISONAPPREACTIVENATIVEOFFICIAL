@@ -2,31 +2,18 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
-
   Platform,
-
   SafeAreaView,
-
+  ImageComponent,
+  Image,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2, IMAGES} from '../../theme';
 import CheckBox from '@react-native-community/checkbox';
 import {connect} from 'react-redux';
 import {signup} from '../../store/actions/authAction';
@@ -39,17 +26,23 @@ import {errorHandler} from '../../config/helperFunction';
 import {RegisterUrl} from '../../config/Urls';
 
 import LoaderComp from '../../components/loaderComp';
+import LogoComponent from './componnets/LogoComponent';
+import TextEditingComponent from './componnets/TexteditingComponent';
+import MyCheckBox from './componnets/MyCheckBox';
+import CustomDatePicker from './componnets/BirthdayComponent';
+import PasswordValidationRow from './componnets/PasswordValidationComponent';
+import ContinueButton from './componnets/ContinueBtn';
 
 const CreateAccountScreen = props => {
   const special = /[!@#\$%\^\&*\)\(+=._-]/g;
   const numeric = /[0-9]/;
 
   const [stateChange, setStateChange] = useState({
-    BrandName: props?.route?.params?.user=='editor'?undefined:'',
+    BrandName: props?.route?.params?.user == 'editor' ? undefined : '',
     UserName: '',
     Newpassword: '',
     ConfirmPass: '',
-    Birthday: subtractYears(new Date(),6),
+    Birthday: subtractYears(new Date(), 6),
   });
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {BrandName, UserName, Newpassword, ConfirmPass, Birthday} = stateChange;
@@ -57,8 +50,6 @@ const CreateAccountScreen = props => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  
-  
   function subtractYears(date, years) {
     date.setFullYear(date.getFullYear() - years);
     return date;
@@ -76,75 +67,79 @@ const CreateAccountScreen = props => {
       ConfirmPass != '' &&
       Birthday != ''
     ) {
-    if(!containsWhitespace(UserName)){
-      if (UserName.length >= 6) {
-        if (Newpassword.length >= 8) {
-          if (numeric.test(Newpassword)) {
-            if (special.test(Newpassword.match(special))) {
-              if (ConfirmPass === Newpassword) {
-                if (checkBox) {
-                  let obj = {
-                    first_name: props.route.params.data.firstName,
-                    last_name: props.route.params.data.lastName,
-                    name: props?.route?.params?.user=='editor'?UserName:BrandName,
-                    username: UserName,
-                    dob: Birthday.toISOString().split('T')[0],
-                    email: props.route.params.data.email,
-                    password: Newpassword,
-                    password_confirmation: ConfirmPass,
-                    role_id: props.route.params.user == 'editor' ? 2 : 3,
-                  };
+      if (!containsWhitespace(UserName)) {
+        if (UserName.length >= 6) {
+          if (Newpassword.length >= 8) {
+            if (numeric.test(Newpassword)) {
+              if (special.test(Newpassword.match(special))) {
+                if (ConfirmPass === Newpassword) {
+                  if (checkBox) {
+                    let obj = {
+                      first_name: props.route.params.data.firstName,
+                      last_name: props.route.params.data.lastName,
+                      name:
+                        props?.route?.params?.user == 'editor'
+                          ? UserName
+                          : BrandName,
+                      username: UserName,
+                      dob: Birthday.toISOString().split('T')[0],
+                      email: props.route.params.data.email,
+                      password: Newpassword,
+                      password_confirmation: ConfirmPass,
+                      role_id: props.route.params.user == 'editor' ? 2 : 3,
+                    };
 
-                 
-                  setLoading(true);
+                    setLoading(true);
 
-                  axios
-                    .post(RegisterUrl, obj)
-                    .then(async function (res) {
-                      console.log(res);
-                      setLoading(false);
-                     
-                      props.navigation.navigate('verifyAccountScreen',{role:props?.route?.params?.user == 'editor' ? 2 : 3,data:res?.data?.user?.stripe_account});
-                      
-                      successMessage(
-                        'Account verification code is sent to your email. Please check.',
-                      );
-                    })
-                    .catch(function (error) {
-                      setLoading(false);
-                      console.log(error?.response?.data);
-                      errorMessage(errorHandler(error))
-                    });
+                    axios
+                      .post(RegisterUrl, obj)
+                      .then(async function (res) {
+                        console.log(res);
+                        setLoading(false);
+
+                        props.navigation.navigate('verifyAccountScreen', {
+                          role: props?.route?.params?.user == 'editor' ? 2 : 3,
+                          data: res?.data?.user?.stripe_account,
+                        });
+
+                        successMessage(
+                          'Account verification code is sent to your email. Please check.',
+                        );
+                      })
+                      .catch(function (error) {
+                        setLoading(false);
+                        console.log(error?.response?.data);
+                        errorMessage(errorHandler(error));
+                      });
+                  } else {
+                    errorMessage('Please accept our Terms and Condition');
+                  }
                 } else {
-                  errorMessage('Please accept our Terms and Condition');
+                  errorMessage('Confirm password not matched');
                 }
               } else {
-                errorMessage('Confirm password not matched');
+                errorMessage(
+                  'Password must include at least 1 special character',
+                );
               }
             } else {
               errorMessage(
-                'Password must include at least 1 special character',
+                'Password must include at least 1 Numerical character',
               );
             }
           } else {
-            errorMessage(
-              'Password must include at least 1 Numerical character',
-            );
+            errorMessage('Password must be at least 8 characters');
           }
         } else {
-          errorMessage('Password must be at least 8 characters');
+          errorMessage('Username must contain at least 6 characters');
         }
       } else {
-        errorMessage('Username must contain at least 6 characters');
+        errorMessage('Please remove space from username!');
       }
-    }else{
-      errorMessage('Please remove space from username!')
-    }  
     } else {
       errorMessage('Please fill all details');
     }
   };
-
 
   return (
     <>
@@ -154,96 +149,56 @@ const CreateAccountScreen = props => {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-     
-        <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>
-          {props.route.params.user == 'editor'
-            ? 'Create Editor Account'
-            : 'Create Brand Account'}
-        </Text>
-      </View>
+        <LogoComponent txt={
+          props.route.params.user == 'brand'?
+          'Create New Brand Account'  :
+          'Create New Editor Account'}></LogoComponent>
 
         {props.route.params.user == 'brand' && (
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.textBox}
-              onChangeText={val => updateState({BrandName: val})}
-              placeholder="BRAND NAME"
-              placeholderTextColor={'grey'}
-            />
-          </View>
+          // <View style={styles.inputBox}>
+          <TextEditingComponent
+            style={styles.textBox}
+            onChangeText={val => updateState({BrandName: val})}
+            placeholder="Brand Name"
+            placeholderTextColor={'grey'}
+          />
+          // </View>
         )}
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.textBox}
-            onChangeText={val => updateState({UserName: val})}
-            placeholder="USERNAME"
-            placeholderTextColor={'grey'}
-          />
-        </View>
-        <Text style={styles.text}>What do you want to be known for?</Text>
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.textBox}
-            secureTextEntry={true}
-            onChangeText={val => updateState({Newpassword: val})}
-            placeholder="PASSWORD"
-            placeholderTextColor={'grey'}
-          />
-        </View>
-        <Text style={styles.text}>
-          Something you will remember but is hard to guess
-        </Text>
-        <View style={styles.inputBox}>
-          <TextInput
-            style={styles.textBox}
-            secureTextEntry={true}
-            onChangeText={val => updateState({ConfirmPass: val})}
-            placeholder="CONFIRM PASSWORD"
-            placeholderTextColor={'grey'}
-          />
-        </View>
-        <Text style={styles.text}>Type it again, but its not a test.</Text>
-        <View style={{alignSelf: 'center', marginTop: hp2(2), width: wp2(80)}}>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: Newpassword.length >= 8 ? COLORS.green : COLORS.red},
-            ]}>
-            Must be at least 8 characters
-          </Text>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: numeric.test(Newpassword) ? COLORS.green : COLORS.red},
-            ]}>
-            Must include at least 1 Numerical character
-          </Text>
-          <Text
-            style={[
-              styles.textTwo,
-              {color: Newpassword.match(special) ? COLORS.green : COLORS.red},
-            ]}>
-            Must include at least 1 special character ( Examples !”£$)
-          </Text>
-        </View>
-        <TouchableOpacity
-          style={styles.BDaystyle}
-          onPress={() => setOpen(true)}>
-        
-          <Text style={styles.textBox}>{Birthday == null?`BIRTHDAY DD/MM/YYYY`:` ${Birthday.getDate()} - ${ Birthday.getMonth()+1} - ${Birthday.getFullYear()}`}</Text>
-        </TouchableOpacity>
+
+        <TextEditingComponent
+          onChangeText={val => updateState({UserName: val})}
+          placeholder="Username"
+          placeholderTextColor={'grey'}
+        />
+        <CustomDatePicker
+          birthday={Birthday}
+          onPress={() => setOpen(true)}></CustomDatePicker>
+        <TextEditingComponent
+          style={styles.textBox}
+          secureTextEntry={true}
+          isPassword={true}
+          onChangeText={val => updateState({Newpassword: val})}
+          placeholder="Password"
+          placeholderTextColor={'grey'}
+        />
+
+        <TextEditingComponent
+          style={styles.textBox}
+          secureTextEntry={true}
+          isPassword={true}
+          onChangeText={val => updateState({ConfirmPass: val})}
+          placeholder="Confirm Password"
+          placeholderTextColor={'grey'}
+        />
+
+        <PasswordValidationRow password={Newpassword}></PasswordValidationRow>
+
         <DatePicker
           modal
           mode="date"
           open={open}
           date={Birthday}
-          maximumDate={subtractYears(new Date(),6)}
+          maximumDate={subtractYears(new Date(), 6)}
           onConfirm={date => {
             setOpen(false);
             updateState({Birthday: date});
@@ -252,32 +207,40 @@ const CreateAccountScreen = props => {
             setOpen(false);
           }}
         />
-        <Text style={styles.text}>So we can wish you a Happy Birthday</Text>
+        <View style={{flex: 1}}>
+          {/* Spacer to push elements to the top */}
+          <View style={{flex: 1}}></View>
 
-        <View style={styles.checkBoxWrap}>
-          <CheckBox
-            onTintColor="black"
-            tintColor="black"
-            onFillColor="black"
-            onCheckColor="white"
-            boxType="square"
-            value={checkBox}
-            onValueChange={setCheckBox}
-            tintColors={{true: 'black', false: 'black'}}
-            style={{
-              marginBottom:Platform.OS === 'android'?hp2(-0.5):hp2(0)}}
+          {/* CheckBox and Terms */}
+          <View style={styles.checkBoxWrap}>
+            <MyCheckBox
+              onTintColor="black"
+              tintColor="black"
+              onFillColor="black"
+              onCheckColor="white"
+              boxType="square"
+              value={checkBox}
+              onValueChange={setCheckBox}
+              tintColors={{true: 'black', false: 'black'}}
+              style={{
+                marginBottom: Platform.OS === 'android' ? hp2(-0.5) : hp2(0),
+              }}
+            />
+            <TouchableOpacity
+              onPress={() => props.navigation.navigate('termsScreen')}>
+              <Text style={styles.termsTxt}>
+                I’ve read and accept app Terms and Conditions
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* Continue Button */}
+          <ContinueButton
+            text={'Create Account'}
+            style={{width: '90%', marginHorizontal: 20, marginBottom: 50}}
+            onPress={onCreate}
           />
-
-          <TouchableOpacity
-            onPress={() => props.navigation.navigate('termsScreen')}>
-            <Text style={styles.termsTxt}>Terms and Conditions</Text>
-          </TouchableOpacity>
         </View>
-
-        <TouchableOpacity onPress={onCreate} style={styles.button}>
-          <Text style={{color: 'white'}}>CREATE ACCOUNT</Text>
-        </TouchableOpacity>
-       
       </SafeAreaView>
     </>
   );
@@ -290,19 +253,18 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.appBackground,
   },
-    headWrap: {
+  headWrap: {
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    
+
     justifyContent: 'center',
-    marginBottom:hp2(1),
+    marginBottom: hp2(1),
   },
   heading: {
     color: 'black',
     fontSize: rfv(20),
     fontWeight: '700',
-    
   },
   inputBox: {
     width: wp2(80),
@@ -370,18 +332,19 @@ const styles = StyleSheet.create({
     fontSize: rfv(13),
     fontWeight: '700',
   },
-  textTwo: {fontWeight: '700', fontSize: rfv(10)},
+  textTwo: {fontWeight: '400', fontSize: rfv(10)},
   checkBoxWrap: {
     flexDirection: 'row',
-    marginLeft: wp2(8),
+    marginLeft: wp2(4),
+    marginTop: 20,
     alignItems: 'flex-end',
     marginVertical: hp2(3),
   },
   termsTxt: {
+    marginBottom: 2,
     color: 'black',
-    fontWeight: '700',
-    fontSize:rfv(12),
-    textDecorationLine: 'underline',
-    marginLeft:Platform.OS === 'android'? wp2(0) : wp2(2),
+    fontWeight: '400',
+    fontSize: rfv(11),
+    marginLeft: Platform.OS === 'android' ? wp2(0) : wp2(2),
   },
 });
