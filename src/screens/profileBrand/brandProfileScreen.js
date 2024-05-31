@@ -38,6 +38,7 @@ import HeaderComponent from '../auth/componnets/HeaderComponnet';
 import fonts from '../../theme/fonts';
 import {Divider} from 'react-native-paper';
 import NothingListedComponnet from './nothingListedComponnet';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 export default function BrandProfileScreen(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -49,6 +50,7 @@ export default function BrandProfileScreen(props) {
   const [blockData, setBlockData] = useState(null);
   const [isBlocked, setIsBlocked] = useState(false);
   const [follow, setFollow] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -139,9 +141,7 @@ export default function BrandProfileScreen(props) {
       })
       .catch(function (error) {
         console.log(error.response.data);
-
         setLoadingFollow(false);
-
         errorMessage(errorHandler(error));
       });
   };
@@ -226,7 +226,7 @@ export default function BrandProfileScreen(props) {
 
   console.log(data?.profile_image?.original_url);
   return (
-    <ScrollView>
+    <ScrollView style={{height: '100%', backgroundColor: COLORS.appBackground}}>
       {loading ? (
         <View style={{flex: 1}}>
           <SkeletonBrandProfileViewComp />
@@ -241,357 +241,198 @@ export default function BrandProfileScreen(props) {
 
           <SafeAreaView style={{flex: 1}}>
             <View style={styles.container}>
-              <View style={styles.brandLogo}>
-                <HeaderComponent title={'Represent Clothing'}></HeaderComponent>
-
-                <View
-                  style={{
-                    paddingHorizontal: 20,
-
-                    flexDirection: 'row',
-                    // justifyContent: 'space-between',
-                  }}>
-                  <Image
-                    source={
-                      data?.profile_image !== null
-                        ? {uri: data?.profile_image?.original_url}
-                        : IMAGES.profileIcon3
+              <NewHeaderComp
+                title={data?.name}
+                onlySettings={true}
+                width="52%"
+                settingNavigation={() =>
+                  props.navigation.navigate('settingsScreen', {
+                    user: user,
+                  })
+                }
+              />
+              {/* <HeaderComponent
+                title={data?.name}
+                disableback={true}
+                customComponent={
+                  <TouchableOpacity
+                    disabled={user?.token !== '' ? false : true}
+                    onPress={() =>
+                      props.navigation.navigate('settingsScreen', {
+                        user: user,
+                      })
                     }
-                    style={{
-                      width: wp2(30),
-                      height: hp2(15),
-                      borderRadius: 10,
-                      marginRight: 20,
-                    }}
-                  />
-                  {console.log(data)}
-
-                  <View>
-                    <View style={{paddingHorizontal: 20}}>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'center',
-                        }}>
-                        <Text
-                          style={[
-                            styles.mytxt,
-                            {
-                              paddingRight: 20,
-                            },
-                          ]}>
-                          {data?.name}{' '}
-                        </Text>
-                        {data?.is_fts && (
-                          <TouchableOpacity
-                            onPress={() => props.navigation.navigate('FTS100')}
-                            style={styles.badge}>
-                            <Image
-                              source={IMAGES.badge}
-                              style={{width: '50%', height: '50%'}}
-                              resizeMode="contain"
-                            />
-                          </TouchableOpacity>
-                        )}
-                      </View>
-
-                      {isBlocked ? (
-                        <Text style={styles.blockedtext}>
-                          {blockData?.blocked_user_id === user?.userData?.id
-                            ? 'This user blocked you'
-                            : 'You blocked this user'}
-                        </Text>
-                      ) : (
-                        <>
-                          <View style={styles.followersContainer}>
-                            <TouchableOpacity
-                              style={{flexDirection: 'row'}}
-                              onPress={() =>
-                                props.navigation.navigate('followerList', {
-                                  list: 'following',
-                                  id: props?.route?.params?.userData?.userData
-                                    ?.id,
-                                })
-                              }>
-                              <Text style={styles.txtfol3ady}>
-                                {data?.followers_count}
-                              </Text>
-                              <Text
-                                style={[
-                                  styles.txttfol,
-                                  {
-                                    paddingRight: 20,
-                                  },
-                                ]}>
-                                {' '}
-                                Following{' '}
-                              </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                              style={{flexDirection: 'row'}}
-                              onPress={() =>
-                                props.navigation.navigate('followerList', {
-                                  list: 'follower',
-                                  id: props?.route?.params?.userData?.userData
-                                    ?.id,
-                                })
-                              }>
-                              <Text style={styles.txtfol3ady}>
-                                {data?.followings_count}
-                              </Text>
-                              <Text style={styles.txttfol}> Following</Text>
-                            </TouchableOpacity>
-                          </View>
-                        </>
-                      )}
-
-                      {props?.route?.params?.userData?.userData?.id ===
-                      user?.userData?.id ? (
+                    style={styles.custom}>
+                    <Image
+                      source={IMAGES.setting}
+                      style={{width: '100%', height: '100%'}}
+                      resizeMode="contain"
+                    />
+                  </TouchableOpacity>
+                }
+              /> */}
+              <View
+                style={{
+                  paddingHorizontal: 20,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  borderBottomWidth: 1,
+                  borderBottomColor: COLORS.gray300,
+                  paddingVertical: 32,
+                }}>
+                <Image
+                  source={
+                    imageError ||
+                    !data?.profile_image ||
+                    data?.profile_image?.original_url == undefined
+                      ? IMAGES.profileIcon3
+                      : {uri: data?.profile_image?.original_url}
+                  }
+                  style={{
+                    width: 132,
+                    height: 132,
+                    borderRadius: 999,
+                  }}
+                />
+                <View>
+                  <Text style={[styles.usernameTxt]}>{data?.name}</Text>
+                  <View style={styles.followersContainer}>
+                    <TouchableOpacity
+                      style={{flexDirection: 'row'}}
+                      onPress={() =>
+                        props.navigation.navigate('followerList', {
+                          list: 'following',
+                          id: props?.route?.params?.userData?.userData?.id,
+                        })
+                      }>
+                      <Text style={{fontWeight: 'bold', color: 'black'}}>
+                        {data?.followers_count}
+                      </Text>
+                      <Text style={{color: 'black'}}>Following</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{flexDirection: 'row'}}
+                      onPress={() =>
+                        props.navigation.navigate('followerList', {
+                          list: 'follower',
+                          id: props?.route?.params?.userData?.userData?.id,
+                        })
+                      }>
+                      <Text style={{fontWeight: 'bold', color: 'black'}}>
+                        {data?.followings_count}
+                      </Text>
+                      <Text style={{color: 'black'}}> Followers</Text>
+                    </TouchableOpacity>
+                  </View>
+                  {props?.route?.params?.userData?.userData?.id !==
+                  user?.userData?.id ? (
+                    <>
+                      {user?.token !== '' && !isBlocked && (
                         <TouchableOpacity
-                          style={{position: 'absolute', right: wp2(4)}}
-                          onPress={() =>
-                            props.navigation.navigate('settingsScreen', {
-                              user: user,
-                            })
-                          }>
-                          <ICONS.Ionicons
-                            name="menu-outline"
-                            size={44}
-                            color="black"
-                          />
-                          {count > 0 && (
-                            <View style={styles.notificationBadge}>
-                              <Text style={{color: 'white', fontSize: rfv(10)}}>
-                                {count}
-                              </Text>
-                            </View>
+                          disabled={loadingFollow}
+                          onPress={() => {
+                            if (!follow) {
+                              onFollow();
+                            } else {
+                              onUnFollow();
+                            }
+                          }}
+                          style={{
+                            backgroundColor: follow
+                              ? COLORS.white
+                              : COLORS.main,
+                            marginTop: 24,
+                            width: 201,
+                            height: 44,
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            borderColor: COLORS.main,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                          {loadingFollow ? (
+                            <SkypeIndicator
+                              color={follow ? 'black' : 'white'}
+                            />
+                          ) : (
+                            <Text
+                              style={{
+                                fontWeight: follow ? '400' : '700',
+                                color: follow ? COLORS.main : COLORS.white,
+                                fontSize: rfv(15),
+                              }}>
+                              {follow ? 'Following' : 'Follow'}
+                            </Text>
                           )}
                         </TouchableOpacity>
-                      ) : (
-                        // blockData?.blocked_user_id !== user?.userData?.id && (
-                        //   <TouchableOpacity
-                        //     style={
-                        //       [
-                        //         // styles.followButton,
-                        //         // { backgroundColor: isBlocked ? 'white' : 'white',
-                        //         // position: 'absolute',
-                        //         // right: wp2(4) },
-                        //       ]
-                        //     }
-                        //     onPress={() => {
-                        //       if (isBlocked) {
-                        //         unBlockUser();
-                        //       } else {
-                        //         blockUser();
-                        //       }
-                        //     }}>
-                        //     <Text
-                        //       style={{
-                        //         fontWeight: '500',
-                        //         color: isBlocked ? 'black' : 'black',
-                        //         fontSize: rfv(13),
-                        //         paddingBottom:10
-                        //       }}>
-                        //       {isBlocked ? 'Unblock User' : 'Block User'}
-                        //     </Text>
-                        //   </TouchableOpacity>
-                        // )
-                        <View style={{paddingVertical: 15}}></View>
                       )}
-                    </View>
-
-                    <View style={styles.usernameContainer}>
-                      {props?.route?.params?.userData?.userData?.id !==
-                        user?.userData?.id && (
-                        <>
-                          {user?.token !== '' && !isBlocked && (
-                            <TouchableOpacity
-                              disabled={loadingFollow}
-                              onPress={() => {
-                                if (!follow) {
-                                  onFollow();
-                                } else {
-                                  onUnFollow();
-                                }
-                              }}
-                              style={[
-                                styles.followButton,
-                                {
-                                  backgroundColor: follow
-                                    ? 'rgba(93, 95, 239, 1)'
-                                    : 'rgba(93, 95, 239, 1)',
-                                },
-                              ]}>
-                              {loadingFollow ? (
-                                <SkypeIndicator
-                                  color={follow ? 'black' : 'white'}
-                                />
-                              ) : (
-                                <Text
-                                  style={{
-                                    fontWeight: '700',
-                                    color: follow ? 'black' : 'white',
-                                    fontSize: rfv(13),
-                                  }}>
-                                  {follow ? 'Following' : 'Follow'}
-                                </Text>
-                              )}
-                            </TouchableOpacity>
-                          )}
-                        </>
-                      )}
-                    </View>
-                  </View>
-                </View>
-                <Divider style={{marginTop: 20}}></Divider>
-                {/* <ImageBackground
-
-                  source={data?.profile_image !== null ? { uri: data?.profile_image?.original_url } : IMAGES.profileIcon3}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                  resizeMode="contain">
-                  <View style={styles.iconWrap}>
-                    {data?.is_fts && (
+                    </>
+                  ) : (
+                    <>
                       <TouchableOpacity
-                        onPress={() => props.navigation.navigate('FTS100')}
-                        style={styles.badge}>
-                        <Image
-                          source={IMAGES.badge}
-                          style={{ width: '50%', height: '50%' }}
-                          resizeMode="contain"
-                        />
-                      </TouchableOpacity>
-                    )}
-                    {props?.route?.params?.userData?.userData?.id ===
-                      user?.userData?.id ? (
-                      <TouchableOpacity
-                        style={{ position: 'absolute', right: wp2(4) }}
                         onPress={() =>
-                          props.navigation.navigate('settingsScreen', {
+                          props.navigation.navigate('editProfile', {
                             user: user,
                           })
-                        }>
-                        <ICONS.Ionicons
-                          name="menu-outline"
-                          size={44}
-                          color="black"
-                        />{
-                          count > 0 &&
-                          <View style={styles.notificationBadge}>
-                            <Text style={{ color: 'white', fontSize: rfv(10) }}>{count}</Text>
-                          </View>
                         }
+                        style={styles.editButton}>
+                        <Text>Edit Profile</Text>
                       </TouchableOpacity>
-                    ) :
-                        blockData?.blocked_user_id !== user?.userData?.id &&
-                          (
-                          <TouchableOpacity style={[
-                          styles.followButton,
-                          { backgroundColor: isBlocked ? 'white' : 'white',
-                          position: 'absolute', 
-                          right: wp2(4) },
-                        ]}
-                        onPress={() => {
-                          if (isBlocked) {
-                            unBlockUser();
-                          } else {
-                            blockUser();
-                          }
-                        }}
-                        >
-                          <Text style={{
-                            fontWeight: '500',
-                            color: isBlocked? 'black' : 'black',
-                            fontSize: rfv(13),
-                          }}>{isBlocked ? 'Unblock User' : 'Block User'}</Text>
-
-                        </TouchableOpacity>
-                        )
-                    }
-                  </View>
-
-                  <View style={styles.usernameContainer}>
-
-                    <Text style={styles.usernameTxt}>{data?.name}</Text>
-                    {props?.route?.params?.userData?.userData?.id !==
-                      user?.userData?.id && (
-                        <>
-                          {user?.token !== '' &&  !isBlocked &&(
-                              <TouchableOpacity
-                                disabled={loadingFollow}
-                                onPress={() => {
-                                  if (!follow) {
-                                    onFollow();
-                                  } else {
-                                    onUnFollow();
-                                  }
-                                }}
-                                style={[
-                                  styles.followButton,
-                                  { backgroundColor: follow ? 'white' : 'black' },
-                                ]}>
-                                {loadingFollow ? (
-                                  <SkypeIndicator
-                                    color={follow ? 'black' : 'white'}
-                                  />
-                                ) : (
-                                  <Text
-                                    style={{
-                                      fontWeight: '700',
-                                      color: follow ? 'black' : 'white',
-                                      fontSize: rfv(13),
-                                    }}>
-                                    {follow ? 'FOLLOWING' : 'FOLLOW'}
-                                  </Text>
-                                )}
-                              </TouchableOpacity>
-                          )}
-                        </>
-                      )}
-                  </View>
-                </ImageBackground> */}
-              </View>
-              {isBlocked ? (
-                <Text style={styles.blockedtext}>
-                  {blockData?.blocked_user_id === user?.userData?.id
-                    ? 'This user blocked you'
-                    : 'You blocked this user'}
-                </Text>
-              ) : (
-                <>
-                  <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{paddingBottom: hp2(2)}}>
-                    <Text style={styles.popularTxt}>Popular</Text>
-                    {data?.popular_products?.length !== 0 ? (
-                      data?.popular_products?.map((item, index) => {
-                        return <Popular key={index} data={item} no={index} />;
-                      })
-                    ) : (
-                     <NothingListedComponnet></NothingListedComponnet>
-                    )}
-
-                
-                    <>
-                      <Lookbook data={galleriesImage} navigation={ props.navigation} />
-                      {/* <TouchableOpacity
-                        onPress={() =>
-                          props.navigation.navigate('galleryScreen', {
-                            data: galleriesImage,
-                          })
-                        }
-                        style={styles.gallery}>
-                        <Text style={styles.galleryTxt}>GALLERY</Text>
-                      </TouchableOpacity> */}
                     </>
+                  )}
+                </View>
+              </View>
 
-                    <About data={data} />
+              <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={[styles.titleTxt, {paddingLeft: 20}]}>
+                  Popular
+                </Text>
+
+                {data?.popular_products?.length !== 0 ? (
+                  <ScrollView
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{paddingLeft: 20}}>
+                    {data?.popular_products?.map((item, index) => {
+                      return (
+                        <>
+                          <Popular key={index} data={item} no={index} />
+                        </>
+                      );
+                    })}
                   </ScrollView>
-                </>
-              )}
+                ) : (
+                  <View style={{paddingHorizontal: 20}}>
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flex: 1,
+                        width: '100%',
+                        height: 113,
+                        backgroundColor: COLORS.gray100,
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{
+                          fontFamily: 'Poppins-Regular',
+                          fontSize: rfv(15),
+                          color: COLORS.gray400,
+                        }}>
+                        Nothing Here Yet
+                      </Text>
+                    </View>
+                  </View>
+                )}
+                <View style={{paddingHorizontal: 20}}>
+                  <Lookbook
+                    data={galleriesImage}
+                    navigation={props.navigation}
+                  />
+
+                  <About data={data} />
+                </View>
+              </ScrollView>
             </View>
           </SafeAreaView>
         </>
@@ -601,122 +442,10 @@ export default function BrandProfileScreen(props) {
 }
 
 const styles = StyleSheet.create({
-  myCont: {
-    marginVertical:10,
-    width: 374,
-    height: 155,
-    // top: 320,
-    // left: 20,
-    borderRadius: 10,
-    justifyContent: 'center',
-
-    backgroundColor: 'rgba(128, 128, 128, 0.1)', // Grey color with 0.1 opacity
-    backgroundColor: 'rgba(128, 128, 128, 0.1)', // Grey color with 0.1 opacity
-    // Additional styles as needed
-  },
-  mytxtcont: {
-    fontFamily: fonts.PoppinsRegular,
-    paddingHorizontal: 20,
-    fontSize: rfv(15),
-    textAlign: 'center',
-    justifyContent: 'center',
-    textAlignVertical: 'center', // Vertical centering
-
-    color: 'rgba(128, 128, 128, .8)', // Grey color with 0.1 opacity
-    // marginTop: hp2(1),
-  },
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: COLORS.appBackground,
-  },
-
-  mytxt: {
-    fontFamily: fonts.PoppinsBold,
-
-    fontSize: rfv(15),
-
-    color: 'black',
-    // marginTop: hp2(1),
-  },
-  txttfol: {
-    fontFamily: fonts.PoppinsRegular,
-
-    fontSize: rfv(10),
-
-    color: 'black',
-  },
-  txtfol3ady: {
-    fontFamily: fonts.PoppinsBold,
-
-    fontSize: rfv(10),
-
-    color: 'black',
-  },
-
-  iconWrap: {
-    flexDirection: 'row',
-    paddingHorizontal: wp2(4),
-
-    marginTop: hp2(1),
-  },
-  badge: {
-    width: wp2(10),
-    height: wp2(10),
-    overflow: 'hidden',
-  },
-  notificationBadge: {
-    width: wp2(5),
-    height: wp2(5),
-    borderRadius: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#0F2ABA',
-    position: 'absolute',
-    right: wp2(1),
-  },
-  brandLogo: {
-    width: wp2(100),
-    height: hp2(32),
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    overflow: 'hidden',
-  },
-  followButton: {
-    width: '80%',
-    // marginLeft:400,
-
-    height: hp2(4.5),
-    borderRadius: 10,
-    color: 'rgba(93, 95, 239, 1)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    // Additional styles as needed
-  },
-  gallery: {
-    width: wp2(80),
-    height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: hp2(2),
-  },
-  lookbook: {
-    width: wp2(80),
-    height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: hp2(2),
-  },
-  usernameContainer: {
-    // marginBottom: hp2(1),
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // paddingHorizontal: wp2(4),
-    // alignItems: 'center',
+    paddingBottom: 32,
   },
   usernameTxt: {
     fontWeight: '700',
@@ -724,34 +453,32 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   followersContainer: {
+    marginTop: 6,
     flexDirection: 'row',
-    // marginLeft: wp2(4),
-    // marginBottom: hp2(2),
+    gap: 6,
   },
-  popularTxt: {
-    fontFamily: fonts.PoppinsMedium,
-    paddingHorizontal: 20,
-
-    fontSize: rfv(15),
-
+  editButton: {
+    marginTop: 24,
+    width: 201,
+    height: 44,
+    borderWidth: 1,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titleTxt: {
+    fontWeight: '400',
+    fontSize: rfv(20),
     color: 'black',
-    // marginLeft: wp2(3),
+    marginTop: 25,
+    marginBottom: 16,
   },
-  lookbookTxt: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: rfv(24),
-  },
-  galleryTxt: {
-    color: 'white',
-    fontWeight: '700',
-    fontSize: rfv(24),
-  },
-  blockedtext: {
-    color: 'black',
-    fontWeight: '700',
-    alignSelf: 'center',
-    marginTop: hp2(20),
-    fontSize: rfv(15),
+  custom: {
+    width: wp2(5),
+    height: hp2(2),
+    // marginRight: 5,
+    overflow: 'hidden',
+    // justifyContent: 'flex-end', // Align items to the end of the header
+    left: 90,
   },
 });

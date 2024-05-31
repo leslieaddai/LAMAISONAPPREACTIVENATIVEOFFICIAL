@@ -33,6 +33,7 @@ import {GetRegionsAll} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function Continents(props) {
   const {Continent, Id} = useSelector(state => state.Continent);
@@ -78,7 +79,7 @@ export default function Continents(props) {
         <View
           style={[
             styles.circle,
-            {backgroundColor: selected == text?.id ? 'black' : '#D9D9D9'},
+            {backgroundColor: selected == text?.id ? COLORS.main : 'white'},
           ]}></View>
       </TouchableOpacity>
     );
@@ -89,17 +90,11 @@ export default function Continents(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
     
     <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-           
-          }}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>CONTINENTS</Text>
-      </View>
+    <NewHeaderComp
+          arrowNavigation={() => props.navigation.navigate('filterScreen')}
+          movePreviousArrow={true}
+          title={'Filters - Continents'}
+        />
 
       {loading ? (
         <View
@@ -145,19 +140,19 @@ const styles = StyleSheet.create({
   },
   optionWrap: {
     width: wp2(90),
-    height: hp2(4),
-   
-    borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: wp2(1),
-    marginTop: hp2(2),
     alignSelf: 'center',
+    backgroundColor: COLORS.gray100,
+    padding: 20,
+    borderRadius: 10,
+    marginTop: 10,
   },
   circle: {
     width: wp2(5),
     height: wp2(5),
-   
-    borderRadius: 100,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.gray
   },
 });

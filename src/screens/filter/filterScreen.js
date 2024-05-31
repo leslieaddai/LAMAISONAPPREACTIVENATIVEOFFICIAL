@@ -2,34 +2,19 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   SafeAreaView,
   Platform,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
-
-
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
-
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function FilterScreen({navigation, route}) {
   const {Price} = useSelector(state => state.Price);
@@ -46,9 +31,11 @@ export default function FilterScreen({navigation, route}) {
       <TouchableOpacity
         onPress={() => navigation.navigate(navScreen)}
         style={styles.filters}>
-        <Text style={{color: 'black'}}>{name}</Text>
-        <Text style={styles.selectedTxt}>{text}</Text>
-        <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
+        <View style={{flexDirection: 'row', gap: 5}}>
+          <Text style={{color: 'black'}}>{name}</Text>
+          <Text style={styles.selectedTxt}>{text}</Text>
+        </View>
+        <ICONS.AntDesign name="right" size={12} color="black" />
       </TouchableOpacity>
     );
   };
@@ -86,36 +73,40 @@ export default function FilterScreen({navigation, route}) {
 
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <Text style={styles.heading}>FILTERS</Text>
-
-        {settingOptions('PRICE', 'priceList', Price)}
-        {settingOptions('SIZE', 'sizeClothing', Size)}
-        {settingOptions('COLOUR', 'colourClothing', Colour)}
-        {settingOptions('STYLE', 'style', Style)}
-        {settingOptions('ITEM', 'items', Item)}
-        {settingOptions('CONTINENTS', 'continents', Continent)}
-
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            navigation.navigate('searchScreen', route.params);
-          }}>
-          <Text style={styles.btnTxt}>APPLY FILTER(S)</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={resetFilters}
-          style={{alignSelf: 'center', marginTop: hp2(2)}}>
-          <Text style={styles.resetText}>RESET FILTERS</Text>
-        </TouchableOpacity>
-
-      </View>
-    </SafeAreaView>
+      <SafeAreaView style={{flex: 1, backgroundColor: COLORS.appBackground}}>
+        <NewHeaderComp
+          arrowNavigation={() => navigation.navigate('searchScreen')}
+          movePreviousArrow={true}
+          title={'Filters'}
+        />
+        <View style={styles.container}>
+          <View style={{flexDirection: 'column', gap: 10, marginTop: 20}}>
+            {settingOptions('Price:', 'priceList', Price)}
+            {settingOptions('Size:', 'sizeClothing', Size)}
+            {settingOptions('Colour:', 'colourClothing', Colour)}
+            {settingOptions('Style:', 'style', Style)}
+            {settingOptions('Item:', 'items', Item)}
+            {settingOptions('Continents:', 'continents', Continent)}
+          </View>
+          <View>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                navigation.navigate('searchScreen', route.params);
+              }}>
+              <Text style={styles.btnTxt}>Apply Filters</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={resetFilters}
+              style={{alignSelf: 'center', marginTop: hp2(2)}}>
+              <Text style={styles.resetText}>Reset Filters</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </SafeAreaView>
     </>
   );
 }
@@ -124,51 +115,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-  },
-  heading: {
-    color: 'black',
-    fontSize: rfv(22),
-    fontWeight: '700',
-    marginVertical: hp2(4),
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    alignSelf: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingBottom: 30,
   },
   filters: {
     flexDirection: 'row',
-    width: wp2(90),
+    width: '100%',
     alignSelf: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: 'black',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingVertical: hp2(2),
+    backgroundColor: COLORS.gray100,
+    padding: 20,
+    borderRadius: 10,
   },
   button: {
-    width: wp2(80),
-    height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: 'black',
+    width: '100%',
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: COLORS.main,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
     marginTop: hp2(4),
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
   resetText: {
     color: 'black',
-    fontSize: rfv(12),
-    fontWeight: '700',
-    textDecorationLine: 'underline',
+    fontSize: rfv(16),
+    fontWeight: '400',
   },
-  selectedTxt: {color: 'black', position: 'absolute', left: wp2(36)},
-  btnTxt: {color: 'white', fontWeight: '700', fontSize: rfv(20)},
+  selectedTxt: {color: 'black'},
+  btnTxt: {color: 'white', fontWeight: '700', fontSize: rfv(16)},
 });

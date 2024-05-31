@@ -32,6 +32,8 @@ import {useNavigation} from '@react-navigation/native';
 import HeaderComponent from '../auth/componnets/HeaderComponnet';
 import {Divider} from 'react-native-paper';
 import fonts from '../../theme/fonts';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function BasketScreen(props) {
   const dispatch = useDispatch();
@@ -45,8 +47,6 @@ export default function BasketScreen(props) {
 
   const [totalPrice2, setTotalPrice] = useState(0); // State for total price
 
-
-  
   useEffect(() => {
     user?.token !== '' && getBasket();
   }, []);
@@ -214,23 +214,24 @@ export default function BasketScreen(props) {
       });
     }
   };
-  
- 
 
   return (
-
-    
     <>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          <HeaderComponent title={'Basket'} mystyle={{}}></HeaderComponent>
+          <NewHeaderComp
+            arrowNavigation={() => props.navigation.goBack()}
+            movePreviousArrow={true}
+            width="65%"
+            title={'Basket'}
+          />
           {user?.token !== '' ? (
             <ScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 1 }}>
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{flexGrow: 1}}>
               {loading && data?.length === 0 ? (
                 <View
                   style={{
@@ -249,7 +250,7 @@ export default function BasketScreen(props) {
                 />
               ) : (
                 <>
-                {console.log(data)}
+                  {console.log(data)}
                   {/* <SafeAreaView */}
                   <FlatList
                     showsVerticalScrollIndicator={false}
@@ -257,7 +258,7 @@ export default function BasketScreen(props) {
                     renderItem={({item, index}) => (
                       <View>
                         <BasketComp
-                        totprice={{totalPrice2,setTotalPrice}}
+                          totprice={{totalPrice2, setTotalPrice}}
                           allData={{data, setData}}
                           data={item}
                           index={index}
@@ -267,31 +268,35 @@ export default function BasketScreen(props) {
                         <Divider
                           style={{
                             marginTop: 15,
-                          }}></Divider>
+                          }}
+                        />
                       </View>
                     )}
                     ItemSeparatorComponent={() => <Divider></Divider>}
                   />
 
                   {data?.length !== 0 && (
-                 <View style={{ flexDirection: 'row', alignItems: 'flex-start',
-          
-                 
-                 }}>
-                 <View style={[styles.bottomContainer,]}></View>
-               {/* {totalPrice2} */}
-                 <View style={{ flex: 1, marginLeft: 10 }}>
-                   <Text style={styles.txt}>Total Price:</Text>
-                   <Text style={styles.txtcount}>${totalPrice2} </Text>
-                 </View>
-               
-                 <TouchableOpacity
-                   onPress={() => props.navigation.navigate('checkoutScreen', { data })}
-                   style={styles.checkoutButton}>
-                   <Text style={styles.buttonText}>CHECKOUT</Text>
-                 </TouchableOpacity>
-               </View>
-               
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'flex-start',
+                        backgroundColor: 'black',
+                        paddingHorizontal: 20,
+                      }}>
+                      {/* {totalPrice2} */}
+                      <View style={{flex: 1, marginLeft: 10}}>
+                        <Text style={styles.txt}>Total Price:</Text>
+                        <Text style={styles.txtcount}>£{totalPrice2}</Text>
+                      </View>
+
+                      <TouchableOpacity
+                        onPress={() =>
+                          props.navigation.navigate('checkoutScreen', {data})
+                        }
+                        style={styles.checkoutButton}>
+                        <Text style={styles.buttonText}>CHECKOUT</Text>
+                      </TouchableOpacity>
+                    </View>
                   )}
                 </>
               )}
@@ -387,11 +392,44 @@ export default function BasketScreen(props) {
               ) : (
                 <View
                   style={{
+                    marginTop: '10%',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    paddingHorizontal: 20,
                     flex: 1,
                   }}>
-                  <Text>There are no product added in basket</Text>
+                  <Image
+                    style={{width: 116, height: 128}}
+                    source={IMAGES.empty_basket}
+                  />
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      gap: 10,
+                      alignItems: 'center',
+                      marginTop: 30,
+                    }}>
+                    <Text
+                      style={{fontFamily: 'Poppins-SemiBold', fontSize: 20}}>
+                      Nothing In Your Basket
+                    </Text>
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Regular',
+                        fontSize: 16,
+                        color: '#A1A1AA',
+                        textAlign: 'center',
+                      }}>
+                      Start exploring and add items in your basket
+                    </Text>
+                  </View>
+                  <ContinueButton
+                    style={{
+                      marginTop: 60,
+                      width: '95%',
+                    }}
+                    text={'Add Items'}
+                  />
                 </View>
               )}
 
@@ -481,7 +519,6 @@ const styles = StyleSheet.create({
     paddingVertical: hp2(2),
   },
   checkoutButton: {
-    marginRight:20,
     width: wp2(36),
     height: hp2(5),
     backgroundColor: 'white',
@@ -501,14 +538,14 @@ const styles = StyleSheet.create({
   txt: {
     color: 'white',
     fontFamily: fonts.PoppinsMedium,
-    fontSize: rfv(11),
+    fontSize: rfv(14),
     paddingTop: 30,
   },
   txtcount: {
     color: 'white',
-    fontFamily: fonts.PoppinsMedium,
-    fontSize: rfv(20),
-    paddingBottom:20
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: rfv(24),
+    paddingBottom: 20,
     // paddingTop:30
   },
 });

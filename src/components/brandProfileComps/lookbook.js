@@ -5,7 +5,7 @@ import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 
-import {wp2, hp2, IMAGES} from '../../theme';
+import {wp2, hp2, IMAGES, COLORS} from '../../theme';
 import NothingListedComponnet from '../../screens/profileBrand/nothingListedComponnet';
 import fonts from '../../theme/fonts';
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
@@ -52,17 +52,7 @@ export default function Lookbook(props) {
   const navigation = useNavigation();
   return (
     <>
-      {
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate('lookbookScreen', {
-              userData: props?.route?.params?.userData,
-            })
-          }
-     >
-          <Text style={[styles.popularTxt,{paddingTop:20}]}>Gallery</Text>
-        </TouchableOpacity>
-      }
+      <Text style={styles.titleTxt}>Lookbook</Text>
       <View style={styles.galaryContainer}>
         {props?.data?.length !== 0 ? (
           props?.data?.reverse().map((item, index) => {
@@ -71,22 +61,51 @@ export default function Lookbook(props) {
             <ImgComp key={index} path={item.items} />;
           })
         ) : (
-          <NothingListedComponnet></NothingListedComponnet>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              flex: 1,
+              width: '100%',
+              height: 113,
+              backgroundColor: COLORS.gray100,
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                fontFamily: 'Poppins-Regular',
+                fontSize: rfv(15),
+                color: COLORS.gray400,
+              }}>
+              Nothing Here Yet
+            </Text>
+          </View>
         )}
       </View>
+      {props?.data?.length !== 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            props.navigation.navigate('lookbookScreen', {
+              userData: props?.route?.params?.userData,
+            })
+          }
+          style={styles.viewAll}>
+          <Text style={{color: 'black', fontWeight: '400', fontSize: rfv(16)}}>
+            View Lookbook
+          </Text>
+        </TouchableOpacity>
+      )}
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  popularTxt: {
-    fontFamily: fonts.PoppinsMedium,
-    paddingHorizontal: 20,
-
-    fontSize: rfv(15),
-
+  titleTxt: {
+    fontWeight: '400',
+    fontSize: rfv(20),
     color: 'black',
-    // marginLeft: wp2(3),
+    marginTop: 25,
+    marginBottom: 16,
   },
   lookbook: {
     width: wp2(80),
@@ -115,5 +134,17 @@ const styles = StyleSheet.create({
     width: wp2(28),
     height: hp2(12),
     overflow: 'hidden',
+  },
+  viewAll: {
+    width: '100%',
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderWidth: 1,
+    borderColor: COLORS.textSecondary,
+    marginTop: 16,
   },
 });

@@ -2,28 +2,16 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
- 
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  
-  COLORS,
-
-  wp2,
-  hp2,
-  
-} from '../../theme';
+import {COLORS, wp2, hp2} from '../../theme';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -35,7 +23,6 @@ import TextEditingComponent from './componnets/TexteditingComponent';
 import ContinueButton from './componnets/ContinueBtn';
 
 export default function VerifyAccountScreen(props) {
-
   const [code, setCode] = useState();
   const [loading, setLoading] = useState(false);
 
@@ -43,24 +30,24 @@ export default function VerifyAccountScreen(props) {
     if (code) {
       setLoading(true);
       axios
-        .post(VerifyAccount, {code:code})
+        .post(VerifyAccount, {code: code})
         .then(async function (res) {
-          
-
-          if(props?.route?.params?.role===2){
+          if (props?.route?.params?.role === 2) {
             setLoading(false);
-            props.navigation.navigate('loginScreen')
-            successMessage('Email Has Been Verified!')
-          }else{
+            props.navigation.navigate('loginScreen');
+            successMessage('Email Has Been Verified!');
+          } else {
             setLoading(false);
-            props.navigation.navigate('connectStripe',{role:props?.route?.params?.role,data:props?.route?.params?.data})
-            successMessage('Email Has Been Verified!')
+            props.navigation.navigate('connectStripe', {
+              role: props?.route?.params?.role,
+              data: props?.route?.params?.data,
+            });
+            successMessage('Email Has Been Verified!');
           }
         })
         .catch(function (error) {
-         
           setLoading(false);
-          errorMessage(errorHandler(error))
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please Enter Verification Code');
@@ -76,22 +63,20 @@ export default function VerifyAccountScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
         <LogoComponent txt={'Verify Account'}></LogoComponent>
-             <View
-           >
-              <TextEditingComponent
-                style={styles.inputTxt}
-                placeholderTextColor={'grey'}
-                placeholder="Verify Code"
-                value={code}
-                onChangeText={val => setCode(val)}
-                keyboardType={'number-pad'}
-              />
-            </View>
-            <ContinueButton onPress={onVerifyCode} style={{width:'90%' ,marginHorizontal:20,marginTop:10}}
-        
-        text={'Verify Account'} ></ContinueButton>
-
-      
+        <View style={{marginHorizontal: 20}}>
+          <TextEditingComponent
+            style={styles.inputTxt}
+            placeholderTextColor={'grey'}
+            placeholder="Verify Code"
+            value={code}
+            onChangeText={val => setCode(val)}
+            keyboardType={'number-pad'}
+          />
+        </View>
+        <ContinueButton
+          onPress={onVerifyCode}
+          style={{width: '90%', marginHorizontal: 20, marginTop: 10}}
+          text={'Verify Account'}></ContinueButton>
       </SafeAreaView>
     </>
   );
@@ -101,7 +86,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-  
   },
   resetText: {
     color: 'black',
@@ -142,7 +126,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    
+
     marginTop: hp2(2),
     alignSelf: 'center',
     marginBottom: hp2(8),

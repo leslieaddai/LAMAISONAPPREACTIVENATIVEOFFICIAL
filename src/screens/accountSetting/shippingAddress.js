@@ -2,30 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
-
   Platform,
   SafeAreaView,
-
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-  
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {BottomSheet} from 'react-native-btr';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
@@ -41,6 +27,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
 import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 import LoaderComp from '../../components/loaderComp';
+import NewInputComp from '../../components/NewInputComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+
+import ArrowDown from '../../assets/icons/arrow-down.svg';
 
 export default function ShippingAddress(props) {
   const dispatch = useDispatch();
@@ -62,13 +52,13 @@ export default function ShippingAddress(props) {
   const {address_1, address_2, city, country, region, postcode} = stateChange;
 
   const [isOpenedRegions, setIsOpenedRegions] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState('SELECT REGION');
+  const [selectedRegion, setSelectedRegion] = useState('Select Region');
   const [regionsData, setRegionsData] = useState([]);
 
   const [isOpenedCountries, setIsOpenedCountries] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState('SELECT COUNTRY');
+  const [selectedCountry, setSelectedCountry] = useState('Select Country');
   const [countriesData, setCountriesData] = useState([]);
-  const [modalData, setModalData] = useState()
+  const [modalData, setModalData] = useState();
 
   useEffect(() => {
     setLoading(true);
@@ -78,7 +68,6 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
         setStateChange({
           address_1: res?.data?.data?.address_1,
           address_2: res?.data?.data?.address_2,
@@ -100,9 +89,8 @@ export default function ShippingAddress(props) {
         setLoading(false);
       })
       .catch(function (error) {
-      
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -113,8 +101,8 @@ export default function ShippingAddress(props) {
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
     uibottomesheetvisiblity(!visible);
-    setIsOpenedRegions(false)
-    setIsOpenedCountries(false)
+    setIsOpenedRegions(false);
+    setIsOpenedCountries(false);
   };
   const uibottomesheetvisiblity = Bool => {
     setVisible(Bool);
@@ -128,14 +116,12 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
         setLoading(false);
         successMessage('Shipping address saved successfully.');
       })
       .catch(function (error) {
-      
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -145,31 +131,28 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
         setRegionsData(res?.data?.data);
-       
       })
       .catch(function (error) {
-       
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
-  const SelectRegion = (Bool,regionname, regionid,regioncode)=>{
+  const SelectRegion = (Bool, regionname, regionid, regioncode) => {
     setSelectedRegion(regionname);
     updateState({region: Number(regionid)});
     setIsOpenedRegions(false);
-    setSelectedCountry('SELECT COUNTRY');
+    setSelectedCountry('Select Country');
     updateState({country: null});
-    setIsOpenedRegions(Bool)
+    setIsOpenedRegions(Bool);
     getAllCountries(regioncode);
-  }
+  };
 
-  const SelectCountry = (Bool,countryname,countryid)=>{
+  const SelectCountry = (Bool, countryname, countryid) => {
     setSelectedCountry(countryname);
     updateState({country: Number(countryid)});
-    setIsOpenedCountries(Bool)
-  }
+    setIsOpenedCountries(Bool);
+  };
 
   const getAllCountries = country_code => {
     setCountryLoading(true);
@@ -178,186 +161,210 @@ export default function ShippingAddress(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-       
         setCountriesData(res?.data?.data);
         setCountryLoading(false);
       })
       .catch(function (error) {
-      
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
         setCountryLoading(false);
       });
   };
 
-  useEffect(()=>{            
-    if(isOpenedRegions){
-      setModalData(regionsData)
-      uibottomesheetvisiblity(true)
-
+  useEffect(() => {
+    if (isOpenedRegions) {
+      setModalData(regionsData);
+      uibottomesheetvisiblity(true);
     }
-  },[isOpenedRegions])
+  }, [isOpenedRegions]);
 
-  useEffect(()=>{            
-   
-    if(isOpenedCountries){
-   
-        uibottomesheetvisiblity(true)
-        setModalData(countriesData)
-
+  useEffect(() => {
+    if (isOpenedCountries) {
+      uibottomesheetvisiblity(true);
+      setModalData(countriesData);
     }
-  },[isOpenedCountries])
+  }, [isOpenedCountries]);
 
   return (
     <>
-    <View style={{ position: 'absolute', zIndex: 999 }}>
+      <View style={{position: 'absolute', zIndex: 999}}>
         {countryLoading && <LoaderComp />}
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>SHIPPING ADDRESS</Text>
-      </View>
-
-      {loading ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
+      <SafeAreaView style={styles.container}>
+        <View style={styles.headWrap}>
+          <TouchableOpacity
+            onPress={() => props.navigation.goBack()}
+            style={{position: 'absolute', left: wp2(4)}}>
+            <ICONS.AntDesign name="left" size={24} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.heading}>SHIPPING ADDRESS</Text>
         </View>
-      ) : (
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingVertical: hp2(4)}}>
-         
 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'ADDRESS LINE 1'}
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <KeyboardAwareScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{paddingVertical: hp2(4)}}>
+            <NewInputComp
               value={stateChange.address_1}
-              onChangeText={val => updateState({address_1: val})}
+              handleOnChange={val => updateState({address_1: val})}
+              inputText={'Address Line 1'}
             />
-          </View>
-
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'ADDRESS LINE 2'}
-              value={stateChange.address_2}
-              onChangeText={val => updateState({address_2: val})}
-            />
-          </View>
-
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'CITY'}
+            <View style={{marginVertical: -20}}>
+              <NewInputComp
+                value={stateChange.address_2}
+                handleOnChange={val => updateState({address_2: val})}
+                inputText={'Address Line 2'}
+              />
+            </View>
+            <NewInputComp
               value={stateChange.city}
-              onChangeText={val => updateState({city: val})}
+              handleOnChange={val => updateState({city: val})}
+              inputText={'City'}
             />
-          </View>
+            {/* <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder={'ADDRESS LINE 1'}
+                value={stateChange.address_1}
+                onChangeText={val => updateState({address_1: val})}
+              />
+            </View> */}
 
-         
+            {/* <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder={'ADDRESS LINE 2'}
+                value={stateChange.address_2}
+                onChangeText={val => updateState({address_2: val})}
+              />
+            </View> */}
 
-          <TouchableOpacity
-            onPress={() =>
-              isOpenedRegions
-                ? setIsOpenedRegions(false)
-                : setIsOpenedRegions(true)
-            }
-            style={[
-              styles.inputBox,
-              {
+            {/* <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder={'CITY'}
+                value={stateChange.city}
+                onChangeText={val => updateState({city: val})}
+              />
+            </View> */}
+
+            <TouchableOpacity
+              onPress={() =>
+                isOpenedRegions
+                  ? setIsOpenedRegions(false)
+                  : setIsOpenedRegions(true)
+              }
+              style={{
+                borderWidth: 1,
+                marginHorizontal: 20,
+                paddingHorizontal: 20,
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingHorizontal: wp2(2),
                 justifyContent: 'space-between',
-              },
-            ]}>
-            <Text
-              style={{color: 'black', fontWeight: '700', fontSize: rfv(13)}}>
-              {selectedRegion}
-            </Text>
-            <View>
-            <ICONS.FontAwesome
-                name={isOpenedRegions ? 'chevron-up' : 'chevron-down'}
-                color={'#A1A1A1'}
-                size={22}
-              />
-            </View>
-          </TouchableOpacity>
+                borderRadius: 10,
+                borderColor: '#ccc',
+                height: 50,
+                marginBottom: 10,
+              }}>
+              <Text
+                style={{
+                  color: '#4D4D4D',
+                  fontWeight: '400',
+                  fontSize: 16,
+                }}>
+                {selectedRegion}
+              </Text>
+              <View
+                style={isOpenedRegions ? {transform: 'rotate(180deg)'} : {}}>
+                <ArrowDown
+                  width={16}
+                  height={8}
+                  color={isOpenedRegions ? COLORS.main : COLORS.main}
+                />
+              </View>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            disabled={selectedRegion === 'SELECT REGION' ? true : false}
-            onPress={() =>
-              isOpenedCountries
-                ? setIsOpenedCountries(false)
-                : setIsOpenedCountries(true)
-            }
-            style={[
-              styles.inputBox,
-              {
+            <TouchableOpacity
+              disabled={selectedRegion === 'Select Region' ? true : false}
+              onPress={() =>
+                isOpenedCountries
+                  ? setIsOpenedCountries(false)
+                  : setIsOpenedCountries(true)
+              }
+              style={{
+                borderWidth: 1,
+                marginHorizontal: 20,
+                paddingHorizontal: 20,
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingHorizontal: wp2(2),
                 justifyContent: 'space-between',
-              },
-            ]}>
-            <Text style={styles.selectedTxt}>{selectedCountry}</Text>
-            <View>
-              <ICONS.FontAwesome
-                name={isOpenedCountries ? 'chevron-up' : 'chevron-down'}
-                color={'#A1A1A1'}
-                size={22}
+                borderRadius: 10,
+                borderColor: '#ccc',
+                height: 50,
+              }}>
+              <Text style={styles.selectedTxt}>{selectedCountry}</Text>
+              <View
+                style={isOpenedCountries ? {transform: 'rotate(180deg)'} : {}}>
+                <ArrowDown
+                  width={16}
+                  height={8}
+                  color={isOpenedCountries ? COLORS.main : COLORS.main}
+                />
+              </View>
+            </TouchableOpacity>
+            <View style={{marginTop: -10}}>
+              <NewInputComp
+                inputText={'Postcode'}
+                handleOnChange={val => updateState({postcode: val})}
+                value={stateChange.postcode}
               />
             </View>
-          </TouchableOpacity>
 
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputTxt}
-              placeholderTextColor={'grey'}
-              placeholder={'POSTCODE'}
-              value={stateChange.postcode}
-              onChangeText={val => updateState({postcode: val})}
-              
-              maxLength={10}
-            />
-          </View>
-
-          <TouchableOpacity onPress={onConfirm} style={styles.button}>
-            <Text style={styles.buttonText}>CONFIRM</Text>
-          </TouchableOpacity>
-        </KeyboardAwareScrollView>
-      )}
-      <BottomSheet
-        visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
-        >
+            {/* <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholderTextColor={'grey'}
+                placeholder={'POSTCODE'}
+                value={stateChange.postcode}
+                onChangeText={val => updateState({postcode: val})}
+                maxLength={10}
+              />
+            </View> */}
+            <View style={{marginHorizontal: 20, marginTop: 20}}>
+              <ContinueButton onPress={onConfirm} text={'Confirm'} />
+            </View>
+            {/* <TouchableOpacity onPress={onConfirm} style={styles.button}>
+              <Text style={styles.buttonText}>CONFIRM</Text>
+            </TouchableOpacity> */}
+          </KeyboardAwareScrollView>
+        )}
+        <BottomSheet
+          visible={visible}
+          onBackButtonPress={toggleBottomNavigationView}
+          onBackdropPress={toggleBottomNavigationView}>
           <BottomSheetView
-          Data={modalData}
-          regioninfo={selectedRegion}
-          uibottomesheetvisiblity={uibottomesheetvisiblity}
-          SelectRegion={SelectRegion}
-          SelectCountry={SelectCountry}
-          countryinfo = {selectedCountry}
-        />
-
+            Data={modalData}
+            regioninfo={selectedRegion}
+            uibottomesheetvisiblity={uibottomesheetvisiblity}
+            SelectRegion={SelectRegion}
+            SelectCountry={SelectCountry}
+            countryinfo={selectedCountry}
+          />
         </BottomSheet>
-    </SafeAreaView>
+      </SafeAreaView>
     </>
   );
 }
@@ -371,7 +378,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    
+
     justifyContent: 'center',
   },
   heading: {
@@ -457,5 +464,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  selectedTxt: {color: 'black', fontWeight: '700', fontSize: rfv(13)},
+  selectedTxt: {color: '#4D4D4D', fontWeight: '400', fontSize: 16},
 });

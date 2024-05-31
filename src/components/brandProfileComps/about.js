@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
@@ -9,27 +9,26 @@ import fonts from '../../theme/fonts';
 export default function About(props) {
   return (
     <>
-      <Text style={styles.aboutText}>ABOUT</Text>
-
-      <Text style={styles.aboutDesc}>{props?.data?.about}</Text>
+      {props?.data?.about ? (
+        <View>
+          <Text style={styles.aboutText}>About</Text>
+          <Text style={styles.aboutDesc}>{props?.data?.about}</Text>
+        </View>
+      ) : null}
     </>
   );
 }
 
 const styles = StyleSheet.create({
   aboutText: {
-    fontFamily: fonts.PoppinsMedium,
-    paddingHorizontal: 20,
-
-    fontSize: rfv(15),
-
+    fontWeight: '700',
+    fontSize: rfv(20),
     color: 'black',
-    // marginLeft: wp2(3),
+    marginTop: 55,
+    marginBottom: 16,
   },
   aboutDesc: {
     color: 'black',
-    marginHorizontal: wp2(3),
-    textTransform: 'uppercase',
-    textAlign: 'justify',
+    fontSize: rfv(14),
   },
 });

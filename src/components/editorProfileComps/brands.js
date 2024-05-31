@@ -65,10 +65,10 @@ export default function BrandComp(props) {
 
 const styles = StyleSheet.create({
   brandImage: {
-    width: wp2(20),
-    height: hp2(10),
+    width: 70,
+    height: 70,
     overflow: 'hidden',
-    borderRadius: wp2(6),
+    borderRadius: 999,
     marginHorizontal: wp2(1),
     marginVertical: hp2(0.5),
     backgroundColor:'white',

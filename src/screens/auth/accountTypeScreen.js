@@ -13,6 +13,7 @@ import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
 import {IMAGES, COLORS, wp2, hp2} from '../../theme';
 import ContinueButton from './componnets/ContinueBtn';
+import {ScrollView} from 'react-native-gesture-handler';
 
 export default function AccountTypeScreen(props) {
   const [selectedAccount, setSelectedAccount] = useState('editor');
@@ -22,8 +23,7 @@ export default function AccountTypeScreen(props) {
   };
 
   return (
-    <>
-      <SafeAreaView style={[{flex: 0}]} />
+    <ScrollView style={[{backgroundColor: '#FFFFFF'}]}>
       <SafeAreaView style={[{marginHorizontal: 20, marginVertical: 40}]}>
         <Text style={styles.header}>Account Type</Text>
         <TouchableOpacity
@@ -39,6 +39,8 @@ export default function AccountTypeScreen(props) {
             {
               borderColor:
                 selectedAccount === 'editor' ? '#4D50E0' : 'transparent',
+              backgroundColor:
+                selectedAccount === 'editor' ? 'transparent' : '#F6F6F6',
             },
           ]}>
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -71,6 +73,8 @@ export default function AccountTypeScreen(props) {
             {
               borderColor:
                 selectedAccount === 'brand' ? '#4D50E0' : 'transparent',
+              backgroundColor:
+                selectedAccount === 'brand' ? 'transparent' : '#F6F6F6',
             },
           ]}>
           <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -80,7 +84,7 @@ export default function AccountTypeScreen(props) {
                 style={{
                   width: '100%',
                   height: '100%',
-                  tintColor: selectedAccount !== 'brand' ?  'black':'#4D50E0',
+                  tintColor: selectedAccount !== 'brand' ? 'black' : '#4D50E0',
                 }}
                 resizeMode="contain"
               />
@@ -106,9 +110,10 @@ export default function AccountTypeScreen(props) {
               });
             }
           }}
-          style={{width: '100%', marginTop: 10}}></ContinueButton>
+          style={{width: '100%', marginTop: 10, fontFamily: 'Poppins-SemiBold'}}
+        />
       </SafeAreaView>
-    </>
+    </ScrollView>
   );
 }
 
@@ -120,8 +125,9 @@ function RadioButton(props) {
           height: 25,
           width: 25,
           borderRadius: 20,
-          borderWidth: 2,
+          borderWidth: 1,
           borderColor: '#89939E',
+          backgroundColor: '#FFFFFF',
           alignItems: 'center',
           justifyContent: 'center',
           position: 'absolute', // Added position:absolute
@@ -161,20 +167,12 @@ const styles = StyleSheet.create({
   },
   box: {
     width: '100%',
-    height: hp2(30),
+    height: hp2(45),
     marginVertical: 20,
     borderRadius: 10,
-    backgroundColor: 'rgba(246, 246, 246, 1)',
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    // shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    // shadowOpacity: 0.3,
-    // shadowRadius: 4.65,
-    // elevation: 8,
     flexDirection: 'row',
     paddingHorizontal: 10,
     borderWidth: 2,
@@ -187,15 +185,14 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    marginTop:30,
-    marginBottom:20,
+    marginTop: 30,
+    marginBottom: 20,
     fontFamily: 'Poppins-Medium',
     fontWeight: '400',
     fontSize: 26,
     lineHeight: 44,
     color: '#000000',
     textAlign: 'center',
-
   },
 
   text: {

@@ -1,31 +1,17 @@
-import React, {useState,useRef} from 'react';
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
   Modal,
-
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-  
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -36,7 +22,6 @@ import {useDispatch} from 'react-redux';
 import WebView from 'react-native-webview';
 
 export default function ConnectStripe(props) {
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -44,15 +29,15 @@ export default function ConnectStripe(props) {
 
   const webView = useRef();
 
-  const handleMessage = (event) => {
+  const handleMessage = event => {
     // Handle the received message from the web page
     console.log('Received message from web page:', event.nativeEvent.data);
-    if(event?.nativeEvent?.data == 'Hello from Web Page!'){
-        setShowModal(false);
-        props.navigation.reset({
-            index: 0,
-            routes: [{ name: 'loginScreen' }] 
-          })
+    if (event?.nativeEvent?.data == 'Hello from Web Page!') {
+      setShowModal(false);
+      props.navigation.reset({
+        index: 0,
+        routes: [{name: 'loginScreen'}],
+      });
     }
   };
   const injectedJS = `
@@ -61,48 +46,46 @@ export default function ConnectStripe(props) {
 
   const onStripeConnect = () => {
     axios
-      .post(ConnectAccountLink, {stripe_account_id:props?.route?.params?.data?.id})
+      .post(ConnectAccountLink, {
+        stripe_account_id: props?.route?.params?.data?.id,
+      })
       .then(async function (res) {
-       
-        setConnectUrl(res?.data?.data?.url)
+        setConnectUrl(res?.data?.data?.url);
         setShowModal(true);
       })
       .catch(function (error) {
-       
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
-}
+  };
 
   return (
     <View style={styles.container}>
-        <SafeAreaView></SafeAreaView>
-        <Text style={styles.connectText}>Connect Stripe Account</Text>
- 
-      <Modal animationType="slide"
-        transparent={true} visible={showModal}
-       
-        >
-                    <View style={styles.modal}>
-                        <View style={styles.modalContainer}>
-                        <TouchableOpacity onPress={()=> setShowModal(!showModal)} style={styles.cancelButton}>
-                              <ICONS.MaterialIcons name="cancel" size={30} color="red" />
-                        </TouchableOpacity>
-                            <WebView 
-                                style={{ flex : 1 }} 
-                                source={{uri: connectUrl}}
-                                javaScriptEnabled={true}
-                                ref={webView}
-                               
-                            onMessage={handleMessage}
-        injectedJavaScript={injectedJS}
-        javaScriptEnabledAndroid={true}
-                            />
-                        </View>
-                    </View>
-          </Modal>
-          <TouchableOpacity onPress={onStripeConnect} style={styles.button}>
-              <Text style={styles.buttonText}>Connect Stripe</Text>
+      <SafeAreaView></SafeAreaView>
+      <Text style={styles.connectText}>Connect Stripe Account</Text>
+
+      <Modal animationType="slide" transparent={true} visible={showModal}>
+        <View style={styles.modal}>
+          <View style={styles.modalContainer}>
+            <TouchableOpacity
+              onPress={() => setShowModal(!showModal)}
+              style={styles.cancelButton}>
+              <ICONS.MaterialIcons name="cancel" size={30} color="red" />
             </TouchableOpacity>
+            <WebView
+              style={{flex: 1}}
+              source={{uri: connectUrl}}
+              javaScriptEnabled={true}
+              ref={webView}
+              onMessage={handleMessage}
+              injectedJavaScript={injectedJS}
+              javaScriptEnabledAndroid={true}
+            />
+          </View>
+        </View>
+      </Modal>
+      <TouchableOpacity onPress={onStripeConnect} style={styles.button}>
+        <Text style={styles.buttonText}>Connect Stripe</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -111,7 +94,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-   
   },
   connectText: {
     color: 'black',
@@ -119,7 +101,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginVertical: hp2(4),
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    alignSelf:'center',
+    alignSelf: 'center',
   },
   button: {
     width: wp2(60),
@@ -145,17 +127,17 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
 
-  modal : {
-    flex : 1,
-    justifyContent:'flex-end',
-    backgroundColor: 'rgba(0,0,0,0.5)'
-},
-modalContainer : {
-    width : '100%',
-    height : '75%',
-},
-cancelButton:{
-  alignItems:'flex-end',
-  paddingHorizontal:wp2(1),
-},
+  modal: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalContainer: {
+    width: '100%',
+    height: '75%',
+  },
+  cancelButton: {
+    alignItems: 'flex-end',
+    paddingHorizontal: wp2(1),
+  },
 });

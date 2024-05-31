@@ -13,7 +13,13 @@ import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
 import {ICONS, COLORS, wp2, hp2} from '../../../theme';
 
-const HeaderComponent = ({mystyle,title, onTap,disableback,customComponent}) => {
+const HeaderComponent = ({
+  mystyle,
+  title,
+  onTap,
+  disableback,
+  customComponent,
+}) => {
   return (
     <View
       style={[
@@ -27,22 +33,25 @@ const HeaderComponent = ({mystyle,title, onTap,disableback,customComponent}) => 
           flexDirection: 'row',
           alignItems: 'center',
         },
-        mystyle
+        mystyle,
       ]}>
-   { (!disableback&&  <TouchableOpacity onPress={onTap}>
-        <ICONS.AntDesign
-          name="left"
-          size={24}
-          color="black"
-          style={{flex: 1, textAlign: 'center'}}
-        />
-      </TouchableOpacity>)}
-      <Text style={[styles.heading, {flex: .6, textAlign: 'center'}]}>
+      {!disableback && (
+        <TouchableOpacity onPress={onTap}>
+          <ICONS.AntDesign
+            name="left"
+            size={24}
+            color="black"
+            style={{flex: 1, textAlign: 'center'}}
+          />
+        </TouchableOpacity>
+      )}
+      <Text style={[styles.heading, {flex: 0.6, textAlign: 'center'}]}>
         {title}
       </Text>
 
-      {customComponent && <View style={styles.customComponent}>{customComponent}</View>}
-
+      {customComponent && (
+        <View style={styles.customComponent}>{customComponent}</View>
+      )}
     </View>
   );
 };

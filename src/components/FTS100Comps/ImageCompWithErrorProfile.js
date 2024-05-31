@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {Image} from 'react-native';
-import { IMAGES } from '../../theme';
+import {IMAGES} from '../../theme';
 const ImageCompWithErrorProfile = ({uri}) => {
   // Initialize with the provided uri or fall back to the local image if none provided
   const [imageUri, setImageUri] = useState(uri || IMAGES.profileIcon3);
@@ -12,7 +12,7 @@ const ImageCompWithErrorProfile = ({uri}) => {
   return (
     <Image
       source={source}
-      style={{width: '100%', height: '100%'}}
+      style={{width: '100%', height: '100%', borderRadius: 10}}
       resizeMode="cover"
       onError={handleError}
     />
