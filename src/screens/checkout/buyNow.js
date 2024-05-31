@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,24 +8,17 @@ import {
   TextInput,
   Animated,
   Platform,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
-import {
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-import {
-  ICONS,
-  COLORS,
-  wp2,
-  hp2
-} from '../../theme';
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 import LoaderComp from '../../components/loaderComp';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { BottomSheet } from 'react-native-btr';
-import { errorMessage, successMessage } from '../../config/NotificationMessage';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {BottomSheet} from 'react-native-btr';
+import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
-import { errorHandler } from '../../config/helperFunction';
+import {errorHandler} from '../../config/helperFunction';
 import {
   GetShippingAddress,
   GetRegionsAll,
@@ -34,12 +27,11 @@ import {
   BuyNowOrderGuest,
   ShippingAvailability,
 } from '../../config/Urls';
-import { useDispatch, useSelector } from 'react-redux';
-import { SkypeIndicator } from 'react-native-indicators';
+import {useDispatch, useSelector} from 'react-redux';
+import {SkypeIndicator} from 'react-native-indicators';
 import BottomSheetView from '../../components/bottomSheet/BottomsheetView';
 
 export default function BuyNow(props) {
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
@@ -47,7 +39,7 @@ export default function BuyNow(props) {
   const user = useSelector(state => state.userData);
   const guestUser = useSelector(state => state.guestData);
   const [visible, setVisible] = useState(false);
-  const [modalData, setModalData] = useState()
+  const [modalData, setModalData] = useState();
   const [continueButton, setContinueButton] = useState('continue');
   const [stateChange, setStateChange] = useState({
     address_1: null,
@@ -62,8 +54,20 @@ export default function BuyNow(props) {
     expiry: null,
     cvv: null,
   });
-  const updateState = data => setStateChange(prev => ({ ...prev, ...data }));
-  const { address_1, address_2, city, country, region, postcode, email, name, card, expiry, cvv } = stateChange;
+  const updateState = data => setStateChange(prev => ({...prev, ...data}));
+  const {
+    address_1,
+    address_2,
+    city,
+    country,
+    region,
+    postcode,
+    email,
+    name,
+    card,
+    expiry,
+    cvv,
+  } = stateChange;
   const [isOpenedRegions, setIsOpenedRegions] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState('SELECT REGION');
   const [regionsData, setRegionsData] = useState([]);
@@ -72,25 +76,24 @@ export default function BuyNow(props) {
   const [countriesData, setCountriesData] = useState([]);
   const [total, setTotal] = useState(0);
   const [commission, setCommission] = useState(2.9);
-  const propsparams = props?.route?.params
+  const propsparams = props?.route?.params;
 
   useEffect(() => {
     if (loading) {
       const parent = props.navigation.setOptions({
-        tabBarStyle: { display: 'none' },
+        tabBarStyle: {display: 'none'},
       });
-    }
-    else {
+    } else {
       const parent = props.navigation.setOptions({
         tabBarStyle: {
           display: 'flex',
           width: wp2(100),
           height: Platform.OS === 'ios' ? hp2(10) : hp2(8),
-          backgroundColor: 'white'
+          backgroundColor: 'white',
         },
       });
     }
-  }, [loading])
+  }, [loading]);
 
   useEffect(() => {
     getAllRegions();
@@ -102,16 +105,21 @@ export default function BuyNow(props) {
 
       axios
         .get(GetShippingAddress, {
-          headers: { Authorization: `Bearer ${user?.token}` },
+          headers: {Authorization: `Bearer ${user?.token}`},
         })
         .then(async function (res) {
-         
           setStateChange({
             address_1: res?.data?.data?.address_1,
             address_2: res?.data?.data?.address_2,
             city: res?.data?.data?.city,
-            country: res?.data?.data?.country !== null ? res?.data?.data?.country?.country_id : null,
-            region: res?.data?.data?.region !== null ? res?.data?.data?.region?.id : null,
+            country:
+              res?.data?.data?.country !== null
+                ? res?.data?.data?.country?.country_id
+                : null,
+            region:
+              res?.data?.data?.region !== null
+                ? res?.data?.data?.region?.id
+                : null,
             postcode: res?.data?.data?.postcode,
             email: null,
             name: null,
@@ -132,9 +140,8 @@ export default function BuyNow(props) {
           setLoadingAddress(false);
         })
         .catch(function (error) {
-         
           setLoadingAddress(false);
-          errorMessage(errorHandler(error))
+          errorMessage(errorHandler(error));
         });
     }
   }, []);
@@ -145,31 +152,26 @@ export default function BuyNow(props) {
       val = val + Number(propsparams?.data?.price * propsparams?.qty);
       propsparams?.data?.product_region?.map((item, index) => {
         if (region === item?.region_id) {
-          val = val + Number(item?.price)
+          val = val + Number(item?.price);
         }
-      })
+      });
       setTotal(val);
     }
-  }, [region])
+  }, [region]);
 
   useEffect(() => {
     if (isOpenedRegions) {
-      setModalData(regionsData)
-      uibottomesheetvisiblity(true)
-
+      setModalData(regionsData);
+      uibottomesheetvisiblity(true);
     }
-  }, [isOpenedRegions])
+  }, [isOpenedRegions]);
 
   useEffect(() => {
-    
     if (isOpenedCountries) {
-      
-        uibottomesheetvisiblity(true)
-        setModalData(countriesData)
-  
-
+      uibottomesheetvisiblity(true);
+      setModalData(countriesData);
     }
-  }, [isOpenedCountries])
+  }, [isOpenedCountries]);
 
   const getAllRegions = () => {
     axios
@@ -178,7 +180,7 @@ export default function BuyNow(props) {
         setRegionsData(res?.data?.data);
       })
       .catch(function (error) {
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -187,12 +189,12 @@ export default function BuyNow(props) {
     axios
       .get(GetCountries + country_code)
       .then(async function (res) {
-        console.log(res.data.data)
+        console.log(res.data.data);
         setCountriesData(res?.data?.data);
         setLoading(false);
       })
       .catch(function (error) {
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
         setLoading(false);
       });
   };
@@ -202,85 +204,86 @@ export default function BuyNow(props) {
       props.navigation.goBack();
     }
     if (continueButton === 'confirm') {
-      setContinueButton('continue')
+      setContinueButton('continue');
     }
     if (continueButton === 'purchase') {
-      setContinueButton('confirm')
+      setContinueButton('confirm');
     }
   };
 
   function constainalphabet(str) {
-    return (/^[A-Za-z ]+$/).test(str);
+    return /^[A-Za-z ]+$/.test(str);
   }
   function emailvalidation(str) {
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(str)
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(str);
   }
 
   const onContinue = () => {
-
     if (
-      (address_1 !== '' && address_1 !== null) &&
-      (city !== '' && city !== null) &&
-      (region !== '' && region !== null) &&
-      (country !== '' && country !== null) &&
-      (postcode !== '' && postcode !== null)) {
-
+      address_1 !== '' &&
+      address_1 !== null &&
+      city !== '' &&
+      city !== null &&
+      region !== '' &&
+      region !== null &&
+      country !== '' &&
+      country !== null &&
+      postcode !== '' &&
+      postcode !== null
+    ) {
       if (constainalphabet(city)) {
         setLoadingContinue(true);
         axios
-          .post(
-            ShippingAvailability, 
-            {
+          .post(ShippingAvailability, {
             region: region,
-             product_id: [propsparams?.data?.id] 
-            })
+            product_id: [propsparams?.data?.id],
+          })
           .then(async function (res) {
             setLoadingContinue(false);
             if (res?.data?.status) {
-              setContinueButton('confirm')
+              setContinueButton('confirm');
             } else {
-              errorMessage(String(Object.values(res?.data['message'])[0]))
+              errorMessage(String(Object.values(res?.data['message'])[0]));
             }
           })
           .catch(function (error) {
             setLoadingContinue(false);
-            errorMessage(errorHandler(error))
-          })
+            errorMessage(errorHandler(error));
+          });
       } else {
-        errorMessage('Invalid city name')
+        errorMessage('Invalid city name');
       }
     } else {
-      errorMessage('Please fill all fields!')
+      errorMessage('Please fill all fields!');
     }
-
-  }
+  };
 
   const onConfirm = () => {
-
     if (
-      (email !== '' && email !== null) &&
-      (name !== '' && name !== null) &&
-      (card !== '' && card !== null) &&
-      (expiry !== '' && expiry !== null) &&
-      (cvv !== '' && cvv !== null)
+      email !== '' &&
+      email !== null &&
+      name !== '' &&
+      name !== null &&
+      card !== '' &&
+      card !== null &&
+      expiry !== '' &&
+      expiry !== null &&
+      cvv !== '' &&
+      cvv !== null
     ) {
       if (emailvalidation(email)) {
         if (cvv.length >= 3) {
-          setContinueButton('purchase')
+          setContinueButton('purchase');
+        } else {
+          errorMessage('CVV should have at least three numbers.');
         }
-        else {
-          errorMessage('CVV should have at least three numbers.')
-        }
+      } else {
+        errorMessage('Please enter correct email');
       }
-      else {
-        errorMessage('Please enter correct email')
-      }
+    } else {
+      errorMessage('Please fill all fields!');
     }
-    else {
-      errorMessage('Please fill all fields!')
-    }
-
-  }
+  };
 
   const createOrder = () => {
     if (user?.token !== '') {
@@ -288,7 +291,7 @@ export default function BuyNow(props) {
     } else {
       createGuestOrder();
     }
-  }
+  };
 
   const createGuestOrder = () => {
     setLoading(true);
@@ -302,17 +305,17 @@ export default function BuyNow(props) {
     formdata.append('device_id', guestUser?.device_id);
     formdata.append('status_id', 3);
     formdata.append('payment_method', 'stripe');
-    formdata.append('address1',address_1);
-    formdata.append('address2',address_2);
-    formdata.append('region',region);
-    formdata.append('city',city);
-    formdata.append('country',country);
-    formdata.append('post_code',postcode);
-    formdata.append('email',email);
-    formdata.append('title',name);
-    formdata.append('acc_number',card);
-    formdata.append('expiry',expiry);
-    formdata.append('cvv',cvv);
+    formdata.append('address1', address_1);
+    formdata.append('address2', address_2);
+    formdata.append('region', region);
+    formdata.append('city', city);
+    formdata.append('country', country);
+    formdata.append('post_code', postcode);
+    formdata.append('email', email);
+    formdata.append('title', name);
+    formdata.append('acc_number', card);
+    formdata.append('expiry', expiry);
+    formdata.append('cvv', cvv);
 
     let config = {
       method: 'post',
@@ -328,18 +331,17 @@ export default function BuyNow(props) {
     axios
       .request(config)
       .then(async function (res) {
-       
         setLoading(false);
-        props.navigation.replace('bottomNavigationGuest', { screen: 'confirmationScreen', })
+        props.navigation.replace('bottomNavigationGuest', {
+          screen: 'confirmationScreen',
+        });
         successMessage('Order Done');
       })
       .catch(function (error) {
-      
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
-
-  }
+  };
 
   const createEditorOrder = () => {
     setLoading(true);
@@ -357,12 +359,12 @@ export default function BuyNow(props) {
     formdata.append('address2', address_2);
     formdata.append('region', region);
     formdata.append('city', city);
-    formdata.append('country',country);
-    formdata.append('post_code',postcode);
+    formdata.append('country', country);
+    formdata.append('post_code', postcode);
     formdata.append('email', email);
     formdata.append('title', name);
-    formdata.append('acc_number',card);
-    formdata.append('expiry',expiry);
+    formdata.append('acc_number', card);
+    formdata.append('expiry', expiry);
     formdata.append('cvv', cvv);
 
     let config = {
@@ -380,27 +382,24 @@ export default function BuyNow(props) {
     axios
       .request(config)
       .then(async function (res) {
-        
         setLoading(false);
         props.navigation.goBack();
         props.navigation.navigate('confirmationScreen');
         successMessage('Order Done');
       })
       .catch(function (error) {
-       
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
-
-  }
+  };
 
   const scrollX = new Animated.Value(0);
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
     uibottomesheetvisiblity(!visible);
-    setIsOpenedRegions(false)
-    setIsOpenedCountries(false)
+    setIsOpenedRegions(false);
+    setIsOpenedCountries(false);
   };
 
   const uibottomesheetvisiblity = Bool => {
@@ -409,31 +408,33 @@ export default function BuyNow(props) {
 
   const SelectRegion = (Bool, regionname, regionid, regioncode) => {
     setSelectedRegion(regionname);
-    updateState({ region: Number(regionid) });
+    updateState({region: Number(regionid)});
     setIsOpenedRegions(false);
     setSelectedCountry('SELECT COUNTRY');
-    updateState({ country: null });
-    setIsOpenedRegions(Bool)
+    updateState({country: null});
+    setIsOpenedRegions(Bool);
     getAllCountries(regioncode);
-  }
+  };
 
   const SelectCountry = (Bool, countryname, countryid) => {
     setSelectedCountry(countryname);
-    updateState({ country: Number(countryid) });
-    setIsOpenedCountries(Bool)
-  }
+    updateState({country: Number(countryid)});
+    setIsOpenedCountries(Bool);
+  };
 
   return (
     <>
-      <View style={{ position: 'absolute', zIndex: 999 }}>
+      <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <View style={styles.headWrap}>
-            <TouchableOpacity onPress={() => goBackFunction()} style={{ position: 'absolute', left: wp2(4) }}>
+            <TouchableOpacity
+              onPress={() => goBackFunction()}
+              style={{position: 'absolute', left: wp2(4)}}>
               <ICONS.AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.checkout}>Check Out</Text>
@@ -452,39 +453,44 @@ export default function BuyNow(props) {
           ) : (
             <KeyboardAwareScrollView
               showsVerticalScrollIndicator={false}
-              contentContainerStyle={{ paddingTop: hp2(2), paddingBottom: hp2(12) }}>
+              contentContainerStyle={{
+                paddingTop: hp2(2),
+                paddingBottom: hp2(12),
+              }}>
               <View style={styles.checkoutWrap}>
-
                 <View style={styles.dataWrap}>
-
-                  <View style={{ 
-                    width: wp2(36), 
-                    height: hp2(20), 
-                    overflow: 'hidden', 
-                    borderRadius: wp2(4), 
-                    alignSelf: 'center', 
+                  <View
+                    style={{
+                      width: wp2(36),
+                      height: hp2(20),
+                      overflow: 'hidden',
+                      borderRadius: wp2(4),
+                      alignSelf: 'center',
                     }}>
                     <Animated.ScrollView
                       horizontal
                       pagingEnabled
                       showsHorizontalScrollIndicator={false}
                       onScroll={Animated.event(
-                        [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-                        { useNativeDriver: true },
+                        [{nativeEvent: {contentOffset: {x: scrollX}}}],
+                        {useNativeDriver: true},
                       )}>
-                      {propsparams?.data?.product_images[0]?.image?.map((item, index) => {
-                        return (
-                          <View key={index} style={styles.productImage}>
-                            <Image
-                              source={{ uri: item?.original_url }}
-                              style={{ width: '100%', height: '100%' }}
-                              resizeMode="cover"
-                            />
-                          </View>
-                        )
-                      })}
+                      {propsparams?.data?.product_images[0]?.image?.map(
+                        (item, index) => {
+                          return (
+                            <View key={index} style={styles.productImage}>
+                              <Image
+                                source={{uri: item?.original_url}}
+                                style={{width: '100%', height: '100%'}}
+                                resizeMode="cover"
+                              />
+                            </View>
+                          );
+                        },
+                      )}
                     </Animated.ScrollView>
-                    {propsparams?.data?.product_images[0]?.image?.length > 1 && (
+                    {propsparams?.data?.product_images[0]?.image?.length >
+                      1 && (
                       <View
                         style={{
                           width: wp2(36),
@@ -493,7 +499,9 @@ export default function BuyNow(props) {
                           zIndex: 999,
                         }}>
                         <RNAnimatedScrollIndicators
-                          numberOfCards={propsparams?.data?.product_images[0]?.image?.length}
+                          numberOfCards={
+                            propsparams?.data?.product_images[0]?.image?.length
+                          }
                           scrollWidth={wp2(36)}
                           activeColor={'#D9D9D9'}
                           inActiveColor={'#D9D9D9'}
@@ -506,54 +514,70 @@ export default function BuyNow(props) {
                   <View style={styles.itemArea}>
                     <Text style={styles.text}>{propsparams?.data?.name}</Text>
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                      <View style={{
-                         width: wp2(9), 
-                         height: wp2(9), 
-                         backgroundColor: propsparams?.colorId?.color_code, 
-                         borderRadius: wp2(2), 
-                         borderWidth: 1 
-                         }}>
-                         </View>
-                      <Text style={{ 
-                        color: 'black', 
-                        fontSize: rfv(12), 
-                        fontWeight: 'bold', 
-                        marginLeft: wp2(2) 
-                        }}> SIZE : {propsparams?.sizeId?.size?.size}</Text>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <View
+                        style={{
+                          width: wp2(9),
+                          height: wp2(9),
+                          backgroundColor: propsparams?.colorId?.color_code,
+                          borderRadius: wp2(2),
+                          borderWidth: 1,
+                        }}></View>
+                      <Text
+                        style={{
+                          color: 'black',
+                          fontSize: rfv(12),
+                          fontWeight: 'bold',
+                          marginLeft: wp2(2),
+                        }}>
+                        {' '}
+                        SIZE : {propsparams?.sizeId?.size?.size}
+                      </Text>
                     </View>
 
-                    <Text style={{ 
-                      color: 'black', 
-                      fontSize: rfv(12), 
-                      fontWeight: 'bold' 
-                      }}>Quantity: {propsparams?.qty}</Text>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontSize: rfv(12),
+                        fontWeight: 'bold',
+                      }}>
+                      Quantity: {propsparams?.qty}
+                    </Text>
 
                     <View
-                      style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}>
                       <Text style={styles.text}>price</Text>
-                      <Text style={styles.text}>£{propsparams?.data?.price}</Text>
+                      <Text style={styles.text}>
+                        £{propsparams?.data?.price}
+                      </Text>
                     </View>
 
-                    {continueButton === 'purchase' &&
+                    {continueButton === 'purchase' && (
                       <View
-                        style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                        }}>
                         <Text style={styles.text}>Shipping</Text>
-                        <Text style={styles.text}>{propsparams?.data?.product_region.map((item, index) => {
-                          if (region === item?.region_id) {
-                            return (
-                              '£' + item?.price
-                            )
-                          }
-                        })}</Text>
+                        <Text style={styles.text}>
+                          {propsparams?.data?.product_region.map(
+                            (item, index) => {
+                              if (region === item?.region_id) {
+                                return '£' + item?.price;
+                              }
+                            },
+                          )}
+                        </Text>
                       </View>
-                    }
+                    )}
                   </View>
                 </View>
-
               </View>
 
-              {continueButton === 'purchase' &&
+              {continueButton === 'purchase' && (
                 <>
                   <View
                     style={{
@@ -576,7 +600,9 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Stripe Fee</Text>
-                    <Text style={styles.text}>£{Number(total*(commission/100)+0.3).toFixed(3)}</Text>
+                    <Text style={styles.text}>
+                      £{Number(total * (commission / 100) + 0.3).toFixed(3)}
+                    </Text>
                   </View>
 
                   <View
@@ -588,10 +614,15 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+                    <Text style={styles.text}>
+                      £
+                      {Number(
+                        total + (total * (commission / 100) + 0.3),
+                      ).toFixed(3)}
+                    </Text>
                   </View>
                 </>
-              }
+              )}
 
               {continueButton == 'confirm' ? (
                 <View style={styles.detailInputArea}>
@@ -604,33 +635,41 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+                    <Text style={styles.text}>
+                      £
+                      {Number(
+                        total + (total * (commission / 100) + 0.3),
+                      ).toFixed(3)}
+                    </Text>
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'EMAIL'} 
-                    placeholderTextColor={'grey'} 
-                    value={email}
-                    onChangeText={val => updateState({ email: val })} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'EMAIL'}
+                      placeholderTextColor={'grey'}
+                      value={email}
+                      onChangeText={val => updateState({email: val})}
+                    />
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'NAME ON CARD'} 
-                    placeholderTextColor={'grey'} 
-                    value={name}
-                    onChangeText={val => updateState({ name: val })} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'NAME ON CARD'}
+                      placeholderTextColor={'grey'}
+                      value={name}
+                      onChangeText={val => updateState({name: val})}
+                    />
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'CARD NUMBER'}
-                    placeholderTextColor={'grey'} 
-                    value={card}
-                    onChangeText={val => updateState({ card: val })} 
-                    keyboardType='number-pad' 
-                    maxLength={16} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'CARD NUMBER'}
+                      placeholderTextColor={'grey'}
+                      value={card}
+                      onChangeText={val => updateState({card: val})}
+                      keyboardType="number-pad"
+                      maxLength={16}
+                    />
                   </View>
                   <View
                     style={{
@@ -639,34 +678,38 @@ export default function BuyNow(props) {
                       justifyContent: 'space-between',
                       width: wp2(80),
                     }}>
-                    <View style={[styles.inputBox, { width: wp2(48) }]}>
-                      <TextInput 
-                      style={styles.textInput} 
-                      placeholderTextColor={'grey'} 
-                      placeholder="EXPIRY DATE MM/YY" 
-                      maxLength={5} 
-                      value={expiry}
-                      keyboardType={'number-pad'}
-                      onChangeText={text => 
-                        updateState({expiry: text.length === 3 && !text.includes("/")
-                       ? `${text.substring(0, 2)}/${text.substring(2)}`
-                       : text})} />
+                    <View style={[styles.inputBox, {width: wp2(48)}]}>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholderTextColor={'grey'}
+                        placeholder="EXPIRY DATE MM/YY"
+                        maxLength={5}
+                        value={expiry}
+                        keyboardType={'number-pad'}
+                        onChangeText={text =>
+                          updateState({
+                            expiry:
+                              text.length === 3 && !text.includes('/')
+                                ? `${text.substring(0, 2)}/${text.substring(2)}`
+                                : text,
+                          })
+                        }
+                      />
                     </View>
-                    <View style={[styles.inputBox, { width: wp2(28) }]}>
-                      <TextInput 
-                      style={styles.textInput} 
-                      placeholderTextColor={'grey'} 
-                      placeholder="CVV" 
-                      keyboardType='number-pad' 
-                      maxLength={4} 
-                      value={cvv}
-                      onChangeText={val => updateState({ cvv: val })} />
+                    <View style={[styles.inputBox, {width: wp2(28)}]}>
+                      <TextInput
+                        style={styles.textInput}
+                        placeholderTextColor={'grey'}
+                        placeholder="CVV"
+                        keyboardType="number-pad"
+                        maxLength={4}
+                        value={cvv}
+                        onChangeText={val => updateState({cvv: val})}
+                      />
                     </View>
                   </View>
                 </View>
-              ) 
-              : 
-              continueButton == 'continue' ? (
+              ) : continueButton == 'continue' ? (
                 <View style={[styles.detailInputArea2]}>
                   <View
                     style={{
@@ -677,31 +720,39 @@ export default function BuyNow(props) {
                       marginVertical: hp2(1),
                     }}>
                     <Text style={styles.text}>Total</Text>
-                    <Text style={styles.text}>£{Number(total+(total*(commission/100)+0.3)).toFixed(3)}</Text>
+                    <Text style={styles.text}>
+                      £
+                      {Number(
+                        total + (total * (commission / 100) + 0.3),
+                      ).toFixed(3)}
+                    </Text>
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'ADDRESS LINE 1'} 
-                    placeholderTextColor={'grey'} 
-                    value={address_1}
-                    onChangeText={val => updateState({ address_1: val })} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'ADDRESS LINE 1'}
+                      placeholderTextColor={'grey'}
+                      value={address_1}
+                      onChangeText={val => updateState({address_1: val})}
+                    />
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'ADDRESS LINE 2'} 
-                    placeholderTextColor={'grey'} 
-                    value={address_2}
-                    onChangeText={val => updateState({ address_2: val })} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'ADDRESS LINE 2'}
+                      placeholderTextColor={'grey'}
+                      value={address_2}
+                      onChangeText={val => updateState({address_2: val})}
+                    />
                   </View>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'CITY'} 
-                    placeholderTextColor={'grey'} 
-                    value={city}
-                    onChangeText={val => updateState({ city: val })} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'CITY'}
+                      placeholderTextColor={'grey'}
+                      value={city}
+                      onChangeText={val => updateState({city: val})}
+                    />
                   </View>
 
                   <TouchableOpacity
@@ -720,10 +771,11 @@ export default function BuyNow(props) {
                       },
                     ]}>
                     <Text
-                      style={{ 
-                        color: 'black', 
-                        fontWeight: '700', 
-                        fontSize: rfv(13) }}>
+                      style={{
+                        color: 'black',
+                        fontWeight: '700',
+                        fontSize: rfv(13),
+                      }}>
                       {selectedRegion}
                     </Text>
                     <View>
@@ -760,18 +812,17 @@ export default function BuyNow(props) {
                     </View>
                   </TouchableOpacity>
                   <View style={styles.inputBox}>
-                    <TextInput 
-                    style={styles.textInput} 
-                    placeholder={'POSTCODE'} 
-                    placeholderTextColor={'grey'} 
-                    value={postcode}
-                    onChangeText={val => updateState({ postcode: val })} 
-                    maxLength={10} />
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder={'POSTCODE'}
+                      placeholderTextColor={'grey'}
+                      value={postcode}
+                      onChangeText={val => updateState({postcode: val})}
+                      maxLength={10}
+                    />
                   </View>
                 </View>
-              ) 
-              : 
-              (
+              ) : (
                 <>
                   <View style={[styles.detailInputArea2]}>
                     <View
@@ -781,36 +832,72 @@ export default function BuyNow(props) {
                         paddingLeft: wp2(39),
                         paddingRight: wp2(2),
                         marginVertical: hp2(1),
-                      }}>
-                    </View>
+                      }}></View>
 
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{address_1}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{address_2}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{city}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{selectedRegion}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{selectedCountry}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{postcode}</Text>
                     </View>
                   </View>
-                  <View style={[styles.detailInputArea, { borderBottomWidth: 0 }]}>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                  <View
+                    style={[styles.detailInputArea, {borderBottomWidth: 0}]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{email}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{name}</Text>
                     </View>
-                    <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2) }]}>
+                    <View
+                      style={[
+                        styles.inputBox,
+                        {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                      ]}>
                       <Text style={styles.selectedTxt}>{card}</Text>
                     </View>
                     <View
@@ -820,10 +907,26 @@ export default function BuyNow(props) {
                         justifyContent: 'space-between',
                         width: wp2(80),
                       }}>
-                      <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2), width: wp2(48) }]}>
+                      <View
+                        style={[
+                          styles.inputBox,
+                          {
+                            justifyContent: 'center',
+                            paddingHorizontal: wp2(2),
+                            width: wp2(48),
+                          },
+                        ]}>
                         <Text style={styles.selectedTxt}>{expiry}</Text>
                       </View>
-                      <View style={[styles.inputBox, { justifyContent: 'center', paddingHorizontal: wp2(2), width: wp2(28) }]}>
+                      <View
+                        style={[
+                          styles.inputBox,
+                          {
+                            justifyContent: 'center',
+                            paddingHorizontal: wp2(2),
+                            width: wp2(28),
+                          },
+                        ]}>
                         <Text style={styles.selectedTxt}>{cvv}</Text>
                       </View>
                     </View>
@@ -837,21 +940,19 @@ export default function BuyNow(props) {
                   continueButton == 'continue'
                     ? onContinue()
                     : continueButton == 'confirm'
-                      ? onConfirm()
-                      : createOrder();
+                    ? onConfirm()
+                    : createOrder();
                 }}
                 style={styles.button}>
                 {loadingContinue ? (
                   <SkypeIndicator color={'white'} />
-                ) 
-                : 
-                (
+                ) : (
                   <Text style={styles.buttonText}>
                     {continueButton == 'continue'
                       ? 'CONTINUE'
                       : continueButton == 'confirm'
-                        ? 'CONFIRM'
-                        : 'PURCHASE'}
+                      ? 'CONFIRM'
+                      : 'PURCHASE'}
                   </Text>
                 )}
               </TouchableOpacity>
@@ -861,8 +962,7 @@ export default function BuyNow(props) {
         <BottomSheet
           visible={visible}
           onBackButtonPress={toggleBottomNavigationView}
-          onBackdropPress={toggleBottomNavigationView}
-        >
+          onBackdropPress={toggleBottomNavigationView}>
           <BottomSheetView
             Data={modalData}
             regioninfo={selectedRegion}
@@ -871,11 +971,8 @@ export default function BuyNow(props) {
             SelectCountry={SelectCountry}
             countryinfo={selectedCountry}
           />
-
-
         </BottomSheet>
       </SafeAreaView>
-
     </>
   );
 }
@@ -887,9 +984,9 @@ const styles = StyleSheet.create({
   },
   headWrap: {
     flexDirection: 'row',
-    marginTop: Platform.OS === "ios" ? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-    
+
     justifyContent: 'center',
   },
   checkout: {
@@ -904,7 +1001,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: wp2(4),
     alignSelf: 'center',
-    
 
     shadowColor: '#000',
     shadowOffset: {
@@ -931,13 +1027,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   itemArea: {
-    
     width: wp2(54),
     justifyContent: 'space-evenly',
     paddingLeft: wp2(2),
     paddingVertical: hp2(2),
   },
-  text: { fontWeight: '700', textTransform: 'uppercase', color: 'black' },
+  text: {fontWeight: '700', textTransform: 'uppercase', color: 'black'},
   detailInputArea: {
     width: wp2(92),
     height: hp2(34),
@@ -1010,7 +1105,6 @@ const styles = StyleSheet.create({
     width: wp2(18),
     height: wp2(18),
     overflow: 'hidden',
-    
 
     shadowColor: '#000',
     shadowOffset: {
@@ -1052,7 +1146,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  selectedTxt: { color: 'black', fontWeight: '700', fontSize: rfv(13) },
+  selectedTxt: {color: 'black', fontWeight: '700', fontSize: rfv(13)},
   dataWrap: {
     width: wp2(92),
     flexDirection: 'row',

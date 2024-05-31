@@ -2,37 +2,25 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
- 
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-  
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {ColorsUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function ColourClothing(props) {
   const {Colour, Id} = useSelector(state => state.Colour);
@@ -54,10 +42,9 @@ export default function ColourClothing(props) {
         setLoading(false);
       })
       .catch(function (error) {
-       
         setLoading(false);
 
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -92,11 +79,11 @@ export default function ColourClothing(props) {
 
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-   
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
+
+      <SafeAreaView style={styles.container}>
+        {/* <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => {
             navigation.goBack();
@@ -106,28 +93,30 @@ export default function ColourClothing(props) {
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>COLOUR</Text>
-      </View>
+      </View> */}
+        <NewHeaderComp
+          arrowNavigation={() => props.navigation.navigate('filterScreen')}
+          movePreviousArrow={true}
+          title={'Filters - Colours'}
+        />
 
-      {loading ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
-      ) : (
-        <View style={styles.colorsWrap}>
-          {data?.map((item, index) => {
-          
-            return <View key={index}>{color(item)}</View>;
-          })}
-        </View>
-      )}
-
-     
-    </SafeAreaView>
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <View style={styles.colorsWrap}>
+            {data?.map((item, index) => {
+              return <View key={index}>{color(item)}</View>;
+            })}
+          </View>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -141,7 +130,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-  
+
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -163,15 +152,5 @@ const styles = StyleSheet.create({
     borderRadius: wp2(2),
     marginVertical: hp2(1),
     marginHorizontal: wp2(1),
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
 });

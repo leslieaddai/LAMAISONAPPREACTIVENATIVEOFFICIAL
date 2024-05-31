@@ -1,8 +1,8 @@
 import React from 'react';
 import CheckBox from '@react-native-community/checkbox';
-import { hp2 } from '../../../theme';
+import {hp2} from '../../../theme';
 
-const MyCheckBox = ({ value, onValueChange }) => {
+const MyCheckBox = ({value, onValueChange}) => {
   return (
     <CheckBox
       onTintColor="black"
@@ -17,6 +17,9 @@ const MyCheckBox = ({ value, onValueChange }) => {
         marginBottom: Platform.OS === 'android' ? hp2(-0.5) : hp2(0),
         borderColor: '#D4D4D8', // Set the border color here
         borderWidth: 1, // Optional: You can adjust the border width if needed
+        height: 22,
+        width: 22,
+        borderRadius: 2,
       }}
     />
   );

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ImageComponent,
   Image,
+  ScrollView,
 } from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
@@ -32,6 +33,7 @@ import MyCheckBox from './componnets/MyCheckBox';
 import CustomDatePicker from './componnets/BirthdayComponent';
 import PasswordValidationRow from './componnets/PasswordValidationComponent';
 import ContinueButton from './componnets/ContinueBtn';
+import NewInputComp from '../../components/NewInputComp';
 
 const CreateAccountScreen = props => {
   const special = /[!@#\$%\^\&*\)\(+=._-]/g;
@@ -49,6 +51,8 @@ const CreateAccountScreen = props => {
   const [checkBox, setCheckBox] = useState(false);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorFound, setErorFound] = useState([]);
+  const [catchError, setCatchError] = useState('');
 
   function subtractYears(date, years) {
     date.setFullYear(date.getFullYear() - years);
@@ -140,83 +144,88 @@ const CreateAccountScreen = props => {
       errorMessage('Please fill all details');
     }
   };
-
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
-      <SafeAreaView
-        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-      <SafeAreaView style={styles.container}>
-        <LogoComponent txt={
-          props.route.params.user == 'brand'?
-          'Create New Brand Account'  :
-          'Create New Editor Account'}></LogoComponent>
-
-        {props.route.params.user == 'brand' && (
-          // <View style={styles.inputBox}>
-          <TextEditingComponent
-            style={styles.textBox}
-            onChangeText={val => updateState({BrandName: val})}
-            placeholder="Brand Name"
+      <ScrollView style={styles.container}>
+        <LogoComponent
+          txt={
+            props.route.params.user == 'brand'
+              ? 'Create New Brand Account'
+              : 'Create New Editor Account'
+          }
+        />
+        <View style={{flex: 1, paddingHorizontal: 0}}>
+          {props.route.params.user == 'brand' && (
+            // <TextEditingComponent
+            //   onChangeText={val => updateState({BrandName: val})}
+            //   placeholder="Brand Name"
+            //   placeholderTextColor={'grey'}
+            // />
+            <View style={{marginBottom: -20}}>
+              <NewInputComp
+                inputText={'Brand Name'}
+                handleOnChange={val => updateState({BrandName: val})}
+              />
+            </View>
+          )}
+          {/* <TextEditingComponent
+            onChangeText={val => updateState({UserName: val})}
+            placeholder="Username"
             placeholderTextColor={'grey'}
+          /> */}
+          <NewInputComp
+            inputText={'Username'}
+            handleOnChange={val => updateState({UserName: val})}
           />
-          // </View>
-        )}
-
-        <TextEditingComponent
-          onChangeText={val => updateState({UserName: val})}
-          placeholder="Username"
-          placeholderTextColor={'grey'}
-        />
-        <CustomDatePicker
-          birthday={Birthday}
-          onPress={() => setOpen(true)}></CustomDatePicker>
-        <TextEditingComponent
-          style={styles.textBox}
-          secureTextEntry={true}
-          isPassword={true}
-          onChangeText={val => updateState({Newpassword: val})}
-          placeholder="Password"
-          placeholderTextColor={'grey'}
-        />
-
-        <TextEditingComponent
-          style={styles.textBox}
-          secureTextEntry={true}
-          isPassword={true}
-          onChangeText={val => updateState({ConfirmPass: val})}
-          placeholder="Confirm Password"
-          placeholderTextColor={'grey'}
-        />
-
-        <PasswordValidationRow password={Newpassword}></PasswordValidationRow>
-
-        <DatePicker
-          modal
-          mode="date"
-          open={open}
-          date={Birthday}
-          maximumDate={subtractYears(new Date(), 6)}
-          onConfirm={date => {
-            setOpen(false);
-            updateState({Birthday: date});
-          }}
-          onCancel={() => {
-            setOpen(false);
-          }}
-        />
-        <View style={{flex: 1}}>
-          {/* Spacer to push elements to the top */}
-          <View style={{flex: 1}}></View>
-
-          {/* CheckBox and Terms */}
-          <View style={styles.checkBoxWrap}>
-            <MyCheckBox
-              onTintColor="black"
-              tintColor="black"
-              onFillColor="black"
+          <View style={{marginHorizontal: 20}}>
+            <CustomDatePicker props={styles.inputBox} />
+          </View>
+          {/* <TextEditingComponent
+            secureTextEntry={true}
+            isPassword={true}
+            onChangeText={val => updateState({Newpassword: val})}
+            placeholder="Password"
+            placeholderTextColor={'grey'}
+          /> */}
+          {/* <TextEditingComponent
+            secureTextEntry={true}
+            isPassword={true}
+            onChangeText={val => updateState({ConfirmPass: val})}
+            placeholder="Confirm Password"
+            placeholderTextColor={'grey'}
+          /> */}
+          <View style={{marginVertical: -20}}>
+            <NewInputComp
+              inputText={'Password'}
+              setPassword={true}
+              handleOnChange={val => updateState({Newpassword: val})}
+            />
+          </View>
+          <NewInputComp
+            inputText={'Confirm Password'}
+            setPassword={true}
+            handleOnChange={val => updateState({ConfirmPass: val})}
+          />
+          <View style={{marginHorizontal: 20}}>
+            <PasswordValidationRow password={Newpassword} />
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 15,
+              paddingRight: 20,
+              marginHorizontal: 20,
+              marginTop: 70,
+              marginBottom: 20,
+            }}>
+            <CheckBox
+              onTintColor="#D4D4D4"
+              tintColor="#D4D4D4"
+              onFillColor="#D4D4D4"
               onCheckColor="white"
               boxType="square"
               value={checkBox}
@@ -224,24 +233,29 @@ const CreateAccountScreen = props => {
               tintColors={{true: 'black', false: 'black'}}
               style={{
                 marginBottom: Platform.OS === 'android' ? hp2(-0.5) : hp2(0),
+                borderColor: '#D4D4D8', // Set the border color here
+                borderWidth: 1, // Optional: You can adjust the border width if needed
+                height: 22,
+                width: 22,
+                borderRadius: 2,
               }}
             />
             <TouchableOpacity
               onPress={() => props.navigation.navigate('termsScreen')}>
               <Text style={styles.termsTxt}>
-                I’ve read and accept app Terms and Conditions
+                I've read and accept app Terms and Conditions
               </Text>
             </TouchableOpacity>
           </View>
-
-          {/* Continue Button */}
-          <ContinueButton
-            text={'Create Account'}
-            style={{width: '90%', marginHorizontal: 20, marginBottom: 50}}
-            onPress={onCreate}
-          />
+          <View style={{marginHorizontal: 20}}>
+            <ContinueButton
+              text={'Create Account'}
+              style={{width: '100%', marginBottom: 50}}
+              onPress={onCreate}
+            />
+          </View>
         </View>
-      </SafeAreaView>
+      </ScrollView>
     </>
   );
 };
@@ -257,7 +271,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-
     justifyContent: 'center',
     marginBottom: hp2(1),
   },
@@ -322,29 +335,23 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
     elevation: 5,
-  },
-  textBox: {
-    flex: 1,
-    color: 'black',
-    paddingHorizontal: wp2(2),
-    fontSize: rfv(13),
-    fontWeight: '700',
   },
   textTwo: {fontWeight: '400', fontSize: rfv(10)},
   checkBoxWrap: {
     flexDirection: 'row',
     marginLeft: wp2(4),
     marginTop: 20,
-    alignItems: 'flex-end',
+    gap: 10,
+    alignItems: 'center',
     marginVertical: hp2(3),
   },
   termsTxt: {
     marginBottom: 2,
-    color: 'black',
+    color: '#000000',
     fontWeight: '400',
-    fontSize: rfv(11),
-    marginLeft: Platform.OS === 'android' ? wp2(0) : wp2(2),
+    fontSize: 14,
+    fontFamily: 'Poppins-Regular',
+    marginLeft: Platform.OS === 'android' ? wp2(0) : wp2(0),
   },
 });

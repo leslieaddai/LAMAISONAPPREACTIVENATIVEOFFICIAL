@@ -2,28 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 
 import {errorMessage} from '../../config/NotificationMessage';
@@ -33,6 +20,7 @@ import {StylesUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function Style(props) {
   const {Style, Id} = useSelector(state => state.Style);
@@ -50,14 +38,13 @@ export default function Style(props) {
     axios
       .get(StylesUrl)
       .then(async function (res) {
-      
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
         setLoading(false);
-       
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -77,49 +64,40 @@ export default function Style(props) {
         <View
           style={[
             styles.circle,
-            {backgroundColor: selected == text?.id ? 'black' : '#D9D9D9'},
+            {backgroundColor: selected == text?.id ? COLORS.main : 'white'},
           ]}></View>
       </TouchableOpacity>
     );
   };
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
- 
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            
-          }}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>STYLE</Text>
-      </View>
 
-      {loading ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
-      ) : (
-        <>
-          {data?.map((item, index) => {
-           
-            return <View key={index}>{options(item)}</View>;
-          })}
-        </>
-      )}
+      <SafeAreaView style={styles.container}>
+        <NewHeaderComp
+          arrowNavigation={() => props.navigation.navigate('filterScreen')}
+          movePreviousArrow={true}
+          title={'Filters - Style'}
+        />
 
-      
-    </SafeAreaView>
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <>
+            {data?.map((item, index) => {
+              return <View key={index}>{options(item)}</View>;
+            })}
+          </>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -133,7 +111,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-   
+
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -144,19 +122,19 @@ const styles = StyleSheet.create({
   },
   optionWrap: {
     width: wp2(90),
-    height: hp2(4),
-   
-    borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingHorizontal: wp2(1),
-    marginTop: hp2(2),
     alignSelf: 'center',
+    backgroundColor: COLORS.gray100,
+    padding: 20,
+    borderRadius: 10,
+    marginTop: 10,
   },
   circle: {
     width: wp2(5),
     height: wp2(5),
-    
-    borderRadius: 100,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: COLORS.gray,
   },
 });

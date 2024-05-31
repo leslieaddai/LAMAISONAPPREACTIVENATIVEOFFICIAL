@@ -12,24 +12,10 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import {
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-import {
-
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
-  ICONS,
-  COLORS,
-  
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {IMAGES, ICONS, COLORS, wp2, hp2} from '../../theme';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
@@ -56,14 +42,20 @@ import RenderHtml from 'react-native-render-html';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewDressingComp from '../../components/SkeletonViewComponents/SkeletonViewDressingComp';
 import OneSignal from 'react-native-onesignal';
+import LikePhoto from '../../assets/icons/like.svg';
+import Hanger from '../../assets/icons/hanger.svg';
+import Share from '../../assets/icons/share.svg';
+import HeaderComponent from '../auth/componnets/HeaderComponnet';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function DressingRoomScreen(props) {
   const [heart, setHeart] = useState(null);
   const [share, setShare] = useState(null);
   const [hanger, setHanger] = useState(null);
-  
+
   const [show, setShow] = useState(false);
-  const [qty,setQty]=useState();
+  const [qty, setQty] = useState();
 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -72,45 +64,42 @@ export default function DressingRoomScreen(props) {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
-  
 
   const [colorId, setColorId] = useState();
   const [sizeId, setSizeId] = useState(null);
 
   const [appNotice, setAppNotice] = useState(null);
-  const [brandImageload,setBrandImageload] = useState(false)
-  const [firstImageLoad,setfirstImageLoad] = useState(false)
-  const [secoundImageLoad,setSecoundImageLoad] = useState(false)
-  const [thirdImageLoad,setThirdImageLoad] = useState(false)
-  const [loadingimag, setLoadingImage] = useState(false)
-  const onloading = (value,label)=>{
-    setLoadingImage(value)
-  }
-  const onBrandloading = (value,label)=>{
-    setBrandImageload(value)
-  }
-  const onFirstloading = (value,label)=>{
-    setfirstImageLoad(value)
-  }
-  const onSecoundloading = (value,label)=>{
-    setSecoundImageLoad(value)
-  }
-  const onThirdloading = (value,label)=>{
-    setThirdImageLoad(value)
-  }
+  const [brandImageload, setBrandImageload] = useState(false);
+  const [firstImageLoad, setfirstImageLoad] = useState(false);
+  const [secoundImageLoad, setSecoundImageLoad] = useState(false);
+  const [thirdImageLoad, setThirdImageLoad] = useState(false);
+  const [loadingimag, setLoadingImage] = useState(false);
+  const onloading = (value, label) => {
+    setLoadingImage(value);
+  };
+  const onBrandloading = (value, label) => {
+    setBrandImageload(value);
+  };
+  const onFirstloading = (value, label) => {
+    setfirstImageLoad(value);
+  };
+  const onSecoundloading = (value, label) => {
+    setSecoundImageLoad(value);
+  };
+  const onThirdloading = (value, label) => {
+    setThirdImageLoad(value);
+  };
 
   useEffect(() => {
     axios
       .get(GetAppNotice)
       .then(async function (res) {
-        
         setAppNotice({
           html: `${res?.data?.data?.description}`,
         });
       })
       .catch(function (error) {
-        
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -120,7 +109,6 @@ export default function DressingRoomScreen(props) {
     axios
       .get(GetProductInfoById + `${props?.route?.params?.data?.product?.id}`)
       .then(async function (res) {
-        
         setData(res.data.data);
         setColorId(res.data.data.product_variations[0].color);
 
@@ -130,19 +118,15 @@ export default function DressingRoomScreen(props) {
               `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
             )
             .then(async function (res) {
-            
               setHeart(res?.data?.data?.is_liked > 0 ? true : null);
               setHanger(res?.data?.data?.is_wishlist > 0 ? true : null);
               setShare(res?.data?.data?.is_shared > 0 ? true : null);
               setLoading2(false);
-
-                   
-
             })
             .catch(function (e) {
               setLoading2(false);
-            
-              errorMessage(errorHandler(error))
+
+              errorMessage(errorHandler(error));
             });
         } else {
           setLoading2(false);
@@ -150,8 +134,8 @@ export default function DressingRoomScreen(props) {
       })
       .catch(function (error) {
         setLoading2(false);
-        
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -177,7 +161,7 @@ export default function DressingRoomScreen(props) {
                 qty: 1,
                 size_id: sizeId?.size_id,
                 color_id: colorId?.id,
-               
+
                 style_id: data?.style,
                 category_id: data?.category?.id,
                 piece_id: data?.piece?.id,
@@ -197,8 +181,6 @@ export default function DressingRoomScreen(props) {
               axios
                 .request(config)
                 .then(async function (res) {
-                
-
                   dispatch({
                     type: types.AddToBasket,
                   });
@@ -207,18 +189,17 @@ export default function DressingRoomScreen(props) {
                   successMessage('Success');
                 })
                 .catch(function (error) {
-                 
                   setLoading(false);
-                  
-                  errorMessage(errorHandler(error))
-                  if(error.response.data.message === 'Unauthenticated.'){
+
+                  errorMessage(errorHandler(error));
+                  if (error.response.data.message === 'Unauthenticated.') {
                     dispatch({
-                            type: types.Clearcart,
-                          });
-                          dispatch({
-                            type: types.Logout,
-                          });
-                      OneSignal.removeExternalUserId()
+                      type: types.Clearcart,
+                    });
+                    dispatch({
+                      type: types.Logout,
+                    });
+                    OneSignal.removeExternalUserId();
                   }
                 });
             },
@@ -232,9 +213,16 @@ export default function DressingRoomScreen(props) {
 
   const AddBasketGuest = () => {
     if (sizeId !== null) {
-      if(products.some(e => e.data.id === props?.route?.params?.data?.product?.id && e.colorId.id === colorId.id && e.sizeId.size_id === sizeId.size_id)){
-        errorMessage('This Variation is Already in Your Basket!')
-      }else{
+      if (
+        products.some(
+          e =>
+            e.data.id === props?.route?.params?.data?.product?.id &&
+            e.colorId.id === colorId.id &&
+            e.sizeId.size_id === sizeId.size_id,
+        )
+      ) {
+        errorMessage('This Variation is Already in Your Basket!');
+      } else {
         Alert.alert(
           'Confirmation',
           'Do you want to add this product into your basket?',
@@ -249,7 +237,7 @@ export default function DressingRoomScreen(props) {
               onPress: () => {
                 dispatch({
                   type: types.AddToBasketGuest,
-                  payload: {data,colorId,sizeId,Quantity:1}
+                  payload: {data, colorId, sizeId, Quantity: 1},
                 });
               },
             },
@@ -262,7 +250,7 @@ export default function DressingRoomScreen(props) {
   };
 
   const AddWishlist = () => {
-    console.log(props?.route?.params?.data?.product?.id)
+    console.log(props?.route?.params?.data?.product?.id);
     Alert.alert(
       'Confirmation',
       'Do you want to add this product into your wishlist?',
@@ -275,12 +263,11 @@ export default function DressingRoomScreen(props) {
         {
           text: 'Yes',
           onPress: () => {
-          
             setLoading(true);
-            
-            let obj={
-              product_id:props?.route?.params?.data?.product?.id
-            }
+
+            let obj = {
+              product_id: props?.route?.params?.data?.product?.id,
+            };
 
             let config = {
               method: 'post',
@@ -296,8 +283,7 @@ export default function DressingRoomScreen(props) {
             axios
               .request(config)
               .then(async function (res) {
-                console.log(res.data)
-               
+                console.log(res.data);
 
                 axios
                   .get(
@@ -313,43 +299,34 @@ export default function DressingRoomScreen(props) {
                           `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
-                          
                           setHanger(
                             res?.data?.data?.is_wishlist > 0 ? true : null,
                           );
-                         
 
                           setLoading(false);
                           successMessage('Success');
                         })
                         .catch(function (e) {
-                         
-
                           setLoading(false);
-                         
-                          errorMessage(errorHandler(error))
+
+                          errorMessage(errorHandler(error));
                         });
                     } else {
                       setLoading(false);
                       successMessage('Success');
                     }
-
-                   
                   })
                   .catch(function (error) {
-                  
                     setLoading(false);
-                  
-                    errorMessage(errorHandler(error))
-                  });
 
-           
+                    errorMessage(errorHandler(error));
+                  });
               })
               .catch(function (error) {
-               console.log(error.response.data)
+                console.log(error.response.data);
                 setLoading(false);
-               
-                errorMessage(errorHandler(error))
+
+                errorMessage(errorHandler(error));
               });
           },
         },
@@ -370,7 +347,6 @@ export default function DressingRoomScreen(props) {
         {
           text: 'Yes',
           onPress: () => {
-            
             setLoading(true);
 
             let config = {
@@ -386,8 +362,6 @@ export default function DressingRoomScreen(props) {
             axios
               .request(config)
               .then(async function (res) {
-               
-
                 axios
                   .get(
                     GetProductInfoById +
@@ -402,43 +376,33 @@ export default function DressingRoomScreen(props) {
                           `${API_BASED_URL}product/${props?.route?.params?.data?.product?.id}/${user?.userData?.id}`,
                         )
                         .then(async function (res) {
-                         
                           setHanger(
                             res?.data?.data?.is_wishlist > 0 ? true : null,
                           );
-                          
 
                           setLoading(false);
                           successMessage('Success');
                         })
                         .catch(function (e) {
-                        
-
                           setLoading(false);
-                         
-                          errorMessage(errorHandler(error))
+
+                          errorMessage(errorHandler(error));
                         });
                     } else {
                       setLoading(false);
                       successMessage('Success');
                     }
-
-                 
                   })
                   .catch(function (error) {
-                   
                     setLoading(false);
-                   
-                    errorMessage(errorHandler(error))
-                  });
 
-               
+                    errorMessage(errorHandler(error));
+                  });
               })
               .catch(function (error) {
-              
                 setLoading(false);
-               
-                errorMessage(errorHandler(error))
+
+                errorMessage(errorHandler(error));
               });
           },
         },
@@ -447,24 +411,23 @@ export default function DressingRoomScreen(props) {
   };
 
   const BuyNowButton = () => {
-    if(qty!==undefined && qty!=='' && qty!=0 && qty!==null){
+    if (qty !== undefined && qty !== '' && qty != 0 && qty !== null) {
       var numberRegex = /^\d+$/;
-      if(numberRegex.test(qty)){
-        props.navigation.navigate('buyNow',{data,qty,colorId,sizeId})
-      }else{
-        errorMessage('Please remove decimal value!')
+      if (numberRegex.test(qty)) {
+        props.navigation.navigate('buyNow', {data, qty, colorId, sizeId});
+      } else {
+        errorMessage('Please remove decimal value!');
       }
-    }else{
-      errorMessage('Please add quantity!')
+    } else {
+      errorMessage('Please add quantity!');
     }
-  }
+  };
 
   const productLikeDislike = () => {
-    
-    let obj ={
-      user_id:user?.userData?.id,
-      product_id:props?.route?.params?.data?.product?.id
-    }
+    let obj = {
+      user_id: user?.userData?.id,
+      product_id: props?.route?.params?.data?.product?.id,
+    };
 
     let config = {
       method: 'post',
@@ -480,8 +443,6 @@ export default function DressingRoomScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-       
-
         axios
           .get(
             GetProductInfoById + `${props?.route?.params?.data?.product?.id}`,
@@ -496,50 +457,39 @@ export default function DressingRoomScreen(props) {
                 )
                 .then(async function (res) {
                   setHeart(res?.data?.data?.is_liked > 0 ? true : null);
-                  
 
                   setLoading(false);
                   successMessage('Success');
                 })
                 .catch(function (e) {
-                 
-
                   setLoading(false);
-                 
-                  errorMessage(errorHandler(error))
+
+                  errorMessage(errorHandler(error));
                 });
             } else {
               setLoading(false);
               successMessage('Success');
             }
-
-         
           })
           .catch(function (error) {
-          
             setLoading(false);
-            
-            errorMessage(errorHandler(error))
-          });
 
-       
+            errorMessage(errorHandler(error));
+          });
       })
       .catch(function (error) {
-        
         setLoading(false);
-      
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
   const productShare = () => {
-  
-
     setLoading(true);
-    let obj ={
-      user_id:user?.userData?.id,
-      product_id:props?.route?.params?.data?.product?.id
-    }
+    let obj = {
+      user_id: user?.userData?.id,
+      product_id: props?.route?.params?.data?.product?.id,
+    };
 
     let config = {
       method: 'post',
@@ -555,8 +505,6 @@ export default function DressingRoomScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-       
-
         axios
           .get(
             GetProductInfoById + `${props?.route?.params?.data?.product?.id}`,
@@ -565,39 +513,31 @@ export default function DressingRoomScreen(props) {
             setData(res?.data?.data);
 
             if (user?.token !== '') {
-            
-                  setShare(share===null?true:null);
-                  setLoading(false);
-                  successMessage('Success');
+              setShare(share === null ? true : null);
+              setLoading(false);
+              successMessage('Success');
             } else {
               setLoading(false);
               successMessage('Success');
             }
-
-          
           })
           .catch(function (error) {
-           
             setLoading(false);
-          
-            errorMessage(errorHandler(error))
-          });
 
-   
+            errorMessage(errorHandler(error));
+          });
       })
       .catch(function (error) {
-        
         setLoading(false);
-       
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
   const scrollX = new Animated.Value(0);
   return (
     <>
-    
-     {show ? (
+      {show ? (
         <View style={styles.containerPopUp}>
           <View style={styles.disclaimerBox}>
             <TouchableOpacity
@@ -640,34 +580,40 @@ export default function DressingRoomScreen(props) {
       ) : null}
 
       <View style={{position: 'absolute', zIndex: 999}}>
-        {loading && 
-        <ScrollView style={{flex:1}}>
+        {loading && (
+          <ScrollView style={{flex: 1}}>
             {/* <SkeletonViewDressingComp/> */}
-            <LoaderComp/>
-            </ScrollView>}
+            <LoaderComp />
+          </ScrollView>
+        )}
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          <View style={styles.headWrap}>
+          <NewHeaderComp
+            title={'Dressing room'}
+            width="58%"
+            movePreviousArrow={true}
+            arrowNavigation={() => props.navigation.goBack()}
+          />
+          {/* <View style={styles.headWrap}>
             <TouchableOpacity
               onPress={() => props.navigation.goBack()}
               style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
               <ICONS.AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.dressingText}>DRESSING ROOM</Text>
-          </View>
+          </View> */}
           {loading2 ? (
-            <ScrollView style={{flex:1}}>
-            <SkeletonViewDressingComp/>
+            <ScrollView style={{flex: 1}}>
+              <SkeletonViewDressingComp />
             </ScrollView>
           ) : (
             <ScrollView
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{
                 paddingBottom: hp2(12),
-                paddingTop: hp2(2),
               }}>
               <View style={styles.iconWraper}>
                 <View style={styles.shadow}>
@@ -684,25 +630,36 @@ export default function DressingRoomScreen(props) {
                         },
                       })
                     }
-                    style={[styles.brandImage,{backgroundColor:'white'}]}>
-                      {brandImageload?
-                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={styles.skeletonView} />
-                    </View>
-                    </SkeletonPlaceholder>
-                :
-                undefined
-                    }
+                    style={[styles.brandImage, {backgroundColor: 'white'}]}>
+                    {brandImageload ? (
+                      <SkeletonPlaceholder
+                        borderRadius={4}
+                        alignItems="center"
+                        backgroundColor="#dddddd">
+                        <View
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <View style={styles.skeletonView} />
+                        </View>
+                      </SkeletonPlaceholder>
+                    ) : undefined}
                     <Image
-                    progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onBrandloading(true,"onLoadStart")}}
-                    onLoad={()=>onBrandloading(false,"onLoad")}
-                    onLoadEnd={()=>{onBrandloading(false,"onLoadEnd")}}
-                     
-                      source={data?.user?.profile_image!==null?{uri: data?.user?.profile_image?.original_url}:IMAGES.profileIcon3}
-                      style={{width: '100%', height: '100%'}}
-                      resizeMode="contain"
+                      progressiveRenderingEnabled={true}
+                      onLoadStart={() => {
+                        onBrandloading(true, 'onLoadStart');
+                      }}
+                      onLoad={() => onBrandloading(false, 'onLoad')}
+                      onLoadEnd={() => {
+                        onBrandloading(false, 'onLoadEnd');
+                      }}
+                      source={
+                        data?.user?.profile_image !== null
+                          ? {uri: data?.user?.profile_image?.original_url}
+                          : IMAGES.profileIcon3
+                      }
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                      }}
                     />
                   </TouchableOpacity>
                 </View>
@@ -713,10 +670,10 @@ export default function DressingRoomScreen(props) {
                       ? productLikeDislike()
                       : errorMessage('You cant like!');
                   }}>
-                  <ICONS.AntDesign
-                    name="heart"
-                    size={24}
-                    color={heart !== null ? '#FC0004' : 'black'}
+                  <LikePhoto
+                    width={24}
+                    height={24}
+                    color={heart !== null ? '#FC0004' : '#000'}
                   />
                 </TouchableOpacity>
                 <Text style={{color: 'black'}}>
@@ -730,26 +687,26 @@ export default function DressingRoomScreen(props) {
                         : AddWishlist()
                       : errorMessage('You cant add to wishlist!');
                   }}>
-                  <ICONS.MaterialCommunityIcons
-                    name="hanger"
-                    size={34}
-                    color={hanger !== null ? '#162FAC' : 'black'}
+                  <Hanger
+                    width={24}
+                    height={24}
+                    color={hanger !== null ? '#FC0004' : 'black'}
                   />
                 </TouchableOpacity>
                 <Text style={{color: 'black'}}>
                   {data?.product_wishlist_count}
                 </Text>
                 <TouchableOpacity
-                disabled={loading}
+                  disabled={loading}
                   onPress={() => {
                     user?.token !== ''
                       ? productShare()
                       : errorMessage('You cant share!');
                   }}>
-                  <ICONS.FontAwesome
-                    name="retweet"
-                    size={24}
-                    color={share !== null ? '#13D755' : 'black'}
+                  <Share
+                    width={24}
+                    height={24}
+                    color={share !== null ? '#FC0004' : 'black'}
                   />
                 </TouchableOpacity>
                 <Text style={{color: 'black'}}>
@@ -762,28 +719,38 @@ export default function DressingRoomScreen(props) {
                   <View style={styles.shadow}>
                     <TouchableOpacity
                       onPress={() =>
-                       
-                        props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:0})
+                        props.navigation.navigate('imageViewScreen', {
+                          item: [{image: data?.product_images?.[0]?.image}],
+                          indexValue: 0,
+                        })
                       }
                       style={[
                         styles.brandImage,
                         {width: wp2(54), height: hp2(28), borderRadius: wp2(2)},
                       ]}>
-                      {firstImageLoad?
-                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={styles.skeletonFistImage} />
-                    </View>
-                    </SkeletonPlaceholder>
-                :
-                undefined
-                    }
+                      {firstImageLoad ? (
+                        <SkeletonPlaceholder
+                          borderRadius={4}
+                          alignItems="center"
+                          backgroundColor="#dddddd">
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View style={styles.skeletonFistImage} />
+                          </View>
+                        </SkeletonPlaceholder>
+                      ) : undefined}
                       <Image
-                      progressiveRenderingEnabled={true}
-                      onLoadStart={()=>{onFirstloading(true,"onLoadStart")}}
-                      onLoad={()=>onFirstloading(false,"onLoad")}
-                      onLoadEnd={()=>{onFirstloading(false,"onLoadEnd")}}
-                      
+                        progressiveRenderingEnabled={true}
+                        onLoadStart={() => {
+                          onFirstloading(true, 'onLoadStart');
+                        }}
+                        onLoad={() => onFirstloading(false, 'onLoad')}
+                        onLoadEnd={() => {
+                          onFirstloading(false, 'onLoadEnd');
+                        }}
                         source={{
                           uri: data?.product_images?.[0]?.image?.[0]
                             ?.original_url,
@@ -805,7 +772,6 @@ export default function DressingRoomScreen(props) {
                         },
                       ]}>
                       <Animated.ScrollView
-                       
                         horizontal
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
@@ -822,16 +788,25 @@ export default function DressingRoomScreen(props) {
                                 styles.headingText,
                                 {
                                   alignSelf: 'flex-start',
-                                  marginLeft: wp2(1),
-                                  fontSize: rfv(14),
+
+                                  fontSize: 24,
                                   marginBottom: hp2(1),
                                 },
                               ]}>
                               {data?.name}
                             </Text>
-                            <Text style={[styles.priceTxt,{paddingLeft:3}]}>
-                              PRICE: £{data?.price}
-                            </Text>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 10,
+                                marginBottom: 10,
+                              }}>
+                              <Text style={{fontSize: 18}}>Price:</Text>
+                              <Text style={{fontWeight: '600', fontSize: 18}}>
+                                £{data?.price}
+                              </Text>
+                            </View>
                             <Text
                               style={[styles.text, {paddingBottom: hp2(3)}]}>
                               Description: {data?.description}
@@ -843,11 +818,15 @@ export default function DressingRoomScreen(props) {
                           <ScrollView
                             nestedScrollEnabled={true}
                             showsVerticalScrollIndicator={false}>
-                            <Text style={styles.headingText}>
-                              shipping information
-                            </Text>
                             <Text
-                              style={[styles.text, {paddingBottom: hp2(3)}]}>
+                              style={{
+                                marginTop: 20,
+                                fontSize: 18,
+                                fontWeight: 600,
+                              }}>
+                              Shipping Information
+                            </Text>
+                            <Text style={[styles.text, {marginTop: 10}]}>
                               {data?.user?.shipping_information?.description}
                             </Text>
                           </ScrollView>
@@ -857,7 +836,14 @@ export default function DressingRoomScreen(props) {
                           <ScrollView
                             nestedScrollEnabled={true}
                             showsVerticalScrollIndicator={false}>
-                            <Text style={styles.headingText}>
+                            <Text
+                              style={{
+                                marginTop: 20,
+                                fontSize: 18,
+                                fontWeight: 600,
+                                marginLeft: 4,
+                                marginBottom: 10,
+                              }}>
                               La maison App Notice
                             </Text>
                             {appNotice !== null ? (
@@ -871,7 +857,6 @@ export default function DressingRoomScreen(props) {
                             ) : (
                               <SkypeIndicator color={'black'} />
                             )}
-                           
                           </ScrollView>
                         </View>
                       </Animated.ScrollView>
@@ -894,33 +879,44 @@ export default function DressingRoomScreen(props) {
                 <View style={[styles.imagesWrap, {width: wp2(40)}]}>
                   <View style={styles.shadow}>
                     <TouchableOpacity
-                     onPress={() =>
-                      
-                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
-                        data?.product_images?.[0]?.image.length === 1 ? 0
-                        : data?.product_images?.[0]?.image.length >= 2 ? 1
-                        : null,
-                      })
-                    }
+                      onPress={() =>
+                        props.navigation.navigate('imageViewScreen', {
+                          item: [{image: data?.product_images?.[0]?.image}],
+                          indexValue:
+                            data?.product_images?.[0]?.image.length === 1
+                              ? 0
+                              : data?.product_images?.[0]?.image.length >= 2
+                              ? 1
+                              : null,
+                        })
+                      }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                    {secoundImageLoad?
-                   <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                   <View style={styles.skeletonImage} />
-                   </View>
-                   </SkeletonPlaceholder>
-                :
-                undefined
-                    }
+                      {secoundImageLoad ? (
+                        <SkeletonPlaceholder
+                          borderRadius={4}
+                          alignItems="center"
+                          backgroundColor="#dddddd">
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View style={styles.skeletonImage} />
+                          </View>
+                        </SkeletonPlaceholder>
+                      ) : undefined}
                       <Image
-                       
                         progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onSecoundloading(true,"onLoadStart")}}
-                    onLoad={()=>onSecoundloading(false,"onLoad")}
-                    onLoadEnd={()=>{onSecoundloading(false,"onLoadEnd")}}
+                        onLoadStart={() => {
+                          onSecoundloading(true, 'onLoadStart');
+                        }}
+                        onLoad={() => onSecoundloading(false, 'onLoad')}
+                        onLoadEnd={() => {
+                          onSecoundloading(false, 'onLoadEnd');
+                        }}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -938,33 +934,46 @@ export default function DressingRoomScreen(props) {
                   </View>
                   <View style={styles.shadow}>
                     <TouchableOpacity
-                    onPress={() =>
-                     
-                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
-                        data?.product_images?.[0]?.image.length === 1 ? 0
-                        : data?.product_images?.[0]?.image.length === 2 ? 0
-                         : data?.product_images?.[0]?.image.length >= 3 ? 2
-                           : null,
-                      })
-                    }
+                      onPress={() =>
+                        props.navigation.navigate('imageViewScreen', {
+                          item: [{image: data?.product_images?.[0]?.image}],
+                          indexValue:
+                            data?.product_images?.[0]?.image.length === 1
+                              ? 0
+                              : data?.product_images?.[0]?.image.length === 2
+                              ? 0
+                              : data?.product_images?.[0]?.image.length >= 3
+                              ? 2
+                              : null,
+                        })
+                      }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                    {thirdImageLoad?
-                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={styles.skeletonImage} />
-                    </View>
-                    </SkeletonPlaceholder>
-                :
-                undefined
-                    }
+                      {thirdImageLoad ? (
+                        <SkeletonPlaceholder
+                          borderRadius={4}
+                          alignItems="center"
+                          backgroundColor="#dddddd">
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View style={styles.skeletonImage} />
+                          </View>
+                        </SkeletonPlaceholder>
+                      ) : undefined}
                       <Image
                         progressiveRenderingEnabled={true}
-                        onLoadStart={()=>{onThirdloading(true,"onLoadStart")}}
-                        onLoad={()=>onThirdloading(false,"onLoad")}
-                        onLoadEnd={()=>{onThirdloading(false,"onLoadEnd")}}
+                        onLoadStart={() => {
+                          onThirdloading(true, 'onLoadStart');
+                        }}
+                        onLoad={() => onThirdloading(false, 'onLoad')}
+                        onLoadEnd={() => {
+                          onThirdloading(false, 'onLoadEnd');
+                        }}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -985,35 +994,48 @@ export default function DressingRoomScreen(props) {
                   </View>
                   <View style={styles.shadow}>
                     <TouchableOpacity
-                    onPress={() =>
-                     
-                      props.navigation.navigate('imageViewScreen',{item:[{image:data?.product_images?.[0]?.image}],indexValue:
-                        data?.product_images?.[0]?.image.length === 1? 0
-                          : data?.product_images?.[0]?.image.length === 2? 1
-                           : data?.product_images?.[0]?.image.length === 3? 0
-                              : data?.product_images?.[0]?.image.length === 4? 3
+                      onPress={() =>
+                        props.navigation.navigate('imageViewScreen', {
+                          item: [{image: data?.product_images?.[0]?.image}],
+                          indexValue:
+                            data?.product_images?.[0]?.image.length === 1
+                              ? 0
+                              : data?.product_images?.[0]?.image.length === 2
+                              ? 1
+                              : data?.product_images?.[0]?.image.length === 3
+                              ? 0
+                              : data?.product_images?.[0]?.image.length === 4
+                              ? 3
                               : null,
-                      })
-                    }
+                        })
+                      }
                       style={[
                         styles.brandImage,
                         {width: wp2(34), height: hp2(14), borderRadius: wp2(2)},
                       ]}>
-                    {loadingimag?
-                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={styles.skeletonImage} />
-                    </View>
-                    </SkeletonPlaceholder>
-                :
-                undefined
-                    }
+                      {loadingimag ? (
+                        <SkeletonPlaceholder
+                          borderRadius={4}
+                          alignItems="center"
+                          backgroundColor="#dddddd">
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View style={styles.skeletonImage} />
+                          </View>
+                        </SkeletonPlaceholder>
+                      ) : undefined}
                       <Image
-                        
                         progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                    onLoad={()=>onloading(false,"onLoad")}
-                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+                        onLoadStart={() => {
+                          onloading(true, 'onLoadStart');
+                        }}
+                        onLoad={() => onloading(false, 'onLoad')}
+                        onLoadEnd={() => {
+                          onloading(false, 'onLoadEnd');
+                        }}
                         source={{
                           uri:
                             data?.product_images?.[0]?.image.length === 1
@@ -1049,7 +1071,6 @@ export default function DressingRoomScreen(props) {
                           width: wp2(34),
                           height: hp2(14),
                           borderRadius: wp2(2),
-                         
                           backgroundColor: colorId?.color_code,
                         },
                       ]}></TouchableOpacity>
@@ -1057,27 +1078,89 @@ export default function DressingRoomScreen(props) {
                 </View>
               </View>
 
-              <TouchableOpacity onPress={() =>
-                    props.navigation.navigate('selectSizes', {
-                      data: data,
-                      color: colorId,
-                      state: {sizeId, setSizeId},
-                    })
-                  } style={styles.filters}>
+              <TouchableOpacity
+                onPress={() =>
+                  props.navigation.navigate('selectSizes', {
+                    data: data,
+                    color: colorId,
+                    state: {sizeId, setSizeId},
+                  })
+                }
+                style={styles.filters}>
                 <Text style={{color: 'black'}}>SIZE</Text>
                 <Text style={styles.selectedSizeTxt}>{sizeId?.size?.size}</Text>
                 <View>
                   <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
                 </View>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => props.navigation.navigate('review',{data:data?.id})} style={styles.filters}>
+              <TouchableOpacity
+                onPress={() =>
+                  props.navigation.navigate('review', {data: data?.id})
+                }
+                style={styles.filters}>
                 <Text style={{color: 'black'}}>REVIEWS</Text>
                 <View>
                   <ICONS.AntDesign name="right" size={24} color="#A1A1A1" />
                 </View>
               </TouchableOpacity>
+              <View
+                style={{
+                  marginHorizontal: 20,
+                  marginTop: 20,
+                  flexDirection: 'column',
+                  gap: 10,
+                }}>
+                <ContinueButton
+                  onPress={() => {
+                    AddBasket();
+                  }}
+                  text={'Buy now'}
+                />
+                {/* <ContinueButton
+                  onPress={() =>
+                    sizeId !== null
+                      ? setShow(true)
+                      : errorMessage('Please select size before proceeding')
+                  }
+                  text={'Buy now'}
+                /> */}
+                {/* <View style={{flexDirection: 'row', gap: 10}}>
+                  {user?.token !== '' ? (
+                    <ContinueButton
+                      style={{width: '50%'}}
+                      onPress={() => {
+                        AddBasket();
+                      }}
+                      text={'Add to basket'}
+                    />
+                  ) : (
+                    <ContinueButton
+                      style={{width: '50%'}}
+                      onPress={() => {
+                        AddBasketGuest();
+                      }}
+                      text={'Add to basket'}
+                    />
+                  )}
+                  <ContinueButton
+                    style={{width: '48%'}}
+                    onPress={() => {
+                      user?.userData?.role?.[0]?.id !== 3 && user?.token !== ''
+                        ? hanger !== null
+                          ? RemoveWishlist()
+                          : AddWishlist()
+                        : errorMessage('You cant add to wishlist!');
+                    }}
+                    text={
+                      hanger !== null
+                        ? 'Remove from wishlist'
+                        : 'Add to wishlist'
+                    }
+                  />
+                </View> */}
+              </View>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   sizeId !== null
                     ? setShow(true)
@@ -1088,27 +1171,31 @@ export default function DressingRoomScreen(props) {
                   {alignSelf: 'center', marginVertical: hp2(4)},
                 ]}>
                 <Text style={styles.buttonText}>BUY NOW</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
-              <View style={{flexDirection: 'row', alignSelf: 'center'}}>
-                {user?.token!==''?(
+              {/* <View style={{flexDirection: 'row', alignSelf: 'center'}}>
+                {user?.token !== '' ? (
                   <TouchableOpacity
-                  onPress={()=>{AddBasket()}}
-                  style={[
-                    styles.button,
-                    {width: wp2(40), marginHorizontal: wp2(2)},
-                  ]}>                  
+                    onPress={() => {
+                      AddBasket();
+                    }}
+                    style={[
+                      styles.button,
+                      {width: wp2(40), marginHorizontal: wp2(2)},
+                    ]}>
                     <Text style={styles.buttonText}>{'ADD TO BASKET'}</Text>
-                </TouchableOpacity>
-                ):(
+                  </TouchableOpacity>
+                ) : (
                   <TouchableOpacity
-                  onPress={()=>{AddBasketGuest()}}
-                  style={[
-                    styles.button,
-                    {width: wp2(40), marginHorizontal: wp2(2)},
-                  ]}>                  
+                    onPress={() => {
+                      AddBasketGuest();
+                    }}
+                    style={[
+                      styles.button,
+                      {width: wp2(40), marginHorizontal: wp2(2)},
+                    ]}>
                     <Text style={styles.buttonText}>{'ADD TO BASKET'}</Text>
-                </TouchableOpacity>
+                  </TouchableOpacity>
                 )}
                 <TouchableOpacity
                   onPress={() => {
@@ -1128,10 +1215,9 @@ export default function DressingRoomScreen(props) {
                       : 'ADD TO WISHLIST'}
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </ScrollView>
           )}
-         
         </View>
       </SafeAreaView>
     </>
@@ -1161,12 +1247,10 @@ const styles = StyleSheet.create({
   },
 
   brandImage: {
-    width: wp2(16),
-    height: hp2(8),
+    width: 80,
+    height: 80,
     overflow: 'hidden',
-    borderRadius: wp2(6),
-    
-
+    borderRadius: 500,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -1176,20 +1260,13 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  skeletonView:{
+  skeletonView: {
     width: wp2(16),
     height: hp2(8),
     borderRadius: wp2(6),
   },
   shadow: {
     shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    
   },
   imagesWrap: {
     height: hp2(60),
@@ -1197,9 +1274,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
   },
-  textBox: {width: wp2(54), height: hp2(28)},
+  textBox: {width: wp2(54), height: hp2(28), paddingHorizontal: 10},
   headingText: {
-    fontSize: rfv(12),
     fontWeight: '600',
     color: 'black',
     textTransform: 'uppercase',
@@ -1207,11 +1283,10 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   text: {
-    textTransform: 'uppercase',
+    textTransform: 'capitalize',
     color: 'black',
     textAlign: 'auto',
     fontSize: rfv(10),
-    paddingHorizontal: wp2(1),
   },
   filters: {
     flexDirection: 'row',
@@ -1253,7 +1328,7 @@ const styles = StyleSheet.create({
   },
   priceTxt: {
     color: 'black',
-    fontSize: rfv(12),
+    fontSize: 18,
     marginLeft: wp2(1),
     marginBottom: hp2(1),
   },
@@ -1272,7 +1347,7 @@ const styles = StyleSheet.create({
     borderRadius: wp2(3),
     borderWidth: 1,
     marginTop: hp2(20),
-   
+
     paddingVertical: hp2(2),
     paddingHorizontal: wp2(4),
   },
@@ -1292,7 +1367,7 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
     alignSelf: 'center',
-    marginTop:Platform.OS === 'ios' ? hp2(2) : hp2(0),
+    marginTop: Platform.OS === 'ios' ? hp2(2) : hp2(0),
   },
   priceTxt: {color: 'black', fontSize: hp('2')},
   inputWrap: {
@@ -1300,14 +1375,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: hp2(1),
   },
-  skeletonFistImage:{
-    width: wp2(54), 
-    height: hp2(28), 
-    borderRadius: wp2(2)
+  skeletonFistImage: {
+    width: wp2(54),
+    height: hp2(28),
+    borderRadius: wp2(2),
   },
-  skeletonImage:{
-    width: wp2(34), 
-    height: hp2(14), 
-    borderRadius: wp2(2)
+  skeletonImage: {
+    width: wp2(34),
+    height: hp2(14),
+    borderRadius: wp2(2),
   },
 });

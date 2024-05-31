@@ -17,7 +17,7 @@ const TextEditingComponent = ({
         style={styles.inputTxt}
         placeholder={placeholder || 'Password'}
         secureTextEntry={isPassword}
-        placeholderTextColor={'grey'}
+        placeholderTextColor={'#4D4D4D'}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType} // Add keyboardType prop
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#4D4D4D',
     paddingHorizontal: wp2(2),
-    fontSize: RFValue(13),
+    fontSize: RFValue(16),
     fontWeight: '400',
   },
 });

@@ -8,7 +8,7 @@ import {
   Platform,
   SafeAreaView,
   Alert,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
@@ -24,19 +24,32 @@ import types from '../../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import {useNavigation} from '@react-navigation/native';
 import OneSignal from 'react-native-onesignal';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import Profile from '../../assets/icons/profile.svg';
+import Notification from '../../assets/icons/notification.svg';
+import Upload from '../../assets/icons/upload.svg';
+import Inventory from '../../assets/icons/inventory.svg';
+import Shipping from '../../assets/icons/shipping.svg';
+import Analytics from '../../assets/icons/analytics.svg';
+import Clipboard from '../../assets/icons/clipboard.svg';
+import Terms from '../../assets/icons/terms.svg';
+import Security from '../../assets/icons/security.svg';
+import Customer from '../../assets/icons/customer.svg';
+import Logout from '../../assets/icons/logout.svg';
+import Location from '../../assets/icons/location.svg';
 
-     const notification = IMAGES.notification; // Replace with your image path
-     const menu = IMAGES.menu; // Replace with your image path
-
-    const lockIcon = IMAGES.security; // Replace with your image path
-    const profile = IMAGES.profile; // Replace with your image path
-    const orders = IMAGES.orders; // Replace with your image path
-    const policy = IMAGES.policy; // Replace with your image path
-    const location = IMAGES.location; // Replace with your image path
-    const logout = IMAGES.logout; // Replace with your image path
-    const security = IMAGES.security; // Replace with your image path
-    const support = IMAGES.support; // Replace with your image path
-
+const profile = <Profile width={20} height={20} color="black" />;
+const notification = <Notification width={20} height={20} color="black" />;
+const upload = <Upload width={20} height={20} color="black" />;
+const inventory = <Inventory width={20} height={20} color="black" />;
+const shipping = <Shipping width={20} height={20} color="black" />;
+const analytics = <Analytics width={20} height={20} color="black" />;
+const clipboard = <Clipboard width={20} height={20} color="black" />;
+const terms = <Terms width={20} height={20} color="black" />;
+const security = <Security width={20} height={20} color="black" />;
+const customer = <Customer width={20} height={20} color="black" />;
+const logout = <Logout width={20} height={20} color="black" />;
+const location = <Location width={20} height={20} color="black" />;
 
 export default function SettingsScreen(props) {
   const [loading, setLoading] = useState(false);
@@ -46,59 +59,55 @@ export default function SettingsScreen(props) {
   // const user = useSelector(state => state.userData);
 
   const dispatch = useDispatch();
-  const settingOptions = (name, badge, navScreen,icon) => {
-
-return (
-  <TouchableOpacity
-    onPress={() =>
-      props.navigation.navigate(navScreen, {user: props.route.params.user})
-    }
-    style={styles.myStyle}>
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        flex: 2,
-      
-      }}>
-      <View style={{flexDirection: 'row', alignItems: 'center'}}>
-        <Image
-          source={icon}
+  const settingOptions = (name, badge, navScreen, icon) => {
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate(navScreen, {user: props.route.params.user})
+        }
+        style={styles.myStyle}>
+        <View
           style={{
-         
-            width: name == 'Shipping Address' ? wp2(6) : wp2(6),
-            height: name == 'Shipping Address' ? wp2(6) : wp2(6),
-            marginRight: wp2(3),
-          }}
-        />
-        <Text
-          style={{
-            color: name === 'LOGOUT' ? '#EB1414' : 'black',
-            fontWeight: name === 'LOGOUT' ? '700' : '500',
-            fontSize: 16,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flex: 2,
           }}>
-          {name}
-        </Text>
-        {badge === 'blue' && (
-          <View style={styles.circle}>
-            <Text style={{color: 'white'}}>{count}</Text>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            {/* <Image
+              source={icon}
+              style={{
+                width: name == 'Shipping Address' ? wp2(6) : wp2(6),
+                height: name == 'Shipping Address' ? wp2(6) : wp2(6),
+                marginRight: wp2(3),
+              }}
+            /> */}
+            <View style={{marginRight: wp2(3)}}>{icon}</View>
+            <Text
+              style={{
+                color: name === 'LOGOUT' ? 'black' : 'black',
+                fontWeight: name === 'LOGOUT' ? '400' : '400',
+                fontSize: 16,
+              }}>
+              {name}
+            </Text>
+            {badge === 'blue' && (
+              <View style={styles.circle}>
+                <Text style={{color: 'white'}}>{count}</Text>
+              </View>
+            )}
+            {badge === 'red' && (
+              <View
+                style={[styles.circle, {backgroundColor: '#B00002'}]}></View>
+            )}
           </View>
-        )}
-        {badge === 'red' && (
-          <View style={[styles.circle, {backgroundColor: '#B00002'}]}></View>
-        )}
-      </View>
-      {name !== 'LOGOUT' && (
-        <ICONS.AntDesign name="right" size={15} color="black" />
-      )}
-    </View>
-  </TouchableOpacity>
-);
-  }
-
-
-
+          {name !== 'LOGOUT' && (
+            <ICONS.AntDesign name="right" size={15} color="black" />
+          )}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   const logoutButton = () => {
     const logoutHandle = () => {
@@ -158,14 +167,15 @@ return (
             flex: 1,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
+            {/* <Image
               source={lockIcon}
               style={{width: wp2(6), height: wp2(6), marginRight: wp2(3)}}
-            />
+            /> */}
+            <View style={{marginRight: wp2(3)}}>{logout}</View>
             <Text
               style={{
                 color: '#EB1414',
-                fontWeight: '500',
+                fontWeight: '400',
                 fontSize: 16,
               }}>
               Log Out
@@ -246,14 +256,17 @@ return (
             flex: 1,
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Image
+            {/* <Image
               source={lockIcon}
               style={{width: wp2(6), height: wp2(6), marginRight: wp2(3)}}
-            />
+            /> */}
+            <View style={{marginRight: wp2(3)}}>
+              <Profile width={20} height={20} color="#EB1414" />
+            </View>
             <Text
               style={{
                 color: '#EB1414',
-                fontWeight: '500',
+                fontWeight: '400',
                 fontSize: 16,
               }}>
               Delete Acount
@@ -306,68 +319,18 @@ return (
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: '#FFFFFF'}}></SafeAreaView>
-      <SafeAreaView style={{flex: 1}}>
+      <SafeAreaView style={{flex: 1, backgroundColor: '#FFFFFF'}}>
         <ScrollView>
-          <View style={[styles.container, {paddingTop: 20}]}>
-            <View
-              style={[
-                styles.headWrap,
-                {
-                  paddingHorizontal:20,
-                  
-                  paddingVertical: 20,
-                  // paddingLeft: 30, // Add padding to the left of the headWrap
-                  borderBottomWidth: 1,
-                  borderBottomColor: 'rgba(0, 0, 0, 0.1)',
-                  paddingBottom: 20,
-                  flexDirection: 'row', // Align icon and text horizontally
-                  alignItems: 'center', // Center items vertically
-                },
-              ]}>
-              <TouchableOpacity
-                onPress={() => props.navigation.goBack()}>
-                <ICONS.AntDesign
-                  name="left"
-                  size={24}
-                  color="black"
-                  style={{flex: 1, textAlign: 'center',}}
-                />
-              </TouchableOpacity>
-              <Text style={[styles.heading, {flex: 1, textAlign: 'center'}]}>
-                Settings
-              </Text>
-            </View>
+          <View style={styles.container}>
+            <NewHeaderComp
+              arrowNavigation={() => props.navigation.goBack()}
+              movePreviousArrow={true}
+              title={'Settings'}
+            />
 
             {props?.route?.params?.user?.userData?.role?.[0]?.id === 3 ? (
-              <>
-                {settingOptions('PROFILE', '', 'editProfile')}
-                {settingOptions('NOTIFICATIONS', '', 'notificationScreen')}
-                {settingOptions(
-                  'IMAGE/PRODUCT UPLOAD',
-                  '',
-                  'destinationScreen',
-                )}
-                {settingOptions(
-                  'INVENTORY',
-                  `${warning ? 'red' : ''}`,
-                  'inventory',
-                )}
-                {settingOptions('STANDARD SHIPPING', '', 'shippingLocation')}
-                {settingOptions('ANALYTICS', '', 'analyticsScreen')}
-                {settingOptions(
-                  'ALL ORDERS',
-                  `${count > 0 ? 'blue' : ''}`,
-                  'orderTrackingScreen',
-                )}
-                {settingOptions('TERM OF USE', '', 'termsScreen')}
-                {settingOptions('PRIVACY & SECURITY', '', 'privacyScreen')}
-                {settingOptions('CUSTOMER ADVICE', '', 'customerSupportScreen')}
-                {DeleteButton()}
-                {logoutButton()}
-              </>
-            ) : (
-              <>
-                {settingOptions('Profile', '', 'editProfile', profile)}
+              <View style={{marginTop: 30}}>
+                {settingOptions('Edit Profile', '', 'editProfile', profile)}
                 {settingOptions(
                   'Notifications',
                   '',
@@ -375,18 +338,31 @@ return (
                   notification,
                 )}
                 {settingOptions(
-                  'Shipping Address',
+                  'Image/Product Upload',
                   '',
-                  'shippingAddress',
-                  location,
+                  'destinationScreen',
+                  upload,
                 )}
                 {settingOptions(
-                  'All Orders',
-                  '',
-                  'orderTrackingScreen',
-                  orders,
+                  'Inventory',
+                  `${warning ? 'red' : ''}`,
+                  'inventory',
+                  inventory,
                 )}
-                {settingOptions('Term of Use', '', 'termsScreen', policy)}
+                {settingOptions(
+                  'Standart Shipping',
+                  '',
+                  'shippingLocation',
+                  shipping,
+                )}
+                {settingOptions('Analytics', '', 'analyticsScreen', analytics)}
+                {settingOptions(
+                  'All Orders',
+                  `${count > 0 ? 'blue' : ''}`,
+                  'orderTrackingScreen',
+                  clipboard,
+                )}
+                {settingOptions('Term of Use', '', 'termsScreen', terms)}
                 {settingOptions(
                   'Privacy & Security',
                   '',
@@ -397,12 +373,60 @@ return (
                   'Customer Advice',
                   '',
                   'customerSupportScreen',
-                  support,
+                  customer,
                 )}
-
-                <View style={{marginTop: 50}}>{DeleteButton()}</View>
-                {logoutButton()}
-              </>
+                <View style={{marginTop: 30}}>
+                  {DeleteButton()}
+                  {logoutButton()}
+                </View>
+              </View>
+            ) : (
+              <View
+                style={{
+                  marginTop: 30,
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  height: '100%'
+                }}>
+                <View>
+                  {settingOptions('Profile', '', 'editProfile', profile)}
+                  {settingOptions(
+                    'Notifications',
+                    '',
+                    'notificationScreen',
+                    notification,
+                  )}
+                  {settingOptions(
+                    'Shipping Address',
+                    '',
+                    'shippingAddress',
+                    location,
+                  )}
+                  {settingOptions(
+                    'All Orders',
+                    '',
+                    'orderTrackingScreen',
+                    clipboard,
+                  )}
+                  {settingOptions('Term of Use', '', 'termsScreen', terms)}
+                  {settingOptions(
+                    'Privacy & Security',
+                    '',
+                    'privacyScreen',
+                    security,
+                  )}
+                  {settingOptions(
+                    'Customer Advice',
+                    '',
+                    'customerSupportScreen',
+                    customer,
+                  )}
+                </View>
+                <View style={{marginTop: 30}}>
+                  {/* {DeleteButton()} */}
+                  {logoutButton()}
+                </View>
+              </View>
             )}
           </View>
         </ScrollView>
@@ -428,8 +452,7 @@ const styles = StyleSheet.create({
   heading: {
     color: 'black',
     fontSize: rfv(16),
-    fontWeight:'500'
- 
+    fontWeight: '500',
   },
 
   myStyle: {

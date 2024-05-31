@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
-import { DarkTheme,
-        DefaultTheme,
-        NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useState, useEffect} from 'react';
+import {StatusBar, useColorScheme} from 'react-native';
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import {
   stackRouteList,
   guestScreens,
   brandScreens,
   editorScreens,
 } from './routeList';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
-import { globalSetting } from '../config/Urls';
+import {globalSetting} from '../config/Urls';
 import axios from 'react-native-axios';
 
 const Stack = createStackNavigator();
@@ -21,11 +23,11 @@ const AppNavigatior = () => {
   const [status, setStatus] = useState('guest');
   const token = useSelector(state => state?.userData?.token);
   const id = useSelector(state => state?.userData?.userData?.role?.[0]?.id);
-  const [sucess, setSuccess] = useState(false)
-  const dispatch = useDispatch()
+  const [sucess, setSuccess] = useState(false);
+  const dispatch = useDispatch();
   useEffect(() => {
-    if (!sucess) getApiData(globalSetting)
-  }, [sucess])
+    if (!sucess) getApiData(globalSetting);
+  }, [sucess]);
 
   useEffect(() => {
     if (token === '') {
@@ -37,7 +39,7 @@ const AppNavigatior = () => {
     }
   }, [token, id]);
 
-  const getApiData = (url) => {
+  const getApiData = url => {
     axios
       .get(url)
       .then(function (response) {
@@ -47,20 +49,19 @@ const AppNavigatior = () => {
         });
       })
       .catch(function (error) {
-        console.log("response splash error", error?.response);
+        console.log('response splash error', error?.response);
       });
   };
 
-
   const GuestScreensRoute = () => (
-    <Stack.Navigator initialRouteName='guestScreen'>
+    <Stack.Navigator initialRouteName="guestScreen">
       {guestScreens.map((item, index) => {
         return (
           <Stack.Screen
             key={index}
             name={item.name}
             component={item.component}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         );
       })}
@@ -68,14 +69,14 @@ const AppNavigatior = () => {
   );
 
   const BrandScreensRoute = () => (
-    <Stack.Navigator initialRouteName='bottomNavigation'>
+    <Stack.Navigator initialRouteName="bottomNavigation">
       {brandScreens.map((item, index) => {
         return (
           <Stack.Screen
             key={index}
             name={item.name}
             component={item.component}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         );
       })}
@@ -83,14 +84,14 @@ const AppNavigatior = () => {
   );
 
   const EditorScreensRoute = () => (
-    <Stack.Navigator initialRouteName='bottomNavigation'>
+    <Stack.Navigator initialRouteName="bottomNavigation">
       {editorScreens.map((item, index) => {
         return (
           <Stack.Screen
             key={index}
             name={item.name}
             component={item.component}
-            options={{ headerShown: false }}
+            options={{headerShown: false}}
           />
         );
       })}
@@ -104,7 +105,13 @@ const AppNavigatior = () => {
         translucent
         backgroundColor="transparent"
       />
-      {status === 'brand' ? <BrandScreensRoute /> : status === 'editor' ? <EditorScreensRoute /> : <GuestScreensRoute />}
+      {status === 'brand' ? (
+        <BrandScreensRoute />
+      ) : status === 'editor' ? (
+        <EditorScreensRoute />
+      ) : (
+        <GuestScreensRoute />
+      )}
     </NavigationContainer>
   );
 };

@@ -28,6 +28,8 @@ import {NetworkInfo} from 'react-native-network-info';
 import OneSignal from 'react-native-onesignal';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
+import NewInputComp from '../../components/NewInputComp';
+import ContinueButton from './componnets/ContinueBtn';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
@@ -125,7 +127,7 @@ export default function LoginScreen(props) {
               });
               errorMessage('Please verify your email');
             }
-               // STRIPE CONDITION
+            // STRIPE CONDITION
             //  else if (
             //   res?.data?.user?.stripe_account?.charges_enabled === false ||
             //   res?.data?.user?.stripe_account?.details_submitted === false
@@ -262,89 +264,92 @@ export default function LoginScreen(props) {
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-              <ScrollView> 
-
-      <SafeAreaView style={styles.container}>
-        <View style={{flexGrow: 1}}>
-        <View style={styles.logoWrap}>
-          <Image
-            source={IMAGES.logowhite}
-            style={{width: '22%', height: '75%'}}
-            resizeMode="cover"
-          />
-        </View>
-          <Text style={[styles.signinText]}>Sign In - Welcome Back!</Text>
-          {showError && <AlertComp text={errormsg} />}
-
-          <Animated.View layout={Layout.duration(1000)}>
-          <View style={[styles.inputBox, {}]}>
-              <TextInput
-                style={styles.inputTxt}
-                placeholder="Username"
-                placeholderTextColor={'grey'}
-                value={stateChange.UserName}
-                onChangeText={val => updateState({UserName: val})}
+      <ScrollView>
+        <SafeAreaView style={styles.container}>
+          <View style={{flexGrow: 1}}>
+            <View style={styles.logoWrap}>
+              <Image
+                source={IMAGES.logowhite}
+                style={{width: '22%', height: '75%'}}
+                resizeMode="cover"
               />
             </View>
-            <View style={styles.inputBox}>
-              <TextInput
-                style={styles.inputTxt}
-                placeholder="Password"
-                secureTextEntry={true}
-                placeholderTextColor={'grey'}
+            <Text style={[styles.signinText]}>Sign In - Welcome Back!</Text>
+            {showError && <AlertComp text={errormsg} />}
+            <View>
+              {/* <View style={[styles.inputBox, {}]}>
+                <TextInput
+                  style={styles.inputTxt}
+                  placeholder="Username"
+                  placeholderTextColor={'grey'}
+                  value={stateChange.UserName}
+                  onChangeText={val => updateState({UserName: val})}
+                />
+              </View> */}
+              <View style={{marginBottom: -20}}>
+                <NewInputComp
+                  value={stateChange}
+                  handleOnChange={val => updateState({UserName: val})}
+                  inputText={'Username'}
+                />
+              </View>
+
+              <NewInputComp
                 value={stateChange.Password}
-                onChangeText={val => updateState({Password: val})}
+                handleOnChange={val => updateState({Password: val})}
+                inputText={'Password'}
+                resetPassword={true}
+                setPassword={true}
               />
+              {/* <View style={styles.inputBox}>
+                <TextInput
+                  style={styles.inputTxt}
+                  placeholder="Password"
+                  secureTextEntry={true}
+                  placeholderTextColor={'grey'}
+                  value={stateChange.Password}
+                  onChangeText={val => updateState({Password: val})}
+                />
+              </View> */}
+
+              <TouchableOpacity
+                style={{marginTop: 20}}
+                onPress={() => {
+                  props.navigation.navigate('resetPassScreen'),
+                    updateState({UserName: ''}),
+                    updateState({Password: ''});
+                }}>
+                <Text style={styles.forgetText}>
+                  Forgotten your Username/Password?
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={onSignIn} style={styles.button}>
+                <Text style={styles.buttonText}>Sign In</Text>
+              </TouchableOpacity>
+              <View style={styles.divider} />
+
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('signupScreen'),
+                    updateState({UserName: ''}),
+                    updateState({Password: ''});
+                }}
+                style={[styles.buttonWhite]}>
+                <Text style={styles.buttonTextBlack}>Create Account</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  registerGuest(),
+                    updateState({UserName: ''}),
+                    updateState({Password: ''});
+                }}
+                style={[styles.buttonWhite]}>
+                <Text style={styles.buttonTextBlack}>Continue As Guest</Text>
+              </TouchableOpacity>
+              <View style={styles.spacer} />
             </View>
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('resetPassScreen'),
-                  updateState({UserName: ''}),
-                  updateState({Password: ''});
-              }}>
-              <Text style={styles.forgetText}>
-                Forgotten your Username/Password?
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onSignIn} style={styles.button}>
-              <Text style={styles.buttonText}>Sign In</Text>
-            </TouchableOpacity>
-             <View style={styles.divider} />
-
-            <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('signupScreen'),
-                  updateState({UserName: ''}),
-                  updateState({Password: ''});
-              }}
-              style={[styles.buttonWhite, ]}>
-              <Text style={styles.buttonTextBlack}>Create Account</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                registerGuest(),
-                  updateState({UserName: ''}),
-                  updateState({Password: ''});
-              }}
-              style={[styles.buttonWhite,]}>
-              <Text style={styles.buttonTextBlack}>Continue As Guest</Text>
-            </TouchableOpacity>
-
-            <Text style={styles.orstyle}>Or</Text>
-            <TouchableOpacity
-              onPress={() =>
-                onGoogleButtonPress().then(res =>
-                  console.log('Signed in with Google!', res),
-                )
-              }
-              style={styles.button2}>
-              <ICONS.AntDesign name="google" size={hp2(3)} color="black" />
-              <Text style={styles.button2Text}>continue with Google</Text>
-            </TouchableOpacity>
-          </Animated.View>
-          
-        </View>
-      </SafeAreaView>
+          </View>
+        </SafeAreaView>
       </ScrollView>
     </>
   );
@@ -353,8 +358,6 @@ export default function LoginScreen(props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-   
-
     backgroundColor: COLORS.appBackground,
   },
   logoWrap: {
@@ -362,31 +365,30 @@ const styles = StyleSheet.create({
     height: hp2(10),
     // paddingBottom:100,
     overflow: 'hidden',
-    marginTop: hp2(10), 
-    marginBottom:hp2(5), 
-       justifyContent:'center',
+    marginTop: hp2(10),
+    marginBottom: hp2(5),
+    justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-
   },
   signinText: {
     color: 'black',
     fontSize: 22, // Assuming rfv() returns the font size in pixels
     fontFamily: 'Poppins-Regular', // Use the Poppins font
-    fontWeight: '400', // Font weight 400
     lineHeight: 33, // Line height 33px
     marginVertical: 8, // Adjust margin as needed
     marginTop: Platform.OS === 'ios' ? 0 : 4, // Adjust margin top based on platform
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     alignContent: 'center',
-    textAlign:'center',
-    marginBottom:50
+    textAlign: 'center',
+    marginBottom: 50,
   },
   inputBox: {
     // width: 374,
-    width: '90%',paddingHorizontal:10 ,
-    marginBottom:10,
+    width: '90%',
+    paddingHorizontal: 10,
+    marginBottom: 10,
     height: 50,
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
@@ -404,21 +406,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#D4D4D4',
     // position: 'absolute',
-
   },
   forgetText: {
     color: '#000000', // Black color
-    fontWeight: '400', // Font weight 400
     fontSize: 14, // Font size 14 pixels
-    fontFamily: 'Poppins-Medium', // Use the Poppins font
+    fontFamily: 'Poppins-Regular', // Use the Poppins font
     lineHeight: 21, // Line height 21 pixels
     marginVertical: 2, // Adjust margin as needed
     alignSelf: 'center', // Center text horizontally
-    marginBottom:20
+    marginBottom: 20,
   },
 
   buttonWhite: {
-    width: '90%',paddingHorizontal:10 ,
+    width: '90%',
+    paddingHorizontal: 10,
     height: 50,
     // paddingHorizontal: 20, // Horizontal padding
     justifyContent: 'center',
@@ -428,59 +429,45 @@ const styles = StyleSheet.create({
     borderColor: '#D4D4D8',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:10,
+    marginBottom: 10,
     alignSelf: 'center',
-
   },
   buttonTextBlack: {
     fontSize: 16,
-    // fontWeight: '400',
-    color: 'black',
-    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
-
-
+    color: '#000000',
+    fontFamily: 'Poppins-Regular', // Assuming "Poppins-Regular" is the name of your font
   },
   button: {
-    width: '90%',paddingHorizontal:10 ,
+    width: '90%',
+    paddingHorizontal: 10,
     height: 50,
     backgroundColor: '#5D5FEF',
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
+
     elevation: 8,
     alignSelf: 'center',
-  
   },
   buttonText: {
     fontSize: 16,
-    // fontWeight: '400',
     color: 'white',
-    fontFamily: 'Poppins-Medium', // Assuming "Poppins-Regular" is the name of your font
-
-
+    fontFamily: 'Poppins-SemiBold', // Assuming "Poppins-Regular" is the name of your font
   },
 
   divider: {
-    marginVertical:40,
+    marginVertical: 40,
     height: 2,
     backgroundColor: '#D9D9D9',
-    marginHorizontal:70 ,
+    marginHorizontal: 70,
   },
   inputTxt: {
     flex: 1,
     color: 'black',
     paddingHorizontal: wp2(2),
-    fontSize: rfv(13),
+    fontSize: rfv(16),
     fontWeight: '400',
   },
-
   modal: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -535,5 +522,8 @@ const styles = StyleSheet.create({
     fontSize: rfv(11),
     textTransform: 'uppercase',
     marginLeft: wp2(2),
+  },
+  spacer: {
+    marginBottom: wp2(40),
   },
 });

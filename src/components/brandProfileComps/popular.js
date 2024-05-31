@@ -39,7 +39,7 @@ export default function Popular(props) {
       }
     
       style={styles.container}>
-      <Text style={{color: 'black', marginLeft: wp2(3)}}>{props?.no + 1}</Text>
+      {/* <Text style={{color: 'black', marginLeft: wp2(3)}}>{props?.no + 1}</Text> */}
       <View style={styles.productImage}>
       {loading?
        <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
@@ -64,23 +64,23 @@ export default function Popular(props) {
           }}
         />
       </View>
-      <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text>
+      {/* <Text style={{color: 'black'}}>{props?.data?.product?.name}</Text> */}
     </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    width: wp2(100),
-    flexDirection: 'row',
-    marginVertical: hp2(1),
-    alignItems: 'center',
+    // width: wp2(100),
+    // flexDirection: 'row',
+    // marginVertical: hp2(1),
+    // alignItems: 'center',
   },
   productImage: {
-    width: wp2(18),
-    height: wp2(18),
+    width: 70,
+    height: 70,
     overflow: 'hidden',
-    borderRadius: wp2(4),
+    borderRadius: 999,
     marginHorizontal: wp2(2),
   },
   skeletonView:{

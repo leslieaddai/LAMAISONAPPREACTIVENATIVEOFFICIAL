@@ -2,29 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
   FlatList,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import FollowComp from './followComp';
 
@@ -37,9 +24,10 @@ import {
   GetEditorFollowerList,
   GetEditorFollowingList,
 } from '../../config/Urls';
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function FollowerList(props) {
   const [selected, setSelected] = useState('brands');
@@ -48,144 +36,177 @@ export default function FollowerList(props) {
 
   const [loadingFollowList, setLoadingFollowList] = useState(false);
 
-
   const user = useSelector(state => state.userData);
 
   useEffect(() => {
     if (props?.route?.params?.list === 'following') {
-     
-
       setLoadingFollowList(true);
 
       axios
         .get(GetBrandFollowingList + `/${props?.route?.params?.id}`)
         .then(async function (res) {
-          
           setDataBrand(res?.data?.data);
 
           axios
             .get(GetEditorFollowingList + `/${props?.route?.params?.id}`)
             .then(async function (res) {
-             
               setDataEditor(res?.data?.data);
               setLoadingFollowList(false);
             })
             .catch(function (error) {
-              
               setLoadingFollowList(false);
-             
-              errorMessage(errorHandler(error))
+
+              errorMessage(errorHandler(error));
             });
         })
         .catch(function (error) {
-         
           setLoadingFollowList(false);
-          
-          errorMessage(errorHandler(error))
+
+          errorMessage(errorHandler(error));
         });
     } else {
-     
-
       setLoadingFollowList(true);
 
       axios
         .get(GetBrandFollowerList + `/${props?.route?.params?.id}`)
         .then(async function (res) {
-         
           setDataBrand(res?.data?.data);
 
           axios
             .get(GetEditorFollowerList + `/${props?.route?.params?.id}`)
             .then(async function (res) {
-             
               setDataEditor(res.data.data);
               setLoadingFollowList(false);
             })
             .catch(function (error) {
-            
               setLoadingFollowList(false);
-              
-              errorMessage(errorHandler(error))
+
+              errorMessage(errorHandler(error));
             });
         })
         .catch(function (error) {
-       
           setLoadingFollowList(false);
-         
-          errorMessage(errorHandler(error))
+
+          errorMessage(errorHandler(error));
         });
     }
   }, [props?.route?.params?.list]);
 
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
-    <SafeAreaView style={{flex: 1}}>
-      <View style={styles.container}>
-        <View style={styles.headWrap}>
-          <TouchableOpacity
-            onPress={() => props.navigation.goBack()}
-            style={{position: 'absolute', left: wp2(4)}}>
-            <ICONS.AntDesign name="left" size={24} color="black" />
-          </TouchableOpacity>
-          <Text style={styles.heading}>
-            {props.route.params.list == 'following' ? 'FOLLOWING' : 'FOLLOWERS'}
-          </Text>
-        </View>
-
-        <View style={styles.iconContainer}>
-          <TouchableOpacity onPress={() => setSelected('brands')}>
-            <Text
-              style={[
-                styles.text,
-                {color: selected == 'brands' ? 'black' : 'gray'},
-              ]}>
-              BRANDS
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.line}></View>
-          <TouchableOpacity onPress={() => setSelected('editors')}>
-            <Text
-              style={[
-                styles.text,
-                {color: selected == 'editors' ? 'black' : 'gray'},
-              ]}>
-              EDITORS
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {loadingFollowList ? (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginVertical: hp2(6),
-            }}>
-            <SkypeIndicator color={'black'} />
-          </View>
-        ) : (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingBottom: hp2(12),
-              width: wp2(96),
-              alignSelf: 'center',
-            }}
-            data={selected === 'brands' ? dataBrand : dataEditor}
-            numColumns={3}
-            renderItem={({item}) => {
-              return (
-                <FollowComp list={props?.route?.params?.list} data={{item}} />
-              );
-            }}
+      <SafeAreaView style={{flex: 1}}>
+        <View style={styles.container}>
+          <NewHeaderComp
+            title={
+              props.route.params.list == 'following' ? 'Following' : 'Followers'
+            }
+            arrowNavigation={() => props.navigation.goBack()}
+            movePreviousArrow={true}
           />
-        )}
+          {/* <View style={styles.headWrap}>
+            <TouchableOpacity
+              onPress={() => props.navigation.goBack()}
+              style={{position: 'absolute', left: wp2(4)}}>
+              <ICONS.AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.heading}>
+              {props.route.params.list == 'following'
+                ? 'FOLLOWING'
+                : 'FOLLOWERS'}
+            </Text>
+          </View> */}
 
-      </View>
-    </SafeAreaView>
+          <View style={styles.tabsContainer}>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                {
+                  borderBottomColor:
+                    selected == 'brands' ? COLORS.main : COLORS.gray100,
+                },
+              ]}
+              onPress={() => setSelected('brands')}>
+              <Text
+                style={[
+                  styles.tabText,
+                  {color: selected == 'brands' ? COLORS.main : 'black'},
+                ]}>
+                Brands
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                {
+                  borderBottomColor:
+                    selected == 'editors' ? COLORS.main : COLORS.gray100,
+                },
+              ]}
+              onPress={() => setSelected('editors')}>
+              <Text
+                style={[
+                  styles.tabText,
+                  {color: selected == 'editors' ? COLORS.main : 'black'},
+                ]}>
+                Editors
+              </Text>
+            </TouchableOpacity>
+          </View>
+
+          {/* <View style={styles.iconContainer}>
+            <TouchableOpacity onPress={() => setSelected('brands')}>
+              <Text
+                style={[
+                  styles.text,
+                  {color: selected == 'brands' ? 'black' : 'gray'},
+                ]}>
+                BRANDS
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.line}></View>
+            <TouchableOpacity onPress={() => setSelected('editors')}>
+              <Text
+                style={[
+                  styles.text,
+                  {color: selected == 'editors' ? 'black' : 'gray'},
+                ]}>
+                EDITORS
+              </Text>
+            </TouchableOpacity>
+          </View> */}
+
+          {loadingFollowList ? (
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginVertical: hp2(6),
+              }}>
+              <SkypeIndicator color={'black'} />
+            </View>
+          ) : (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingBottom: hp2(12),
+                paddingHorizontal: 20,
+                // width: wp2(96),
+                // alignSelf: 'center',
+              }}
+              data={selected === 'brands' ? dataBrand : dataEditor}
+              numColumns={1}
+              renderItem={({item}) => {
+                return (
+                  <FollowComp list={props?.route?.params?.list} data={{item}} />
+                );
+              }}
+            />
+          )}
+        </View>
+      </SafeAreaView>
     </>
   );
 }
@@ -208,7 +229,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-   
   },
   headWrap: {
     flexDirection: 'row',
@@ -240,6 +260,21 @@ const styles = StyleSheet.create({
   text: {
     fontWeight: '700',
     fontSize: rfv(14),
- 
+  },
+  tabsContainer: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  tab: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 2,
+  },
+  tabText: {
+    fontWeight: '500',
+    fontSize: rfv(14),
   },
 });

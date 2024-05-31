@@ -9,12 +9,10 @@ import ImageCompWithErrorProfile from './ImageCompWithErrorProfile';
 
 export default function BrandComp(props) {
   const navigation = useNavigation();
-console.log(props?.data?.item?.user?.profile_image?.original_url);
-  // State to manage the image source URI
+  console.log(props?.data?.item?.user?.profile_image?.original_url);
   const [imageUri, setImageUri] = useState(
     props?.data?.item?.user?.profile_image?.original_url || IMAGES.profileIcon3,
   );
-
 
   return (
     <TouchableOpacity
@@ -30,55 +28,52 @@ console.log(props?.data?.item?.user?.profile_image?.original_url);
           },
         })
       }
-      style={{flexDirection: 'row', alignItems: 'center'}}>
-      <View
-        style={[
-          styles.button,
-          {
-            backgroundColor:
-              props?.key2 === 0
-                ? '#ECC90B'
-                : props?.key2 === 1
-                ? '#C0C0C0'
-                : props?.key2 === 2
-                ? '#CD7F32'
-                : 'white',
-          },
-        ]}>
-        <Text style={{color: 'black', fontWeight: '700', fontSize: rfv(14)}}>
-          {props?.key2 + 1}
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderWidth: 1,
+        borderRightWidth: 10,
+        borderRadius: 10,
+        marginHorizontal: 20,
+        borderColor:
+          props?.key2 === 0
+            ? '#ECC90B'
+            : props?.key2 === 1
+            ? '#C0C0C0'
+            : props?.key2 === 2
+            ? '#CD7F32'
+            : '#F6F6F6',
+      }}>
+      <View style={styles.button}>
+        <Text
+          style={{
+            color: 'black',
+            fontWeight: '400',
+            fontFamily: 'Poppins-Regular',
+            fontSize: 16,
+          }}>
+          {props?.key2 + 1}.
         </Text>
         <View style={styles.brandLogo}>
-          <ImageCompWithErrorProfile
-            uri={{uri: imageUri}}></ImageCompWithErrorProfile>
-
+          <ImageCompWithErrorProfile uri={{uri: imageUri}} />
         </View>
       </View>
-      <Text style={{color: 'black', fontSize: rfv(18)}}>
+      <Text style={{color: 'black', fontSize: 16}}>
         {props?.data?.item?.user?.name}
       </Text>
     </TouchableOpacity>
   );
 }
 
-
-
-
-
-
-
-
 const styles = StyleSheet.create({
   button: {
-    width: wp2(24),
-    height: hp2(8),
     borderRadius: wp2(10),
+    gap: 10,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginHorizontal: wp2(4),
     marginVertical: hp2(1),
     flexDirection: 'row',
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -89,9 +84,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   brandLogo: {
-    width: wp2(12),
-    height: wp2(12),
-    overflow: 'hidden',
-    borderRadius: wp2(4),
+    width: 62,
+    height: 60,
   },
 });

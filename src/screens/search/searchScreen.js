@@ -2,53 +2,45 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
- Image,
+  Image,
   SafeAreaView,
   Platform,
   FlatList,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
+import {ICONS, COLORS, wp2, hp2, IMAGES} from '../../theme';
 
-import {
- 
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-  IMAGES,
- 
-} from '../../theme';
+import NewImageSVG from '../../assets/discover.svg';
 
 import SearchComp from '../../components/searchComp';
 import SearchComp2 from '../../components/searchComp2';
 import LoaderComp from '../../components/loaderComp';
 
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
-import {SearchUrl,EditorSearch} from '../../config/Urls';
+import {SearchUrl, EditorSearch} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {SkypeIndicator} from 'react-native-indicators';
-import { debounce } from 'lodash'
+import {debounce} from 'lodash';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import SkeletonViewSearchComp from '../../components/SkeletonViewComponents/SkeletonViewSearchComp';
 import HeaderComponent from '../auth/componnets/HeaderComponnet';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import TextEditingComponent from '../auth/componnets/TexteditingComponent';
 import SearchComponnetTextEditCont from '../auth/componnets/searchComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import {SvgUri} from 'react-native-svg';
+import NewInputComp from '../../components/NewInputComp';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function SearchScreen({navigation, route}) {
-  let skeletonArr = [{},{},{}]
+  let skeletonArr = [{}];
   const [selected, setSelected] = useState('brands');
   const [text, setText] = useState(route?.params);
 
@@ -59,11 +51,12 @@ export default function SearchScreen({navigation, route}) {
   const [loading2, setLoading2] = useState(false);
   const [page, setPage] = useState();
   const [pageNo, setPageNo] = useState();
-  const [previouspage,setPreviouspage] = useState()
+  const [previouspage, setPreviouspage] = useState();
+  const [noItemsFound, setNoItemsFound] = useState(false);
   const user = useSelector(state => state.userData);
 
   const [loadingComp, setLoadingComp] = useState(false);
-  const navi= useNavigation()
+  const nav = useNavigation();
 
   const {Price} = useSelector(state => state.Price);
   const color = useSelector(state => state.Colour);
@@ -73,35 +66,33 @@ export default function SearchScreen({navigation, route}) {
   const region = useSelector(state => state.Continent);
 
   useEffect(() => {
-    getSearchResults('','1');
+    getSearchResults('', '1');
     getEditorResults();
   }, []);
-  useEffect(()=>{
-    if(text==''){
-      getSearchResults('','1');
+  useEffect(() => {
+    if (text == '') {
+      getSearchResults('', '1');
       getEditorResults('');
     }
-  },[text])
+  }, [text]);
 
-  const getEditorResults = (searchtext) => {
+  const getEditorResults = searchtext => {
     setLoading2(true);
     axios
-      .post(EditorSearch,{keyword:searchtext})
+      .post(EditorSearch, {keyword: searchtext})
       .then(async function (res) {
-        
-        setDataEditor(res?.data?.data)
+        setDataEditor(res?.data?.data);
         setLoading2(false);
       })
       .catch(function (error) {
-      
         setLoading2(false);
-      
-        errorMessage(errorHandler(error))
-      });
-  }
 
-  const getSearchResults = (searchtext,page_no) => {
-    setPreviouspage(page_no)
+        errorMessage(errorHandler(error));
+      });
+  };
+
+  const getSearchResults = (searchtext, page_no) => {
+    setPreviouspage(page_no);
     setLoading(true);
 
     let obj = {
@@ -128,45 +119,96 @@ export default function SearchScreen({navigation, route}) {
     axios
       .post(SearchUrl + page_no, obj)
       .then(async function (res) {
-        if(previouspage == res?.data?.current_page){
-         
-        setData([...res?.data?.data]);
-        setPage(res?.data?.next_page_url);
-        setPageNo(res?.data?.current_page);
-        // setLoading(false);
-        setLoading(true);
-      }else{
-        setData(prev => [...prev, ...res?.data?.data]);
-        setPage(res?.data?.next_page_url);
-        setPageNo(res?.data?.current_page);
-        setLoading(false);
-      }
+        if (previouspage == res?.data?.current_page) {
+          setData([...res?.data?.data]);
+          setPage(res?.data?.next_page_url);
+          setPageNo(res?.data?.current_page);
+          // setLoading(false);
+          setLoading(true);
+        } else {
+          setData(prev => [...prev, ...res?.data?.data]);
+          setPage(res?.data?.next_page_url);
+          setPageNo(res?.data?.current_page);
+          setLoading(false);
+        }
       })
       .catch(function (error) {
-       
         setLoading(false);
-     
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
-  const debouncedSearch = debounce((searchTerm) => {
-                setData([]);
-                  setDataEditor([]);
-                  getSearchResults(searchTerm,'1');
-                  getEditorResults(searchTerm);
-  
-  }, 2000);
-  let typingTimeout = null;
-const handleInputChange = (text) => {
-  setText(text)
-  clearTimeout(typingTimeout); 
+  const debouncedSearch = debounce(searchTerm => {
+    setData([]);
+    setDataEditor([]);
+    getSearchResults(searchTerm, '1');
+    getEditorResults(searchTerm);
+  }, 2);
 
-  typingTimeout = setTimeout(() => {
-    debouncedSearch(text); 
-  }, 2000);
-}
-  
+  let typingTimeout = null;
+  const handleInputChange = text => {
+    setText(text);
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+      debouncedSearch(text);
+    }, 2000);
+  };
+  const ItemNotFoundComponent = () => {
+    return (
+      <View
+        style={{
+          marginTop: '10%',
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 20,
+          flex: 1,
+        }}>
+        <Image style={{width: 84, height: 84}} source={IMAGES.no_items_found} />
+        <View
+          style={{
+            flexDirection: 'column',
+            gap: 10,
+            alignItems: 'center',
+            marginTop: 30,
+          }}>
+          <Text style={{fontFamily: 'Poppins-SemiBold', fontSize: 20}}>
+            No Results Found
+          </Text>
+          <Text
+            style={{
+              fontFamily: 'Poppins-Regular',
+              fontSize: 16,
+              color: '#A1A1AA',
+              textAlign: 'center',
+            }}>
+            Sorry, there are no results for this search, please try another
+            phrase
+          </Text>
+        </View>
+        <ContinueButton
+          style={{
+            marginTop: 60,
+            width: '95%',
+          }}
+          text={'Back To Search'}
+        />
+      </View>
+    );
+  };
+
+  noItems = null;
+  useEffect(() => {
+    if (data.length === 0 || dataEditor.length === 0) {
+      noItems = setTimeout(() => {
+        setNoItemsFound(true);
+      }, 5000);
+    } else if (data.length > 0 || dataEditor.length > 0) {
+      clearTimeout(noItems);
+      setNoItemsFound(false);
+    }
+  }, [data.length]);
+
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
@@ -176,97 +218,114 @@ const handleInputChange = (text) => {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
-            <HeaderComponent title={'Discover'}  ></HeaderComponent>
+        {/* <HeaderComponent title={'Discover'}></HeaderComponent> */}
+        <NewHeaderComp
+          arrowNavigation={() => nav.navigate('homeScreen')}
+          movePreviousArrow={true}
+          title={'Discover'}
+        />
         <View style={styles.container}>
-
-          <View style={styles.headWrap}>
-
-            <View style={{width:hp2(39),paddingHorizontal:15}}>
+          <View
+            style={{
+              width: '80%',
+              gap: 15,
+              marginHorizontal: 20,
+              alignItems: 'center',
+              flexDirection: 'row',
+              marginTop: 20,
+            }}>
+            <View style={{width: '92%'}}>
               <SearchComponnetTextEditCont
-                styles={styles.textBoxInput}
                 value={text}
                 onChangeText={handleInputChange}
                 placeholderTextColor={'grey'}
                 returnKeyLabel="done"
                 returnKeyType="done"
-                placeholder="what do you want to wear?"
+                placeholder="Search"
               />
             </View>
-
             <TouchableOpacity
               onPress={() => navigation.navigate('filterScreen', text)}>
-            <Image
-            style={{height:45,width:45,paddingLeft:10}}
-            source={IMAGES.setingsIcon}></Image>
+              <Image
+                style={{height: 45, width: 45}}
+                source={IMAGES.setingsIcon}
+              />
             </TouchableOpacity>
           </View>
 
-          <View style={styles.iconContainer}>
-            <TouchableOpacity onPress={() => setSelected('brands')}>
+          <View style={styles.tabsContainer}>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                {
+                  borderBottomColor:
+                    selected == 'brands' ? COLORS.main : COLORS.gray100,
+                },
+              ]}
+              onPress={() => setSelected('brands')}>
               <Text
                 style={[
-                  styles.text,
-                  {color: selected == 'brands' ? 'black' : 'gray'},
+                  styles.tabText,
+                  {color: selected == 'brands' ? COLORS.main : 'black'},
                 ]}>
-                BRANDS
+                Brands
               </Text>
             </TouchableOpacity>
-            <View style={styles.line}></View>
-            <TouchableOpacity onPress={() => setSelected('editors')}>
+            <TouchableOpacity
+              style={[
+                styles.tab,
+                {
+                  borderBottomColor:
+                    selected == 'editors' ? COLORS.main : COLORS.gray100,
+                },
+              ]}
+              onPress={() => setSelected('editors')}>
               <Text
                 style={[
-                  styles.text,
-                  {color: selected == 'editors' ? 'black' : 'gray'},
+                  styles.tabText,
+                  {color: selected == 'editors' ? COLORS.main : 'black'},
                 ]}>
-                EDITORS
+                Editors
               </Text>
             </TouchableOpacity>
           </View>
 
-          {loading && data?.length === 0 && selected === 'brands' && (
-            <FlatList
-              data={skeletonArr}
-              renderItem={() => {
-                return <SkeletonViewSearchComp />;
-              }}
-            />
+          {data?.length === 0 && selected === 'brands' && (
+            <>
+              {!noItemsFound ? (
+                <FlatList
+                  data={skeletonArr}
+                  renderItem={() => {
+                    return <SkeletonViewSearchComp />;
+                  }}
+                />
+              ) : (
+                <ItemNotFoundComponent />
+              )}
+            </>
           )}
-{/* 
-          {!loading &&data?.length === 0 && (
-            <View >
-            <Text style={{fontSize: 20}}>No Items Found</Text>
-          </View>
 
-          )} */}
-
-          {loading2 && dataEditor?.length === 0 && selected === 'editors' && (
-            <FlatList
-              data={skeletonArr}
-              renderItem={() => {
-                return <SkeletonViewSearchComp />;
-              }}
-            />
+          {dataEditor?.length === 0 && selected === 'editors' && (
+            <>
+              {!noItemsFound ? (
+                <FlatList
+                  data={skeletonArr}
+                  renderItem={() => {
+                    return <SkeletonViewSearchComp />;
+                  }}
+                />
+              ) : (
+                <ItemNotFoundComponent />
+              )}
+            </>
           )}
 
           {selected === 'brands' ? (
             loading && data.length === 0 ? (
-              // Show skeleton loader when data is being fetched
-              <FlatList
-                data={skeletonArr}
-                numColumns={3} // Example numColumns for brands
-                renderItem={() => {
-                  return <SkeletonViewSearchComp />;
-                }}
-              />
-            ) : data.length === 0 ? (
-              // Show "No Items Found" when loading is finished and data is empty
-              <View style={styles.centerMessage}>
-                <Text style={{fontSize: 20}}>No Items Found</Text>
-              </View>
+              <Text></Text>
             ) : (
               // Render the FlatList when data is available
               <FlatList
-              
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
                   paddingVertical: hp2(2),
@@ -288,10 +347,8 @@ const handleInputChange = (text) => {
               />
             )
           ) : (
-            // Render the editors' FlatList
             <FlatList
               showsVerticalScrollIndicator={false}
-              
               contentContainerStyle={{
                 paddingVertical: hp2(2),
                 alignSelf: 'center',
@@ -299,13 +356,11 @@ const handleInputChange = (text) => {
               data={dataEditor}
               numColumns={3}
               renderItem={({item, index}) => {
-              
                 return <SearchComp2 key={index} data={item} />;
               }}
             />
           )}
-
-          {loading && data.length !== 0 && selected === 'brands' && (
+          {/* {loading && data.length !== 0 && selected === 'brands' && (
             <View
               style={{
                 alignItems: 'center',
@@ -314,7 +369,7 @@ const handleInputChange = (text) => {
               }}>
               <SkypeIndicator size={26} color={'black'} />
             </View>
-          )}
+          )} */}
         </View>
       </SafeAreaView>
     </>
@@ -322,62 +377,28 @@ const handleInputChange = (text) => {
 }
 
 const styles = StyleSheet.create({
-  centerMessage: {
-  flex: 1,
-  alignItems: 'center',
-  justifyContent: 'center',
-  fontWeight:'700',
-  fontSize:20
-},
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
   },
-  inputBox: {
-    width: wp2(78),
-    height: hp2(5),
-    backgroundColor: '#D9D9D9',
-    borderRadius: wp2(4),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
-
-  },
-  headWrap: {
-    flexDirection: 'row',
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(0),
-    alignItems: 'center',
-    // width:20
-    // justifyContent: 'space-around',
-  },
-  iconContainer: {
-    width: wp2(50),
-    height: hp2(8),
-    flexDirection: 'row',
- 
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    alignSelf: 'center',
-    marginTop: hp2(1),
-  },
-  line: {
-    width: wp2(1),
-    height: hp2(6),
-    backgroundColor: 'black',
-  },
   text: {
     fontWeight: '700',
     fontSize: rfv(14),
-
   },
-  textBoxInput: {
-    // flex: ,
-    
-// paddingHorizontal:100
-  }
+  tabsContainer: {
+    width: '100%',
+    height: 50,
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+  tab: {
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderBottomWidth: 2,
+  },
+  tabText: {
+    fontWeight: '500',
+    fontSize: rfv(14),
+  },
 });

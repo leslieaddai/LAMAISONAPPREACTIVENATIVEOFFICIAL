@@ -7,15 +7,13 @@ import axios from 'axios';
 const baseURL = 'https://la-maison-api.com/api'; // home
 
 // const baseURL='https://ptdev.herokuapp.com/'
-export const addressLocationKey='AIzaSyDxdcou93APcIivhgYHf8zdtnsjLBt8Ud4'
-export const imgURL="https://ptdevbucket.s3.us-east-2.amazonaws.com/";
+export const addressLocationKey = 'AIzaSyDxdcou93APcIivhgYHf8zdtnsjLBt8Ud4';
+export const imgURL = 'https://ptdevbucket.s3.us-east-2.amazonaws.com/';
 
 export const url = {
-
   signup: 'auth/register',
   login: 'auth/login',
   logout: 'auth/logout',
-  
 };
 
 export const httpRequest = axios.create({baseURL: baseURL});

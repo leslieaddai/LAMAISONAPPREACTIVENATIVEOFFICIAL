@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
@@ -24,7 +24,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import types from '../Redux/types';
 import {SkypeIndicator} from 'react-native-indicators';
 import fonts from '../theme/fonts';
-import { Divider } from 'react-native-paper';
+import {Divider} from 'react-native-paper';
+
+export let totalPriceValue = 0;
 
 export default function BasketComp(props) {
   const navigation = useNavigation();
@@ -38,23 +40,24 @@ export default function BasketComp(props) {
   const [count, setCount] = useState(Number(props?.data?.qty));
 
   const calculateTotalPrice = () => {
-    console.log('sds')
+    console.log('sds');
     props.totprice.totalPrice = 0;
     props.allData.data.forEach(item => {
-      console.log( item)
-      props.totprice. totalPrice += item.qty * item.product.price;
+      console.log(item);
+      props.totprice.totalPrice += item.qty * item.product.price;
+      totalPriceValue = props.totprice.totalPrice +=
+        item.qty * item.product.price;
     });
 
-    console.log( props.totalPrice)
+    console.log(props.totalPrice);
 
-    props.totprice. setTotalPrice(props.totprice. totalPrice);
+    props.totprice.setTotalPrice(props.totprice.totalPrice);
   };
-  
+
   useEffect(() => {
     calculateTotalPrice(); // Calculate total price on component mount
-  }, [data,count]); // Recalculate total price when data changes
-  
-  
+  }, [data, count]); // Recalculate total price when data changes
+
   const onIncreament = indexVal => {
     props?.data?.data?.product_variations?.map((item, index) => {
       if (
@@ -214,16 +217,12 @@ export default function BasketComp(props) {
           </TouchableOpacity>
           <View style={styles.detailsContainer}>
             <Text style={styles.titleTxt}>{props?.data?.product?.name}</Text>
-         
-
             <View
               style={{
-                marginLeft:10,
-
-
+                marginLeft: 10,
                 // width:50,
-// marginHorizontal:35,
-width:'45%',
+                // marginHorizontal:35,
+                width: '45%',
 
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -231,59 +230,55 @@ width:'45%',
                 backgroundColor: 'rgba(122, 122, 122, 0.1)', // Grey background color with 50% opacity
                 borderRadius: 20,
                 paddingVertical: 0,
-                marginTop:10
+                marginTop: 10,
               }}>
-                
-            
-            <TouchableOpacity
+              <TouchableOpacity
                 disabled={loading2}
                 onPress={() => onDecreamentEditor(props?.data?.id)}
                 style={[
                   styles.button,
-                  {backgroundColor: 'white', borderColor: 'white',
-                  marginLeft:3,
-
-                },
+                  {
+                    backgroundColor: 'white',
+                    borderColor: 'white',
+                    marginLeft: 3,
+                  },
                 ]}>
                 <ICONS.Entypo name="minus" size={30} color="grey" />
               </TouchableOpacity>
 
               {loading2 ? (
-                <SkypeIndicator
-                  size={20}
-                  style={{}}
-                  color={'black'}
-                />
+                <SkypeIndicator size={20} style={{}} color={'black'} />
               ) : (
-                <Text style={[styles.quantityTxt,
-                //  {position: 'absolute'}
-                {
-                  paddingHorizontal:10
-                }
-                ]
-                 }>
+                <Text
+                  style={[
+                    styles.quantityTxt,
+                    //  {position: 'absolute'}
+                    {
+                      paddingHorizontal: 10,
+                    },
+                  ]}>
                   {count}
                 </Text>
               )}
-            
 
               <TouchableOpacity
                 disabled={loading2}
                 onPress={() => onIncreamentEditor(props?.data?.id)}
-                style={[styles.button, {
-                  // marginRight:5,
-
-                }]}>
+                style={[
+                  styles.button,
+                  {
+                    // marginRight:5,
+                  },
+                ]}>
                 <ICONS.Entypo name="plus" size={30} color="grey" />
               </TouchableOpacity>
-              
             </View>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 marginVertical: hp2(1),
-                paddingLeft:10
+                paddingLeft: 10,
               }}>
               <View
                 style={{
@@ -302,14 +297,10 @@ width:'45%',
                 }}>
                 SIZE : {props?.data?.size?.size}
               </Text>
-            </View>
+            </View> */}
             <Text style={styles.priceTxt}>£{props?.data?.product?.price}</Text>
-        
-
           </View>
-
         </>
-        
       ) : (
         <>
           <TouchableOpacity
@@ -330,7 +321,7 @@ width:'45%',
           </TouchableOpacity>
           <View style={styles.detailsContainer}>
             <Text style={styles.titleTxt}>{props?.data?.data?.name}</Text>
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -343,7 +334,8 @@ width:'45%',
                   backgroundColor: props?.data?.colorId?.color_code,
                   borderRadius: wp2(2),
                   borderWidth: 1,
-                }}></View>
+                }}
+              />
               <Text
                 style={{
                   color: 'black',
@@ -353,7 +345,7 @@ width:'45%',
                 }}>
                 SIZE : {props?.data?.sizeId?.size?.size}
               </Text>
-            </View>
+            </View> */}
             <Text style={styles.priceTxt}>£{props?.data?.data?.price}</Text>
 
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -395,7 +387,7 @@ const styles = StyleSheet.create({
 
   priceTxt: {
     color: 'black',
-    fontFamily: fonts.PoppinsBold,
+    fontFamily: 'Poppins-SemiBold',
     fontSize: rfv(14),
     paddingLeft: 10,
     paddingTop: 20,
@@ -410,15 +402,14 @@ const styles = StyleSheet.create({
   imageWrap: {
     width: wp2(38),
     height: hp2(18),
-    borderRadius: wp2(3),
+    borderRadius: 5,
     overflow: 'hidden',
-  
   },
   button: {
     width: wp2(8),
     height: wp2(8),
-    marginVertical:1,
-    
+    marginVertical: 1,
+
     backgroundColor: 'white',
     borderRadius: 100,
     borderWidth: 2,

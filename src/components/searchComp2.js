@@ -72,8 +72,12 @@ export default function SearchComp2(props) {
               ? IMAGES.profileIcon3
               : {uri: props?.data?.profile_image?.original_url}
           }
-          style={{width: '100%', height: '100%'}}
-          resizeMode="contain"
+          style={{
+            width: 110,
+            height: 110,
+            borderRadius: 10,
+          }}
+          // resizeMode="contain"
         />
       </View>
       <Text style={styles.text}>{props?.data?.username}</Text>
@@ -84,34 +88,23 @@ export default function SearchComp2(props) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    borderRadius: wp2(2),
-    width: wp2(28),
-    marginHorizontal: wp2(2),
-    marginVertical: hp2(2),
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderRadius: 10,
+    marginHorizontal: 5,
+    marginVertical: 10,
   },
   imageContainer: {
-    width: wp2(28),
-    height: hp2(18),
-    overflow: 'hidden',
+    // width: wp2(28),
+    // height: hp2(18),
+    // overflow: 'hidden',
   },
   text: {
     color: 'black',
     textAlign: 'center',
     fontSize: rfv(11),
-    fontWeight: '600',
-    textTransform: 'uppercase',
+    fontWeight: '400',
   },
   skeletonView:{
-    width: wp2(28),
+    width: wp2(18),
     height: hp2(18),
   }
 });

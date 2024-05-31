@@ -2,7 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Image, Text, Platform} from 'react-native';
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
 import {IMAGES, wp2, hp2} from '../theme';
-import {getFocusedRouteNameFromRoute, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  getFocusedRouteNameFromRoute,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import FeedbackScreen from '../screens/feedback/feedbackScreen';
 import NotificationScreen from '../screens/notification/notificationScreen';
@@ -38,6 +42,12 @@ import CommentScreen from '../screens/home/commentScreen';
 import BuyNow from '../screens/checkout/buyNow';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+
+import FTS from '../assets/icons/fts.svg';
+import Search from '../assets/icons/search.svg';
+import Home from '../assets/icons/home.svg';
+import Basket from '../assets/icons/cart.svg';
+import Profile from '../assets/icons/profile.svg';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -187,6 +197,15 @@ export const BottomNavigationBrand = () => {
   const user = useSelector(state => state.userData);
   const [showSplash, setShowSplash] = useState(true);
   const [showWelcome, setShowWelcome] = useState(true);
+  const basket = useSelector(state => state.basket);
+  const route = useRoute(); // Accessing the route object
+
+  const [selectedTab, setSelectedTab] = useState('homeScreen'); // Initialize with the default tab
+
+  useEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'homeScreen';
+    setSelectedTab(routeName);
+  }, [route]);
 
   useEffect(() => {
     if (showSplash && user?.token) {
@@ -237,12 +256,28 @@ export const BottomNavigationBrand = () => {
           options={{
             tabBarIcon: ({focused, color, size}) => (
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.fts_bottom}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="contain"
+                <FTS
+                  width={25}
+                  height={30}
+                  color={selectedTab === 'FTS100' ? 'blue' : 'gray'}
                 />
               </View>
+            ),
+            tabBarOptions: {
+              activeTintColor: '#4D50E0', // Color when selected
+              inactiveTintColor: '#A1A1A1', // Color when not selected
+            },
+            tabBarLabel: ({focused, color, size}) => (
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  fontWeight: 400,
+                  marginTop: -10,
+                  color: selectedTab === 'FTS100' ? 'blue' : 'gray',
+                }}>
+                FTS
+              </Text>
             ),
           }}
           component={FTS100}
@@ -252,12 +287,43 @@ export const BottomNavigationBrand = () => {
           options={{
             tabBarIcon: ({focused, color, size}) => (
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.search_bottom}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="contain"
+                <Search
+                  width={25}
+                  height={25}
+                  color={selectedTab === 'searchScreen' ? 'blue' : 'gray'}
                 />
+                {/* <Image
+                source={IMAGES.search_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
               </View>
+            ),
+
+            tabBarOptions: {
+              activeTintColor: '#4D50E0', // Color when selected
+              inactiveTintColor: '#A1A1A1', // Color when not selected
+
+              tabStyle: {
+                paddingBottom: 8,
+                paddingTop: 8,
+              },
+            },
+            tabBarLabel: ({focused, color, size}) => (
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  marginTop: -10,
+                  fontWeight: 400,
+                  color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                }}>
+                Discover
+              </Text>
             ),
           }}
           component={SearchScreen}
@@ -267,12 +333,41 @@ export const BottomNavigationBrand = () => {
           options={{
             tabBarIcon: ({focused, color, size}) => (
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.home2}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="contain"
+                <Home
+                  width={25}
+                  height={25}
+                  color={selectedTab === 'homeScreen' ? 'blue' : 'gray'}
                 />
+                {/* <Image
+                source={IMAGES.home}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'homeScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
               </View>
+            ),
+            tabBarOptions: {
+              activeTintColor: '#4D50E0', // Color when selected
+              inactiveTintColor: '#A1A1A1', // Color when not selected
+              tabStyle: {
+                paddingBottom: 8,
+                paddingTop: 8,
+              },
+            },
+            tabBarLabel: ({focused, color, size}) => (
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  marginTop: -10,
+                  fontWeight: 400,
+                  color: selectedTab === 'homeScreen' ? 'blue' : 'gray',
+                }}>
+                Home
+              </Text>
             ),
           }}
           component={HomeScreen}
@@ -283,18 +378,102 @@ export const BottomNavigationBrand = () => {
             setShowWelcome,
           }}
         />
-
         <Tab.Screen
-          name="testBrand"
+          name="basketScreen"
+          options={{
+            tabBarIcon: ({focused, color, size}) => (
+              <>
+                <View style={styles.iconWrap}>
+                  <Basket
+                    width={25}
+                    height={25}
+                    color={selectedTab === 'basketScreen' ? 'blue' : 'gray'}
+                  />
+                  {/* <Image
+                  source={IMAGES.basket}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    tintColor: selectedTab === 'basketScreen' ? 'blue' : 'gray',
+                  }}
+                  resizeMode="contain"
+                /> */}
+                </View>
+                {basket?.count > 0 && (
+                  <View style={styles.basketCounter}>
+                    <Text style={{color: 'white', fontSize: rfv(10)}}>
+                      {basket?.count}
+                    </Text>
+                  </View>
+                )}
+              </>
+            ),
+            tabBarOptions: {
+              activeTintColor: '#4D50E0', // Color when selected
+              inactiveTintColor: '#A1A1A1', // Color when not selected
+
+              tabStyle: {
+                paddingBottom: 8,
+                paddingTop: 8,
+              },
+            },
+            tabBarLabel: ({focused, color, size}) => (
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  marginTop: -10,
+                  fontWeight: 400,
+                  color: selectedTab === 'basketScreen' ? 'blue' : 'gray',
+                }}>
+                Basket
+              </Text>
+            ),
+          }}
+          component={BasketScreen}
+        />
+        <Tab.Screen
+          name="testEditor"
           options={{
             tabBarIcon: ({focused, color, size}) => (
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.profileicon2}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="contain"
+                <Profile
+                  width={25}
+                  height={25}
+                  color={selectedTab === 'brandProfileScreen' ? 'blue' : 'gray'}
                 />
+                {/* <Image
+                source={IMAGES.profile_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor:
+                    selectedTab === 'editorProfileScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
               </View>
+            ),
+            tabBarOptions: {
+              activeTintColor: '#4D50E0', // Color when selected
+              inactiveTintColor: '#A1A1A1', // Color when not selected
+              tabStyle: {
+                paddingBottom: 8,
+                paddingTop: 8,
+              },
+            },
+            tabBarLabel: ({focused, color, size}) => (
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  paddingBottom: 0,
+                  marginTop: -10,
+                  fontWeight: 400,
+                  color: selectedTab === 'brandProfileScreen' ? 'blue' : 'gray',
+                }}>
+                Profile
+              </Text>
             ),
           }}
           component={TestBrand}
@@ -475,7 +654,7 @@ export const BottomNavigationEditor = () => {
         tabBarStyle: {
           width: wp2(100),
 
-          height: Platform.OS === 'ios' ? hp2(10) : hp2(9),
+          height: Platform.OS === 'ios' ? hp2(11) : hp2(9),
           backgroundColor: 'white',
           display: 'flex',
         },
@@ -485,11 +664,10 @@ export const BottomNavigationEditor = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-              
-                source={IMAGES.fts_bottom}
-                style={{ width: '100%', height: '100%', tintColor: selectedTab === 'FTS100' ? 'blue' : 'gray' }}
-                resizeMode="contain"
+              <FTS
+                width={25}
+                height={25}
+                color={selectedTab === 'FTS100' ? 'blue' : 'gray'}
               />
             </View>
           ),
@@ -497,7 +675,6 @@ export const BottomNavigationEditor = () => {
           tabBarOptions: {
             activeTintColor: '#4D50E0', // Color when selected
             inactiveTintColor: '#A1A1A1', // Color when not selected
-
             tabStyle: {
               paddingBottom: 8,
               paddingTop: 8,
@@ -509,8 +686,8 @@ export const BottomNavigationEditor = () => {
                 color: 'rgba(161, 161, 170, 1)',
                 fontSize: 13,
                 paddingBottom: 0,
-                fontWeight: 500,
-                color: selectedTab === 'FTS100' ? 'blue' : 'gray'
+                fontWeight: 400,
+                color: selectedTab === 'FTS100' ? 'blue' : 'gray',
               }}>
               FTS
             </Text>
@@ -523,11 +700,20 @@ export const BottomNavigationEditor = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.search_bottom}
-                style={{ width: '100%', height: '100%', tintColor: selectedTab === 'searchScreen' ? 'blue' : 'gray' }}
-                resizeMode="contain"
+              <Search
+                width={25}
+                height={25}
+                color={selectedTab === 'searchScreen' ? 'blue' : 'gray'}
               />
+              {/* <Image
+                source={IMAGES.search_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
             </View>
           ),
 
@@ -546,9 +732,8 @@ export const BottomNavigationEditor = () => {
                 color: 'rgba(161, 161, 170, 1)',
                 fontSize: 13,
                 paddingBottom: 0,
-                fontWeight: 500,
-                color: selectedTab === 'searchScreen' ? 'blue' : 'gray'
-
+                fontWeight: 400,
+                color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
               }}>
               Discover
             </Text>
@@ -561,11 +746,20 @@ export const BottomNavigationEditor = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.home}
-                style={{ width: '100%', height: '100%', tintColor: selectedTab === 'homeScreen' ? 'blue' : 'gray' }}
-                resizeMode="contain"
+              <Home
+                width={25}
+                height={25}
+                color={selectedTab === 'homeScreen' ? 'blue' : 'gray'}
               />
+              {/* <Image
+                source={IMAGES.home}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'homeScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
             </View>
           ),
 
@@ -584,9 +778,8 @@ export const BottomNavigationEditor = () => {
                 color: 'rgba(161, 161, 170, 1)',
                 fontSize: 13,
                 paddingBottom: 0,
-                fontWeight: 500,
-                color: selectedTab === 'homeScreen' ? 'blue' : 'gray'
-
+                fontWeight: 400,
+                color: selectedTab === 'homeScreen' ? 'blue' : 'gray',
               }}>
               Home
             </Text>
@@ -601,11 +794,20 @@ export const BottomNavigationEditor = () => {
           tabBarIcon: ({focused, color, size}) => (
             <>
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.basket}
-                  style={{ width: '100%', height: '100%', tintColor: selectedTab === 'basketScreen' ? 'blue' : 'gray' }}
-                  resizeMode="contain"
+                <Basket
+                  width={25}
+                  height={25}
+                  color={selectedTab === 'basketScreen' ? 'blue' : 'gray'}
                 />
+                {/* <Image
+                  source={IMAGES.basket}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    tintColor: selectedTab === 'basketScreen' ? 'blue' : 'gray',
+                  }}
+                  resizeMode="contain"
+                /> */}
               </View>
               {basket?.count > 0 && (
                 <View style={styles.basketCounter}>
@@ -631,8 +833,8 @@ export const BottomNavigationEditor = () => {
                 color: 'rgba(161, 161, 170, 1)',
                 fontSize: 13,
                 paddingBottom: 0,
-                fontWeight: 500,
-                color: selectedTab === 'basketScreen' ? 'blue' : 'gray'
+                fontWeight: 400,
+                color: selectedTab === 'basketScreen' ? 'blue' : 'gray',
               }}>
               Basket
             </Text>
@@ -640,23 +842,32 @@ export const BottomNavigationEditor = () => {
         }}
         component={BasketScreen}
       />
-{console.log(selectedTab)}
+      {console.log(selectedTab)}
       <Tab.Screen
         name="testEditor"
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.profile_bottom}
-                style={{ width: '100%', height: '100%', tintColor: selectedTab === 'editorProfileScreen' ? 'blue' : 'gray' }}
-                resizeMode="contain"
+              <Profile
+                width={25}
+                height={25}
+                color={selectedTab === 'editorProfileScreen' ? 'blue' : 'gray'}
               />
+              {/* <Image
+                source={IMAGES.profile_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor:
+                    selectedTab === 'editorProfileScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
             </View>
           ),
           tabBarOptions: {
             activeTintColor: '#4D50E0', // Color when selected
             inactiveTintColor: '#A1A1A1', // Color when not selected
-
             tabStyle: {
               paddingBottom: 8,
               paddingTop: 8,
@@ -668,8 +879,8 @@ export const BottomNavigationEditor = () => {
                 color: 'rgba(161, 161, 170, 1)',
                 fontSize: 13,
                 paddingBottom: 0,
-                fontWeight: 500,
-                color: selectedTab === 'editorProfileScreen' ? 'blue' : 'gray'
+                fontWeight: 400,
+                color: selectedTab === 'editorProfileScreen' ? 'blue' : 'gray',
               }}>
               Profile
             </Text>
@@ -798,6 +1009,19 @@ export const BottomNavigationGuest = () => {
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
   const {products} = useSelector(state => state.GuestBasket);
+
+  const basket = useSelector(state => state.basket);
+  const route = useRoute(); // Accessing the route object
+
+  const [showSplash, setShowSplash] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(true);
+  const [selectedTab, setSelectedTab] = useState('homeScreen'); // Initialize with the default tab
+
+  useEffect(() => {
+    const routeName = getFocusedRouteNameFromRoute(route) ?? 'homeScreen';
+    setSelectedTab(routeName);
+  }, [route]);
+
   return (
     <Tab.Navigator
       backBehavior="history"
@@ -824,12 +1048,33 @@ export const BottomNavigationGuest = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.fts_bottom}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
+              <FTS
+                width={25}
+                height={25}
+                color={selectedTab === 'FTS100' ? 'blue' : 'gray'}
               />
             </View>
+          ),
+          tabBarOptions: {
+            activeTintColor: '#4D50E0', // Color when selected
+            inactiveTintColor: '#A1A1A1', // Color when not selected
+            tabStyle: {
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+          },
+          tabBarLabel: ({focused, color, size}) => (
+            <Text
+              style={{
+                color: 'rgba(161, 161, 170, 1)',
+                fontSize: 13,
+                paddingBottom: 0,
+                fontWeight: 400,
+                marginTop: -10,
+                color: selectedTab === 'FTS100' ? 'blue' : 'gray',
+              }}>
+              FTS
+            </Text>
           ),
         }}
         component={FTS100}
@@ -839,12 +1084,43 @@ export const BottomNavigationGuest = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.search2}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
+              <Search
+                width={25}
+                height={25}
+                color={selectedTab === 'searchScreen' ? 'blue' : 'gray'}
               />
+              {/* <Image
+                source={IMAGES.search_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
             </View>
+          ),
+
+          tabBarOptions: {
+            activeTintColor: '#4D50E0', // Color when selected
+            inactiveTintColor: '#A1A1A1', // Color when not selected
+            tabStyle: {
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+          },
+          tabBarLabel: ({focused, color, size}) => (
+            <Text
+              style={{
+                color: 'rgba(161, 161, 170, 1)',
+                fontSize: 13,
+                paddingBottom: 0,
+                marginTop: -10,
+                fontWeight: 400,
+                color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+              }}>
+              Discover
+            </Text>
           ),
         }}
         component={SearchScreen}
@@ -854,12 +1130,44 @@ export const BottomNavigationGuest = () => {
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.home2}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
+              <Home
+                width={25}
+                height={25}
+                color={selectedTab === 'homeScreen' ? 'blue' : 'gray'}
               />
+              {/* <Image
+                source={IMAGES.home}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor: selectedTab === 'homeScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
             </View>
+          ),
+
+          tabBarOptions: {
+            activeTintColor: '#4D50E0', // Color when selected
+            inactiveTintColor: '#A1A1A1', // Color when not selected
+
+            tabStyle: {
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+          },
+          tabBarLabel: ({focused, color, size}) => (
+            <Text
+              style={{
+                color: 'rgba(161, 161, 170, 1)',
+                fontSize: 13,
+                paddingBottom: 0,
+                marginTop: -10,
+                fontWeight: 400,
+                color: selectedTab === 'homeScreen' ? 'blue' : 'gray',
+              }}>
+              Home
+            </Text>
           ),
         }}
         component={HomeScreen}
@@ -871,41 +1179,103 @@ export const BottomNavigationGuest = () => {
           tabBarIcon: ({focused, color, size}) => (
             <>
               <View style={styles.iconWrap}>
-                <Image
-                  source={IMAGES.bag2}
-                  style={{width: '100%', height: '100%'}}
-                  resizeMode="contain"
+                <Basket
+                  width={25}
+                  height={25}
+                  color={selectedTab === 'basketScreen' ? 'blue' : 'gray'}
                 />
+                {/* <Image
+                  source={IMAGES.basket}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    tintColor: selectedTab === 'basketScreen' ? 'blue' : 'gray',
+                  }}
+                  resizeMode="contain"
+                /> */}
               </View>
-              {products?.length !== 0 && (
+              {basket?.count > 0 && (
                 <View style={styles.basketCounter}>
                   <Text style={{color: 'white', fontSize: rfv(10)}}>
-                    {products?.length}
+                    {basket?.count}
                   </Text>
                 </View>
               )}
             </>
           ),
-        }}
-        component={BasketScreen}
-      />
+          tabBarOptions: {
+            activeTintColor: '#4D50E0', // Color when selected
+            inactiveTintColor: '#A1A1A1', // Color when not selected
 
-      <Tab.Screen
-        name="testScreen"
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.profileicon2}
-                style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
-              />
-            </View>
+            tabStyle: {
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+          },
+          tabBarLabel: ({focused, color, size}) => (
+            <Text
+              style={{
+                color: 'rgba(161, 161, 170, 1)',
+                fontSize: 13,
+                paddingBottom: 0,
+                marginTop: -10,
+                fontWeight: 400,
+                color: selectedTab === 'basketScreen' ? 'blue' : 'gray',
+              }}>
+              Basket
+            </Text>
           ),
         }}
         component={TestScreen}
       />
 
+      <Tab.Screen
+        name="testEditor"
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <View style={styles.iconWrap}>
+              <Profile
+                width={25}
+                height={25}
+                color={selectedTab === 'guestScreen' ? 'blue' : 'gray'}
+              />
+              {/* <Image
+                source={IMAGES.profile_bottom}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  tintColor:
+                    selectedTab === 'editorProfileScreen' ? 'blue' : 'gray',
+                }}
+                resizeMode="contain"
+              /> */}
+            </View>
+          ),
+          tabBarOptions: {
+            activeTintColor: '#4D50E0', // Color when selected
+            inactiveTintColor: '#A1A1A1', // Color when not selected
+            tabStyle: {
+              paddingBottom: 8,
+              paddingTop: 8,
+            },
+          },
+          tabBarLabel: ({focused, color, size}) => (
+            <Text
+              style={{
+                color: 'rgba(161, 161, 170, 1)',
+                fontSize: 13,
+                paddingBottom: 0,
+                marginTop: -10,
+                fontWeight: 400,
+                color: selectedTab === 'guestScreen' ? 'blue' : 'gray',
+              }}>
+              Profile
+            </Text>
+          ),
+        }}
+        component={TestScreen}
+      />
+      {/* component={TestScreen} */}
       <Tab.Screen
         name={'confirmationScreen'}
         component={ConfirmationScreen}
@@ -1007,8 +1377,6 @@ const styles = StyleSheet.create({
     bottom: 0,
   },
   iconWrap: {
-    width: wp2(8),
-    height: wp2(8),
     overflow: 'hidden',
   },
   iconText: {

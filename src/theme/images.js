@@ -1,11 +1,16 @@
 export const IMAGES = {
-  setting:require('../assets/settings.png'),
+  setting: require('../assets/settings.png'),
   list: require('../assets/list.png'),
- book:  require('../assets/book.png'),
+  book: require('../assets/book.png'),
   lamasion_cont: require('../assets/lamasion_cont.png'),
 
   searc_icon: require('../assets/searc_icon.png'),
   setingsIcon: require('../assets/setings.png'),
+  cil_badge: require('../assets/cil-badge.png'),
+
+  navigator_discover: require('../assets/discover.svg'),
+  empty_basket: require('../assets/empty-basket.png'),
+  no_items_found: require('../assets/no-found-item.png'),
 
   nosearch: require('../assets/nosearch.png'),
   nobacket: require('../assets/nobasket.png'),
@@ -23,8 +28,8 @@ export const IMAGES = {
   editor2icon: require('../assets/profile2.png'),
   calender: require('../assets/Calendar2.png'),
 
-  dangerRed: require('../assets/danger_red.png'),
-  dangerBlack: require('../assets/danger_black.png'),
+  dangerRed: require('../assets/warning-avaible.png'),
+  dangerBlack: require('../assets/warning-disable.png'),
 
   brandicon: require('../assets/brandicon.png'),
   brand2icon: require('../assets/brand2.png'),
@@ -50,6 +55,7 @@ export const IMAGES = {
   bag2: require('../assets/bag2.png'),
   logoblack: require('../assets/logoblack.png'),
   logowhite: require('../assets/logowhite.png'),
+  logoMaison: require('../assets/logo-maison.png'),
 
   googleIcon: require('../assets/google.png'),
 
@@ -70,7 +76,7 @@ export const IMAGES = {
   home: require('../assets/home.png'),
   fts_bottom: require('../assets/fts_bottom.png'),
   profile_bottom: require('../assets/profile_bottom.png'),
-    profile_bottom: require('../assets/profile_bottom.png'),
+  profile_bottom: require('../assets/profile_bottom.png'),
 
   fts_bottom: require('../assets/fts_bottom.png'),
   basket: require('../assets/basket.png'),
