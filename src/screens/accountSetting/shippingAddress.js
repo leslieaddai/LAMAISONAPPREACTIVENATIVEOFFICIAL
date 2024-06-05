@@ -31,6 +31,7 @@ import NewInputComp from '../../components/NewInputComp';
 import ContinueButton from '../auth/componnets/ContinueBtn';
 
 import ArrowDown from '../../assets/icons/arrow-down.svg';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function ShippingAddress(props) {
   const dispatch = useDispatch();
@@ -192,14 +193,19 @@ export default function ShippingAddress(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <View style={styles.headWrap}>
+        <NewHeaderComp
+          title={'Shipping adress'}
+          movePreviousArrow={true}
+          arrowNavigation={() => props.navigation.goBack()}
+        />
+        {/* <View style={styles.headWrap}>
           <TouchableOpacity
             onPress={() => props.navigation.goBack()}
             style={{position: 'absolute', left: wp2(4)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
           <Text style={styles.heading}>SHIPPING ADDRESS</Text>
-        </View>
+        </View> */}
 
         {loading ? (
           <View

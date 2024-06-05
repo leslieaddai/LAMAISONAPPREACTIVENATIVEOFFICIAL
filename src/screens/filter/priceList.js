@@ -15,12 +15,17 @@ import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import types from '../../Redux/types';
 import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import NewInputComp from '../../components/NewInputComp';
+import {TextInput} from 'react-native-gesture-handler';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 export default function PriceList(props) {
   const {Price} = useSelector(state => state.Price);
   const dispatch = useDispatch();
   const [selected, setSelected] = useState(Price);
+  const [customValue, setCustomValue] = useState('');
   const navigation = useNavigation();
+
   const options = text => {
     return (
       <TouchableOpacity
@@ -30,48 +35,61 @@ export default function PriceList(props) {
             type: types.Priceadd,
             payload: text,
           });
-          navigation.goBack();
         }}
         style={styles.optionWrap}>
         <Text style={{color: 'black'}}>
-          {text === '301' ? text + '+' : '€' + text}
+          {text === '301' ? text + '+' : '£' + text}
         </Text>
         <View
           style={[
             styles.circle,
             {backgroundColor: selected == text ? COLORS.main : 'white'},
-          ]}></View>
+          ]}
+        />
       </TouchableOpacity>
     );
   };
+
+  const displayValue =
+    typeof customValue === 'string' ? customValue : JSON.stringify(customValue);
   return (
     <>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
       <SafeAreaView style={styles.container}>
-        {/* <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-            
-          }}
-          style={{position: 'absolute', left: wp2(4)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.heading}>PRICE</Text>
-      </View> */}
         <NewHeaderComp
           arrowNavigation={() => props.navigation.navigate('filterScreen')}
           movePreviousArrow={true}
           title={'Filters - Price'}
         />
-
+        <NewInputComp
+          inputText={'Price point'}
+          value={customValue}
+          handleOnChange={text => setCustomValue(text)}
+        />
+        {customValue <= 0 ? '' : options(displayValue.toString())}
         {options('0-50')}
         {options('51-100')}
         {options('101-200')}
         {options('201-300')}
         {options('301')}
+        <View style={{marginHorizontal: 20, marginTop: 20}}>
+          <ContinueButton
+            text={'Save'}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
+        </View>
+
+        {/* <TextInput
+          style={styles.input}
+          value={inputValue}
+          onChangeText={text => setInputValue(text)}
+          placeholder="Введіть текст"
+        />
+        <Text style={styles.text}>Введене значення: {displayValue}</Text> */}
       </SafeAreaView>
     </>
   );
@@ -110,6 +128,6 @@ const styles = StyleSheet.create({
     height: wp2(5),
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: COLORS.gray
+    borderColor: COLORS.gray,
   },
 });
