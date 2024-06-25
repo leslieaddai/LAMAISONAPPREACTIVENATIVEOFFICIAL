@@ -178,15 +178,15 @@ export default function FTS100(props) {
             ) : (
               <>
                 {dataFts?.length !== 0 ? (
-                  <>
+                  <View style={{flexDirection: 'column', gap: 10}}>
                     {dataFts?.map((item, index) => {
                       return (
-                        <>
+                        <View key={index}>
                           <BrandComp data={{item}} key2={index} />
-                        </>
+                        </View>
                       );
                     })}
-                  </>
+                  </View>
                 ) : (
                   <View
                     style={{

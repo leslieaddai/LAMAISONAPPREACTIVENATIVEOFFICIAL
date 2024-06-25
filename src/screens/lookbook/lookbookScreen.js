@@ -5,55 +5,84 @@ import {
   Image,
   TouchableOpacity,
   Text,
-
   ScrollView,
   Platform,
   SafeAreaView,
   FlatList,
+  ActivityIndicator,
+  Animated,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import CollectionComp from '../../components/collectionComp';
 
 import {getCollection} from '../../config/Urls';
 import {SkypeIndicator} from 'react-native-indicators';
 import axios from 'react-native-axios';
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import {errorHandler} from '../../config/helperFunction';
 import {useDispatch, useSelector} from 'react-redux';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
 import MyImageComponent from './MyImageComponent';
-
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import {Axios} from 'axios';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 export default function LookbookScreen(props) {
   const dispatch = useDispatch();
-
+  //
+  const [data, setData] = useState([]);
+  const [loadingNew, setLoadingNew] = useState(true);
+  const [error, setError] = useState(null);
+  ///
   const user = useSelector(state => state.userData);
   const user2 = props?.route?.params?.userData;
- 
-
 
   const [allStates, setAllStates] = useState([]);
   const [allLoading, setAllLoading] = useState(false);
-  const [loading, setLoading] = useState(false)
-  const onloading = (value,label)=>{
-    setLoading(value)
-  }
+  const [loading, setLoading] = useState(false);
+  const userId = 135;
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(
+          'https://lamaison.clickysoft.net/api/v1/collection/list',
+          {user_id: userId},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`,
+            },
+          },
+        );
+        setData(response.data.data || []);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        if (error.response) {
+          setError(
+            `Server Error: ${error.response.status} - ${JSON.stringify(
+              error.response.data,
+            )}`,
+          );
+        } else if (error.request) {
+          setError('No response received from server');
+        } else {
+          setError(`Error in request setup: ${error.message}`);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [userId]);
+
+  ///
+  const onloading = (value, label) => {
+    setLoading(value);
+  };
 
   const updateState = data => {
     setAllStates(prev => ({...prev, ...data}));
@@ -74,142 +103,178 @@ export default function LookbookScreen(props) {
   const getApiData = url => {
     setAllLoading(true);
     axios
-      .post(
-        url,
-        {user_id: user2?.userData?.id},
-       
-      )
+      .post(url, {user_id: user2?.userData?.id})
       .then(function (response) {
         setAllLoading(false);
         setAllStates(response.data.data.reverse());
-       
       })
       .catch(function (error) {
         setAllLoading(false);
-       
-      
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
+
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
- 
-    <SafeAreaView style={{flex: 1}}>
-      {allLoading ? (
-        <SkypeIndicator color="black" />
-      ) : (
-        <>
-          <View style={styles.container}>
-            <View style={styles.headWrap}>
-              <TouchableOpacity
-                onPress={() => props.navigation.goBack()}
-                style={{position: 'absolute', left: wp2(4)}}>
-                <ICONS.AntDesign name="left" size={24} color="black" />
-              </TouchableOpacity>
-              <Text style={styles.lookbookText}>Lookbook</Text>
-            </View>
 
-            {allStates.length!==0?(
-              <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{paddingBottom: hp2(12)}}>
-              <Text style={styles.collectionText}>Latest Collection</Text>
-              <Text style={styles.collectionName}>{allStates[0]?.name}</Text>
-              {allStates.length > 0 ? (
-                <TouchableOpacity
-                  onPress={() =>
-                    props.navigation.navigate('collectionScreen', {
-                      collection: allStates[0].collection_products,
-                      collectionname: allStates[0]?.name,
-                      user:user2,
-                    })
-                  }
-                  style={styles.imageContainer}>
-                    {loading?
-                    <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                    <View style={styles.skeletonView} />
-                    </View>
-                    </SkeletonPlaceholder>
-                :
-                undefined
-                    }
-                  <MyImageComponent
-                    progressiveRenderingEnabled={true}
-                    onLoadStart={()=>{onloading(true,"onLoadStart")}}
-                    onLoad={()=>onloading(false,"onLoad")}
-                    onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
-                    allStates={ allStates}
-                    style={{width: '100%', height: '100%'}}
-                    resizeMode="contain"
+      <SafeAreaView style={{flex: 1}}>
+        {allLoading ? (
+          <SkypeIndicator color="black" />
+        ) : (
+          <>
+            <View style={styles.container}>
+              <NewHeaderComp
+                movePreviousArrow={true}
+                arrowNavigation={() => props.navigation.goBack()}
+                title={'Lookbook'}
+              />
+
+              {/* <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                {loading ? (
+                  <ActivityIndicator size="large" color="#0000ff" />
+                ) : error ? (
+                  <Text>{error}</Text>
+                ) : (
+                  <FlatList
+                    data={data}
+                    keyExtractor={item => item.id.toString()}
+                    renderItem={renderCollectionItem}
+                    ListEmptyComponent={<Text>No data available.</Text>}
                   />
+                )}
+              </View> */}
+
+              {/* <View style={styles.headWrap}>
+                <TouchableOpacity
+                  onPress={() => props.navigation.goBack()}
+                  style={{position: 'absolute', left: wp2(4)}}>
+                  <ICONS.AntDesign name="left" size={24} color="black" />
                 </TouchableOpacity>
+                <Text style={styles.lookbookText}>Lookbook</Text>
+              </View> */}
+              {data.length !== 0 ? (
+                <ScrollView
+                  showsVerticalScrollIndicator={false}
+                  contentContainerStyle={{paddingVertical: 20}}>
+                  <Text style={styles.collectionText}>Latest Collection</Text>
+                  {allStates.length > 0 ? (
+                    <TouchableOpacity
+                      onPress={() =>
+                        props.navigation.navigate('collectionScreen', {
+                          collection: data[0].collection_products,
+                          collectionname: data[0]?.name,
+                          user: user2,
+                        })
+                      }
+                      style={styles.imageContainer}>
+                      {loading ? (
+                        <SkeletonPlaceholder
+                          borderRadius={4}
+                          alignItems="center"
+                          backgroundColor="#dddddd">
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View style={styles.skeletonView} />
+                          </View>
+                        </SkeletonPlaceholder>
+                      ) : undefined}
+                      <MyImageComponent
+                        progressiveRenderingEnabled={true}
+                        onLoadStart={() => {
+                          onloading(true, 'onLoadStart');
+                        }}
+                        onLoad={() => onloading(false, 'onLoad')}
+                        onLoadEnd={() => {
+                          onloading(false, 'onLoadEnd');
+                        }}
+                        allStates={allStates}
+                        style={{width: '100%', height: '100%'}}
+                        resizeMode="contain"
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <View style={styles.imageContainer}></View>
+                  )}
+                  <Text style={styles.collectionText}>All Collections</Text>
+                  <View>
+                    <FlatList
+                      contentContainerStyle={{
+                        paddingHorizontal: wp2(4),
+                        paddingVertical: hp2(1),
+                      }}
+                      horizontal
+                      showsHorizontalScrollIndicator={false}
+                      data={data}
+                      renderItem={({item, index}) => {
+                        console.log('ss');
+                        return (
+                          <>
+                            {index > 0 && (
+                              <CollectionComp
+                                name={item?.name}
+                                itemscollection={item?.collection_products}
+                                uri={{uri: item?.media[0]?.original_url}}
+                                user={user2}
+                              />
+                            )}
+                          </>
+                        );
+                      }}
+                    />
+                  </View>
+                  <View style={{marginHorizontal: 20, marginTop: '10%'}}>
+                    <ContinueButton
+                      onPress={() =>
+                        props.navigation.navigate('selectCoverPhoto')
+                      }
+                      text={'Create collection'}
+                    />
+                  </View>
+                  {/* {user?.userData?.id === user2?.userData?.id &&
+                    user?.userData?.role?.[0]?.id === 2 && (
+                      <TouchableOpacity
+                        onPress={() =>
+                          props.navigation.navigate('selectCoverPhoto')
+                        }
+                        style={styles.button}>
+                        <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
+                      </TouchableOpacity>
+                    )} */}
+                </ScrollView>
               ) : (
-                <View style={styles.imageContainer}></View>
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text>No collection added yet</Text>
+                  {user?.userData?.id === user2?.userData?.id &&
+                    user?.userData?.role?.[0]?.id === 3 && (
+                      <TouchableOpacity
+                        onPress={() =>
+                          props.navigation.navigate('selectCoverPhoto')
+                        }
+                        style={styles.button}>
+                        <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
+                      </TouchableOpacity>
+                    )}
+                </View>
               )}
-              <Text style={styles.collectionText}>All Collections</Text>
-              <View>
-                <FlatList
-                  contentContainerStyle={{
-                    paddingHorizontal: wp2(4),
-                    paddingVertical: hp2(1),
-                  }}
-                  horizontal
-                  showsHorizontalScrollIndicator={false}
-                  data={allStates}
-                  renderItem={({item, index}) => {
-                    console.log('ss');
-                    return (
-                      <>
-                        {index > 0 && (
-                          <CollectionComp
-                            name={item?.name}
-                            itemscollection={item?.collection_products}
-                            uri={{uri: item?.media[0]?.original_url}}
-                            user={user2}
-                            
-                          />
-                        )}
-                      </>
-                    );
-                  }}
-                />
-              </View>
-
-              {user?.userData?.id === user2?.userData?.id &&
-                user?.userData?.role?.[0]?.id === 3 && (
-                  <TouchableOpacity
-                    onPress={() =>
-                      props.navigation.navigate('selectCoverPhoto')
-                    }
-                    style={styles.button}>
-                    <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
-                  </TouchableOpacity>
-                )}
-            </ScrollView>
-            ):(
-              <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                <Text>No collection added yet</Text>
-                {user?.userData?.id === user2?.userData?.id &&
-                user?.userData?.role?.[0]?.id === 3 && (
-                  <TouchableOpacity
-                    onPress={() =>
-                      props.navigation.navigate('selectCoverPhoto')
-                    }
-                    style={styles.button}>
-                    <Text style={{color: 'white'}}>CREATE COLLECTION</Text>
-                  </TouchableOpacity>
-                )}
-              </View>
-            )}
-
-         
-          </View>
-        </>
-      )}
-    </SafeAreaView>
+            </View>
+          </>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -234,8 +299,8 @@ const styles = StyleSheet.create({
   },
   collectionText: {
     color: 'black',
-    fontWeight: '600',
-    fontSize: rfv(22),
+    fontWeight: '400',
+    fontSize: 22,
     marginLeft: wp2(6),
     marginBottom: hp2(0.5),
   },
@@ -256,7 +321,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: hp2(1),
   },
-  skeletonView:{
+  skeletonView: {
     width: wp2(84),
     height: hp2(22),
     borderRadius: wp2(6),
@@ -280,6 +345,23 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  mediaContainer: {
+    marginRight: 10,
+  },
+  mediaImage: {
+    width: 100,
+    height: 100,
+  },
+  collectionContainer: {
+    marginVertical: 10,
+  },
+  collectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  mediaScrollView: {
+    paddingLeft: 10,
   },
   collectionName: {fontWeight: '600', color: 'black', marginLeft: wp2(6)},
 });

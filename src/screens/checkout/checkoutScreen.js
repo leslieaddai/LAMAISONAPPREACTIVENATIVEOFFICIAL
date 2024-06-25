@@ -45,9 +45,16 @@ import ArrowDown from '../../assets/icons/arrow-down.svg';
 import ContinueButton from '../auth/componnets/ContinueBtn';
 import {totalPriceValue} from '../../components/basketComp';
 import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from '@stripe/stripe-react-native';
 
 export default function CheckoutScreen(props) {
   const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [loadingAddress, setLoadingAddress] = useState(false);
   const [loadingContinue, setLoadingContinue] = useState(false);
@@ -99,6 +106,7 @@ export default function CheckoutScreen(props) {
   const [total, setTotal] = useState(0);
   const [estimate, setEstimate] = useState(0);
   const [commission, setCommission] = useState(2.9);
+
   useEffect(() => {
     if (loading) {
       const parent = props.navigation.setOptions({
@@ -575,8 +583,8 @@ export default function CheckoutScreen(props) {
                                         <Image
                                           source={{uri: item?.original_url}}
                                           style={{
-                                            width: '90%',
-                                            height: '90%',
+                                            width: '100%',
+                                            height: '100%',
                                           }}
                                           resizeMode="cover"
                                         />
@@ -2028,7 +2036,7 @@ export default function CheckoutScreen(props) {
                         ? onContinue()
                         : continueButton == 'confirm'
                         ? onConfirm()
-                        : createEditorOrder();
+                        : createGuestOrder();
                     }}
                     style={styles.button}>
                     {loadingContinue ? (
@@ -2088,17 +2096,8 @@ const styles = StyleSheet.create({
     width: wp2(36),
     height: hp2(20),
     overflow: 'hidden',
-    borderRadius: wp2(4),
     alignSelf: 'center',
 
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   checkoutWrap: {
     height: hp2(24),

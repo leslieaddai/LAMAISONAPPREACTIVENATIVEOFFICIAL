@@ -35,6 +35,14 @@ export default function BrandComp(props) {
         borderRightWidth: 10,
         borderRadius: 10,
         marginHorizontal: 20,
+        backgroundColor:
+          props?.key2 === 0
+            ? '#fff'
+            : props?.key2 === 1
+            ? '#fff'
+            : props?.key2 === 2
+            ? '#fff'
+            : '#F6F6F6',
         borderColor:
           props?.key2 === 0
             ? '#ECC90B'
@@ -55,7 +63,7 @@ export default function BrandComp(props) {
           {props?.key2 + 1}.
         </Text>
         <View style={styles.brandLogo}>
-          <ImageCompWithErrorProfile uri={{uri: imageUri}} />
+          <ImageCompWithErrorProfile uri={imageUri} />
         </View>
       </View>
       <Text style={{color: 'black', fontSize: 16}}>

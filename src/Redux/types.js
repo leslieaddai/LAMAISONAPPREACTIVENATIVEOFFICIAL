@@ -12,6 +12,8 @@ export default {
   AddToBasket: 'AddToBasket',
   RemoveFromBasket: 'RemoveFromBasket',
   LoginGuest: 'LoginGuest',
+  Colouradd: 'Colouradd',
+  SaveSelectedColors: 'SaveSelectedColors',
   LogoutGuest: 'LogoutGuest',
   Priceadd:'Priceadd',
   Colouradd:'Colouradd',

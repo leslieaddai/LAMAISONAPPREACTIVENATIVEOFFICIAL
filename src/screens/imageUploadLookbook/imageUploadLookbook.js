@@ -20,16 +20,8 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-import {
-  IMAGES,
-  ICONS,
-  COLORS,
-  wp2,
-  hp2,
-} from '../../theme';
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
+import {IMAGES, ICONS, COLORS, wp2, hp2} from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 import QuantityComp from '../../components/quantityComp';
@@ -44,19 +36,25 @@ import {useDispatch, useSelector} from 'react-redux';
 import {BottomSheet} from 'react-native-btr';
 import LoaderComp from '../../components/loaderComp';
 import Icons from '../../theme/icons';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import NewInputComp from '../../components/NewInputComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import types from '../../Redux/types';
+
+import UploadSuccess from '../../assets/icons/uploaded-success.svg';
+import Twitter from '../../assets/icons/twitter.svg';
+import Facebook from '../../assets/icons/facebook.svg';
+import LinkedIn from '../../assets/icons/linkedin.svg';
 
 const PAGE_SIZE = 40;
 
 export default function ImageUploadLookbook(props) {
-
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const user = useSelector(state => state.userData);
-  const [modalData, setModalData] = useState()
+  const [modalData, setModalData] = useState();
   const [visible, setVisible] = useState(false);
-
 
   const scrollX = new Animated.Value(0);
 
@@ -68,7 +66,6 @@ export default function ImageUploadLookbook(props) {
     price,
     style_id,
     category: props?.route?.params?.item?.id,
-
   });
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {
@@ -79,21 +76,19 @@ export default function ImageUploadLookbook(props) {
     price,
     style_id,
     category,
-
   } = stateChange;
 
   const [quantity, setQuantity] = useState([
     {color_id: '', color: '', size_id: '', size: '', quantity: ''},
   ]);
 
-  
   const [selectedImage, setSelectedImage] = useState([]);
   const [nextButton, setNextButton] = useState(false);
   const [showQuantity, setShowQuantity] = useState(false);
   const [confirmButton, setConfirmButton] = useState(false);
   const [uploadButton, setUploadButton] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-  const [selectedText, setSelectedText] = useState('SELECT STYLE');
+  const [selectedText, setSelectedText] = useState('Select style');
   const [isOpenedShipping, setIsOpenedShipping] = useState(false);
   const [regions, setRegions] = useState([]);
   const [photos, setPhotos] = useState([]);
@@ -101,55 +96,48 @@ export default function ImageUploadLookbook(props) {
   const [hasNextPage, setHasNextPage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [perm, setPerm] = useState(false);
-  const [styleVisible, setStyleVisible]= useState(false)
-
+  const [styleVisible, setStyleVisible] = useState(false);
 
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
     uibottomesheetvisiblity(!visible);
-    setIsOpenedShipping(false)
+    setIsOpenedShipping(false);
   };
-  const togglestylebottomsheet = () =>{
-    setStyleVisible(!styleVisible)
-    uistylebottomsheetvisibility(!styleVisible)
-    setIsOpened(false)
-  }
-  const uistylebottomsheetvisibility = Bool =>{
-   setStyleVisible(Bool)
-  }
-   
-  useEffect(()=>{
-    if(isOpened){
-      uistylebottomsheetvisibility(true)
+  const togglestylebottomsheet = () => {
+    setStyleVisible(!styleVisible);
+    uistylebottomsheetvisibility(!styleVisible);
+    setIsOpened(false);
+  };
+  const uistylebottomsheetvisibility = Bool => {
+    setStyleVisible(Bool);
+  };
+
+  useEffect(() => {
+    if (isOpened) {
+      uistylebottomsheetvisibility(true);
     }
-  },[isOpened])
+  }, [isOpened]);
 
   const uibottomesheetvisiblity = Bool => {
     setVisible(Bool);
   };
 
-  useEffect(()=>{            
-    if(isOpenedShipping){
-      setModalData(props?.route?.params?.shippingData)
-      uibottomesheetvisiblity(true)
-    }
-  },[isOpenedShipping])
   useEffect(() => {
-
-
+    if (isOpenedShipping) {
+      setModalData(props?.route?.params?.shippingData);
+      uibottomesheetvisiblity(true);
+    }
+  }, [isOpenedShipping]);
+  useEffect(() => {
     axios
       .get(StylesUrl, {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-       
         setData(res.data.data);
-      
       })
       .catch(function (error) {
-   
-       
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -181,7 +169,7 @@ export default function ImageUploadLookbook(props) {
       if (Platform.OS === 'android' && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
-      if (Platform.OS === 'ios' && (await hasIosPermission())) {
+      if (Platform.OS === 'ios') {
         loadMorePhotos();
       }
     }
@@ -201,7 +189,6 @@ export default function ImageUploadLookbook(props) {
     }
   };
 
-
   async function hasAndroidPermission() {
     const permission =
       Platform.Version >= 33
@@ -211,7 +198,7 @@ export default function ImageUploadLookbook(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
- 
+
       return true;
     }
 
@@ -219,7 +206,7 @@ export default function ImageUploadLookbook(props) {
     if (status === 'granted') {
       setPerm(true);
     }
- 
+
     return status === 'granted';
   }
 
@@ -294,7 +281,6 @@ export default function ImageUploadLookbook(props) {
     return status === true;
   }
 
-
   if (uploadButton) {
     return (
       <View
@@ -302,8 +288,67 @@ export default function ImageUploadLookbook(props) {
           styles.container,
           {alignItems: 'center', justifyContent: 'center'},
         ]}>
-        <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" />
-        <Text style={styles.uploadTxt}>Successfully Uploaded!</Text>
+        {/* <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" /> */}
+        <UploadSuccess width="146" height="146" />
+        <View style={{flexDirection: 'column', gap: 10, alignItems: 'center'}}>
+          <Text style={styles.uploadTxt}>Successfully Uploaded!</Text>
+          <Text style={{fontSize: 14}}>Product updated</Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: '#F6F6F6',
+            width: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            borderRadius: 10,
+            marginTop: '15%',
+          }}>
+          <Text style={{fontSize: 14}}>
+            Tell your friends about your great choice:
+          </Text>
+          <View style={{flexDirection: 'row', gap: 10, paddingTop: 20}}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Twitter width="22" height="22" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Facebook width="20" height="20" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <LinkedIn width="20" height="20" />
+            </View>
+          </View>
+        </View>
+        <View style={{width: '90%', marginTop: '10%'}}>
+          <ContinueButton
+            text={'Got it!'}
+            onPress={() => props.navigation.goBack()}
+          />
+        </View>
       </View>
     );
   }
@@ -327,7 +372,7 @@ export default function ImageUploadLookbook(props) {
       stateChange.description !== '' &&
       stateChange.price !== '' &&
       selectedText !== 'SELECT STYLE' &&
-      regions.length !== 0
+      regions.length === 0
     ) {
       setShowQuantity(true);
     } else {
@@ -366,22 +411,19 @@ export default function ImageUploadLookbook(props) {
     }
   };
 
-  const addRegions = (item) => {
+  const addRegions = item => {
     regions.some(e => e.regionId === item?.shipping_id)
       ? setRegions(regions.filter(e => e.regionId !== item?.shipping_id))
       : setRegions([
           ...regions,
           {regionName: item?.shipping?.name, regionId: item?.shipping_id},
         ]);
-    
   };
 
   const uploadProduct = () => {
-    
     setLoading(true);
 
     var formdata = new FormData();
-
     let colorArr = [];
     let sizeArr = [];
     let quantityArr = [];
@@ -401,7 +443,7 @@ export default function ImageUploadLookbook(props) {
     formdata.append('category_id', stateChange?.category);
     formdata.append('name', stateChange?.productName);
     formdata.append('sku', Math.floor(Math.random() * 899999 + 100000));
-   
+
     formdata.append('description', stateChange?.description);
     formdata.append('price', parseFloat(stateChange?.price).toFixed(2));
     formdata.append('piece_id', stateChange?.piece_id);
@@ -429,7 +471,6 @@ export default function ImageUploadLookbook(props) {
     axios
       .request(config)
       .then(async function (res) {
-       
         setLoading(false);
         successMessage('Upload Success');
         setUploadButton(true);
@@ -440,48 +481,101 @@ export default function ImageUploadLookbook(props) {
       })
       .catch(function (error) {
         setLoading(false);
-       
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
-
+  const ProductInfOptions = ({text, onPressRoute}) => {
+    return (
+      <TouchableOpacity
+        onPress={onPressRoute}
+        style={{
+          flexDirection: 'row',
+          width: '90%',
+          alignSelf: 'center',
+          backgroundColor: '#F6F6F6',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          paddingVertical: hp2(2),
+          paddingHorizontal: 20,
+          marginBottom: hp2(1.5),
+          borderRadius: 10,
+        }}>
+        <Text style={{fontSize: 16}}>{text}</Text>
+        <ICONS.AntDesign name="right" size={15} color="black" />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
-      <SafeAreaView
-        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
+      <SafeAreaView style={{flex: 0, backgroundColor: COLORS.appBackground}} />
       <SafeAreaView style={styles.container}>
         {selectedImage?.length !== 0 && !nextButton ? (
-          <View style={styles.headWrap}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
-              <ICONS.AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.heading}>Lookbook</Text>
-            <TouchableOpacity
-              onPress={() => setNextButton(true)}
-              style={styles.button}>
-              <Text style={styles.nextTxt}>NEXT</Text>
-            </TouchableOpacity>
+          <View>
+            <NewHeaderComp
+              title={'Lookbook'}
+              arrowNavigation={() => props.navigation.goBack()}
+              movePreviousArrow={true}
+            />
           </View>
         ) : nextButton ? (
-          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
-            <TouchableOpacity
-              onPress={goBackFunction}
-              style={{position: 'absolute', left: wp2(4)}}>
-              <ICONS.AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.heading}>Lookbook</Text>
+          <View style={{marginBottom: 20}}>
+            <NewHeaderComp
+              title={'Lookbook'}
+              arrowNavigation={goBackFunction}
+              movePreviousArrow={true}
+            />
           </View>
         ) : (
-          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
-            <Text style={styles.heading}>Lookbook</Text>
+          // <View style={[styles.headWrap, {justifyContent: 'center'}]}>
+          //   <TouchableOpacity
+          //     onPress={goBackFunction}
+          //     style={{position: 'absolute', left: wp2(4)}}>
+          //     <ICONS.AntDesign name="left" size={24} color="black" />
+          //   </TouchableOpacity>
+          //   <Text style={styles.heading}>Lookbook</Text>
+          // </View>
+          <View>
+            <NewHeaderComp
+              title={'Lookbook'}
+              movePreviousArrow={true}
+              arrowNavigation={() => props.navigation.goBack()}
+            />
           </View>
         )}
-
+        {!nextButton && (
+          <View
+            style={{
+              flexDirection: 'row',
+              marginHorizontal: 20,
+              alignItems: 'center',
+              marginVertical: 10,
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{fontSize: 18}}>2. Select Photo</Text>
+            <TouchableOpacity
+              onPress={() => {
+                setNextButton(true);
+                dispatch({
+                  type: types.Colouradd,
+                  payload: {size: '', id: ''},
+                });
+              }}
+              style={{
+                backgroundColor: COLORS.main,
+                borderRadius: 10,
+                paddingHorizontal: 40,
+                paddingVertical: 15,
+              }}>
+              <Text style={{color: 'white'}}>Next</Text>
+            </TouchableOpacity>
+          </View>
+        )}
         {selectedImage?.length !== 0 ? (
           <View style={styles.scrollViewWrap}>
             <Animated.ScrollView
@@ -514,7 +608,6 @@ export default function ImageUploadLookbook(props) {
           </View>
         ) : (
           <View style={styles.imageContainer}>
-           
             <Image
               source={IMAGES.selectIMG}
               style={{width: '100%', height: '100%'}}
@@ -522,21 +615,48 @@ export default function ImageUploadLookbook(props) {
             />
           </View>
         )}
-
         {nextButton && !showQuantity && !confirmButton ? (
           <KeyboardAwareScrollView
             contentContainerStyle={{paddingVertical: hp2(1)}}>
-            <View style={styles.inputBox}>
-              <TextInput
-                style={styles.inputTxt}
-                placeholder="PRODUCT NAME"
-                placeholderTextColor={'grey'}
-                value={stateChange.productName}
-                maxLength={50}
-                onChangeText={val => updateState({productName: val})}
+            <Text
+              style={{marginHorizontal: 20, fontSize: 20, marginVertical: 20}}>
+              Product info:
+            </Text>
+            <NewInputComp
+              inputText={'Product name'}
+              value={stateChange.productName}
+              handleOnChange={val => updateState({productName: val})}
+            />
+            <ProductInfOptions
+              text={stateChange.pieces !== '' ? stateChange.pieces : 'Pieces'}
+              onPressRoute={() =>
+                props.navigation.navigate('pieces', {stateChange, updateState})
+              }
+            />
+            <View style={{marginVertical: -20}}>
+              <NewInputComp
+                inputText={'Description'}
+                value={stateChange.description}
+                handleOnChange={val => updateState({description: val})}
               />
             </View>
-            <TouchableOpacity
+            <NewInputComp
+              inputText={'Price'}
+              value={stateChange.price}
+              handleOnChange={val => updateState({price: val})}
+            />
+            <ProductInfOptions
+              text={selectedText}
+              onPressRoute={() => setIsOpened(!isOpened)}
+            />
+            {quantity?.map((item, index) => (
+              <QuantityComp
+                key={index}
+                key2={index}
+                state={{quantity, setQuantity, stateChange}}
+              />
+            ))}
+            {/* <TouchableOpacity
               onPress={() =>
                 props.navigation.navigate('pieces', {stateChange, updateState})
               }
@@ -550,7 +670,18 @@ export default function ImageUploadLookbook(props) {
                 }}>
                 {stateChange.pieces !== '' ? stateChange.pieces : 'PIECES'}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputTxt}
+                placeholder="PRODUCT NAME"
+                placeholderTextColor={'grey'}
+                value={stateChange.productName}
+                maxLength={50}
+                onChangeText={val => updateState({productName: val})}
+              />
+            </View>
+           
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
@@ -575,8 +706,7 @@ export default function ImageUploadLookbook(props) {
                   justifyContent: 'space-between',
                 },
               ]}>
-             
-              <Text style={[styles.selectTxt,{width:wp2(70)}]}>
+              <Text style={[styles.selectTxt, {width: wp2(70)}]}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
                   : 'SELECT SHIPPING DETAILS'}
@@ -589,7 +719,7 @@ export default function ImageUploadLookbook(props) {
                 />
               </View>
             </TouchableOpacity>
-           
+
             <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
@@ -600,8 +730,6 @@ export default function ImageUploadLookbook(props) {
                 onChangeText={val => updateState({price: val})}
               />
             </View>
-           
-
             <TouchableOpacity
               onPress={() =>
                 isOpened ? setIsOpened(false) : setIsOpened(true)
@@ -624,9 +752,6 @@ export default function ImageUploadLookbook(props) {
                 />
               </View>
             </TouchableOpacity>
-
-            
-
             <TouchableOpacity
               onPress={productDetails}
               style={[
@@ -639,10 +764,35 @@ export default function ImageUploadLookbook(props) {
                 },
               ]}>
               <Text style={styles.nextTxt}>NEXT</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+            {/* <TouchableOpacity
+              onPress={() => setIsOpened(!isOpened)}
+              style={{
+                flexDirection: 'row',
+                width: '90%',
+                alignSelf: 'center',
+                backgroundColor: '#F6F6F6',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingVertical: hp2(2),
+                paddingHorizontal: 20,
+                marginBottom: hp2(1.5),
+                borderRadius: 10,
+              }}>
+              <Text style={styles.selectTxt}>{selectedText}</Text>
+              <View>
+                <ICONS.FontAwesome
+                  name={isOpened ? 'chevron-up' : 'chevron-down'}
+                  color={'#A1A1A1'}
+                  size={22}
+                />
+              </View>
+            </TouchableOpacity> */}
+            <View style={{marginHorizontal: 20, marginTop: 20}}>
+              <ContinueButton text={'Next'} onPress={verifyQuantity} />
+            </View>
           </KeyboardAwareScrollView>
-        ) :
-        nextButton && showQuantity && !confirmButton ? (
+        ) : nextButton && showQuantity && !confirmButton ? (
           <KeyboardAwareScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingVertical: hp2(2)}}>
@@ -653,7 +803,7 @@ export default function ImageUploadLookbook(props) {
                 state={{quantity, setQuantity, stateChange}}
               />
             ))}
-            <View
+            {/* <View
               style={{
                 flexDirection: 'row',
                 alignSelf: 'flex-end',
@@ -668,7 +818,6 @@ export default function ImageUploadLookbook(props) {
                   <ICONS.AntDesign name="minuscircle" size={34} color="red" />
                 </TouchableOpacity>
               )}
-
               <TouchableOpacity
                 onPress={() =>
                   setQuantity([
@@ -686,8 +835,10 @@ export default function ImageUploadLookbook(props) {
                 <ICONS.AntDesign name="pluscircle" size={34} color="#162FAC" />
               </TouchableOpacity>
             </View>
-
-            <TouchableOpacity
+            <View style={{marginHorizontal: 20}}>
+              <ContinueButton text={'Next'} onPress={verifyQuantity} />
+            </View> */}
+            {/* <TouchableOpacity
               onPress={verifyQuantity}
               style={[
                 styles.button,
@@ -699,78 +850,135 @@ export default function ImageUploadLookbook(props) {
                 },
               ]}>
               <Text style={styles.nextTxt}>NEXT</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAwareScrollView>
         ) : nextButton && confirmButton ? (
-          <ScrollView contentContainerStyle={{paddingVertical: hp2(1)}}>
+          <ScrollView
+            contentContainerStyle={{paddingVertical: hp2(1), gap: 10}}>
             <View
-              style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
-              ]}>
-              <Text style={styles.selectTxt}>{stateChange.productName}</Text>
+              style={{
+                height: 50,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginHorizontal: 20,
+                color: '#000',
+              }}>
+              <Text style={{fontSize: 16}}>{stateChange.productName}</Text>
             </View>
             <View
-              style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
-              ]}>
-              <Text style={styles.selectTxt}>{stateChange.pieces}</Text>
+              style={{
+                height: 50,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginHorizontal: 20,
+                color: '#000',
+              }}>
+              <Text style={{fontSize: 16}}>{stateChange.pieces}</Text>
             </View>
             <View
-              style={[
-                styles.inputBox2,
-                {
-                  minHeight: hp2(6),
-                  justifyContent: 'center',
-                  paddingHorizontal: wp2(2),
-                },
-              ]}>
-              <Text style={styles.selectTxt}>{stateChange.description}</Text>
+              style={{
+                height: 50,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginHorizontal: 20,
+                color: '#000',
+              }}>
+              <Text style={{fontSize: 16}}>{stateChange.description}</Text>
             </View>
-            
+            <ScrollView>
+              <View>
+                {props?.route?.params?.shippingData.map((item, index) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      uibottomesheetvisiblity(false);
+                      setIsOpenedShipping(false);
+                      addRegions(item, index);
+                    }}
+                    key={index}
+                    style={{
+                      height: 50,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 10,
+                      alignItems: 'flex-start',
+                      justifyContent: 'center',
+                      paddingHorizontal: 20,
+                      marginHorizontal: 20,
+                      color: '#000',
+                    }}>
+                    <Text style={{fontSize: 16}}>{item?.shipping?.name}</Text>
+                    <Icons.AntDesign
+                      name={
+                        regions.some(e => e.regionId === item?.shipping_id)
+                          ? 'checkcircle'
+                          : 'checkcircleo'
+                      }
+                      size={20}
+                      color={
+                        regions.some(e => e.regionId === item?.shipping_id)
+                          ? COLORS.main
+                          : 'lightgray'
+                      }
+                      style={{position: 'absolute', right: 10}}
+                    />
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
             <View
-              style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
-              ]}>
-              <Text style={styles.selectTxt}>
-                {regions.map((item, index) => item?.regionName + ' ')}
-              </Text>
+              style={{
+                height: 50,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginHorizontal: 20,
+                color: '#000',
+              }}>
+              <Text style={{fontSize: 16}}>{stateChange.price}</Text>
             </View>
             <View
-              style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
-              ]}>
-              <Text style={styles.selectTxt}>{stateChange.price}</Text>
+              style={{
+                height: 50,
+                borderWidth: 1,
+                borderColor: '#ccc',
+                borderRadius: 10,
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                paddingHorizontal: 20,
+                marginHorizontal: 20,
+                color: '#000',
+              }}>
+              <Text style={{fontSize: 16}}>{selectedText}</Text>
             </View>
-            <View
-              style={[
-                styles.inputBox,
-                {
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  paddingHorizontal: wp2(2),
-                  justifyContent: 'space-between',
-                },
-              ]}>
-              <Text style={styles.selectTxt}>{selectedText}</Text>
-              <ICONS.FontAwesome
-                name={'chevron-down'}
-                color={'#A1A1A1'}
-                size={22}
+            <View style={{marginHorizontal: 20}}>
+              <ContinueButton
+                onPress={uploadProduct}
+                text={'Add to Lookbook'}
               />
             </View>
-
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={uploadProduct}
               style={[
                 styles.button,
                 {width: wp2(54), alignSelf: 'center', marginTop: hp2(2)},
               ]}>
               <Text style={styles.nextTxt}>ADD TO LOOKBOOK</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         ) : (
           <>
@@ -796,15 +1004,13 @@ export default function ImageUploadLookbook(props) {
                     );
                   }}
                 />
-  
+
                 {isLoading && (
                   <View
                     style={{alignItems: 'center', justifyContent: 'center'}}>
                     <ActivityIndicator color="black" size="large" />
                   </View>
                 )}
-
-    
               </>
             ) : (
               <View style={styles.noPhotos}>
@@ -814,75 +1020,76 @@ export default function ImageUploadLookbook(props) {
           </>
         )}
         <BottomSheet
-        visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
-        >
-          
-           <View style={styles.bottomcontainer}>
-        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
-        <View style={[styles.bottomstyleBox]}>
-                 {props?.route?.params?.shippingData.map((item, index) =>
-                   ( 
-                     <TouchableOpacity
-                     onPress={() => {
-                      uibottomesheetvisiblity(false)
-                      setIsOpenedShipping(false)
-                        addRegions(item, index)
+          visible={visible}
+          onBackButtonPress={toggleBottomNavigationView}
+          onBackdropPress={toggleBottomNavigationView}>
+          <View style={styles.bottomcontainer}>
+            <ScrollView
+              style={[
+                styles.bottomcontainer,
+                {height: '35%', marginBottom: hp(2)},
+              ]}>
+              <View style={[styles.bottomstyleBox]}>
+                {props?.route?.params?.shippingData.map((item, index) => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      uibottomesheetvisiblity(false);
+                      setIsOpenedShipping(false);
+                      addRegions(item, index);
                     }}
-                     key={index}
-                     style={styles.bottomitemWrap}>
-                     <Text style={styles.bottomitemTxt}>{item?.shipping?.name}</Text>
-                     <Icons.AntDesign
-                       name={
-                         regions.some(e => e.regionId === item?.shipping_id)
-                           ? 'checkcircle'
-                           : 'checkcircleo'
-                       }
-                       size={24}
-                       color={
-                         regions.some(e => e.regionId === item?.shipping_id)
-                           ? 'black'
-                           : 'lightgray'
-                       }
-                       style={{position: 'absolute', right: 10}}
-                     />
-                   </TouchableOpacity>
-                 ))}
+                    key={index}
+                    style={styles.bottomitemWrap}>
+                    <Text style={styles.bottomitemTxt}>
+                      {item?.shipping?.name}
+                    </Text>
+                    <Icons.AntDesign
+                      name={
+                        regions.some(e => e.regionId === item?.shipping_id)
+                          ? 'checkcircle'
+                          : 'checkcircleo'
+                      }
+                      size={24}
+                      color={
+                        regions.some(e => e.regionId === item?.shipping_id)
+                          ? 'black'
+                          : 'lightgray'
+                      }
+                      style={{position: 'absolute', right: 10}}
+                    />
+                  </TouchableOpacity>
+                ))}
               </View>
-        </ScrollView>
-      </View>
-
-          </BottomSheet>
-          <BottomSheet
-        visible={styleVisible}
-        onBackButtonPress={togglestylebottomsheet}
-        onBackdropPress={togglestylebottomsheet}
-        >
-           <View style={styles.bottomcontainer}>
-        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
-        <View style={[styles.bottomstyleBox]}>
-        {data?.map((item, index) => (
+            </ScrollView>
+          </View>
+        </BottomSheet>
+        <BottomSheet
+          visible={styleVisible}
+          onBackButtonPress={togglestylebottomsheet}
+          onBackdropPress={togglestylebottomsheet}>
+          <View style={styles.bottomcontainer}>
+            <ScrollView
+              style={[
+                styles.bottomcontainer,
+                {height: '35%', marginBottom: hp(2)},
+              ]}>
+              <View style={[styles.bottomstyleBox]}>
+                {data?.map((item, index) => (
                   <TouchableOpacity
                     onPress={() => {
                       setSelectedText(item.name);
                       updateState({style_id: item.id});
                       setIsOpened(false);
-                      uistylebottomsheetvisibility(false)
+                      uistylebottomsheetvisibility(false);
                     }}
                     key={index}
                     style={styles.bottomitemWrap}>
                     <Text style={styles.bottomitemTxt}>{item.name}</Text>
                   </TouchableOpacity>
                 ))}
-        </View>
-        </ScrollView>
-        </View>
-
-
+              </View>
+            </ScrollView>
+          </View>
         </BottomSheet>
-
-      
       </SafeAreaView>
     </>
   );
@@ -925,6 +1132,17 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
+  myStyle: {
+    flexDirection: 'row',
+    width: '90%',
+    alignSelf: 'center',
+    backgroundColor: '#F6F6F6',
+    alignItems: 'center',
+    paddingVertical: hp2(2),
+    paddingHorizontal: wp2(5),
+    marginBottom: hp2(1.5),
+    borderRadius: 10, // Rounded border with radius 10px
+  },
   imageContainer: {
     width: wp2(94),
     height: hp2(36),
@@ -952,7 +1170,7 @@ const styles = StyleSheet.create({
   },
   inputBox2: {
     width: wp2(80),
-    
+
     paddingVertical: hp2(1),
     paddingHorizontal: wp2(2),
     backgroundColor: 'white',
@@ -1041,14 +1259,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 10,
   },
-  
-
-
-
-
 
   bottomcontainer: {
-    width:wp('100'),
+    width: wp('100'),
     flexDirection: 'column',
     backgroundColor: '#D3D3D3',
     borderTopRightRadius: 16,
@@ -1072,15 +1285,15 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 0, width: 1},
     shadowColor: 'grey',
   },
-  bottomCardView:{
-    width:wp('95'),
-    height:hp('6'),
-    marginVertical:hp('1'),
-    flexDirection:'row',
-    alignItems:'center',
-    paddingHorizontal:wp('4'),
-    borderRadius:10,
-    backgroundColor:'white'
+  bottomCardView: {
+    width: wp('95'),
+    height: hp('6'),
+    marginVertical: hp('1'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: wp('4'),
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
   bottomitemTxt: {
     color: 'black',
@@ -1093,13 +1306,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(90),
     height: hp(6),
-    alignSelf:"center",
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: wp(2),
     overflow: 'hidden',
-    backgroundColor:'white',
-    marginVertical:hp(1)
+    backgroundColor: 'white',
+    marginVertical: hp(1),
   },
   bottomstyleBox: {
     width: wp(100),

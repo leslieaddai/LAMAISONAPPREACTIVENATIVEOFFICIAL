@@ -24,9 +24,7 @@ export default function CollectionComp(props) {
 
   return (
     <View>
-      <View style={{width: wp2(54), alignItems: 'center'}}>
-        <Text style={{color: 'black', fontSize: rfv(10)}}>{props?.name}</Text>
-      </View>
+      <View style={{width: wp2(54), alignItems: 'center'}}></View>
 
       <TouchableOpacity
         onPress={() =>

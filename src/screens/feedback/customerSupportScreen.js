@@ -2,29 +2,16 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
-
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {COLORS, wp2, hp2} from '../../theme';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
@@ -35,6 +22,7 @@ import {CustomerAdvisesUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import LoaderComp from '../../components/loaderComp';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function CustomerSupportScreen(props) {
   const dispatch = useDispatch();
@@ -45,13 +33,11 @@ export default function CustomerSupportScreen(props) {
   const onSend = () => {
     if (selected !== '' && desc !== '') {
       setLoading(true);
-
       let obj = {
         user_id: props?.route?.params?.user?.userData?.id,
         description: desc,
         emotion: selected,
       };
-
       axios
         .post(CustomerAdvisesUrl, obj, {
           headers: {
@@ -59,16 +45,14 @@ export default function CustomerSupportScreen(props) {
           },
         })
         .then(async function (res) {
-         
           setLoading(false);
           successMessage('Done!');
           props.navigation.goBack();
         })
         .catch(function (error) {
-         
           setLoading(false);
-          
-          errorMessage(errorHandler(error))
+
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please fill all details!');
@@ -80,14 +64,15 @@ export default function CustomerSupportScreen(props) {
 
   const options = text => {
     return (
-      <TouchableOpacity onPress={() => setSelected(text)} style={styles.optionWrap}>
-        <Text style={{color: 'black'}}>{text}</Text>
+      <TouchableOpacity
+        onPress={() => setSelected(text)}
+        style={styles.optionWrap}>
         <View
-          
           style={[
-            styles.circle,
-            {backgroundColor: selected == text ? 'black' : '#D9D9D9'},
+            styles.checkbox,
+            {backgroundColor: selected == text ? COLORS.main : 'white', borderWidth: 1, borderColor: COLORS.gray400},
           ]}></View>
+        <Text style={{color: 'black', fontSize: 16,}}>{text}</Text>
       </TouchableOpacity>
     );
   };
@@ -100,49 +85,40 @@ export default function CustomerSupportScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
+          <NewHeaderComp
+            title={'Customer Advice'}
+            arrowNavigation={() => props.navigation.goBack()}
+            movePreviousArrow={true}
+          />
           <KeyboardAwareScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
-              alignItems: 'center',
               paddingBottom: hp2(12),
+              paddingHorizontal: 20,
             }}>
-            <View style={styles.headWrap}>
-              <TouchableOpacity
-                onPress={() => props.navigation.goBack()}
-                style={{position: 'absolute', left: wp2(4)}}>
-                <ICONS.AntDesign name="left" size={24} color="black" />
-              </TouchableOpacity>
-              <Text style={styles.customerText}>Customer Advice</Text>
-            </View>
-
             <View style={styles.textBox}>
               <TextInput
-                placeholder={
-                  'Description of Issue' +
-                  '\n' +
-                  '(Please can you keep short and to the point)'
-                }
-                placeholderTextColor={'grey'}
+                placeholder={'Write Review'}
+                placeholderTextColor={'black'}
                 multiline={true}
                 value={desc}
                 onChangeText={val => setDesc(val)}
                 style={styles.inputTxt}
               />
             </View>
-            <View style={{width: wp2(88)}}>
-              <Text style={styles.txt}>How do you feel?</Text>
-            </View>
-            {options('ANGRY')}
-            {options('WORRIED')}
-            {options('UPSET')}
-            {options('EXCITED')}
-            {options('CONFUSED')}
-            {options('PANICKED')}
+
+            <Text style={styles.txt}>How do you feel?</Text>
+
+            {options('Angry')}
+            {options('Worried')}
+            {options('Upset')}
+            {options('Excited')}
+            {options('Confused')}
+            {options('Panicked')}
             <TouchableOpacity onPress={onSend} style={styles.button}>
-              <Text style={{color: 'white'}}>SEND</Text>
+              <Text style={{color: 'white', fontWeight: '700', fontSize: 16,}}>Send</Text>
             </TouchableOpacity>
           </KeyboardAwareScrollView>
-          
         </View>
       </SafeAreaView>
     </>
@@ -153,16 +129,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-    alignItems: 'center',
-  
-  },
-  headWrap: {
-    flexDirection: 'row',
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
-    alignItems: 'center',
-    
-    justifyContent: 'center',
-    width: wp2(100),
   },
   customerText: {
     color: 'black',
@@ -170,66 +136,50 @@ const styles = StyleSheet.create({
     fontSize: rfv(20),
   },
   textBox: {
-    width: wp2(88),
-    height: hp2(30),
+    width: '100%',
+    height: 121,
     backgroundColor: 'white',
-    borderRadius: wp2(2),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: COLORS.gray300,
     marginTop: hp2(4),
     marginBottom: hp2(2),
-    paddingHorizontal: wp2(2),
-    paddingVertical: wp2(2),
+    padding: 10,
   },
   optionWrap: {
-    width: wp2(90),
-    height: hp2(4),
-  
-    borderBottomWidth: 1,
-    justifyContent: 'space-between',
+    width: '100%',
+    padding: 20,
+    backgroundColor: COLORS.gray100,
     flexDirection: 'row',
-    paddingHorizontal: wp2(1),
-    marginTop: hp2(2),
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 10,
+    borderRadius: 10,
   },
-  circle: {
+  checkbox: {
     width: wp2(5),
     height: wp2(5),
-   
-    borderRadius: 100,
+    borderRadius: 4,
   },
   button: {
-    width: wp2(32),
-    height: wp2(8),
-    backgroundColor: 'black',
-    borderRadius: wp2(4),
+    marginTop: 40,
+    width: '100%',
+    paddingVertical: 15,
+    backgroundColor: COLORS.main,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-    marginTop: hp2(6),
   },
   inputTxt: {
     flex: 1,
     color: 'black',
-    fontWeight: '700',
+    fontWeight: '400',
     fontSize: rfv(14),
     textAlignVertical: 'top',
   },
   txt: {
+    fontSize: 18,
     color: 'black',
-    fontWeight: '700',
-    marginBottom: hp2(2),
+    fontWeight: '400',
   },
 });

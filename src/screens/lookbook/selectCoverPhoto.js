@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Text,
   TextInput,
-
   PermissionsAndroid,
   Platform,
   SafeAreaView,
@@ -16,33 +15,23 @@ import {
   Linking,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
-
-  COLORS,
-  
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {IMAGES, COLORS, wp2, hp2} from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ImageCard from './ImageCard';
 import {request, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
 import {errorMessage} from '../../config/NotificationMessage';
 
-import { useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import NewInputComp from '../../components/NewInputComp';
 
 const PAGE_SIZE = 40;
 
 export default function SelectCoverPhoto(props) {
   const user = useSelector(state => state.userData);
 
-  
   const [selectedImage, setSelectedImage] = useState();
   const [swipeLayout, setSwipeLayout] = useState(false);
   const [name, setName] = useState('');
@@ -81,7 +70,7 @@ export default function SelectCoverPhoto(props) {
       if (Platform.OS === 'android' && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
-      if (Platform.OS === 'ios' && (await hasIosPermission())) {
+      if (Platform.OS === 'ios') {
         loadMorePhotos();
       }
     }
@@ -101,8 +90,6 @@ export default function SelectCoverPhoto(props) {
     }
   };
 
-  
-
   async function hasAndroidPermission() {
     const permission =
       Platform.Version >= 33
@@ -112,7 +99,7 @@ export default function SelectCoverPhoto(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
-     
+
       return true;
     }
 
@@ -120,7 +107,7 @@ export default function SelectCoverPhoto(props) {
     if (status === 'granted') {
       setPerm(true);
     }
-  
+
     return status === 'granted';
   }
 
@@ -195,112 +182,142 @@ export default function SelectCoverPhoto(props) {
     return status === true;
   }
 
-  
-
   return (
     <>
-   <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
- 
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
-        <Text style={styles.heading}>SELECT COVER PHOTO</Text>
-        {selectedImage && !swipeLayout && (
-          <TouchableOpacity
-            onPress={
-              () => setSwipeLayout(true)
-         
-            }
-            style={styles.button}>
-            <Text style={styles.nextTxt}>NEXT</Text>
-          </TouchableOpacity>
-        )}
-      </View>
 
-      <View style={styles.imageContainer}>
-        {selectedImage ? (
-          <Image
-            source={{uri: selectedImage?.uri}}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        ) : (
-       
-          <Image
-            source={IMAGES.selectIMG}
-            style={{width: '100%', height: '100%'}}
-            resizeMode="cover"
-          />
-        )}
-      </View>
-      {swipeLayout ? (
+      <SafeAreaView style={styles.container}>
+        <NewHeaderComp
+          title={'Create Collection'}
+          arrowNavigation={() => props.navigation.goBack()}
+          movePreviousArrow={true}
+        />
         <View
           style={{
-            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
             alignItems: 'center',
+            paddingVertical: 20,
+            marginHorizontal: 20,
           }}>
-          <TextInput
-            style={styles.txtInput}
-            placeholderTextColor={'grey'}
-            placeholder="ADD COLLECTION NAME"
-            value={name}
-            onChangeText={val => setName(val)}
-          />
-          <TouchableOpacity
-            onPress={() => {
-              if (name.length >= 1) {
-                props.navigation.navigate('addCollection', {
-                  name,
-                  selectedImage,
-                });
-              } else {
-                errorMessage('Please fill the field');
-              }
-            }}
-            style={[
-              styles.button,
-              {marginLeft: 'auto', marginTop: hp2(2), marginRight: wp2(4)},
-            ]}>
-            <Text style={styles.nextTxt}>NEXT</Text>
-          </TouchableOpacity>
-        </View>
-      ) : photos.length > 0 ? (
-        <>
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingVertical: hp2(2),
-              paddingHorizontal: wp2(2),
-            }}
-            numColumns={4}
-            data={photos}
-            onEndReached={checkCondition}
-            onEndReachedThreshold={0.1}
-            renderItem={({item, i}) => {
-              return (
-                <ImageCard
-                  item={item}
-                  key={i}
-                  state={{selectedImage, setSelectedImage}}
-                />
-              );
-            }}
-          />
-
-          {isLoading && (
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
-              <ActivityIndicator color="black" size="large" />
-            </View>
+          <Text style={{fontSize: 20}}>
+            {!swipeLayout ? '1. Select cover photo' : '2. Collection Name'}
+          </Text>
+          {selectedImage && !swipeLayout && (
+            <TouchableOpacity
+              onPress={() => setSwipeLayout(true)}
+              style={styles.button}>
+              <Text style={styles.nextTxt}>Next</Text>
+            </TouchableOpacity>
           )}
-        </>
-      ) : (
-        <View style={styles.noPhotos}>
-          <Text>No Photos Available</Text>
+          {swipeLayout && (
+            <TouchableOpacity
+              onPress={() => {
+                if (name.length >= 1) {
+                  props.navigation.navigate('addCollection', {
+                    name,
+                    selectedImage,
+                  });
+                } else {
+                  errorMessage('Please fill the field');
+                }
+              }}
+              style={styles.button}>
+              <Text style={styles.nextTxt}>Next</Text>
+            </TouchableOpacity>
+          )}
         </View>
-      )}
 
-   
-    </SafeAreaView>
+        <View style={styles.imageContainer}>
+          {selectedImage ? (
+            <Image
+              source={{uri: selectedImage?.uri}}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          ) : (
+            <Image
+              source={IMAGES.selectIMG}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="cover"
+            />
+          )}
+        </View>
+        {swipeLayout ? (
+          <>
+            <NewInputComp
+              value={name}
+              handleOnChange={val => setName(val)}
+              inputText={'Add Collection Name'}
+            />
+
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+              }}>
+              {/* <TextInput
+              style={styles.txtInput}
+              placeholderTextColor={'grey'}
+              placeholder="ADD COLLECTION NAME"
+              value={name}
+              onChangeText={val => setName(val)}
+            /> */}
+              {/* <TouchableOpacity
+              onPress={() => {
+                if (name.length >= 1) {
+                  props.navigation.navigate('addCollection', {
+                    name,
+                    selectedImage,
+                  });
+                } else {
+                  errorMessage('Please fill the field');
+                }
+              }}
+              style={[
+                styles.button,
+                {marginLeft: 'auto', marginTop: hp2(2), marginRight: wp2(4)},
+              ]}>
+              <Text style={styles.nextTxt}>NEXT</Text>
+            </TouchableOpacity> */}
+            </View>
+          </>
+        ) : photos.length > 0 ? (
+          <>
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingVertical: hp2(2),
+                paddingHorizontal: wp2(2),
+              }}
+              numColumns={4}
+              data={photos}
+              onEndReached={checkCondition}
+              onEndReachedThreshold={0.1}
+              renderItem={({item, i}) => {
+                return (
+                  <ImageCard
+                    item={item}
+                    key={i}
+                    state={{selectedImage, setSelectedImage}}
+                  />
+                );
+              }}
+            />
+
+            {isLoading && (
+              <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <ActivityIndicator color="black" size="large" />
+              </View>
+            )}
+          </>
+        ) : (
+          <View style={styles.noPhotos}>
+            <Text>No Photos Available</Text>
+          </View>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -327,20 +344,10 @@ const styles = StyleSheet.create({
   button: {
     width: wp2(22),
     height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: 'black',
+    borderRadius: 10,
+    backgroundColor: COLORS.main,
     alignItems: 'center',
     justifyContent: 'center',
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
   imageContainer: {
     width: wp2(94),
@@ -356,7 +363,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  nextTxt: {color: 'white', fontWeight: '700', fontSize: rfv(13)},
+  nextTxt: {color: 'white', fontWeight: '400', fontSize: rfv(13)},
   txtInput: {
     width: wp2(90),
     height: hp2(5),

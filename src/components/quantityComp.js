@@ -2,39 +2,67 @@ import React from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
-
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../theme';
+import {ICONS, COLORS, wp2, hp2} from '../theme';
 import {useNavigation} from '@react-navigation/native';
+import NewInputComp from './NewInputComp';
+
+const ProductInfOptions = ({text, onPressRoute, selectedBackgroundColor}) => {
+  return (
+    <TouchableOpacity
+      onPress={onPressRoute}
+      style={{
+        flexDirection: 'row',
+        width: '90%',
+        alignSelf: 'center',
+        backgroundColor: '#F6F6F6',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingVertical: hp2(2),
+        paddingHorizontal: 20,
+        marginBottom: hp2(1.5),
+        borderRadius: 10,
+      }}>
+      <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+        <Text style={{fontSize: 16}}>{text}</Text>
+        <View
+          style={{
+            backgroundColor: selectedBackgroundColor,
+            height: 20,
+            width: 20,
+            borderRadius: 10,
+          }}
+        />
+      </View>
+      <ICONS.AntDesign name="right" size={15} color="black" />
+    </TouchableOpacity>
+  );
+};
 
 export default function QuantityComp(props) {
   const navigation = useNavigation();
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
+    <View style={{flexDirection: 'column', gap: 20}}>
+      <ProductInfOptions
+        text={
+          props.state.quantity[props.key2].color !== '' ? 'Color: ' : 'Color'
+        }
+        onPressRoute={() =>
+          navigation.navigate('color', {key: props.key2, state: props.state})
+        }
+        selectedBackgroundColor={props.state.quantity[props.key2].color}
+      />
+      {/* <TouchableOpacity
         onPress={() =>
           navigation.navigate('color', {key: props.key2, state: props.state})
         }
         style={[
-          styles.colorBox,
           {
             backgroundColor:
               props.state.quantity[props.key2].color !== ''
@@ -42,48 +70,100 @@ export default function QuantityComp(props) {
                 : COLORS.appBackground,
             alignItems: 'center',
             justifyContent: 'center',
+            borderWidth: 1,
+            borderColor: '#ccc',
+            flexDirection: 'row',
+            borderRadius: 10,
+            height: 50,
+            marginHorizontal: 20,
+            paddingHorizontal: 20,
           },
         ]}>
         {props.state.quantity[props.key2].color === '' && (
           <ICONS.Ionicons name="color-fill" size={24} color="black" />
         )}
-      </TouchableOpacity>
-
-      <TouchableOpacity
+      </TouchableOpacity> */}
+      <View style={{marginTop: -25, marginBottom: -45}}>
+        <ProductInfOptions
+          text={
+            props.state.quantity[props.key2].size !== ''
+              ? props.state.quantity[props.key2].size
+              : 'Sizes Available'
+          }
+          onPressRoute={() =>
+            navigation.navigate('sizes', {key: props.key2, state: props.state})
+          }
+        />
+      </View>
+      {/* <TouchableOpacity
         onPress={() =>
           navigation.navigate('sizes', {key: props.key2, state: props.state})
         }
         style={[
-          styles.inputBox,
-          {alignItems: 'center', justifyContent: 'center'},
+          {
+            borderWidth: 1,
+            borderColor: '#ccc',
+            flexDirection: 'row',
+            borderRadius: 10,
+            height: 50,
+            marginHorizontal: 20,
+            alignItems: 'center',
+            paddingHorizontal: 20,
+            justifyContent: 'space-between',
+          },
         ]}>
-        <Text style={styles.sizeAvailableTxt}>
+        <Text style={{fontSize: 16, color: COLORS.gray500}}>
           {props.state.quantity[props.key2].size !== ''
             ? props.state.quantity[props.key2].size
             : 'Sizes Available'}
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <NewInputComp
+        inputText={'Quantity'}
+        handleOnChange={val => {
+          const newState = props.state.quantity.map((obj, index) => {
+            if (index === props.key2) {
+              return {...obj, quantity: val};
+            }
 
-      <View style={styles.inputBox}>
+            return obj;
+          });
+          props.state.setQuantity(newState);
+        }}
+        value={props.state.quantity[props.key2].quantity}
+      />
+      {/* <View
+        style={[
+          {
+            borderWidth: 1,
+            borderColor: '#ccc',
+            flexDirection: 'row',
+            borderRadius: 10,
+            height: 50,
+            marginHorizontal: 20,
+            alignItems: 'center',
+            paddingHorizontal: 20,
+            justifyContent: 'space-between',
+          },
+        ]}>
         <TextInput
-          style={styles.inputTxt}
+          style={{fontSize: 16, color: COLORS.gray500}}
           placeholderTextColor={'grey'}
-          placeholder="QUANTITY"
+          placeholder="Quantity"
           keyboardType={'number-pad'}
           value={props.state.quantity[props.key2].quantity}
           onChangeText={val => {
             const newState = props.state.quantity.map((obj, index) => {
-         
               if (index === props.key2) {
                 return {...obj, quantity: val};
               }
-         
+
               return obj;
             });
             props.state.setQuantity(newState);
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 }
@@ -99,7 +179,7 @@ const styles = StyleSheet.create({
   colorBox: {
     width: wp2(8),
     height: wp2(8),
-   
+
     borderRadius: wp2(2),
 
     shadowColor: '#000',

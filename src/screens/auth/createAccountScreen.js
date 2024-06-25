@@ -105,7 +105,6 @@ const CreateAccountScreen = props => {
                           role: props?.route?.params?.user == 'editor' ? 2 : 3,
                           data: res?.data?.user?.stripe_account,
                         });
-
                         successMessage(
                           'Account verification code is sent to your email. Please check.',
                         );

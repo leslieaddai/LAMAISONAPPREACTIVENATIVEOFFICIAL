@@ -17,9 +17,8 @@ export default function WelcomeScreen(props) {
   return (
     <View style={styles.container}>
       {/* <Text style={styles.text}>{'Hi '+user.userData.username}</Text> */}
-      <View style={{padding:20}}>
-
-      <SmallLogoComponnet></SmallLogoComponnet>
+      <View style={{padding: 20}}>
+        <SmallLogoComponnet></SmallLogoComponnet>
       </View>
       <View
         style={[
@@ -33,20 +32,17 @@ export default function WelcomeScreen(props) {
               : IMAGES.profileIcon3
           }
           style={[
-
             {
-            width: '100%',
-            height: '100%',
-            alignItems: 'center',
-
-            borderRadius: 200, // Ensure the image stays within the circle
-          }]}
-          resizeMode="contain"
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              borderRadius: 200, // Ensure the image stays within the circle
+            },
+          ]}
         />
       </View>
       <Text style={styles.largeText}>Hi {user?.userData?.name} 👋</Text>
-      <Text style={styles.smallText}>Welcome Back </Text>
-    
+      <Text style={styles.smallText}>Welcome Back</Text>
     </View>
   );
 }
@@ -64,15 +60,7 @@ const styles = StyleSheet.create({
     height: wp2(50),
     overflow: 'hidden',
     borderRadius: 100,
-    shadowColor: '#000',
     alignItems: 'center',
-
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
     elevation: 1,
   },
 
@@ -82,19 +70,18 @@ const styles = StyleSheet.create({
     fontSize: rfv(34),
   },
   largeText: {
-    paddingTop:40,
+    paddingTop: 40,
     fontFamily: fonts.PoppinsMedium,
     // fontWeight: '400',
-    fontSize: rfv(34),
+    fontSize: 34,
     textAlign: 'center',
     color: 'black',
   },
   smallText: {
-    paddingTop:20,
-
+    paddingTop: 20,
     fontFamily: fonts.PoppinsRegular,
     fontWeight: '400',
-    fontSize: rfv(18),
+    fontSize: 18,
     // lineHeight: 18,
     textAlign: 'center',
     color: 'black',

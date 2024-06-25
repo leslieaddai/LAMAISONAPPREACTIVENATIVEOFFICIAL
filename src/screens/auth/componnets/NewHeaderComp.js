@@ -18,7 +18,6 @@ const NewHeaderComp = ({
   settings,
   onlySettings,
   settingNavigation,
-  width = '50%',
 }) => {
   return (
     <>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sideContainer: {
-    flex: 1,
+   
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Poppins-Regular',
   },
 });
