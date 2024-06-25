@@ -65,7 +65,8 @@ export default function Style(props) {
           style={[
             styles.circle,
             {backgroundColor: selected == text?.id ? COLORS.main : 'white'},
-          ]}></View>
+          ]}
+        />
       </TouchableOpacity>
     );
   };

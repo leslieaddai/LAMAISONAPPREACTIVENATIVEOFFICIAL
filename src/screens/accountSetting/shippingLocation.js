@@ -2,28 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
-
   SafeAreaView,
   Platform,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  COLORS,
- 
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {COLORS, wp2, hp2} from '../../theme';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
@@ -37,6 +25,9 @@ import {SkypeIndicator} from 'react-native-indicators';
 import ShippingComp from './shippingComp';
 
 import LoaderComp from '../../components/loaderComp';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import NewInputComp from '../../components/NewInputComp';
 
 export default function ShippingLocation(props) {
   const dispatch = useDispatch();
@@ -62,13 +53,12 @@ export default function ShippingLocation(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-        
         setData(res?.data?.data);
         setLoading(false);
       })
       .catch(function (error) {
         setLoading(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -96,7 +86,7 @@ export default function ShippingLocation(props) {
           successMessage('Shipping Information Added Successfully');
         })
         .catch(function (error) {
-         console.log("error shipping ",error);
+          console.log('error shipping ', error);
           setLoading2(false);
           // errorMessage(errorHandler(error))
         });
@@ -117,9 +107,24 @@ export default function ShippingLocation(props) {
           <KeyboardAwareScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{paddingBottom: hp2(2)}}>
-            <Text style={styles.heading}>Shipping Information</Text>
-
-            <View style={styles.textBox}>
+            <NewHeaderComp
+              movePreviousArrow={true}
+              arrowNavigation={() => props.navigation.goBack()}
+              title={'Shipping information'}
+            />
+            <View style={{flexDirection: 'column', gap: -10}}>
+              {/* <Text style={{marginHorizontal: 20}}>
+                Enter your Brand general shipping informaton
+              </Text> */}
+              <NewInputComp
+                inputText={
+                  'Please input your brands general shipping information'
+                }
+                handleOnChange={val => setShippingDescription(val)}
+                value={shippingDescription}
+              />
+            </View>
+            {/* <View style={styles.textBox}>
               <TextInput
                 placeholder={
                   'PLEASE INPUT YOUR BRANDS GENERAL SHIPPING INFORMATION'
@@ -130,9 +135,14 @@ export default function ShippingLocation(props) {
                 value={shippingDescription}
                 onChangeText={val => setShippingDescription(val)}
               />
-            </View>
-            <View style={{width: wp2(88), alignSelf: 'center'}}>
-              <Text style={styles.shippingTxt}>Select Shipping Location</Text>
+            </View> */}
+            <View
+              style={{
+                marginHorizontal: 25,
+                marginTop: 20,
+                alignSelf: 'flex-start',
+              }}>
+              <Text style={styles.txt}>Select Shipping Location:</Text>
             </View>
             {loading && data.length === 0 ? (
               <View
@@ -146,24 +156,30 @@ export default function ShippingLocation(props) {
             ) : (
               <>
                 {data?.map((item, index) => {
-                  
                   return (
-                    <ShippingComp
-                      key={index}
-                      data={item}
-                      state={{getAllRegions}}
-                      
-                    />
+                    <>
+                      {index === 0 ? (
+                        ''
+                      ) : (
+                        <ShippingComp
+                          key={index}
+                          data={item}
+                          state={{getAllRegions}}
+                        />
+                      )}
+                    </>
                   );
                 })}
               </>
             )}
-            
-            <TouchableOpacity
+            <View style={{marginHorizontal: 20, marginTop: 20}}>
+              <ContinueButton onPress={() => saveShipping()} text={'Confirm'} />
+            </View>
+            {/* <TouchableOpacity
               onPress={() => saveShipping()}
               style={styles.button}>
               <Text style={{color: 'white'}}>CONFIRM</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAwareScrollView>
         </View>
       </SafeAreaView>
@@ -207,7 +223,7 @@ const styles = StyleSheet.create({
   optionWrap: {
     width: wp2(90),
     height: hp2(4),
-    
+
     borderBottomWidth: 1,
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -218,7 +234,7 @@ const styles = StyleSheet.create({
   circle: {
     width: wp2(5),
     height: wp2(5),
-    
+
     borderRadius: 100,
   },
   button: {
@@ -251,5 +267,10 @@ const styles = StyleSheet.create({
     color: 'black',
     fontWeight: '700',
     marginBottom: hp2(2),
+  },
+  txt: {
+    fontSize: 18,
+    color: 'black',
+    fontWeight: '400',
   },
 });

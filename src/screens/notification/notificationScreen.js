@@ -97,24 +97,26 @@ export default function NotificationScreen(props) {
                   data={uniqDates}
                   renderItem={({item, index}) => {
                     return (
-                      <>
+                      <View key={index}>
                         <LineComp date={item} />
                         {data?.map((item2, index2) => {
                           if (
                             moment(item2?.created_at).format('MM/YY') === item
                           )
                             return (
-                              <NotificationComp
-                                key={index2}
-                                date={item2?.created_at}
-                                allData={item2}
-                                type={item2?.noti_type}
-                                user={item2?.user}
-                                product={item2?.product}
-                              />
+                              <View style={{paddingHorizontal: 20}}>
+                                <NotificationComp
+                                  key={index2}
+                                  date={item2?.created_at}
+                                  allData={item2}
+                                  type={item2?.noti_type}
+                                  user={item2?.user}
+                                  product={item2?.product}
+                                />
+                              </View>
                             );
                         })}
-                      </>
+                      </View>
                     );
                   }}
                 />

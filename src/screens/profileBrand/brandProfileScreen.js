@@ -244,7 +244,8 @@ export default function BrandProfileScreen(props) {
               <NewHeaderComp
                 title={data?.name}
                 onlySettings={true}
-                width="52%"
+                movePreviousArrow={true}
+                arrowNavigation={() => props.navigation.goBack()}
                 settingNavigation={() =>
                   props.navigation.navigate('settingsScreen', {
                     user: user,
@@ -298,7 +299,7 @@ export default function BrandProfileScreen(props) {
                   <Text style={[styles.usernameTxt]}>{data?.name}</Text>
                   <View style={styles.followersContainer}>
                     <TouchableOpacity
-                      style={{flexDirection: 'row'}}
+                      style={{flexDirection: 'row', gap: 4}}
                       onPress={() =>
                         props.navigation.navigate('followerList', {
                           list: 'following',
@@ -311,7 +312,7 @@ export default function BrandProfileScreen(props) {
                       <Text style={{color: 'black'}}>Following</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                      style={{flexDirection: 'row'}}
+                      style={{flexDirection: 'row', gap: 4}}
                       onPress={() =>
                         props.navigation.navigate('followerList', {
                           list: 'follower',
@@ -321,7 +322,7 @@ export default function BrandProfileScreen(props) {
                       <Text style={{fontWeight: 'bold', color: 'black'}}>
                         {data?.followings_count}
                       </Text>
-                      <Text style={{color: 'black'}}> Followers</Text>
+                      <Text style={{color: 'black'}}>Followers</Text>
                     </TouchableOpacity>
                   </View>
                   {props?.route?.params?.userData?.userData?.id !==
@@ -424,12 +425,12 @@ export default function BrandProfileScreen(props) {
                     </View>
                   </View>
                 )}
+
                 <View style={{paddingHorizontal: 20}}>
                   <Lookbook
                     data={galleriesImage}
                     navigation={props.navigation}
                   />
-
                   <About data={data} />
                 </View>
               </ScrollView>

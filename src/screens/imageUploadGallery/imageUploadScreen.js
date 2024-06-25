@@ -17,20 +17,9 @@ import {
   Animated,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {IMAGES, ICONS, COLORS, wp2, hp2} from '../../theme';
 import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import ImageCard from './ImageCard';
 import {request, check, PERMISSIONS, RESULTS} from 'react-native-permissions';
@@ -42,12 +31,13 @@ import {CreateGalleryUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import LoaderComp from '../../components/loaderComp';
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import NewInputComp from '../../components/NewInputComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 const PAGE_SIZE = 40;
 
 export default function ImageUploadScreen(props) {
-  
-
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -83,11 +73,10 @@ export default function ImageUploadScreen(props) {
       });
 
       setAfter(page_info.end_cursor);
-    
+
       setHasNextPage(page_info.has_next_page);
-      
+
       setPhotos(prevPhotos => [...prevPhotos, ...edges]);
-      
     } catch (error) {
       console.error('Failed to load more photos:', error);
     } finally {
@@ -100,7 +89,7 @@ export default function ImageUploadScreen(props) {
       if (Platform.OS === 'android' && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
-      if (Platform.OS === 'ios' && (await hasIosPermission())) {
+      if (Platform.OS === 'ios') {
         loadMorePhotos();
       }
     }
@@ -120,8 +109,6 @@ export default function ImageUploadScreen(props) {
     }
   };
 
-  
-
   async function hasAndroidPermission() {
     const permission =
       Platform.Version >= 33
@@ -131,7 +118,7 @@ export default function ImageUploadScreen(props) {
     const hasPermission = await PermissionsAndroid.check(permission);
     if (hasPermission) {
       setPerm(true);
-      
+
       return true;
     }
 
@@ -139,7 +126,7 @@ export default function ImageUploadScreen(props) {
     if (status === 'granted') {
       setPerm(true);
     }
-    
+
     return status === 'granted';
   }
 
@@ -214,7 +201,6 @@ export default function ImageUploadScreen(props) {
     return status === true;
   }
 
-  
   if (uploadButton) {
     return (
       <View
@@ -250,7 +236,6 @@ export default function ImageUploadScreen(props) {
     if (caption !== '' && !confirmButton) {
       setConfirmButton(true);
     } else if (caption !== '' && confirmButton) {
- 
       setLoading(true);
 
       var formdata = new FormData();
@@ -260,8 +245,6 @@ export default function ImageUploadScreen(props) {
       selectedImage.map((item, index) => {
         formdata.append('image[]', item);
       });
-
-      
 
       let config = {
         method: 'post',
@@ -278,7 +261,6 @@ export default function ImageUploadScreen(props) {
       axios
         .request(config)
         .then(async function (res) {
-          
           setLoading(false);
           successMessage('Upload Success');
           setUploadButton(true);
@@ -288,13 +270,12 @@ export default function ImageUploadScreen(props) {
           }, 3000);
         })
         .catch(function (error) {
-
-        console.log('====================================');
-        console.log(error.response);
-        console.log('====================================');
+          console.log('====================================');
+          console.log(error.response);
+          console.log('====================================');
           setLoading(false);
-   
-          errorMessage(errorHandler(error))
+
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please add caption!');
@@ -312,28 +293,41 @@ export default function ImageUploadScreen(props) {
 
       <SafeAreaView style={styles.container}>
         {/* {selectedImage && !nextButton ? ( */}
-           {selectedImage?.length !== 0 && !nextButton ? (
-          <View style={styles.headWrap}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
-              <ICONS.AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.heading}>Gallery</Text>
-            <TouchableOpacity
-              onPress={() => setNextButton(true)}
-              style={styles.button}>
-              <Text style={styles.nextTxt}>NEXT</Text>
-            </TouchableOpacity>
+        {selectedImage?.length !== 0 && !nextButton ? (
+          <View style={{marginBottom: 20}}>
+            <NewHeaderComp
+              title={'Gallery'}
+              moveNextArrow={true}
+              arrowNavigation={() => setNextButton(true)}
+            />
           </View>
-        ) : nextButton ? (
-          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
-            <TouchableOpacity
-              onPress={goBackFunction}
-              style={{position: 'absolute', left: wp2(4)}}>
-              <ICONS.AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.heading}>Gallery</Text>
+        ) : // <View style={styles.headWrap}>
+        //   <TouchableOpacity onPress={() => props.navigation.goBack()}>
+        //     <ICONS.AntDesign name="left" size={24} color="black" />
+        //   </TouchableOpacity>
+
+        //   <TouchableOpacity
+        //     onPress={() => setNextButton(true)}
+        //     style={styles.button}>
+        //     <Text style={styles.nextTxt}>NEXT</Text>
+        //   </TouchableOpacity>
+        // </View>
+        nextButton ? (
+          <View style={{marginBottom: 20}}>
+            <NewHeaderComp
+              title={'Gallery'}
+              arrowNavigation={goBackFunction}
+              movePreviousArrow={true}
+            />
           </View>
         ) : (
+          // <TouchableOpacity
+          //   onPress={goBackFunction}
+          //   style={{position: 'absolute', left: wp2(4)}}>
+          //   <ICONS.AntDesign name="left" size={24} color="black" />
+          // </TouchableOpacity>
+          // <Text style={styles.heading}>Gallry</Text>
+
           <View style={[styles.headWrap, {justifyContent: 'center'}]}>
             <Text style={styles.heading}>Gallery</Text>
           </View>
@@ -388,7 +382,6 @@ export default function ImageUploadScreen(props) {
           </View>
         ) : (
           <View style={styles.imageContainer}>
-           
             <Image
               source={IMAGES.selectIMG}
               style={{width: '100%', height: '100%'}}
@@ -399,7 +392,12 @@ export default function ImageUploadScreen(props) {
 
         {nextButton ? (
           <ScrollView contentContainerStyle={{paddingVertical: hp2(1)}}>
-            <View style={styles.inputBox}>
+            <NewInputComp
+              handleOnChange={val => setCaption(val)}
+              value={caption}
+              inputText={'Caption'}
+            />
+            {/* <View style={styles.inputBox}>
               <TextInput
                 style={styles.inputTxt}
                 placeholderTextColor={'grey'}
@@ -408,9 +406,15 @@ export default function ImageUploadScreen(props) {
                 onChangeText={val => setCaption(val)}
                 readOnly={confirmButton}
               />
+            </View> */}
+            <View style={{marginHorizontal: 20, marginVertical: 20}}>
+              <ContinueButton
+                onPress={uploadProduct}
+                text={confirmButton ? 'UPLOAD' : 'CONFIRM'}
+              />
             </View>
-            <TouchableOpacity
-              onPress={uploadProduct}
+            {/* <TouchableOpacity
+             
               style={[
                 styles.button,
                 {width: wp2(30), alignSelf: 'flex-end', marginRight: wp2(10)},
@@ -418,7 +422,7 @@ export default function ImageUploadScreen(props) {
               <Text style={styles.nextTxt}>
                 {confirmButton ? 'UPLOAD' : 'CONFIRM'}
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         ) : (
           <>
@@ -436,13 +440,11 @@ export default function ImageUploadScreen(props) {
                   onEndReachedThreshold={0.1}
                   renderItem={({item, i}) => {
                     return (
-                     
                       <ImageCard
                         item={item}
                         key={i}
                         state={{selectedImage, setSelectedImage}}
                       />
-                      
                     );
                   }}
                 />
@@ -453,8 +455,6 @@ export default function ImageUploadScreen(props) {
                     <ActivityIndicator color="black" size="large" />
                   </View>
                 )}
-
-                
               </>
             ) : (
               <View style={styles.noPhotos}>
@@ -494,7 +494,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -543,7 +542,7 @@ const styles = StyleSheet.create({
     fontSize: rfv(13),
     fontWeight: '700',
   },
-    scrollViewWrap: {
+  scrollViewWrap: {
     width: wp2(94),
     height: hp2(36),
     overflow: 'hidden',
@@ -552,7 +551,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-    scrollIndicatorWrap: {
+  scrollIndicatorWrap: {
     width: wp2(94),
     position: 'absolute',
     zIndex: 999,

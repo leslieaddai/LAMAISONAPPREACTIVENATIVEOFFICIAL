@@ -2,28 +2,15 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -31,6 +18,7 @@ import {errorHandler} from '../../config/helperFunction';
 import {ColorsUrl} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function Color(props) {
   const dispatch = useDispatch();
@@ -46,15 +34,13 @@ export default function Color(props) {
         headers: {Authorization: `Bearer ${user.token}`},
       })
       .then(async function (res) {
-        
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-       
         setLoading(false);
-       
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -62,8 +48,6 @@ export default function Color(props) {
     return (
       <TouchableOpacity
         onPress={() => {
-         
-
           const newState = props.route.params.state.quantity.map(
             (obj, index) => {
               // :point_down:️ if id equals 2, update country property
@@ -75,7 +59,7 @@ export default function Color(props) {
             },
           );
           props.route.params.state.setQuantity(newState);
-         
+
           props.navigation.goBack();
         }}
         style={[styles.color, {backgroundColor: col.color_code}]}>
@@ -99,39 +83,40 @@ export default function Color(props) {
 
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-  
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headWrap}>
+
+      <SafeAreaView style={styles.container}>
+        {/* <View style={styles.headWrap}>
         <TouchableOpacity
           onPress={() => props.navigation.goBack()}
           style={{position: 'absolute', left: wp2(4)}}>
           <ICONS.AntDesign name="left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.heading}>COLOUR</Text>
-      </View>
-
-      {loading ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
-      ) : (
-        <View style={styles.colorsWrap}>
-          {data?.map(item => {
-           
-            return <>{color(item)}</>;
-          })}
-        </View>
-      )}
-
-     
-    </SafeAreaView>
+      </View> */}
+        <NewHeaderComp
+          title={'Colour'}
+          arrowNavigation={() => props.navigation.goBack()}
+          movePreviousArrow={true}
+        />
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <View style={styles.colorsWrap}>
+            {data?.map(item => {
+              return <>{color(item)}</>;
+            })}
+          </View>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -145,7 +130,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-   
+
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -156,6 +141,7 @@ const styles = StyleSheet.create({
   },
   colorsWrap: {
     width: wp2(97),
+    marginTop: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignSelf: 'center',

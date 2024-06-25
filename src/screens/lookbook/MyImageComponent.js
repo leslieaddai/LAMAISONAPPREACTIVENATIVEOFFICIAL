@@ -20,7 +20,9 @@ const MyImageComponent = ({onLoadStart, onLoad, onLoadEnd, allStates}) => {
       onLoad={() => onLoad(false, 'onLoad')}
       onLoadEnd={() => onLoadEnd(false, 'onLoadEnd')}
       onError={handleImageError} // Add the error handler
-      source={imageSource} // Dynamically set source to either a local image or a URI
+      source={
+        typeof imageSource === 'string' ? {uri: imageSource} : imageSource
+      } // Dynamically set source to either a local image or a URI
       style={{width: '100%', height: '100%'}}
       resizeMode="contain"
     />

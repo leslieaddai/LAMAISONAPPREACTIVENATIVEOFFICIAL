@@ -181,9 +181,7 @@ export default function HomeScreen(props) {
               },
             })
           }>
-          <ImageCompWithErrorProfile
-            uri={data?.brand?.profile_image?.original_url}
-          />
+          <ImageCompWithError uri={data?.brand?.profile_image?.original_url} />
         </TouchableOpacity>
       </View>
     );
@@ -191,32 +189,25 @@ export default function HomeScreen(props) {
 
   const brandComp = data => {
     return (
-      <View
-        style={{
-          marginVertical: hp2(2),
-          paddingHorizontal: 20,
-          height: 118,
-          width: 118,
-        }}>
-        <TouchableOpacity
-          onPress={() =>
-            props.navigation.navigate('brandProfileScreen', {
+      <TouchableOpacity
+        onPress={() =>
+          props.navigation.navigate('brandProfileScreen', {
+            userData: {
               userData: {
-                userData: {
-                  id: data?.brand?.id,
-                  profile_image: data?.brand?.profile_image?.original_url,
-                  name: data?.brand?.name,
-                  role: [{id: 3}],
-                },
+                id: data?.brand?.id,
+                profile_image: data?.brand?.profile_image?.original_url,
+                name: data?.brand?.name,
+                role: [{id: 3}],
               },
-            })
-          }
-          style={styles.brandImage}>
+            },
+          })
+        }>
+        <View style={styles.brandImage}>
           <ImageCompWithErrorProfile
             uri={data?.brand?.profile_image?.original_url}
           />
-        </TouchableOpacity>
-      </View>
+        </View>
+      </TouchableOpacity>
     );
   };
 
@@ -827,7 +818,7 @@ export default function HomeScreen(props) {
                                 gap: 10,
                               }}>
                               {popularData?.brands?.map((item, index) => {
-                                return <>{BrandComponent(item)}</>;
+                                return <>{brandComp(item)}</>;
                               })}
                             </View>
                           </View>
@@ -944,7 +935,7 @@ export default function HomeScreen(props) {
                   <Text style={styles.text}>Popular Brands</Text>
                   <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {popularData?.brands?.map((item, index) => {
-                      return <View key={index}>{BrandComponent(item)}</View>;
+                      return <View key={index}>{brandComp(item)}</View>;
                     })}
                   </ScrollView>
                 </View>
@@ -1130,8 +1121,8 @@ const styles = StyleSheet.create({
     marginBottom: hp2(5),
   },
   brandImage: {
-    width: 118,
-    height: 118,
+    width: 110,
+    height: 110,
     overflow: 'hidden',
     backgroundColor: Platform.OS == 'android' && 'white',
     marginHorizontal: wp2(1),

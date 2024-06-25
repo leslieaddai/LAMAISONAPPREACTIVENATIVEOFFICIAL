@@ -2,29 +2,16 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
   FlatList,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import AddCollectionComp from '../../components/addCollectionComp';
 
@@ -37,6 +24,13 @@ import {createCollection, GetBrandProductsById} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+
+import UploadSuccess from '../../assets/icons/uploaded-success.svg';
+import Twitter from '../../assets/icons/twitter.svg';
+import Facebook from '../../assets/icons/facebook.svg';
+import LinkedIn from '../../assets/icons/linkedin.svg';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 export default function AddCollection(props) {
   const [selectedProducts, setSelectedProducts] = useState([]);
@@ -58,15 +52,15 @@ export default function AddCollection(props) {
     axios
       .get(GetBrandProductsById + `/${user?.userData?.id}`)
       .then(async function (res) {
-  console.log(res.data.data);
+        console.log(res.data.data);
         setData(res.data.data.reverse());
         setLoading(false);
       })
       .catch(function (error) {
-    console.log('err brand');
+        console.log('err brand');
         setLoading(false);
-      
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -81,7 +75,6 @@ export default function AddCollection(props) {
     selectedProducts.map((item, index) => {
       formdata.append('product_id[]', item);
     });
-
 
     let config = {
       method: 'post',
@@ -98,7 +91,6 @@ export default function AddCollection(props) {
     axios
       .request(config)
       .then(async function (res) {
-      
         setLoading2(false);
         successMessage('Created Successfully');
         setUploadButton(true);
@@ -108,10 +100,9 @@ export default function AddCollection(props) {
         }, 3000);
       })
       .catch(function (error) {
-       
         setLoading2(false);
-    
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -122,17 +113,67 @@ export default function AddCollection(props) {
           styles.container,
           {alignItems: 'center', justifyContent: 'center'},
         ]}>
-        <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" />
-        <Text
+        {/* <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" /> */}
+        <UploadSuccess width="146" height="146" />
+        <View style={{flexDirection: 'column', gap: 10, alignItems: 'center'}}>
+          <Text style={styles.uploadTxt}>Congratulations!</Text>
+          <Text style={{fontSize: 14}}>Collection Uploaded</Text>
+        </View>
+        <View
           style={{
-            marginTop: hp2(2),
-            color: 'black',
-            textTransform: 'uppercase',
-            fontWeight: '700',
-            fontSize: rfv(16),
+            backgroundColor: '#F6F6F6',
+            width: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            borderRadius: 10,
+            marginTop: '15%',
           }}>
-          Successfully Created!
-        </Text>
+          <Text style={{fontSize: 14}}>
+            Tell your friends about your great choice:
+          </Text>
+          <View style={{flexDirection: 'row', gap: 10, paddingTop: 20}}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Twitter width="22" height="22" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Facebook width="20" height="20" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <LinkedIn width="20" height="20" />
+            </View>
+          </View>
+        </View>
+        <View style={{width: '90%', marginTop: '10%'}}>
+          <ContinueButton
+            text={'Got it!'}
+            onPress={() => props.navigation.goBack()}
+          />
+        </View>
       </View>
     );
   }
@@ -142,16 +183,30 @@ export default function AddCollection(props) {
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading2 && <LoaderComp />}
       </View>
-      <SafeAreaView
-        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.heading}>Select all pieces in collection</Text>
-        {selectedProducts.length > 0 && (
-          <TouchableOpacity onPress={onAddCollection} style={styles.button}>
-            <Text style={{color: 'white'}}>ADD COLLECTION</Text>
-          </TouchableOpacity>
-        )}
 
+      <SafeAreaView style={styles.container}>
+        <NewHeaderComp
+          title={'Create Collection'}
+          movePreviousArrow={true}
+          arrowNavigation={() => props.navigation.goBack()}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginHorizontal: 20,
+            marginVertical: 20,
+          }}>
+          <Text style={{fontSize: 20}}>3. Select all pieces</Text>
+          {selectedProducts.length > 0 && (
+            <TouchableOpacity onPress={onAddCollection} style={styles.button}>
+              <Text style={{color: 'white', fontWeight: 700, fontSize: 16}}>
+                Finish
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
         {loading ? (
           <View
             style={{
@@ -164,7 +219,6 @@ export default function AddCollection(props) {
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingVertical: hp2(2)}}
             data={data}
             numColumns={2}
             renderItem={({item, index}) => {
@@ -177,8 +231,6 @@ export default function AddCollection(props) {
             }}
           />
         )}
-
-       
       </SafeAreaView>
     </>
   );
@@ -197,25 +249,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textTransform: 'uppercase',
   },
+  uploadTxt: {
+    marginTop: hp2(2),
+    color: 'black',
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    fontSize: rfv(16),
+  },
   button: {
-    width: wp2(48),
     height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: '#162FAC',
+    borderRadius: 10,
+    paddingHorizontal: 40,
+    backgroundColor: COLORS.main,
     alignItems: 'center',
     justifyContent: 'center',
     alignSelf: 'center',
-    marginTop: hp2(2),
-    borderWidth: 1,
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
   },
 });

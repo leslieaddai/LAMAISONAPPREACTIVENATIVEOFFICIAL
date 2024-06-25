@@ -58,7 +58,6 @@ export default function EditorProfileScreen(props) {
 
   useEffect(() => {
     setLoading(true);
-
     axios
       .get(
         GetEditorInfo +
@@ -117,6 +116,11 @@ export default function EditorProfileScreen(props) {
   };
 
   const onFollow = () => {
+    console.log(
+      'Follow info',
+      user?.userData?.id,
+      props?.route?.params?.userData?.userData?.id,
+    );
     setLoadingFollow(true);
     let obj = {
       follower_id: user?.userData?.id,
@@ -147,6 +151,11 @@ export default function EditorProfileScreen(props) {
   };
 
   const onUnFollow = () => {
+    console.log(
+      'Unfollow info',
+      user?.userData?.id,
+      props?.route?.params?.userData?.userData?.id,
+    );
     setLoadingFollow(true);
     let obj = {
       follower_id: user?.userData?.id,
@@ -243,7 +252,8 @@ export default function EditorProfileScreen(props) {
             <NewHeaderComp
               title={data?.name}
               onlySettings={true}
-              width="56%"
+              movePreviousArrow={true}
+              arrowNavigation={() => props.navigation.goBack()}
               settingNavigation={() =>
                 props.navigation.navigate('settingsScreen', {
                   user: user,

@@ -1,8 +1,8 @@
 import types from '../types';
 
 const initial_state = {
-  Colour: "",
-  Id:"",
+  Colour: [],
+  Id: [],
 };
 
 export default function (state = initial_state, action) {
@@ -14,8 +14,13 @@ export default function (state = initial_state, action) {
         Id: data?.id,
       };
       break;
+    case types.SaveSelectedColors:
+      return {
+        ...state,
+      };
+      break;
     default:
-      return {...state};
+      return { ...state };
       break;
   }
 }

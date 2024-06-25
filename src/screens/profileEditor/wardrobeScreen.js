@@ -2,40 +2,28 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   SafeAreaView,
   Platform,
   FlatList,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-  
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import WardrobeComp from '../../components/wardrobeComp';
 import LoaderComp from '../../components/loaderComp';
 
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {GetVirtualWardrobe} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function WardrobeScreen(props) {
   const dispatch = useDispatch();
@@ -63,16 +51,14 @@ export default function WardrobeScreen(props) {
           }`,
       )
       .then(async function (res) {
-        
         setData(prev => [...prev, ...res?.data?.data]);
         setPage(res?.data?.meta);
         setLoading(false);
       })
       .catch(function (error) {
-     
         setLoading(false);
-    
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -85,14 +71,19 @@ export default function WardrobeScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
-          <View style={styles.headWrap}>
+          <NewHeaderComp
+            title={'Wardrobe'}
+            arrowNavigation={() => props.navigation.goBack()}
+            movePreviousArrow={true}
+          />
+          {/* <View style={styles.headWrap}>
             <TouchableOpacity
               onPress={() => props.navigation.goBack()}
               style={{position: 'absolute', left: wp2(4)}}>
               <ICONS.AntDesign name="left" size={24} color="black" />
             </TouchableOpacity>
             <Text style={styles.wardrobeText}>WARDROBE</Text>
-          </View>
+          </View> */}
 
           {loading && data?.length === 0 && (
             <View
@@ -104,35 +95,36 @@ export default function WardrobeScreen(props) {
               <SkypeIndicator color={'black'} />
             </View>
           )}
-          {data.length!==0 ?( 
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{
-              paddingVertical: hp2(4),
-              justifyContent: 'space-between',
-            }}
-            data={data}
-            numColumns={2}
-            onEndReached={() =>
-              !loading &&
-              page?.current_page < page?.last_page &&
-              getWardrobe(String(page?.current_page + 1))
-            }
-            onEndReachedThreshold={0.1}
-            renderItem={({item}) => {
-              return (
-                <WardrobeComp
-                  data={item}
-                  state={{loadingComp, setLoadingComp}}
-                />
-              );
-            }}
-          />
-
-          )
-          : <View style={{flex:1,alignItems:'center',justifyContent:'center'}}><Text>No product added yet</Text></View>
-        }
-         
+          {data.length !== 0 ? (
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              contentContainerStyle={{
+                paddingVertical: hp2(4),
+                justifyContent: 'space-between',
+              }}
+              data={data}
+              numColumns={2}
+              onEndReached={() =>
+                !loading &&
+                page?.current_page < page?.last_page &&
+                getWardrobe(String(page?.current_page + 1))
+              }
+              onEndReachedThreshold={0.1}
+              renderItem={({item}) => {
+                return (
+                  <WardrobeComp
+                    data={item}
+                    state={{loadingComp, setLoadingComp}}
+                  />
+                );
+              }}
+            />
+          ) : (
+            <View
+              style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+              <Text>No product added yet</Text>
+            </View>
+          )}
 
           {loading && data?.length !== 0 && (
             <View
@@ -144,8 +136,6 @@ export default function WardrobeScreen(props) {
               <SkypeIndicator size={26} color={'black'} />
             </View>
           )}
-
-      
         </View>
       </SafeAreaView>
     </>
@@ -161,7 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-   
+
     justifyContent: 'center',
   },
   wardrobeText: {

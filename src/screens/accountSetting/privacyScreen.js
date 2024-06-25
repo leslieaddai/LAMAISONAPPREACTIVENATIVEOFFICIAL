@@ -12,7 +12,7 @@ import {
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
 import {ICONS, COLORS, wp2, hp2} from '../../theme';
-import HeaderComponent from '../auth/componnets/HeaderComponnet';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function PrivacyScreen(props) {
   return (
@@ -21,9 +21,11 @@ export default function PrivacyScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
       <SafeAreaView style={styles.container}>
-        <HeaderComponent
+        <NewHeaderComp
           title={'Privacy & Security'}
-          onTap={() => props.navigation.goBack()}></HeaderComponent>
+          arrowNavigation={() => props.navigation.goBack()}
+          movePreviousArrow={true}
+        />
 
         <ScrollView
           showsVerticalScrollIndicator={false}

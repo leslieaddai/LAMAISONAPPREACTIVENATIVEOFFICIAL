@@ -2,35 +2,23 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
- 
 } from 'react-native';
-import {
+import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-  heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
- 
-} from '../../theme';
-
-
-import {errorMessage,} from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {AddShipping} from '../../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import NewInputComp from '../../components/NewInputComp';
 
 export default function ShippingComp(props) {
   const [show, setShow] = useState(false);
@@ -69,14 +57,13 @@ export default function ShippingComp(props) {
       axios
         .request(config)
         .then(async function (res) {
-          
           setShow(false);
           props?.state?.getAllRegions();
           setLoading(false);
         })
         .catch(function (error) {
           setLoading(false);
-          errorMessage(errorHandler(error))
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please input price!');
@@ -97,15 +84,20 @@ export default function ShippingComp(props) {
                 );
                 setShow(false);
               }}
-              style={{alignSelf: 'flex-end'}}>
+              style={{alignSelf: 'flex-end', marginHorizontal: 20}}>
               <ICONS.Entypo
                 name="circle-with-cross"
                 size={24}
                 color="#7B788A"
               />
             </TouchableOpacity>
-            <Text style={styles.priceTxt}>Price (£)</Text>
-            <View style={styles.inputWrap}>
+
+            <NewInputComp
+              handleOnChange={e => setPrice(e)}
+              value={price}
+              inputText={'Enter Shipping Price For ' + props?.data?.name}
+            />
+            {/* <View style={styles.inputWrap}>
               <TextInput
                 placeholder={'Enter Shipping Price For ' + props?.data?.name}
                 placeholderTextColor={'grey'}
@@ -114,10 +106,11 @@ export default function ShippingComp(props) {
                 style={{flex: 1, color: 'black'}}
                 keyboardType={'number-pad'}
               />
-            </View>
+            </View> */}
             <Text style={styles.freeShippingTxt}>
               If you want to give free shipping then just enter 0 in price.
             </Text>
+
             <TouchableOpacity
               disabled={loading}
               style={styles.savebtn}
@@ -133,19 +126,16 @@ export default function ShippingComp(props) {
           </View>
         </View>
       ) : null}
-      <TouchableOpacity 
-      
-       onPress={() => setShow(true)}
-       style={styles.optionWrap}>
-        <Text style={{color: 'black'}}>{props?.data?.name}</Text>
+      <TouchableOpacity onPress={() => setShow(true)} style={styles.optionWrap}>
         <View
           style={[
             styles.circle,
             {
               backgroundColor:
-                props?.data?.shipping_brand !== null ? 'black' : '#D9D9D9',
+                props?.data?.shipping_brand !== null ? COLORS.main : '#D9D9D9',
             },
           ]}></View>
+        <Text style={{color: 'black', fontSize: 16}}>{props?.data?.name}</Text>
       </TouchableOpacity>
     </>
   );
@@ -161,50 +151,39 @@ const styles = StyleSheet.create({
     zIndex: 999,
   },
   optionWrap: {
-    width: wp2(90),
-    height: hp2(4),
-   
-    borderBottomWidth: 1,
-    justifyContent: 'space-between',
+    marginRight: 'auto',
+    marginLeft: 'auto',
+    width: '90%',
+    padding: 20,
+    backgroundColor: COLORS.gray100,
     flexDirection: 'row',
-    paddingHorizontal: wp2(1),
-    marginTop: hp2(2),
-    alignSelf: 'center',
+    alignItems: 'center',
+    gap: 10,
+    marginTop: 10,
+    borderRadius: 10,
   },
   circle: {
     width: wp2(5),
     height: wp2(5),
-    
-    borderRadius: 100,
+    borderRadius: 4,
   },
   disclaimerBox: {
     width: wp2(80),
-    height: hp2(20),
     backgroundColor: COLORS.appBackground,
     borderRadius: wp2(3),
     borderWidth: 1,
     marginTop: hp2(20),
-   
     paddingVertical: hp2(2),
-    paddingHorizontal: wp2(4),
   },
   savebtn: {
-    width: wp2(22),
-    height: wp2(8),
-    backgroundColor: 'black',
-    borderRadius: wp2(4),
+    width: '85%',
+    height: 40,
+    backgroundColor: COLORS.main,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     alignSelf: 'center',
-    marginTop: hp2(2),
+    marginTop: 40,
   },
   priceTxt: {color: 'black', fontSize: hp('2')},
   inputWrap: {
@@ -214,7 +193,9 @@ const styles = StyleSheet.create({
   },
   freeShippingTxt: {
     color: 'red',
-    fontSize: hp('1'),
+    fontSize: 12,
+    marginHorizontal: 20,
+    textAlign: 'center',
     fontWeight: 'bold',
     alignSelf: 'center',
   },

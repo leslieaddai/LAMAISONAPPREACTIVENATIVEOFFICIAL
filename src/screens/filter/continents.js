@@ -2,31 +2,18 @@ import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
-
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
- 
-  wp2,
-  hp2,
-  
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 
-import {errorMessage, } from '../../config/NotificationMessage';
+import {errorMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../../config/helperFunction';
 import {GetRegionsAll} from '../../config/Urls';
@@ -51,15 +38,13 @@ export default function Continents(props) {
     axios
       .get(GetRegionsAll)
       .then(async function (res) {
-    
         setData(res.data.data);
         setLoading(false);
       })
       .catch(function (error) {
-      
         setLoading(false);
-   
-        errorMessage(errorHandler(error))
+
+        errorMessage(errorHandler(error));
       });
   }, []);
 
@@ -86,36 +71,35 @@ export default function Continents(props) {
   };
   return (
     <>
-    <SafeAreaView
+      <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-    
-    <SafeAreaView style={styles.container}>
-    <NewHeaderComp
+
+      <SafeAreaView style={styles.container}>
+        <NewHeaderComp
           arrowNavigation={() => props.navigation.navigate('filterScreen')}
           movePreviousArrow={true}
           title={'Filters - Continents'}
         />
 
-      {loading ? (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginVertical: hp2(6),
-          }}>
-          <SkypeIndicator color={'black'} />
-        </View>
-      ) : (
-        <>
-          {data?.map((item, index) => {
-          
-            return <View key={index}>{options(item)}</View>;
-          })}
-        </>
-      )}
-
-    
-    </SafeAreaView>
+        {loading ? (
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginVertical: hp2(6),
+            }}>
+            <SkypeIndicator color={'black'} />
+          </View>
+        ) : (
+          <>
+            {data?.map((item, index) => {
+              return (
+                <View key={index}>{index === 0 ? '' : options(item)}</View>
+              );
+            })}
+          </>
+        )}
+      </SafeAreaView>
     </>
   );
 }
@@ -129,7 +113,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
     alignItems: 'center',
-   
+
     justifyContent: 'center',
     width: wp2(100),
   },
@@ -153,6 +137,6 @@ const styles = StyleSheet.create({
     height: wp2(5),
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: COLORS.gray
+    borderColor: COLORS.gray,
   },
 });

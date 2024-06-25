@@ -87,13 +87,7 @@ export default function Wardrobe(props) {
                       resizeMode="cover"
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate('wardrobeScreen', {user: props?.user})
-                    }
-                    style={styles.wardrobe}>
-                    <Text style={styles.wardrobeTxt}>View All</Text>
-                  </TouchableOpacity>
+
                 </>
               );
           })

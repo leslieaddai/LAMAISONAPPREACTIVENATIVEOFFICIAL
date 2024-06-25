@@ -1,29 +1,93 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
-
+import {FollowUrl, UnfollowUrl, GetEditorInfo} from '../../config/Urls';
 import {IMAGES, wp2, hp2, COLORS} from '../../theme';
 import {useNavigation} from '@react-navigation/native';
 import {SkypeIndicator} from 'react-native-indicators';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {useSelector} from 'react-redux';
+import axios from 'axios';
+import {FlatList} from 'react-native-gesture-handler';
 
 export default function FollowComp(props) {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
+  const user = useSelector(state => state.userData);
   const onloading = (value, label) => {
     setLoading(value);
   };
-
+  const [data, setData] = useState([]);
   const [loadingFollow, setLoadingFollow] = useState(false);
   const [follow, setFollow] = useState(true);
 
+  useEffect(() => {
+    setLoading(true);
+
+    axios
+      .get(
+        GetEditorInfo +
+          `${props?.route?.params?.userData?.userData?.id}/viewer/${
+            user?.token !== '' && user?.userData?.id
+          }`,
+      )
+      .then(async function (res) {
+        setData(res?.data?.data);
+        if (res?.data?.data?.is_following === null) {
+          setFollow(false);
+        } else {
+          setFollow(true);
+        }
+        if (res?.data?.data?.is_blocked !== null) {
+          setBlockData(res?.data?.data?.is_blocked);
+          setIsBlocked(true);
+        }
+        setLoading(false);
+      })
+      .catch(function (error) {
+        setLoading(false);
+      });
+  }, []);
+
+  const getEditorData = () => {
+    axios
+      .get(
+        GetEditorInfo +
+          `${props?.route?.params?.userData?.userData?.id}/viewer/${
+            user?.token !== '' && user?.userData?.id
+          }`,
+      )
+      .then(async function (res) {
+        setData(res?.data?.data);
+        if (res?.data?.data?.is_following === null) {
+          setFollow(false);
+        } else {
+          setFollow(true);
+        }
+        //setLoading(false);
+        if (res?.data?.data?.is_blocked !== null) {
+          setBlockData(res?.data?.data?.is_blocked);
+          setIsBlocked(true);
+        } else {
+          setIsBlocked(false);
+        }
+      })
+      .catch(function (error) {
+        setLoading(false);
+      });
+  };
+
   const onFollow = () => {
-    console.log(props?.route?.params?.userData?.userData?.id);
+    console.log(
+      'Follow info',
+      user?.userData?.id,
+      props?.route?.params?.userData?.userData?.id,
+    );
     setLoadingFollow(true);
     let obj = {
       follower_id: user?.userData?.id,
-      following_id: props?.route?.params?.userData?.userData?.id,
+      following_id: 77,
     };
     let config = {
       method: 'post',
@@ -38,23 +102,27 @@ export default function FollowComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        getBrandData();
+        getEditorData();
         setFollow(true);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
         setLoadingFollow(false);
-        errorMessage(errorHandler(error));
       });
   };
 
   const onUnFollow = () => {
+    console.log(
+      'Unfollow info',
+      user?.userData?.id,
+      props?.route?.params?.userData?.userData?.id,
+    );
     setLoadingFollow(true);
     let obj = {
       follower_id: user?.userData?.id,
-      following_id: props?.route?.params?.userData?.userData?.id,
+      following_id: 77,
     };
+
     let config = {
       method: 'post',
       url: UnfollowUrl,
@@ -68,15 +136,12 @@ export default function FollowComp(props) {
     axios
       .request(config)
       .then(async function (res) {
-        getBrandData();
+        getEditorData();
         setFollow(false);
         setLoadingFollow(false);
       })
       .catch(function (error) {
-        console.log(error.response.data);
         setLoadingFollow(false);
-
-        errorMessage(errorHandler(error));
       });
   };
 
@@ -171,6 +236,12 @@ export default function FollowComp(props) {
             resizeMode="contain"
           />
         </View>
+        <Text>
+          <FlatList
+            data={data}
+            renderItem={item => <Text>{item.index}</Text>}
+          />
+        </Text>
         <Text style={styles.text}>
           {props?.list === 'follower'
             ? props?.data?.item?.followers?.roles[0]?.id === 3
@@ -207,7 +278,7 @@ export default function FollowComp(props) {
             style={{
               fontWeight: follow ? '400' : '700',
               color: follow ? COLORS.main : COLORS.white,
-              fontSize: rfv(15),
+              fontSize: 15,
             }}>
             {follow ? 'Following' : 'Follow'}
           </Text>
@@ -239,7 +310,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   skeletonView: {
-    width: wp2(28),
-    height: hp2(18),
+    width: 62,
+    height: 62,
   },
 });

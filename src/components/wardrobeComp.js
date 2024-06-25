@@ -1,47 +1,28 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
+import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
 
-} from 'react-native';
-
-
-
-import {
-
-  ICONS,
- 
-  wp2,
-  hp2,
-
-} from '../theme';
+import {ICONS, wp2, hp2, COLORS} from '../theme';
 import {useNavigation} from '@react-navigation/native';
 
 import {errorMessage, successMessage} from '../config/NotificationMessage';
 import axios from 'react-native-axios';
 import {errorHandler} from '../config/helperFunction';
-import {
-
-  ProductLike,
-  ProductShare,
-  ProductDislike,
-
-} from '../config/Urls';
+import {ProductLike, ProductShare, ProductDislike} from '../config/Urls';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {SkypeIndicator} from 'react-native-indicators';
 import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import Like from '../assets/icons/like.svg';
+import Share from '../assets/icons/share.svg';
 
 export default function WardrobeComp(props) {
   const navigation = useNavigation();
   const [heart, setHeart] = useState(props?.data?.is_liked);
   const [share, setShare] = useState(props?.data?.is_share);
-  const [loadingImage, setLoadingImage] = useState(false)
-  const onloading = (value,label)=>{
-    setLoadingImage(value)
-  }
+  const [loadingImage, setLoadingImage] = useState(false);
+  const onloading = (value, label) => {
+    setLoadingImage(value);
+  };
 
   const dispatch = useDispatch();
   const user = useSelector(state => state.userData);
@@ -74,7 +55,7 @@ export default function WardrobeComp(props) {
       })
       .catch(function (error) {
         props?.state?.setLoadingComp(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -106,65 +87,64 @@ export default function WardrobeComp(props) {
       })
       .catch(function (error) {
         props?.state?.setLoadingComp(false);
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
   return (
     <TouchableOpacity
-      onPress={() => user?.userData?.role?.[0]?.id!==3?
-        navigation.navigate('dressingRoomScreen', {
-          data: {product: {id: props?.data?.product_id}},
-        }):navigation.navigate('imageViewScreen',{item:[{image:[{original_url:props?.data?.product_image}]}]})
+      onPress={() =>
+        user?.userData?.role?.[0]?.id !== 3
+          ? navigation.navigate('dressingRoomScreen', {
+              data: {product: {id: props?.data?.product_id}},
+            })
+          : navigation.navigate('imageViewScreen', {
+              item: [{image: [{original_url: props?.data?.product_image}]}],
+            })
       }
       style={styles.imageContainer}>
-        {loadingImage?
-               <SkeletonPlaceholder borderRadius={4} alignItems='center' backgroundColor='#dddddd'>
-               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-               <View style={styles.skeletonView} />
-               </View>
-               </SkeletonPlaceholder>
-            :
-            undefined
-                }
+      {loadingImage ? (
+        <SkeletonPlaceholder
+          borderRadius={4}
+          alignItems="center"
+          backgroundColor="#dddddd">
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={styles.skeletonView} />
+          </View>
+        </SkeletonPlaceholder>
+      ) : undefined}
       <Image
-   
         progressiveRenderingEnabled={true}
-        onLoadStart={()=>{onloading(true,"onLoadStart")}}
-        onLoad={()=>onloading(false,"onLoad")}
-        onLoadEnd={()=>{onloading(false,"onLoadEnd")}}
+        onLoadStart={() => {
+          onloading(true, 'onLoadStart');
+        }}
+        onLoad={() => onloading(false, 'onLoad')}
+        onLoadEnd={() => {
+          onloading(false, 'onLoadEnd');
+        }}
         source={{uri: props?.data?.product_image}}
         style={{width: '100%', height: '80%'}}
         resizeMode="cover"
       />
       <View style={styles.iconWrap}>
         <TouchableOpacity
-          
           disabled={props?.state?.loadingComp}
           onPress={() => {
             user?.token !== ''
               ? productLikeDislike()
               : errorMessage('You cant like!');
           }}>
-          <ICONS.AntDesign
-            name="heart"
-            size={24}
-            color={heart ? '#FC0004' : 'black'}
-          />
+          <Like width={24} height={24} color={heart ? COLORS.main : 'black'} />
         </TouchableOpacity>
+        <View style={{borderWidth: 1, height: 40, borderColor: '#E2E2E2'}} />
         <TouchableOpacity
-        disabled={props?.state?.loadingComp}
-          
+          disabled={props?.state?.loadingComp}
           onPress={() => {
             user?.token !== ''
               ? productShare()
               : errorMessage('You cant share!');
           }}>
-          <ICONS.FontAwesome
-            name="retweet"
-            size={24}
-            color={share ? '#13D755' : 'black'}
-          />
+          <Share width={24} height={24} color={share ? COLORS.main : 'black'} />
         </TouchableOpacity>
       </View>
     </TouchableOpacity>
@@ -176,16 +156,8 @@ const styles = StyleSheet.create({
     width: wp2(45),
     height: hp2(22),
     overflow: 'hidden',
-    backgroundColor: 'white',
+    backgroundColor: '#F6F6F6',
     borderRadius: wp2(4),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
     margin: wp2(2),
   },
   iconWrap: {
@@ -194,11 +166,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
   },
-  skeletonView:{
+  skeletonView: {
     width: wp2(45),
     height: hp2(22),
     overflow: 'hidden',
     backgroundColor: 'white',
-    borderRadius: wp2(4)
-  }
+    borderRadius: wp2(4),
+  },
 });

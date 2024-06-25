@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontSize: rfv(11),
+    maxWidth: 100,
     fontWeight: '400',
   },
   skeletonView:{

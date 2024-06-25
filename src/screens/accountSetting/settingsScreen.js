@@ -96,13 +96,20 @@ export default function SettingsScreen(props) {
                 <Text style={{color: 'white'}}>{count}</Text>
               </View>
             )}
-            {badge === 'red' && (
-              <View
-                style={[styles.circle, {backgroundColor: '#B00002'}]}></View>
-            )}
           </View>
           {name !== 'LOGOUT' && (
-            <ICONS.AntDesign name="right" size={15} color="black" />
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 20,
+                justifyContent: 'space-between',
+              }}>
+              {badge === 'red' && (
+                <View style={[styles.circle, {backgroundColor: '#B00002'}]} />
+              )}
+              <ICONS.AntDesign name="right" size={15} color="black" />
+            </View>
           )}
         </View>
       </TouchableOpacity>
@@ -386,7 +393,6 @@ export default function SettingsScreen(props) {
                   marginTop: 30,
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  height: '100%'
                 }}>
                 <View>
                   {settingOptions('Profile', '', 'editProfile', profile)}
@@ -423,7 +429,7 @@ export default function SettingsScreen(props) {
                   )}
                 </View>
                 <View style={{marginTop: 30}}>
-                  {/* {DeleteButton()} */}
+                  {DeleteButton()}
                   {logoutButton()}
                 </View>
               </View>
@@ -458,6 +464,7 @@ const styles = StyleSheet.create({
   myStyle: {
     flexDirection: 'row',
     width: wp2(90),
+    position: 'relative',
     alignSelf: 'center',
     backgroundColor: '#F6F6F6',
     alignItems: 'center',
@@ -497,7 +504,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
-    position: 'absolute',
-    right: wp2(8),
+    right: 0,
   },
 });

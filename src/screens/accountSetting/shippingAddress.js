@@ -198,6 +198,7 @@ export default function ShippingAddress(props) {
           movePreviousArrow={true}
           arrowNavigation={() => props.navigation.goBack()}
         />
+
         {/* <View style={styles.headWrap}>
           <TouchableOpacity
             onPress={() => props.navigation.goBack()}
@@ -217,9 +218,7 @@ export default function ShippingAddress(props) {
             <SkypeIndicator color={'black'} />
           </View>
         ) : (
-          <KeyboardAwareScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingVertical: hp2(4)}}>
+          <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
             <NewInputComp
               value={stateChange.address_1}
               handleOnChange={val => updateState({address_1: val})}

@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
@@ -11,21 +10,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-
-  wp2,
-  hp2,
-
-} from '../../theme';
-
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import CommentComp from './commentComp';
 import LineComp from '../../components/lineComp';
@@ -39,7 +26,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
 
 import LoaderComp from '../../components/loaderComp';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 export default function CommentScreen(props) {
   const dispatch = useDispatch();
@@ -50,8 +39,7 @@ export default function CommentScreen(props) {
   pid = props?.route?.params?.product_id;
   commentsArr = props?.route?.params?.comments;
   const [desc, setDesc] = useState('');
-// console.log(user.userData)
-  
+  // console.log(user.userData)
 
   const onSend = () => {
     if (desc !== '') {
@@ -59,7 +47,7 @@ export default function CommentScreen(props) {
 
       let obj = {
         user_id: user?.userData?.id,
-        product_id:pid,
+        product_id: pid,
         comment: desc,
       };
       axios
@@ -69,17 +57,19 @@ export default function CommentScreen(props) {
           },
         })
         .then(async function (res) {
-          
-          commentsArr?.push({comment:desc,created_at:new Date(),user:user.userData});
+          commentsArr?.push({
+            comment: desc,
+            created_at: new Date(),
+            user: user.userData,
+          });
           setDesc('');
           setLoading(false);
           successMessage('Comment Added!');
         })
         .catch(function (error) {
-          
           setLoading(false);
-        
-          errorMessage(errorHandler(error))
+
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please fill details!');
@@ -88,64 +78,93 @@ export default function CommentScreen(props) {
 
   return (
     <>
-     <View style={{position: 'absolute', zIndex: 999}}>
+      <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
 
-    <View style={styles.container}>
-    <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: hp2(2)}}>
-      <SafeAreaView></SafeAreaView>
-      <View style={styles.headWrap}>
-        <TouchableOpacity
-          onPress={() => props.navigation.goBack()}
-          style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
-          <ICONS.AntDesign name="left" size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.commentText}>Comments</Text>
-      </View>
-      
-      <View style ={{height:hp2(65)}}>
-          {commentsArr?.length!==0? 
-          <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingVertical:hp2(2)}} nestedScrollEnabled={true}>
-            
-            {commentsArr?.filter((v,i,a)=>a.findIndex(v2=>
-            moment(v2?.created_at).format('MM/YY')===moment(v?.created_at).format('MM/YY'),) === i,).map((item,
-              index)=>moment(item?.created_at).format('MM/YY'))?.map((item,index)=>{
-          
-            return(
-              <View key={index}>
-              <LineComp date={item} key={index} />
-              <ScrollView>
-                {commentsArr?.map((item2, index2) => {
-                    if (moment(item2?.created_at).format('MM/YY') === item)
-                      return (
-                        <CommentComp data={item2} key={index2}/>
-                      );
+      <View style={styles.container}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{paddingBottom: hp2(2)}}>
+          <SafeAreaView></SafeAreaView>
+          {/* <View style={styles.headWrap}>
+            <TouchableOpacity
+              onPress={() => props.navigation.goBack()}
+              style={{marginLeft: wp2(3), marginRight: wp2(5)}}>
+              <ICONS.AntDesign name="left" size={24} color="black" />
+            </TouchableOpacity>
+            <Text style={styles.commentText}>Comments</Text>
+          </View> */}
+
+          <NewHeaderComp
+            title={'Comments'}
+            arrowNavigation={() => props.navigation.goBack()}
+            movePreviousArrow={true}
+          />
+
+          <View style={{height: hp2(65)}}>
+            {commentsArr?.length !== 0 ? (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingVertical: hp2(2)}}
+                nestedScrollEnabled={true}>
+                {commentsArr
+                  ?.filter(
+                    (v, i, a) =>
+                      a.findIndex(
+                        v2 =>
+                          moment(v2?.created_at).format('MM/YY') ===
+                          moment(v?.created_at).format('MM/YY'),
+                      ) === i,
+                  )
+                  .map((item, index) =>
+                    moment(item?.created_at).format('MM/YY'),
+                  )
+                  ?.map((item, index) => {
+                    return (
+                      <View key={index}>
+                        <LineComp date={item} key={index} />
+                        <ScrollView>
+                          {commentsArr?.map((item2, index2) => {
+                            if (
+                              moment(item2?.created_at).format('MM/YY') === item
+                            )
+                              return <CommentComp data={item2} key={index2} />;
+                          })}
+                        </ScrollView>
+                      </View>
+                    );
                   })}
-                  </ScrollView>
+              </ScrollView>
+            ) : (
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: hp2(65),
+                }}>
+                <Text>Comments Not Available</Text>
               </View>
-            )
-          })}
-          </ScrollView>
-          :<View style={{alignItems:'center',justifyContent:'center',height:hp2(65)}}><Text>Comments  Not Available</Text></View>}
-      </View>
+            )}
+          </View>
 
-      <View style={styles.textBox}>
-        <TextInput
-          placeholder={'Write your text here...'}
-          placeholderTextColor={'grey'}
-          style={styles.inputTxt}
-          onChangeText={val => setDesc(val)}
-          value={desc}
-        />
+          <View style={styles.textBox}>
+            <TextInput
+              placeholder={'Write your text here...'}
+              placeholderTextColor={'grey'}
+              style={styles.inputTxt}
+              onChangeText={val => setDesc(val)}
+              value={desc}
+            />
+          </View>
+          <View style={{marginHorizontal: 20}}>
+            <ContinueButton onPress={onSend} text={'Add your comment'} />
+          </View>
+          {/* <TouchableOpacity onPress={onSend} style={styles.button}>
+            <Text style={styles.buttonText}>Add your comment</Text>
+          </TouchableOpacity> */}
+        </KeyboardAwareScrollView>
       </View>
-
-      <TouchableOpacity onPress={onSend} style={styles.button}>
-        <Text style={styles.buttonText}>Add your comment</Text>
-      </TouchableOpacity>
-      </KeyboardAwareScrollView>
-    </View>
-  </>
+    </>
   );
 }
 
@@ -170,7 +189,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: '#D9D9D9',
     height: hp2(6),
-    marginTop:hp2(-2),
+    paddingTop: 10,
   },
   button: {
     width: wp2(88),
@@ -198,7 +217,7 @@ const styles = StyleSheet.create({
   inputTxt: {
     flex: 1,
     color: 'black',
-    fontWeight: '700',
+    fontWeight: '400',
     fontSize: rfv(14),
   },
 });

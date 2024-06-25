@@ -7,7 +7,6 @@ import {
   Text,
   TextInput,
   ScrollView,
-
   Platform,
   Animated,
   SafeAreaView,
@@ -17,20 +16,9 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  ICONS,
-  COLORS,
-  
-  wp2,
-  hp2,
-
-} from '../../theme';
+import {ICONS, COLORS, wp2, hp2} from '../../theme';
 
 import RNAnimatedScrollIndicators from 'react-native-animated-scroll-indicators';
 
@@ -52,10 +40,18 @@ import {SkypeIndicator} from 'react-native-indicators';
 
 import LoaderComp from '../../components/loaderComp';
 
-import { launchImageLibrary} from 'react-native-image-picker';
-import { BottomSheet } from 'react-native-btr';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {BottomSheet} from 'react-native-btr';
 import Icons from '../../theme/icons';
-import { FlatList } from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
+import NewInputComp from '../../components/NewInputComp';
+import {Modal} from 'react-native-paper';
+import ContinueButton from '../auth/componnets/ContinueBtn';
+import UploadSuccess from '../../assets/icons/uploaded-success.svg';
+import Twitter from '../../assets/icons/twitter.svg';
+import Facebook from '../../assets/icons/facebook.svg';
+import LinkedIn from '../../assets/icons/linkedin.svg';
+import NewHeaderComp from '../auth/componnets/NewHeaderComp';
 
 export default function ReuploadScreen(props) {
   const scrollX = new Animated.Value(0);
@@ -70,8 +66,8 @@ export default function ReuploadScreen(props) {
   const [isOpenedShipping, setIsOpenedShipping] = useState(false);
   const [selectedImage, setSelectedImage] = useState([]);
 
-  const routeitem = props?.route?.params?.data
-  
+  const routeitem = props?.route?.params?.data;
+
   const [visible, setVisible] = useState(false);
   const [stateChange, setStateChange] = useState({
     productName: routeitem?.name,
@@ -83,7 +79,6 @@ export default function ReuploadScreen(props) {
     category: routeitem?.category_id,
   });
 
-  
   const updateState = data => setStateChange(prev => ({...prev, ...data}));
   const {
     productName,
@@ -110,20 +105,16 @@ export default function ReuploadScreen(props) {
   const [uploadButton, setUploadButton] = useState(false);
   const [showQuantity, setShowQuantity] = useState(false);
   const [isOpened, setIsOpened] = useState(false);
-  const [selectedText, setSelectedText] = useState(
-    routeitem?.style?.name,
-  );
-  
+  const [selectedText, setSelectedText] = useState(routeitem?.style?.name);
 
-  useEffect(()=>{            
-    if(isOpenedShipping){
-      uibottomesheetvisiblity(true)
+  useEffect(() => {
+    if (isOpenedShipping) {
+      uibottomesheetvisiblity(true);
     }
-  },[isOpenedShipping])
+  }, [isOpenedShipping]);
   useEffect(() => {
     let tempArr = [];
     routeitem?.product_variations?.map(item => {
-     
       tempArr.push({
         color_id: String(item?.color?.id),
         color: String(item?.color?.color_code),
@@ -133,20 +124,18 @@ export default function ReuploadScreen(props) {
         product_variation_id: item?.id,
       });
     });
-   
+
     setQuantity(tempArr);
 
     let tempImgArr = [];
-    routeitem?.product_images?.[0]?.image?.map(
-      (item, index) => {
-        tempImgArr.push({
-          uri: item?.original_url,
-          name: item?.file_name,
-          type: item?.mime_type,
-          id: item?.id,
-        });
-      },
-    );
+    routeitem?.product_images?.[0]?.image?.map((item, index) => {
+      tempImgArr.push({
+        uri: item?.original_url,
+        name: item?.file_name,
+        type: item?.mime_type,
+        id: item?.id,
+      });
+    });
     setSelectedImage(tempImgArr);
 
     axios
@@ -157,10 +146,9 @@ export default function ReuploadScreen(props) {
         setData(res?.data?.data);
       })
       .catch(function (error) {
-      
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
-      getShippingInfo()
+    getShippingInfo();
   }, []);
 
   const goBackFunction = () => {
@@ -180,7 +168,7 @@ export default function ReuploadScreen(props) {
   const toggleBottomNavigationView = () => {
     setVisible(!visible);
     uibottomesheetvisiblity(!visible);
-    setIsOpenedShipping(false)
+    setIsOpenedShipping(false);
   };
   const productDetails = () => {
     if (
@@ -202,26 +190,24 @@ export default function ReuploadScreen(props) {
         headers: {Authorization: `Bearer ${user?.token}`},
       })
       .then(async function (res) {
-    
         if (res?.data?.data?.length > 0) {
           setShippingData(res?.data?.data);
-          addRegions(res?.data?.data?.[0])
+          addRegions(res?.data?.data?.[0]);
         } else {
           setShippingData('');
         }
       })
       .catch(function (error) {
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
-  const addRegions = (item) => {
+  const addRegions = item => {
     regions?.some(e => e?.regionId === item?.shipping_id)
       ? setRegions(regions?.filter(e => e?.regionId !== item?.shipping_id))
       : setRegions([
           ...regions,
           {regionName: item?.shipping?.name, regionId: item?.shipping_id},
         ]);
-   
   };
   const verifyQuantity = () => {
     let tempDuplicate = quantity.filter(
@@ -240,6 +226,7 @@ export default function ReuploadScreen(props) {
         obj.quantity === ''
       ) {
         errorMessage('Please fill all details!');
+        // setConfirmButton(true);
         return;
       } else {
         tempValue++;
@@ -268,7 +255,6 @@ export default function ReuploadScreen(props) {
     let newQuantityArr = [];
 
     quantity.map((item, index) => {
-     
       if (item.product_variation_id === null) {
         newColorArr.push(item.color_id);
         formdata.append('color_new[]', item.color_id);
@@ -325,7 +311,6 @@ export default function ReuploadScreen(props) {
     axios
       .request(config)
       .then(async function (res) {
-       
         setLoading(false);
         successMessage('Reupload Success');
         setUploadButton(true);
@@ -335,10 +320,8 @@ export default function ReuploadScreen(props) {
         }, 3000);
       })
       .catch(function (error) {
-        
         setLoading(false);
-        
-        errorMessage(errorHandler(error))
+        errorMessage(errorHandler(error));
       });
   };
 
@@ -356,22 +339,22 @@ export default function ReuploadScreen(props) {
         const type = match ? `image/${match[1]}` : `image`;
 
         var array = [...selectedImage];
-        Alert.alert("","Are you sure you want to update this image",
-        [
+        Alert.alert('', 'Are you sure you want to update this image', [
           {
-            text:"Cancel"
-          },{
-            text:"Ok",
-            onPress: ()=>{
+            text: 'Cancel',
+          },
+          {
+            text: 'Ok',
+            onPress: () => {
               if (id !== -1) {
                 setLoading2(true);
-      
+
                 var formdata = new FormData();
-      
+
                 formdata.append('product_image_id', array?.[id]?.id);
                 formdata.append('image', {uri, name: filename, type});
                 formdata.append('product_id', routeitem?.id);
-      
+
                 let config = {
                   method: 'post',
                   maxBodyLength: Infinity,
@@ -383,26 +366,28 @@ export default function ReuploadScreen(props) {
                   },
                   data: formdata,
                 };
-      
+
                 axios
                   .request(config)
                   .then(async function (res) {
-                    
-                    array[id] = {uri, name: filename, type, id: res?.data?.data?.id};
+                    array[id] = {
+                      uri,
+                      name: filename,
+                      type,
+                      id: res?.data?.data?.id,
+                    };
                     setSelectedImage(array);
                     setLoading2(false);
                     successMessage('Image Updated');
                   })
                   .catch(function (error) {
-                    
                     setLoading2(false);
-                    errorMessage(errorHandler(error))
+                    errorMessage(errorHandler(error));
                   });
               }
-            }
-          }
-        ])
-        
+            },
+          },
+        ]);
       }
     };
 
@@ -411,13 +396,73 @@ export default function ReuploadScreen(props) {
 
   if (uploadButton) {
     return (
+      // width="146" height="146"
       <View
         style={[
           styles.container,
           {alignItems: 'center', justifyContent: 'center'},
         ]}>
-        <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" />
-        <Text style={styles.uploadTxt}>Successfully Uploaded!</Text>
+        {/* <ICONS.AntDesign name="checkcircle" size={hp2(16)} color="#13D755" /> */}
+        <UploadSuccess width="146" height="146" />
+        <View style={{flexDirection: 'column', gap: 10, alignItems: 'center'}}>
+          <Text style={styles.uploadTxt}>Successfully Uploaded!</Text>
+          <Text style={{fontSize: 14}}>Product updated</Text>
+        </View>
+        <View
+          style={{
+            backgroundColor: '#F6F6F6',
+            width: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: 20,
+            borderRadius: 10,
+            marginTop: '15%',
+          }}>
+          <Text style={{fontSize: 14}}>
+            Tell your friends about your great choice:
+          </Text>
+          <View style={{flexDirection: 'row', gap: 10, paddingTop: 20}}>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Twitter width="22" height="22" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <Facebook width="20" height="20" />
+            </View>
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: 50,
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: 50,
+                borderRadius: 999,
+              }}>
+              <LinkedIn width="20" height="20" />
+            </View>
+          </View>
+        </View>
+        <View style={{width: '90%', marginTop: '10%'}}>
+          <ContinueButton
+            text={'Got it!'}
+            onPress={() => props.navigation.goBack()}
+          />
+        </View>
       </View>
     );
   }
@@ -430,14 +475,19 @@ export default function ReuploadScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-        <View style={styles.headWrap}>
+        {/* <View style={styles.headWrap}>
           <TouchableOpacity
             onPress={() => goBackFunction()}
             style={{position: 'absolute', left: wp2(4)}}>
             <ICONS.AntDesign name="left" size={24} color="black" />
           </TouchableOpacity>
           <Text style={styles.heading}>Lookbook</Text>
-        </View>
+        </View> */}
+        <NewHeaderComp
+          title={'Lookbook'}
+          movePreviousArrow={true}
+          arrowNavigation={() => props.navigation.goBack()}
+        />
 
         <View style={styles.scrollViewWrap}>
           <Animated.ScrollView
@@ -471,7 +521,6 @@ export default function ReuploadScreen(props) {
                   <SkypeIndicator key={index} color={'black'} />
                 ) : (
                   <Image
-                    
                     key={index}
                     source={{uri: item?.uri}}
                     style={{width: '100%', height: '100%'}}
@@ -483,7 +532,6 @@ export default function ReuploadScreen(props) {
           </Animated.ScrollView>
           <View style={styles.scrollIndicatorWrap}>
             <RNAnimatedScrollIndicators
-             
               numberOfCards={selectedImage?.length}
               scrollWidth={wp2(94)}
               activeColor={'#707070'}
@@ -494,17 +542,26 @@ export default function ReuploadScreen(props) {
         </View>
 
         {showQuantity && !confirmButton ? (
-          <KeyboardAwareScrollView
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingVertical: hp2(2)}}>
+          <KeyboardAwareScrollView showsVerticalScrollIndicator={false}>
             {quantity?.map((item, index) => (
-              <QuantityComp
-                key={index}
-                key2={index}
-                state={{quantity, setQuantity, stateChange}}
-              />
+              <View style={{marginTop: 20, gap: 20}}>
+                <QuantityComp
+                  key={index}
+                  key2={index}
+                  state={{quantity, setQuantity, stateChange}}
+                />
+                <View style={{borderWidth: 1, borderColor: '#00000010'}} />
+              </View>
             ))}
-            <View style={styles.quantityWrap}>
+
+            <View
+              style={{
+                marginTop: 20,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                width: '50%',
+              }}>
               <TouchableOpacity
                 onPress={() =>
                   setQuantity([
@@ -519,12 +576,40 @@ export default function ReuploadScreen(props) {
                     },
                   ])
                 }
-                style={{marginRight: wp2(6), marginLeft: wp2(2)}}>
-                <ICONS.AntDesign name="pluscircle" size={34} color="#162FAC" />
+                style={{
+                  marginHorizontal: 20,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '100%',
+                  gap: 10,
+                  paddingHorizontal: 20,
+                  paddingVertical: 15,
+                  borderRadius: 10,
+                  backgroundColor: '#162FAC',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    height: 19,
+                    width: 19,
+                    borderRadius: 100,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <ICONS.AntDesign
+                    name="pluscircle"
+                    color={'#162FAC'}
+                    size={20}
+                  />
+                </View>
+                <Text style={{fontSize: 16, color: 'white'}}>Add item</Text>
               </TouchableOpacity>
+              <View style={{marginHorizontal: 20, marginTop: 10, width: '60%'}}>
+                <ContinueButton text={'Next'} onPress={verifyQuantity} />
+              </View>
             </View>
 
-            <TouchableOpacity
+            {/* <TouchableOpacity
               onPress={verifyQuantity}
               style={[
                 styles.button,
@@ -537,81 +622,143 @@ export default function ReuploadScreen(props) {
               ]}>
               <Text
                 style={{color: 'white', fontWeight: '700', fontSize: rfv(13)}}>
-                NEXT
+                Nex
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAwareScrollView>
         ) : confirmButton ? (
-          <ScrollView contentContainerStyle={{paddingVertical: hp2(1)}}>
+          <ScrollView
+            contentContainerStyle={{paddingVertical: hp2(1), gap: 20}}>
             <View
               style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
               ]}>
-              <Text style={styles.previewTxt}>{stateChange?.productName}</Text>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {stateChange?.productName}
+              </Text>
             </View>
             <View
               style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
               ]}>
-              <Text style={styles.previewTxt}>{stateChange?.pieces}</Text>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {stateChange?.pieces}
+              </Text>
             </View>
             <View
               style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
               ]}>
-              <Text style={styles.previewTxt}>{stateChange?.description}</Text>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {stateChange?.description}
+              </Text>
             </View>
-        <View
+            <View
               style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
               ]}>
-              <Text style={styles.selectTxt}>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
                 {regions.map((item, index) => item?.regionName + ' ')}
               </Text>
             </View>
             <View
               style={[
-                styles.inputBox,
-                {justifyContent: 'center', paddingHorizontal: wp2(2)},
-              ]}>
-              <Text style={styles.previewTxt}>{stateChange?.price}</Text>
-            </View>
-          
-            <View
-              style={[
-                styles.inputBox,
                 {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
                   flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
                   alignItems: 'center',
-                  paddingHorizontal: wp2(2),
+                  paddingHorizontal: 20,
                   justifyContent: 'space-between',
                 },
               ]}>
-              <Text style={styles.previewTxt}>{selectedText}</Text>
-              <ICONS.FontAwesome
-                name={'chevron-down'}
-                color={'#A1A1A1'}
-                size={22}
-              />
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {stateChange?.price}
+              </Text>
             </View>
 
-            <TouchableOpacity
+            <View
+              style={[
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
+              ]}>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {selectedText}
+              </Text>
+              {/* <ICONS.FontAwesome
+                name={'chevron-down'}
+                color={'#A1A1A1'}
+                size={12}
+              /> */}
+            </View>
+            <View style={{marginHorizontal: 20}}>
+              <ContinueButton onPress={uploadProduct} text={'Reupload'} />
+            </View>
+            {/* <TouchableOpacity
               onPress={uploadProduct}
               style={[
                 styles.button,
                 {width: wp2(54), alignSelf: 'center', marginTop: hp2(2)},
               ]}>
               <Text style={styles.reuploadTxt}>REUPLOAD</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </ScrollView>
         ) : (
           <KeyboardAwareScrollView
             contentContainerStyle={{paddingVertical: hp2(1)}}>
-            <View style={styles.inputBox}>
+            {/* <View style={styles.inputBox}>
               <TextInput
                 style={styles.txtInput}
                 placeholder="PRODUCT NAME"
@@ -619,23 +766,48 @@ export default function ReuploadScreen(props) {
                 value={stateChange?.productName}
                 onChangeText={val => updateState({productName: val})}
               />
-            </View>
+            </View> */}
+            <NewInputComp
+              value={stateChange?.productName}
+              handleOnChange={val => updateState({productName: val})}
+              inputText={'Product name'}
+            />
             <TouchableOpacity
               onPress={() =>
                 props.navigation.navigate('pieces', {stateChange, updateState})
               }
-              style={[styles.inputBox, {justifyContent: 'center'}]}>
+              style={[
+                {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
+                  flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
+                  alignItems: 'center',
+                  paddingHorizontal: 20,
+                  justifyContent: 'space-between',
+                },
+              ]}>
               <Text
                 style={{
                   fontSize: rfv(13),
-                  fontWeight: '700',
-                  color: stateChange?.pieces !== '' ? 'black' : 'grey',
-                  paddingHorizontal: wp2(2),
+                  fontWeight: '400',
+                  color:
+                    stateChange?.pieces !== '' ? COLORS.gray500 : COLORS.black,
                 }}>
-                {stateChange?.pieces !== '' ? stateChange?.pieces : 'PIECES'}
+                {stateChange?.pieces !== undefined
+                  ? stateChange?.pieces
+                  : 'Pieces'}
               </Text>
             </TouchableOpacity>
-            <View style={styles.inputBox}>
+            <NewInputComp
+              inputText={'Description'}
+              handleOnChange={val => updateState({description: val})}
+              value={stateChange?.description}
+            />
+            {/* <View style={styles.inputBox}>
+              
               <TextInput
                 style={styles.txtInput}
                 placeholder="DESCRIPTION"
@@ -643,7 +815,7 @@ export default function ReuploadScreen(props) {
                 value={stateChange?.description}
                 onChangeText={val => updateState({description: val})}
               />
-            </View>
+            </View> */}
 
             <TouchableOpacity
               onPress={() =>
@@ -652,29 +824,34 @@ export default function ReuploadScreen(props) {
                   : setIsOpenedShipping(true)
               }
               style={[
-                styles.inputBox,
                 {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
                   flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
                   alignItems: 'center',
-                  paddingHorizontal: wp2(2),
+                  paddingHorizontal: 20,
                   justifyContent: 'space-between',
                 },
               ]}>
-           
-              <Text style={[styles.selectTxt,{width:wp2(70)}]}>
+              <Text
+                style={{width: wp2(70), fontSize: 16, color: COLORS.gray500}}>
                 {regions.length !== 0
                   ? regions.map((item, index) => item?.regionName + ' ')
-                  : 'SELECT SHIPPING DETAILS'}
+                  : 'Select shipping details'}
               </Text>
               <View>
                 <ICONS.FontAwesome
                   name={isOpenedShipping ? 'chevron-up' : 'chevron-down'}
                   color={'#A1A1A1'}
-                  size={22}
+                  size={12}
                 />
               </View>
             </TouchableOpacity>
-            <View style={styles.inputBox}>
+            <NewInputComp inputText={'Price'} />
+            {/* <View style={styles.inputBox}>
               <TextInput
                 style={styles.txtInput}
                 placeholder="PRICE"
@@ -683,30 +860,33 @@ export default function ReuploadScreen(props) {
                 value={stateChange?.price}
                 onChangeText={val => updateState({price: val})}
               />
-            </View>
-
-            <View
+            </View> */}
+            <TouchableOpacity
+              onPress={() => setIsOpened(!isOpened)}
               style={[
-                styles.inputBox,
                 {
+                  borderWidth: 1,
+                  borderColor: '#ccc',
                   flexDirection: 'row',
+                  borderRadius: 10,
+                  height: 50,
+                  marginHorizontal: 20,
                   alignItems: 'center',
-                  paddingHorizontal: wp2(2),
+                  paddingHorizontal: 20,
                   justifyContent: 'space-between',
                 },
               ]}>
-              <Text style={styles.selectedTxt}>{selectedText}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  isOpened ? setIsOpened(false) : setIsOpened(true)
-                }>
+              <Text style={{fontSize: 16, color: COLORS.gray500}}>
+                {selectedText !== undefined ? selectedText : 'Select type'}
+              </Text>
+              <TouchableOpacity>
                 <ICONS.FontAwesome
                   name={isOpened ? 'chevron-up' : 'chevron-down'}
                   color={'#A1A1A1'}
-                  size={22}
+                  size={12}
                 />
               </TouchableOpacity>
-            </View>
+            </TouchableOpacity>
 
             {isOpened && (
               <View style={[styles.styleBox]}>
@@ -733,8 +913,10 @@ export default function ReuploadScreen(props) {
                 ))}
               </View>
             )}
-
-            <TouchableOpacity
+            <View style={{marginHorizontal: 20, marginTop: 20}}>
+              <ContinueButton text={'Next'} onPress={productDetails} />
+            </View>
+            {/* <TouchableOpacity
               onPress={productDetails}
               style={[
                 styles.button,
@@ -746,54 +928,57 @@ export default function ReuploadScreen(props) {
                 },
               ]}>
               <Text style={styles.reuploadTxt}>NEXT</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </KeyboardAwareScrollView>
         )}
         <BottomSheet
-        visible={visible}
-        onBackButtonPress={toggleBottomNavigationView}
-        onBackdropPress={toggleBottomNavigationView}
-        >
-           <View style={styles.bottomcontainer}>
-        <ScrollView style={[styles.bottomcontainer,{height: '35%',marginBottom:hp(2)}]}>
-        <View style={[styles.bottomstyleBox]}>
-          <FlatList
-          data={shippingData}
-          renderItem={({item,index})=>{
-          
-            return(
-              <TouchableOpacity
-                     onPress={() => {
-                      uibottomesheetvisiblity(true)
-                      setIsOpenedShipping(false)
-                        addRegions(item)
-                    }}
-                     key={index}
-                     style={styles.bottomitemWrap}>
-                     <Text style={styles.bottomitemTxt}>{item?.shipping?.name}</Text>
-                     <Icons.AntDesign
-                       name={
-                         regions.some(e => e.regionId === item?.shipping_id)
-                           ? 'checkcircle'
-                           : 'checkcircleo'
-                       }
-                       size={24}
-                       color={
-                         regions.some(e => e.regionId === item?.shipping_id)
-                           ? 'black'
-                           : 'lightgray'
-                       }
-                       style={{position: 'absolute', right: 10}}
-                     />
-                   </TouchableOpacity>
-            )
-          }}
-          />
+          visible={visible}
+          onBackButtonPress={toggleBottomNavigationView}
+          onBackdropPress={toggleBottomNavigationView}>
+          <View style={styles.bottomcontainer}>
+            <ScrollView
+              style={[
+                styles.bottomcontainer,
+                {height: '35%', marginBottom: hp(2)},
+              ]}>
+              <View style={[styles.bottomstyleBox]}>
+                <FlatList
+                  data={shippingData}
+                  renderItem={({item, index}) => {
+                    return (
+                      <TouchableOpacity
+                        onPress={() => {
+                          uibottomesheetvisiblity(true);
+                          setIsOpenedShipping(false);
+                          addRegions(item);
+                        }}
+                        key={index}
+                        style={styles.bottomitemWrap}>
+                        <Text style={styles.bottomitemTxt}>
+                          {item?.shipping?.name}
+                        </Text>
+                        <Icons.AntDesign
+                          name={
+                            regions.some(e => e.regionId === item?.shipping_id)
+                              ? 'checkcircle'
+                              : 'checkcircleo'
+                          }
+                          size={24}
+                          color={
+                            regions.some(e => e.regionId === item?.shipping_id)
+                              ? 'black'
+                              : 'lightgray'
+                          }
+                          style={{position: 'absolute', right: 10}}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
               </View>
-        </ScrollView>
-      </View>
-
-          </BottomSheet>
+            </ScrollView>
+          </View>
+        </BottomSheet>
       </SafeAreaView>
     </>
   );
@@ -805,9 +990,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.appBackground,
   },
   selectTxt: {
-    color: 'black', 
-    fontWeight: '700', 
-    fontSize: rfv(13)
+    color: 'black',
+    fontWeight: '700',
+    fontSize: rfv(13),
   },
   headWrap: {
     width: wp2(100),
@@ -925,7 +1110,7 @@ const styles = StyleSheet.create({
   selectedTxt: {color: 'black', fontWeight: '700', fontSize: rfv(13)},
 
   bottomcontainer: {
-    width:wp('100'),
+    width: wp('100'),
     flexDirection: 'column',
     backgroundColor: '#D3D3D3',
     borderTopRightRadius: 16,
@@ -949,15 +1134,15 @@ const styles = StyleSheet.create({
     shadowOffset: {height: 0, width: 1},
     shadowColor: 'grey',
   },
-  bottomCardView:{
-    width:wp('95'),
-    height:hp('6'),
-    marginVertical:hp('1'),
-    flexDirection:'row',
-    alignItems:'center',
-    paddingHorizontal:wp('4'),
-    borderRadius:10,
-    backgroundColor:'white'
+  bottomCardView: {
+    width: wp('95'),
+    height: hp('6'),
+    marginVertical: hp('1'),
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: wp('4'),
+    borderRadius: 10,
+    backgroundColor: 'white',
   },
   bottomitemTxt: {
     color: 'black',
@@ -970,13 +1155,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: wp(90),
     height: hp(6),
-    alignSelf:"center",
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: wp(2),
     overflow: 'hidden',
-    backgroundColor:'white',
-    marginVertical:hp(1)
+    backgroundColor: 'white',
+    marginVertical: hp(1),
   },
   bottomstyleBox: {
     width: wp(100),

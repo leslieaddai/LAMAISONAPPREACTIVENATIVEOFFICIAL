@@ -1,26 +1,9 @@
 import React from 'react';
-import {
-  StyleSheet,
-  View,
-  Image,
+import {StyleSheet, View, Image, Text, Platform} from 'react-native';
 
-  Text,
-  Platform,
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-} from 'react-native';
-
-import {
-
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-  IMAGES,
-  
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {IMAGES, wp2, hp2, COLORS} from '../../theme';
 
 export default function CommentComp(props) {
   console.log('test prop');
@@ -29,18 +12,24 @@ export default function CommentComp(props) {
     <View style={styles.container}>
       <View style={styles.imageWrap}>
         <Image
-          source={props?.data?.user?.profile_image == null?IMAGES.profileIcon3:
-          {uri:typeof(props?.data?.user?.profile_image)==='string'?
-          props?.data?.user?.profile_image:
-          props?.data?.user?.profile_image?.original_url
-        }}
-          style={{width: '100%', height: '100%'}}
-          resizeMode="contain"
+          source={
+            props?.data?.user?.profile_image == null
+              ? IMAGES.profileIcon3
+              : {
+                  uri:
+                    typeof props?.data?.user?.profile_image === 'string'
+                      ? props?.data?.user?.profile_image
+                      : props?.data?.user?.profile_image?.original_url,
+                }
+          }
+          style={{width: '100%', height: '100%', borderRadius: 999}}
         />
       </View>
       <View>
         <View style={styles.messageBox}>
-          <Text style={[styles.text, {fontSize: rfv(13)}]}>{props?.data?.comment}</Text>
+          <Text style={[styles.text, {fontSize: rfv(13)}]}>
+            {props?.data?.comment}
+          </Text>
         </View>
       </View>
     </View>
@@ -50,7 +39,7 @@ export default function CommentComp(props) {
 const styles = StyleSheet.create({
   container: {
     width: wp2(90),
- 
+
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
@@ -58,18 +47,11 @@ const styles = StyleSheet.create({
     marginVertical: hp2(1),
   },
   imageWrap: {
-    width: wp2(18),
-    height: wp2(18),
+    width: 62,
+    height: 62,
     borderRadius: wp2(4),
     overflow: 'hidden',
-    backgroundColor:'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    backgroundColor: 'white',
     elevation: 5,
   },
   text: {
@@ -79,17 +61,10 @@ const styles = StyleSheet.create({
   },
   messageBox: {
     width: wp2(70),
-
     borderRadius: wp2(2),
     backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    borderWidth: 1,
+    borderColor: COLORS.gray300,
     paddingHorizontal: wp2(3),
     paddingVertical: wp2(3),
   },

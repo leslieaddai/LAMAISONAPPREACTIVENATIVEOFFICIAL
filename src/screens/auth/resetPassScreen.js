@@ -1,29 +1,17 @@
-import React, {useState,useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-
   TouchableOpacity,
   Text,
   TextInput,
- 
   Platform,
   SafeAreaView,
 } from 'react-native';
 
-import {
+import {RFValue as rfv} from 'react-native-responsive-fontsize';
 
-  RFValue as rfv,
-} from 'react-native-responsive-fontsize';
-
-import {
-
-  COLORS,
-
-  wp2,
-  hp2,
- 
-} from '../../theme';
+import {COLORS, wp2, hp2} from '../../theme';
 
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import axios from 'react-native-axios';
@@ -40,6 +28,7 @@ import CountDown from 'react-native-countdown-component';
 import LogoComponent from './componnets/LogoComponent';
 import TextEditingComponent from './componnets/TexteditingComponent';
 import ContinueButton from './componnets/ContinueBtn';
+import NewInputComp from '../../components/NewInputComp';
 
 const CountdownContainer = () => {
   const initialCountdown = 20; // You can set any initial countdown time here
@@ -62,7 +51,9 @@ const CountdownContainer = () => {
   return (
     <CountDown
       until={countdown}
-      onPress={() => {alert('hello')}}
+      onPress={() => {
+        alert('hello');
+      }}
       timeToShow={['M', 'S']}
       digitStyle={{backgroundColor: '#FFF'}}
       digitTxtStyle={{color: '#1CC625'}}
@@ -101,19 +92,16 @@ export default function ResetPassScreen(props) {
       axios
         .post(ForgetPasswordUrl, obj)
         .then(async function (res) {
-          
-
           // setLoading(false);
           // setVerifyCode(true);
           successMessage(
             'Verification code is sent to your email. Please check.',
           );
-          props.navigation.navigate('passwordconfirm',{email:email})
+          props.navigation.navigate('passwordconfirm', {email: email});
         })
         .catch(function (error) {
-          
           setLoading(false);
-          errorMessage(errorHandler(error))
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please Enter Email Address');
@@ -132,17 +120,14 @@ export default function ResetPassScreen(props) {
       axios
         .post(VerifyCodeUrl, obj)
         .then(async function (res) {
-         
-
           setLoading(false);
           setShowReset(true);
-         
+
           successMessage('Enter your new password');
         })
         .catch(function (error) {
-         
           setLoading(false);
-          errorMessage(errorHandler(error))
+          errorMessage(errorHandler(error));
         });
     } else {
       errorMessage('Please Enter Verification Code');
@@ -166,18 +151,14 @@ export default function ResetPassScreen(props) {
               axios
                 .post(ResetPasswordUrl, obj)
                 .then(async function (res) {
-                
-
                   setLoading(false);
                   props.navigation.navigate('loginScreen');
                   successMessage('Password Changed Successfully!');
                 })
                 .catch(function (error) {
-                
                   setLoading(false);
-                 
-                  errorMessage(errorHandler(error))
-            
+
+                  errorMessage(errorHandler(error));
                 });
             } else {
               setShowPassNotMatch(true);
@@ -204,10 +185,9 @@ export default function ResetPassScreen(props) {
       <Animated.View layout={Layout.duration(1000)}>
         <Animated.View
           entering={FadeInUp.duration(1000)}
-          exiting={FadeOutUp.duration(500)}
-          >
+          exiting={FadeOutUp.duration(500)}>
           <TextEditingComponent
-          isPassword={true}
+            isPassword={true}
             style={styles.inputTxt}
             placeholderTextColor={'grey'}
             placeholder="Enter Password"
@@ -218,12 +198,10 @@ export default function ResetPassScreen(props) {
         </Animated.View>
         <Animated.View
           entering={FadeInUp.duration(1000)}
-          exiting={FadeOutUp.duration(500)}
-     >
+          exiting={FadeOutUp.duration(500)}>
           <TextEditingComponent
             style={styles.inputTxt}
             isPassword={true}
-
             placeholderTextColor={'grey'}
             placeholder="Re-Enter Password"
             value={confirmPassword}
@@ -232,12 +210,12 @@ export default function ResetPassScreen(props) {
           />
         </Animated.View>
 
-        <ContinueButton onPress={onResetPassword} style={{width:'90%' ,marginHorizontal:20,marginTop:10}}
-        
-        text={'Reset Password'} ></ContinueButton>
+        <ContinueButton
+          onPress={onResetPassword}
+          style={{width: '90%', marginHorizontal: 20, marginTop: 10}}
+          text={'Reset Password'}></ContinueButton>
 
-      
-        {showPassNotMatch && errorMessage("Password Does not Match")}
+        {showPassNotMatch && errorMessage('Password Does not Match')}
       </Animated.View>
     );
   };
@@ -250,50 +228,57 @@ export default function ResetPassScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
-       <LogoComponent  txt={'Reset Password'}></LogoComponent>
-        {
-        showReset
-        //  true
-        ? (
+        <LogoComponent txt={'Reset Password'}></LogoComponent>
+        {showReset ? (
+          //  true
           resetPasswordComp()
         ) : verifyCode ? (
           <>
             <Animated.View
               entering={FadeInUp.duration(1000)}
-              exiting={FadeOutUp.duration(500)}
-             >
-                
-              <TextEditingComponent
-            
+              exiting={FadeOutUp.duration(500)}>
+              <NewInputComp
+                value={code}
+                inputText={'Verify code'}
+                handleOnChange={val => setCode(val)}
+              />
+              {/* <TextEditingComponent
                 style={styles.inputTxt}
                 placeholderTextColor={'grey'}
                 placeholder="VERIFY CODE"
                 value={code}
                 onChangeText={val => setCode(val)}
                 keyboardType={'number-pad'}
-              />
-            </Animated.View> 
-                 
+              /> */}
+            </Animated.View>
 
-
-            <ContinueButton onPress={onVerifyCode}  style={{width:'90%' ,marginHorizontal:20,marginTop:10}} text={'Verify Code'} ></ContinueButton>
-
+            <ContinueButton
+              onPress={onVerifyCode}
+              style={{width: '90%', marginHorizontal: 20, marginTop: 10}}
+              text={'Verify Code'}></ContinueButton>
           </>
         ) : (
           <>
-              <TextEditingComponent
-                style={styles.inputTxt}
-                placeholderTextColor={'grey'}
-                placeholder="Email Address"
-                value={email}
-                onChangeText={val => setEmail(val)}
-              />
-        
-        <ContinueButton onPress={sendEmail} style={{width:'90%' ,marginHorizontal:20,marginTop:10}} text={'Send link to email address'} ></ContinueButton>
-          
+            <NewInputComp
+              value={email}
+              inputText={'Email Address'}
+              handleOnChange={val => setEmail(val)}
+            />
+            {/* <TextEditingComponent
+              style={styles.inputTxt}
+              placeholderTextColor={'grey'}
+              placeholder="Email Address"
+              value={email}
+              onChangeText={val => setEmail(val)}
+            /> */}
+
+            <ContinueButton
+              onPress={sendEmail}
+              style={{width: '90%', marginHorizontal: 20, marginTop: 10}}
+              text={'Send link to email address'}
+            />
           </>
         )}
-     
       </SafeAreaView>
     </>
   );
@@ -303,7 +288,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.appBackground,
-   
   },
   resetText: {
     color: 'black',
@@ -344,7 +328,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4.65,
     elevation: 8,
-    
+
     marginTop: hp2(2),
     alignSelf: 'center',
     marginBottom: hp2(8),

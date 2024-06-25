@@ -9,6 +9,7 @@ import {wp2, hp2, IMAGES, COLORS} from '../../theme';
 import NothingListedComponnet from '../../screens/profileBrand/nothingListedComponnet';
 import fonts from '../../theme/fonts';
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
+import {FlatList} from 'react-native-gesture-handler';
 
 export function ImgComp(props) {
   const navigation = useNavigation();
@@ -53,11 +54,11 @@ export default function Lookbook(props) {
   return (
     <>
       <Text style={styles.titleTxt}>Lookbook</Text>
+      {/* <Text>{JSON.stringify(props)}</Text>
+      <FlatList data={props.data}/> */}
       <View style={styles.galaryContainer}>
         {props?.data?.length !== 0 ? (
           props?.data?.reverse().map((item, index) => {
-            if (index < 6) return;
-
             <ImgComp key={index} path={item.items} />;
           })
         ) : (
