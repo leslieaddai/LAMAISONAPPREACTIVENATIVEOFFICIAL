@@ -41,6 +41,7 @@ import SplashScreen from '../screens/splash/splashScreen';
 import CommentScreen from '../screens/home/commentScreen';
 import BuyNow from '../screens/checkout/buyNow';
 import {createStackNavigator} from '@react-navigation/stack';
+import types from '../Redux/types';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
 import FTS from '../assets/icons/fts.svg';
@@ -48,6 +49,7 @@ import Search from '../assets/icons/search.svg';
 import Home from '../assets/icons/home.svg';
 import Basket from '../assets/icons/cart.svg';
 import Profile from '../assets/icons/profile.svg';
+import {TouchableHighlight} from 'react-native-gesture-handler';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -199,6 +201,7 @@ export const BottomNavigationBrand = () => {
   const [showWelcome, setShowWelcome] = useState(true);
   const basket = useSelector(state => state.basket);
   const route = useRoute(); // Accessing the route object
+  const dispatch = useDispatch();
 
   const [selectedTab, setSelectedTab] = useState('homeScreen'); // Initialize with the default tab
 
@@ -228,6 +231,38 @@ export const BottomNavigationBrand = () => {
   if (showWelcome && user?.token) {
     return <WelcomeScreen />;
   }
+
+  const resetDiscover = () => {
+    dispatch({
+      type: types.Priceadd,
+      payload: '',
+    });
+
+    dispatch({
+      type: types.Sizeadd,
+      payload: {size: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Colouradd,
+      payload: {colour: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Styleadd,
+      payload: {style: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Itemadd,
+      payload: {item: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Continetadd,
+      payload: {continent: '', id: ''},
+    });
+  };
 
   return (
     <>
@@ -274,6 +309,7 @@ export const BottomNavigationBrand = () => {
                   fontSize: 13,
                   fontWeight: 400,
                   marginTop: -10,
+                  marginBottom: Platform.OS === 'ios' ? 0 : 10,
                   color: selectedTab === 'FTS100' ? 'blue' : 'gray',
                 }}>
                 FTS
@@ -286,22 +322,16 @@ export const BottomNavigationBrand = () => {
           name="searchScreen"
           options={{
             tabBarIcon: ({focused, color, size}) => (
-              <View style={styles.iconWrap}>
-                <Search
-                  width={25}
-                  height={25}
-                  color={selectedTab === 'searchScreen' ? 'blue' : 'gray'}
-                />
-                {/* <Image
-                source={IMAGES.search_bottom}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  tintColor: selectedTab === 'searchScreen' ? 'blue' : 'gray',
-                }}
-                resizeMode="contain"
-              /> */}
-              </View>
+              <TouchableHighlight
+                underlayColor={'white'}>
+                <View style={styles.iconWrap}>
+                  <Search
+                    width={25}
+                    height={25}
+                    color={selectedTab === 'searchScreen' ? 'blue' : 'gray'}
+                  />
+                </View>
+              </TouchableHighlight>
             ),
 
             tabBarOptions: {
@@ -314,16 +344,21 @@ export const BottomNavigationBrand = () => {
               },
             },
             tabBarLabel: ({focused, color, size}) => (
-              <Text
-                style={{
-                  color: 'rgba(161, 161, 170, 1)',
-                  fontSize: 13,
-                  marginTop: -10,
-                  fontWeight: 400,
-                  color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
-                }}>
-                Discover
-              </Text>
+              <TouchableHighlight
+                underlayColor={'white'}
+                onPress={resetDiscover}>
+                <Text
+                  style={{
+                    color: 'rgba(161, 161, 170, 1)',
+                    fontSize: 13,
+                    marginTop: -10,
+                    fontWeight: 400,
+                    marginBottom: Platform.OS === 'ios' ? 0 : 10,
+                    color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                  }}>
+                  Discover
+                </Text>
+              </TouchableHighlight>
             ),
           }}
           component={SearchScreen}
@@ -364,6 +399,7 @@ export const BottomNavigationBrand = () => {
                   fontSize: 13,
                   marginTop: -10,
                   fontWeight: 400,
+                  marginBottom: Platform.OS === 'ios' ? 0 : 10,
                   color: selectedTab === 'homeScreen' ? 'blue' : 'gray',
                 }}>
                 Home
@@ -424,6 +460,7 @@ export const BottomNavigationBrand = () => {
                   fontSize: 13,
                   marginTop: -10,
                   fontWeight: 400,
+                  marginBottom: Platform.OS === 'ios' ? 0 : 10,
                   color: selectedTab === 'basketScreen' ? 'blue' : 'gray',
                 }}>
                 Basket
@@ -470,6 +507,7 @@ export const BottomNavigationBrand = () => {
                   paddingBottom: 0,
                   marginTop: -10,
                   fontWeight: 400,
+                  marginBottom: Platform.OS === 'ios' ? 0 : 10,
                   color: selectedTab === 'brandProfileScreen' ? 'blue' : 'gray',
                 }}>
                 Profile
@@ -601,6 +639,39 @@ export const BottomNavigationEditor = () => {
   const [showWelcome, setShowWelcome] = useState(true);
   const [selectedTab, setSelectedTab] = useState('homeScreen'); // Initialize with the default tab
 
+  const resetDiscover = () => {
+    dispatch({
+      type: types.Priceadd,
+      payload: '',
+    });
+
+    dispatch({
+      type: types.Sizeadd,
+      payload: {size: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Colouradd,
+      payload: {colour: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Styleadd,
+      payload: {style: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Itemadd,
+      payload: {item: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Continetadd,
+      payload: {continent: '', id: ''},
+    });
+    n();
+  };
+
   useEffect(() => {
     const routeName = getFocusedRouteNameFromRoute(route) ?? 'homeScreen';
     setSelectedTab(routeName);
@@ -687,6 +758,7 @@ export const BottomNavigationEditor = () => {
                 fontSize: 13,
                 paddingBottom: 0,
                 fontWeight: 400,
+                marginBottom: Platform.OS === 'ios' ? 0 : 10,
                 color: selectedTab === 'FTS100' ? 'blue' : 'gray',
               }}>
               FTS
@@ -727,16 +799,19 @@ export const BottomNavigationEditor = () => {
             },
           },
           tabBarLabel: ({focused, color, size}) => (
-            <Text
-              style={{
-                color: 'rgba(161, 161, 170, 1)',
-                fontSize: 13,
-                paddingBottom: 0,
-                fontWeight: 400,
-                color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
-              }}>
-              Discover
-            </Text>
+            <TouchableHighlight underlayColor={'white'}>
+              <Text
+                style={{
+                  color: 'rgba(161, 161, 170, 1)',
+                  fontSize: 13,
+                  marginTop: -10,
+                  fontWeight: 400,
+                  marginBottom: Platform.OS === 'ios' ? 0 : 10,
+                  color: selectedTab === 'searchScreen' ? 'blue' : 'gray',
+                }}>
+                Discover
+              </Text>
+            </TouchableHighlight>
           ),
         }}
         component={SearchScreen}
@@ -779,6 +854,7 @@ export const BottomNavigationEditor = () => {
                 fontSize: 13,
                 paddingBottom: 0,
                 fontWeight: 400,
+                marginBottom: Platform.OS === 'ios' ? 0 : 10,
                 color: selectedTab === 'homeScreen' ? 'blue' : 'gray',
               }}>
               Home
@@ -834,6 +910,7 @@ export const BottomNavigationEditor = () => {
                 fontSize: 13,
                 paddingBottom: 0,
                 fontWeight: 400,
+                marginBottom: Platform.OS === 'ios' ? 0 : 10,
                 color: selectedTab === 'basketScreen' ? 'blue' : 'gray',
               }}>
               Basket
@@ -880,6 +957,7 @@ export const BottomNavigationEditor = () => {
                 fontSize: 13,
                 paddingBottom: 0,
                 fontWeight: 400,
+                marginBottom: Platform.OS === 'ios' ? 0 : 10,
                 color: selectedTab === 'editorProfileScreen' ? 'blue' : 'gray',
               }}>
               Profile

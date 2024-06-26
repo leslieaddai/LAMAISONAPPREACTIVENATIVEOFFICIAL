@@ -1,25 +1,25 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Image, TouchableOpacity, Text} from 'react-native';
-
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  FlatList,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {SkypeIndicator} from 'react-native-indicators';
-import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
-
-import {wp2, hp2, IMAGES, COLORS} from '../../theme';
-import NothingListedComponnet from '../../screens/profileBrand/nothingListedComponnet';
-import fonts from '../../theme/fonts';
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
-import {FlatList} from 'react-native-gesture-handler';
+import {wp2, hp2, IMAGES, COLORS} from '../../theme';
 
-export function ImgComp(props) {
+export function ImgComp({path}) {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
-  const onLoading = (value, label) => {
-    setLoading(value);
-  };
   const [imageError, setImageError] = useState(false);
 
-  console.log('Image URL:', props.path.original_url); // Debugging line
+  const onLoading = value => {
+    setLoading(value);
+  };
+
   const onImageError = () => {
     setImageError(true);
   };
@@ -28,21 +28,21 @@ export function ImgComp(props) {
     <TouchableOpacity
       onPress={() =>
         navigation.navigate('imageViewScreen', {
-          item: [{image: [{original_url: props.path.original_url}]}],
+          item: [{image: [{original_url: path.preview_url}]}],
         })
       }
       style={styles.imageContainer}>
       <Image
-        style={{width: '100%', height: '100%'}}
+        style={{width: 110, height: 110, borderRadius: 10}}
         resizeMode="cover"
         progressiveRenderingEnabled={true}
         onLoadStart={() => onLoading(true)}
         onLoadEnd={() => onLoading(false)}
-        onError={onImageError} // Handle image load error
+        onError={onImageError}
         source={
-          imageError || props.path.original_url == null
+          imageError || path.preview_url == null
             ? IMAGES.notFoundImage
-            : {uri: props.path.original_url}
+            : {uri: path.preview_url}
         }
       />
     </TouchableOpacity>
@@ -50,17 +50,25 @@ export function ImgComp(props) {
 }
 
 export default function Lookbook(props) {
-  const navigation = useNavigation();
+  const renderImage = ({item}) => <ImgComp path={item.items} />;
+
   return (
     <>
       <Text style={styles.titleTxt}>Lookbook</Text>
-      {/* <Text>{JSON.stringify(props)}</Text>
-      <FlatList data={props.data}/> */}
-      <View style={styles.galaryContainer}>
+      <View style={styles.galleryContainer}>
         {props?.data?.length !== 0 ? (
-          props?.data?.reverse().map((item, index) => {
-            <ImgComp key={index} path={item.items} />;
-          })
+          <FlatList
+            contentContainerStyle={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 10,
+            }}
+            showsHorizontalScrollIndicator={false}
+            data={props.data.reverse()}
+            renderItem={renderImage}
+            style={{flexDirection: 'row'}}
+            keyExtractor={(item, index) => index.toString()}
+          />
         ) : (
           <View
             style={{
@@ -83,6 +91,7 @@ export default function Lookbook(props) {
           </View>
         )}
       </View>
+
       {props?.data?.length !== 0 && (
         <TouchableOpacity
           onPress={() =>
@@ -108,25 +117,13 @@ const styles = StyleSheet.create({
     marginTop: 25,
     marginBottom: 16,
   },
-  lookbook: {
-    width: wp2(80),
-    height: hp2(5),
-    borderRadius: wp2(8),
-    backgroundColor: 'black',
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    marginVertical: hp2(2),
-  },
-  galaryContainer: {
+  galleryContainer: {
     width: wp2(90),
     flexDirection: 'row',
     flexWrap: 'wrap',
     alignSelf: 'center',
   },
   imageContainer: {
-    width: wp2(28),
-    height: hp2(12),
     overflow: 'hidden',
     marginHorizontal: wp2(1),
     marginTop: hp2(1),

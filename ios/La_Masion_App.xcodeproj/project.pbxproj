@@ -108,7 +108,7 @@
 		A9521BD72A59A3FA00C34E95 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../../Downloads/facebook-ios-sdk-current/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		ADA2061EE4AA4E97A4D3F424 /* OFL.txt */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = OFL.txt; path = ../src/assets/fonts/Poppins/OFL.txt; sourceTree = "<group>"; };
 		AEB9CD6BFE9D482E870CF316 /* Poppins-ThinItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ThinItalic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ThinItalic.ttf"; sourceTree = "<group>"; };
-		BB0B4E947DEE80A39A3DF448 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = La_Masion_App/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		BB0B4E947DEE80A39A3DF448 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = La_Masion_App/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C6679BD08A134FAC9FCDC29E /* Poppins-ExtraBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraBold.ttf"; path = "../src/assets/fonts/Poppins/Poppins-ExtraBold.ttf"; sourceTree = "<group>"; };
 		CA484BC4E76B399B01FDF74C /* Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; path = "Target Support Files/Pods-La_Masion_App-La_Masion_AppTests/Pods-La_Masion_App-La_Masion_AppTests.release.xcconfig"; sourceTree = "<group>"; };
 		D811575BE06545B08FDBD53A /* Poppins-BoldItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BoldItalic.ttf"; path = "../src/assets/fonts/Poppins/Poppins-BoldItalic.ttf"; sourceTree = "<group>"; };
@@ -721,7 +721,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -755,7 +755,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 2;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -853,10 +853,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -941,10 +938,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;

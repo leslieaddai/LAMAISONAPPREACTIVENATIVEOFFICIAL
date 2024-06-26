@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 8,
   },
   iconWrap: {
     width: wp2(18),

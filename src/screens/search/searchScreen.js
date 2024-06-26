@@ -38,6 +38,7 @@ import ContinueButton from '../auth/componnets/ContinueBtn';
 import {SvgUri} from 'react-native-svg';
 import NewInputComp from '../../components/NewInputComp';
 import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import types from '../../Redux/types';
 
 export default function SearchScreen({navigation, route}) {
   let skeletonArr = [{}];
@@ -50,7 +51,7 @@ export default function SearchScreen({navigation, route}) {
   const [dataEditor, setDataEditor] = useState([]);
   const [loading2, setLoading2] = useState(false);
   const [page, setPage] = useState();
-  const [pageNo, setPageNo] = useState();
+  const [pageNo, setPageNo] = useState(0);
   const [previouspage, setPreviouspage] = useState();
   const [noItemsFound, setNoItemsFound] = useState(false);
   const user = useSelector(state => state.userData);
@@ -64,13 +65,49 @@ export default function SearchScreen({navigation, route}) {
   const style = useSelector(state => state.Style);
   const item = useSelector(state => state.Item);
   const region = useSelector(state => state.Continent);
+  const resetDiscover = () => {
+    dispatch({
+      type: types.Priceadd,
+      payload: '',
+    });
+
+    dispatch({
+      type: types.Sizeadd,
+      payload: {size: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Colouradd,
+      payload: {color: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Styleadd,
+      payload: {style: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Itemadd,
+      payload: {item: '', id: ''},
+    });
+
+    dispatch({
+      type: types.Continetadd,
+      payload: {continent: '', id: ''},
+    });
+  };
 
   useEffect(() => {
-    getSearchResults('', '1');
-    getEditorResults();
+    // setTimeout(() => {
+      getSearchResults('', '1');
+      getEditorResults('');
+    // }, 2000);
+    console.log('Routes', route);
   }, []);
+
   useEffect(() => {
     if (text == '') {
+      // resetDiscover();
       getSearchResults('', '1');
       getEditorResults('');
     }
@@ -100,25 +137,28 @@ export default function SearchScreen({navigation, route}) {
       price_range: Price,
     };
 
-    if (size?.Id !== '') {
-      obj = {...obj, size: Number(size?.Id)};
-    }
-    if (color?.Id !== '') {
-      obj = {...obj, color: Number(color?.Id)};
-    }
-    if (style?.Id !== '') {
-      obj = {...obj, style: Number(style?.Id)};
-    }
-    if (item?.Id !== '') {
-      obj = {...obj, item: Number(item?.Id)};
-    }
-    if (region?.Id !== '') {
-      obj = {...obj, region: Number(region?.Id)};
-    }
+    // if (size?.Id !== '') {
+    //   obj = {...obj, size: Number(size?.Id)};
+    // }
+    // if (color?.Id !== '') {
+    //   obj = {...obj, color: Number(color?.Id)};
+    // }
+    // if (style?.Id !== '') {
+    //   obj = {...obj, style: Number(style?.Id)};
+    // }
+    // if (item?.Id !== '') {
+    //   obj = {...obj, item: Number(item?.Id)};
+    // }
+    // if (region?.Id !== '') {
+    //   obj = {...obj, region: Number(region?.Id)};
+    // }
+
+    console.log('1obj:', obj);
 
     axios
       .post(SearchUrl + page_no, obj)
       .then(async function (res) {
+        console.log('res----:', res);
         if (previouspage == res?.data?.current_page) {
           setData([...res?.data?.data]);
           setPage(res?.data?.next_page_url);
@@ -158,7 +198,7 @@ export default function SearchScreen({navigation, route}) {
     return (
       <View
         style={{
-          marginTop: '10%',
+          marginTop: '25%',
           alignItems: 'center',
           justifyContent: 'center',
           paddingHorizontal: 20,
@@ -289,7 +329,6 @@ export default function SearchScreen({navigation, route}) {
               </Text>
             </TouchableOpacity>
           </View>
-
           {data?.length === 0 && selected === 'brands' && (
             <>
               {!noItemsFound ? (
@@ -304,7 +343,6 @@ export default function SearchScreen({navigation, route}) {
               )}
             </>
           )}
-
           {dataEditor?.length === 0 && selected === 'editors' && (
             <>
               {!noItemsFound ? (
@@ -338,7 +376,7 @@ export default function SearchScreen({navigation, route}) {
                 onEndReached={() =>
                   !loading &&
                   page !== null &&
-                  getSearchResults(String(pageNo + 1))
+                  getSearchResults('', String(pageNo + 1))
                 }
                 onEndReachedThreshold={0.1}
                 renderItem={({item, index}) => {

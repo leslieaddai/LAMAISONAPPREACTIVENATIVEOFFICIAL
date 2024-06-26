@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: '400',
     paddingVertical: 20,
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    marginTop: 0,
   },
   box: {
     width: wp2(88),
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     alignSelf: 'center',
-    elevation: 8,
   },
   detailsContainer: {
     width: wp2(88),
@@ -173,7 +172,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     marginVertical: hp2(1.5),
-    elevation: 8,
   },
   textOne: {color: '#0C9D61', fontSize: 44},
   textTwo: {color: '#03092B', fontSize: 16, fontWeight: '600'},

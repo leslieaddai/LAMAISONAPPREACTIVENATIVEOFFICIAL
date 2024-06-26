@@ -5,6 +5,7 @@ import {
   Text,
   SafeAreaView,
   View,
+  Platform,
 } from 'react-native';
 
 import Arrow from '../../../assets/icons/next-arrow.svg';
@@ -26,7 +27,7 @@ const NewHeaderComp = ({
         <SafeAreaView style={styles.safeAreaView}>
           <View style={styles.sideContainer}>
             {movePreviousArrow && (
-              <TouchableOpacity onPress={arrowNavigation}>
+              <TouchableOpacity style={{padding: 10}} onPress={arrowNavigation}>
                 <Arrow color={'#000'} width={13} height={13} />
               </TouchableOpacity>
             )}
@@ -75,9 +76,9 @@ const NewHeaderComp = ({
 const styles = StyleSheet.create({
   headerContainer: {
     borderBottomWidth: 2,
-    marginTop: 10,
+    marginTop: Platform.OS === 'ios' ? 10 : 50,
     position: 'relative',
-    paddingBottom: 10,
+    paddingBottom: 0,
     borderColor: '#00000010',
   },
   safeAreaView: {
@@ -86,13 +87,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   sideContainer: {
-   
+    flex: Platform.OS === 'ios' ? 1 : 1,
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 20,
   },
   titleContainer: {
     flex: 2,
+    padding: 10,
     alignItems: 'center',
   },
   title: {

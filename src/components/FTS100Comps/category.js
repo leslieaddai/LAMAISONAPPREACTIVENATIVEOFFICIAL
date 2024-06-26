@@ -51,6 +51,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: wp2(1),
     marginVertical: hp2(1),
-    elevation: 5,
   },
 });

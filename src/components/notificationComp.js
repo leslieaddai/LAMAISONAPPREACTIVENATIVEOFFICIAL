@@ -183,7 +183,6 @@ export default function NotificationComp(props) {
                     : IMAGES.profileIcon3
                 }
                 style={{width: '100%', height: '100%'}}
-                resizeMode="contain"
               />
             </View>
             <View
@@ -246,7 +245,6 @@ const styles = StyleSheet.create({
     borderRadius: wp2(10),
     alignItems: 'center',
     justifyContent: 'center',
-    elevation: 5,
   },
   followText: {
     color: 'white',

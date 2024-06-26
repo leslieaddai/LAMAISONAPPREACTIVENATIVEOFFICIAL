@@ -89,7 +89,7 @@ export default function ImageUploadScreen(props) {
       if (Platform.OS === 'android' && (await hasAndroidPermission())) {
         loadMorePhotos();
       }
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === 'ios' && (await hasIosPermission())) {
         loadMorePhotos();
       }
     }
@@ -327,9 +327,12 @@ export default function ImageUploadScreen(props) {
           //   <ICONS.AntDesign name="left" size={24} color="black" />
           // </TouchableOpacity>
           // <Text style={styles.heading}>Gallry</Text>
-
-          <View style={[styles.headWrap, {justifyContent: 'center'}]}>
-            <Text style={styles.heading}>Gallery</Text>
+          <View style={{marginBottom: 20}}>
+            <NewHeaderComp
+              title={'Gallery'}
+              movePreviousArrow={true}
+              arrowNavigation={() => props.navigation.goBack()}
+            />
           </View>
         )}
 

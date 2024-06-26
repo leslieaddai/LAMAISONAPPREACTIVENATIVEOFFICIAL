@@ -164,16 +164,8 @@ export default function LookbookScreen(props) {
                   showsVerticalScrollIndicator={false}
                   contentContainerStyle={{paddingVertical: 20}}>
                   <Text style={styles.collectionText}>Latest Collection</Text>
-                  {allStates.length > 0 ? (
-                    <TouchableOpacity
-                      onPress={() =>
-                        props.navigation.navigate('collectionScreen', {
-                          collection: data[0].collection_products,
-                          collectionname: data[0]?.name,
-                          user: user2,
-                        })
-                      }
-                      style={styles.imageContainer}>
+                  {data.length > 0 ? (
+                    <TouchableOpacity style={styles.imageContainer}>
                       {loading ? (
                         <SkeletonPlaceholder
                           borderRadius={4}
@@ -197,15 +189,16 @@ export default function LookbookScreen(props) {
                         onLoadEnd={() => {
                           onloading(false, 'onLoadEnd');
                         }}
-                        allStates={allStates}
+                        allStates={data}
                         style={{width: '100%', height: '100%'}}
                         resizeMode="contain"
                       />
                     </TouchableOpacity>
                   ) : (
-                    <View style={styles.imageContainer}></View>
+                    <View style={{backgroundColor: 'white'}} />
                   )}
                   <Text style={styles.collectionText}>All Collections</Text>
+                  {/* <Text>{JSON.stringify(data)}</Text> */}
                   <View>
                     <FlatList
                       contentContainerStyle={{
@@ -219,14 +212,15 @@ export default function LookbookScreen(props) {
                         console.log('ss');
                         return (
                           <>
-                            {index > 0 && (
-                              <CollectionComp
-                                name={item?.name}
-                                itemscollection={item?.collection_products}
-                                uri={{uri: item?.media[0]?.original_url}}
-                                user={user2}
-                              />
-                            )}
+                            {item?.collection_products.length > 0 &&
+                              index > 0 && (
+                                <CollectionComp
+                                  name={item?.name}
+                                  itemscollection={item?.collection_products}
+                                  uri={{uri: item?.media[0]?.original_url}}
+                                  user={user2}
+                                />
+                              )}
                           </>
                         );
                       }}

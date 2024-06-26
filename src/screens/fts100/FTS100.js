@@ -106,7 +106,6 @@ export default function FTS100(props) {
           <NewHeaderComp
             arrowNavigation={() => props.navigation.navigate('homeScreen')}
             movePreviousArrow={true}
-            width="65%"
             title={'FTS100'}
           />
 

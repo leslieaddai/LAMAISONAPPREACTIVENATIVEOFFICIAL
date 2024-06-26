@@ -82,14 +82,6 @@ const styles = StyleSheet.create({
     marginHorizontal: wp2(4),
     marginVertical: hp2(1),
     flexDirection: 'row',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   brandLogo: {
     width: 62,

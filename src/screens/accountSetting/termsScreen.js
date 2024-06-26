@@ -48,9 +48,9 @@ export default function TermsScreen(props) {
             }}
             style={{
               fontSize: 20,
-              borderBottomWidth: 1,
-              borderColor: '#000',
-              width: 130,
+              borderBottomWidth: !buyersTerms ? 1 : 0,
+              borderColor: customersTerms ? COLORS.main : '#000',
+              width: Platform.OS === 'ios' ? 130 : 140,
               color: customersTerms ? COLORS.main : '#000',
             }}>
             For Customers
@@ -72,9 +72,9 @@ export default function TermsScreen(props) {
             }}
             style={{
               fontSize: 20,
-              borderBottomWidth: 1,
-              borderColor: '#000',
-              width: 130,
+              borderBottomWidth: !customersTerms ? 1 : 0,
+              borderColor: buyersTerms ? COLORS.main : '#000',
+              width: Platform.OS === 'ios' ? 130 : 140,
               color: buyersTerms ? COLORS.main : '#000',
             }}>
             For Sellers

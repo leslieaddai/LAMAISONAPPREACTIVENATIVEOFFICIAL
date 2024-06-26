@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, StyleSheet, Text} from 'react-native';
+import {View, TextInput, StyleSheet, Text, Platform} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {COLORS} from '../theme';
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
   inputFocused: {
     height: 55,
     borderColor: COLORS.main,
-    paddingTop: 12,
+    paddingTop: Platform.OS === 'ios' ? 12 : 20,
   },
   remindPassword: {
     paddingRight: 15,

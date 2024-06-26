@@ -77,8 +77,6 @@ export default function CollectionScreen({navigation, route}) {
 
   return (
     <>
-      <SafeAreaView
-        style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <ScrollView style={{flex: 1}}>
         <View style={styles.container}>
           <NewHeaderComp
@@ -87,12 +85,6 @@ export default function CollectionScreen({navigation, route}) {
             arrowNavigation={() => navigation.goBack()}
           />
           <View style={styles.headWrap}>
-            {/* <TouchableOpacity
-              onPress={() => navigation.goBack()}
-              style={{position: 'absolute', left: wp2(4)}}>
-              <ICONS.AntDesign name="left" size={24} color="black" />
-            </TouchableOpacity> */}
-
             {items?.user?.userData?.id === user?.userData?.id && (
               <TouchableOpacity
                 style={{position: 'absolute', right: wp2(4)}}
@@ -116,6 +108,7 @@ export default function CollectionScreen({navigation, route}) {
           </View>
           <View
             style={{
+              flex: 1,
               flexDirection: 'column',
               alignItems: 'center',
               marginLeft: 10,
@@ -154,10 +147,11 @@ export default function CollectionScreen({navigation, route}) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.appBackground,
+    backgroundColor: 'white',
+    height: 1000,
   },
   headWrap: {
-    marginTop: Platform.OS === 'ios' ? hp2(0) : hp2(4),
+    marginTop: Platform.OS === 'ios' ? hp2(0) : 0,
   },
   collectionText: {
     color: 'black',
