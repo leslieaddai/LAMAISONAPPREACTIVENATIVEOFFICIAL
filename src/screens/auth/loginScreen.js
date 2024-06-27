@@ -53,58 +53,58 @@ export default function LoginScreen(props) {
     return /\s/.test(str);
   }
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      scopes: ['email'],
-      webClientId:
-        '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
-      iosClientId:
-        '74975728118-k752rb5vodjvsfrk6bo0p0evvvg2ae6u.apps.googleusercontent.com',
-      offlineAccess: true,
-    });
-  }, []);
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     scopes: ['email'],
+  //     webClientId:
+  //       '74975728118-9v9hiph09jaks6tgdfa755rkf7l7vsrq.apps.googleusercontent.com',
+  //     iosClientId:
+  //       '74975728118-k752rb5vodjvsfrk6bo0p0evvvg2ae6u.apps.googleusercontent.com',
+  //     offlineAccess: true,
+  //   });
+  // }, []);
 
-  async function onFacebookButtonPress() {
-    // Attempt login with permissions
-    const result = await LoginManager.logInWithPermissions([
-      'public_profile',
-      'email',
-    ]);
-    if (result.isCancelled) {
-      throw 'User cancelled the login process';
-    }
+  // async function onFacebookButtonPress() {
+  //   // Attempt login with permissions
+  //   const result = await LoginManager.logInWithPermissions([
+  //     'public_profile',
+  //     'email',
+  //   ]);
+  //   if (result.isCancelled) {
+  //     throw 'User cancelled the login process';
+  //   }
 
-    // Once signed in, get the users AccesToken
-    const data = await AccessToken.getCurrentAccessToken();
-    console.log('result', result, data);
-    if (!data) {
-      throw 'Something went wrong obtaining access token';
-    }
+  //   // Once signed in, get the users AccesToken
+  //   const data = await AccessToken.getCurrentAccessToken();
+  //   console.log('result', result, data);
+  //   if (!data) {
+  //     throw 'Something went wrong obtaining access token';
+  //   }
 
-    // Create a Firebase credential with the AccessToken
-    const facebookCredential = auth.FacebookAuthProvider.credential(
-      data.accessToken,
-    );
+  //   // Create a Firebase credential with the AccessToken
+  //   const facebookCredential = auth.FacebookAuthProvider.credential(
+  //     data.accessToken,
+  //   );
 
-    console.log('facebookCredential of login', facebookCredential);
+  //   console.log('facebookCredential of login', facebookCredential);
 
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(facebookCredential);
-  }
+  //   // Sign-in the user with the credential
+  //   return auth().signInWithCredential(facebookCredential);
+  // }
 
-  async function onGoogleButtonPress() {
-    try {
-      // Check if your device supports Google Play
-      await GoogleSignin.hasPlayServices();
+  // async function onGoogleButtonPress() {
+  //   try {
+  //     // Check if your device supports Google Play
+  //     await GoogleSignin.hasPlayServices();
 
-      // Get the users ID token
-      const data = await GoogleSignin.signIn();
+  //     // Get the users ID token
+  //     const data = await GoogleSignin.signIn();
 
-      googlelogin(data);
-    } catch (error) {
-      console.log('Google sign-in error:', error.code, error.message);
-    }
-  }
+  //     googlelogin(data);
+  //   } catch (error) {
+  //     console.log('Google sign-in error:', error.code, error.message);
+  //   }
+  // }
 
   const onSignIn = () => {
     if (UserName != '' && Password != '') {
@@ -327,7 +327,7 @@ export default function LoginScreen(props) {
                 <Text style={styles.buttonText}>Sign In</Text>
               </TouchableOpacity>
               <View style={styles.divider} />
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   onGoogleButtonPress().then(res =>
                     console.log('Signed in with Google!', res),
@@ -346,7 +346,7 @@ export default function LoginScreen(props) {
                   resizeMode="cover"
                 />
                 <Text style={styles.buttonTextBlack}>Continue with Google</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.navigate('signupScreen'),

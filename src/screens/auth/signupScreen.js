@@ -67,28 +67,28 @@ export default function SignupScreen(props) {
     return auth().signInWithCredential(facebookCredential);
   }
 
-  async function onGoogleButtonPress() {
-    try {
-      // Check if your device supports Google Play
-      await GoogleSignin.hasPlayServices();
+  // async function onGoogleButtonPress() {
+  //   try {
+  //     // Check if your device supports Google Play
+  //     await GoogleSignin.hasPlayServices();
 
-      // Get the users ID token
-      const data = await GoogleSignin.signIn();
+  //     // Get the users ID token
+  //     const data = await GoogleSignin.signIn();
 
-      // console.log("data",data)
-      props.navigation.navigate('accountTypeSocial', {data: data});
+  //     // console.log("data",data)
+  //     props.navigation.navigate('accountTypeSocial', {data: data});
 
-      // Create a Google credential with the token
-      const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
+  //     // Create a Google credential with the token
+  //     const googleCredential = auth.GoogleAuthProvider.credential(data.idToken);
 
-      // console.log("googleCredential of login", googleCredential);
+  //     // console.log("googleCredential of login", googleCredential);
 
-      // Sign-in the user with the credential
-      // return auth().signInWithCredential(googleCredential);
-    } catch (error) {
-      console.log('Google sign-in error:', error.code, error.message);
-    }
-  }
+  //     // Sign-in the user with the credential
+  //     // return auth().signInWithCredential(googleCredential);
+  //   } catch (error) {
+  //     console.log('Google sign-in error:', error.code, error.message);
+  //   }
+  // }
 
   const special = /[!@#\$%\^\&*\)\(+=._-]/g;
   const numeric = /[0-9]/;
@@ -201,9 +201,9 @@ export default function SignupScreen(props) {
           style={[styles.button, {marginTop: 10}]}>
           <Text style={styles.buttonText}>Continue</Text>
         </TouchableOpacity>
-        <View style={styles.divider} />
+        {/* <View style={styles.divider} /> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() =>
             onGoogleButtonPress().then(res =>
               console.log('Signed in with Google!', res),
@@ -222,7 +222,7 @@ export default function SignupScreen(props) {
             resizeMode="cover"
           />
           <Text style={styles.buttonTextBlack}>Continue with Google</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {/* <TouchableOpacity
         onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
         style={styles.button2}>
