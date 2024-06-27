@@ -327,7 +327,26 @@ export default function LoginScreen(props) {
                 <Text style={styles.buttonText}>Sign In</Text>
               </TouchableOpacity>
               <View style={styles.divider} />
-
+              <TouchableOpacity
+                onPress={() =>
+                  onGoogleButtonPress().then(res =>
+                    console.log('Signed in with Google!', res),
+                  )
+                }
+                style={[
+                  styles.buttonWhite,
+                  {
+                    flexDirection: 'row', // Display the icon and text in a row
+                    alignItems: 'center',
+                  },
+                ]}>
+                <Image
+                  source={IMAGES.googleIcon}
+                  style={{marginHorizontal: 10}}
+                  resizeMode="cover"
+                />
+                <Text style={styles.buttonTextBlack}>Continue with Google</Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
                   props.navigation.navigate('signupScreen'),

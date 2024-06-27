@@ -357,7 +357,7 @@ export default function SettingsScreen(props) {
                   inventory,
                 )}
                 {settingOptions(
-                  'Standart Shipping',
+                  'Standard Shipping',
                   '',
                   'shippingLocation',
                   shipping,
