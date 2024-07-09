@@ -15,6 +15,7 @@ const NewInputComp = ({
   resetPassword,
   multiline,
   maxLengthValue,
+  resetNavigation,
   setPassword = false,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -67,7 +68,9 @@ const NewInputComp = ({
           )}
         </View>
         {setPassword && resetPassword && (
-          <TouchableOpacity style={styles.remindPassword}>
+          <TouchableOpacity
+            onPress={resetNavigation}
+            style={styles.remindPassword}>
             <Text style={styles.remindPasswordTextStyles}>Remind password</Text>
           </TouchableOpacity>
         )}

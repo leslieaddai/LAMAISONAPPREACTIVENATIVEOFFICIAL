@@ -21,6 +21,7 @@ import LoaderComp from '../../components/loaderComp';
 import LogoComponent from './componnets/LogoComponent';
 import TextEditingComponent from './componnets/TexteditingComponent';
 import ContinueButton from './componnets/ContinueBtn';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 export default function VerifyAccountScreen(props) {
   const [code, setCode] = useState();
@@ -62,6 +63,11 @@ export default function VerifyAccountScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
+        <View style={{marginHorizontal: 20, marginTop: 10}}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Arrow color={'#000'} width={13} height={13} />
+          </TouchableOpacity>
+        </View>
         <LogoComponent txt={'Verify Account'}></LogoComponent>
         <View style={{marginHorizontal: 20}}>
           <TextEditingComponent

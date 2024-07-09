@@ -14,6 +14,7 @@ import {RFValue as rfv} from 'react-native-responsive-fontsize';
 import {IMAGES, COLORS, wp2, hp2} from '../../theme';
 import ContinueButton from './componnets/ContinueBtn';
 import {ScrollView} from 'react-native-gesture-handler';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 export default function AccountTypeScreen(props) {
   const [selectedAccount, setSelectedAccount] = useState('editor');
@@ -25,6 +26,11 @@ export default function AccountTypeScreen(props) {
   return (
     <ScrollView style={[{backgroundColor: '#FFFFFF'}]}>
       <SafeAreaView style={[{marginHorizontal: 20, marginVertical: 40}]}>
+        <View>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Arrow color={'#000'} width={13} height={13} />
+          </TouchableOpacity>
+        </View>
         <Text style={styles.header}>Account Type</Text>
         <TouchableOpacity
           onPress={() => {

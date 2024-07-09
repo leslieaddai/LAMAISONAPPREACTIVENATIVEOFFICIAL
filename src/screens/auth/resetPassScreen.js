@@ -29,6 +29,7 @@ import LogoComponent from './componnets/LogoComponent';
 import TextEditingComponent from './componnets/TexteditingComponent';
 import ContinueButton from './componnets/ContinueBtn';
 import NewInputComp from '../../components/NewInputComp';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 const CountdownContainer = () => {
   const initialCountdown = 20; // You can set any initial countdown time here
@@ -228,6 +229,11 @@ export default function ResetPassScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
       <SafeAreaView style={styles.container}>
+        <View style={{marginHorizontal: 20, marginTop: 10}}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Arrow color={'#000'} width={13} height={13} />
+          </TouchableOpacity>
+        </View>
         <LogoComponent txt={'Reset Password'}></LogoComponent>
         {showReset ? (
           //  true

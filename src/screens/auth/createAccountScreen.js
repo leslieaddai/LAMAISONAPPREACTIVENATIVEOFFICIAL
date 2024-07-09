@@ -34,6 +34,7 @@ import CustomDatePicker from './componnets/BirthdayComponent';
 import PasswordValidationRow from './componnets/PasswordValidationComponent';
 import ContinueButton from './componnets/ContinueBtn';
 import NewInputComp from '../../components/NewInputComp';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 const CreateAccountScreen = props => {
   const special = /[!@#\$%\^\&*\)\(+=._-]/g;
@@ -149,6 +150,13 @@ const CreateAccountScreen = props => {
         {loading && <LoaderComp />}
       </View>
       <ScrollView style={styles.container}>
+        <SafeAreaView>
+          <View style={{marginHorizontal: 20}}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Arrow color={'#000'} width={13} height={13} />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
         <LogoComponent
           txt={
             props.route.params.user == 'brand'

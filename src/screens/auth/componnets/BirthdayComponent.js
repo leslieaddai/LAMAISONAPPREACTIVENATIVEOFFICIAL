@@ -12,6 +12,7 @@ import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {wp2} from '../../../theme';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const CustomDatePicker = props => {
   const [show, setShow] = useState(false);
@@ -22,7 +23,7 @@ const CustomDatePicker = props => {
   };
 
   return (
-    <TouchableHighlight
+    <TouchableOpacity
       style={{
         width: '100%',
         paddingHorizontal: 10,
@@ -101,7 +102,7 @@ const CustomDatePicker = props => {
           {date.format('MMMM Do, YYYY')}
         </Text>
       </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
   );
 };
 

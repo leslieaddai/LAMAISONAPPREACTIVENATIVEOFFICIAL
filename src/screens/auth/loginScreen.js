@@ -30,6 +30,8 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import NewInputComp from '../../components/NewInputComp';
 import ContinueButton from './componnets/ContinueBtn';
+import NewHeaderComp from './componnets/NewHeaderComp';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 export default function LoginScreen(props) {
   const [showError, setShowError] = useState(false);
@@ -264,8 +266,14 @@ export default function LoginScreen(props) {
       </View>
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <SafeAreaView style={styles.container}>
+          <View style={{marginHorizontal: 20, marginTop: 10}}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Arrow color={'#000'} width={13} height={13} />
+            </TouchableOpacity>
+          </View>
+
           <View style={{flexGrow: 1}}>
             <View style={styles.logoWrap}>
               <Image
@@ -300,6 +308,11 @@ export default function LoginScreen(props) {
                 inputText={'Password'}
                 resetPassword={true}
                 setPassword={true}
+                resetNavigation={() => {
+                  props.navigation.navigate('resetPassScreen'),
+                    updateState({UserName: ''}),
+                    updateState({Password: ''});
+                }}
               />
               {/* <View style={styles.inputBox}>
                 <TextInput
@@ -311,7 +324,6 @@ export default function LoginScreen(props) {
                   onChangeText={val => updateState({Password: val})}
                 />
               </View> */}
-
               <TouchableOpacity
                 style={{marginTop: 20}}
                 onPress={() => {

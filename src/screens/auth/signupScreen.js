@@ -17,6 +17,7 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk-next';
 import LogoComponent from './componnets/LogoComponent';
 import NewInputComp from '../../components/NewInputComp';
+import Arrow from '../../assets/icons/next-arrow.svg';
 
 export default function SignupScreen(props) {
   const [firstName, setFirstName] = useState('');
@@ -148,7 +149,12 @@ export default function SignupScreen(props) {
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
       <SafeAreaView style={styles.container}>
-        <LogoComponent txt="Create New Account"></LogoComponent>
+        <View style={{marginHorizontal: 20, marginTop: 10}}>
+          <TouchableOpacity onPress={() => props.navigation.goBack()}>
+            <Arrow color={'#000'} width={13} height={13} />
+          </TouchableOpacity>
+        </View>
+        <LogoComponent txt="Create New Account" />
         <View style={styles.inputWrap}>
           {/* <View style={[styles.inputBox]}>
             <TextInput
