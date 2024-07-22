@@ -84,6 +84,7 @@ export default function CommentScreen(props) {
 
       <View style={styles.container}>
         <KeyboardAwareScrollView
+          bounces={false}
           contentContainerStyle={{paddingBottom: hp2(2)}}>
           <SafeAreaView></SafeAreaView>
           {/* <View style={styles.headWrap}>

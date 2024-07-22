@@ -189,7 +189,6 @@ export default function BasketComp(props) {
         })
         .catch(function (error) {
           setLoading2(false);
-
           errorMessage(errorHandler(error));
         });
     }
@@ -409,7 +408,6 @@ const styles = StyleSheet.create({
     width: wp2(8),
     height: wp2(8),
     marginVertical: 1,
-
     backgroundColor: 'white',
     borderRadius: 100,
     borderWidth: 2,

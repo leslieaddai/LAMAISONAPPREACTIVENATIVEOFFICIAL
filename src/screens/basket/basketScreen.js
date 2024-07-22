@@ -225,7 +225,6 @@ export default function BasketScreen(props) {
           <NewHeaderComp
             arrowNavigation={() => props.navigation.goBack()}
             movePreviousArrow={true}
-            width="65%"
             title={'Basket'}
           />
           {user?.token !== '' ? (
@@ -307,6 +306,7 @@ export default function BasketScreen(props) {
               contentContainerStyle={{
                 paddingTop: hp2(4),
                 paddingBottom: hp2(12),
+                flexGrow: 1,
               }}>
               {products?.length !== 0 ? (
                 <View style={{flexDirection: 'row', alignSelf: 'center'}}>
@@ -327,66 +327,71 @@ export default function BasketScreen(props) {
                     />
                   </TouchableOpacity>
                   <View style={styles.detailsContainer}>
-                    <Text style={{color: 'black', textTransform: 'uppercase'}}>
+                    <Text
+                      style={{
+                        color: 'black',
+                        fontFamily: fonts.PoppinsMedium,
+                        fontSize: rfv(14),
+                      }}>
                       {products[0]?.data?.name}
                     </Text>
                     <View
                       style={{
+                        width: '45%',
                         flexDirection: 'row',
                         alignItems: 'center',
-                        marginTop: hp2(4),
+                        backgroundColor: 'rgba(122, 122, 122, 0.1)',
+                        borderRadius: 20,
                       }}>
-                      <View
-                        style={{
-                          width: wp2(9),
-                          height: wp2(9),
-                          backgroundColor: products[0]?.colorId?.color_code,
-                          borderRadius: wp2(2),
-                          borderWidth: 1,
-                        }}></View>
-                      <Text
-                        style={{
-                          color: 'black',
-                          fontSize: rfv(12),
-                          fontWeight: 'bold',
-                          marginLeft: wp2(2),
-                        }}>
-                        SIZE : {products[0]?.sizeId?.size?.size}
-                      </Text>
+                      <TouchableOpacity
+                        disabled={loading2}
+                        onPress={() => onDecreament(0)}
+                        style={[
+                          styles.button,
+                          {
+                            backgroundColor: 'white',
+                            borderColor: 'white',
+                          },
+                        ]}>
+                        <ICONS.Entypo name="minus" size={30} color="grey" />
+                      </TouchableOpacity>
+
+                      {loading2 ? (
+                        <SkypeIndicator size={20} style={{}} color={'black'} />
+                      ) : (
+                        <Text
+                          style={[
+                            styles.quantityTxt,
+                            //  {position: 'absolute'}
+                            {
+                              paddingHorizontal: 10,
+                            },
+                          ]}>
+                          {products[0]?.Quantity}
+                        </Text>
+                      )}
+
+                      <TouchableOpacity
+                        disabled={loading2}
+                        onPress={() => onIncreament(0)}
+                        style={[
+                          styles.button,
+                          {
+                            // marginRight:5,
+                          },
+                        ]}>
+                        <ICONS.Entypo name="plus" size={30} color="grey" />
+                      </TouchableOpacity>
                     </View>
                     <Text
                       style={{
                         color: 'black',
                         textTransform: 'uppercase',
-                        marginVertical: hp2(4),
+                        fontWeight: '600',
+                        fontSize: 18,
                       }}>
                       £{products[0]?.data?.price}
                     </Text>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                      <Text
-                        style={{
-                          color: 'black',
-                          textTransform: 'uppercase',
-                          fontWeight: '700',
-                          fontSize: rfv(20),
-                          marginRight: wp2(4),
-                        }}>
-                        {products[0]?.Quantity}
-                      </Text>
-                      <TouchableOpacity
-                        onPress={() => onIncreament(0)}
-                        style={styles.button}>
-                        <ICONS.Entypo name="plus" size={30} color="white" />
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        onPress={() => onDecreament(0)}
-                        style={[
-                          styles.button,
-                          {backgroundColor: 'white', borderColor: 'black'},
-                        ]}>
-                        <ICONS.Entypo name="minus" size={30} color="black" />
-                      </TouchableOpacity>
-                    </View>
                   </View>
                 </View>
               ) : (
@@ -424,6 +429,7 @@ export default function BasketScreen(props) {
                     </Text>
                   </View>
                   <ContinueButton
+                    onPress={() => props.navigation.goBack()}
                     style={{
                       marginTop: 60,
                       width: '95%',
@@ -443,11 +449,31 @@ export default function BasketScreen(props) {
                 }}
               />
               {products?.length !== 0 && (
-                <TouchableOpacity
-                  onPress={() => props.navigation.navigate('checkoutScreen')}
-                  style={styles.checkoutButton}>
-                  <Text style={styles.buttonText}>CHECKOUT</Text>
-                </TouchableOpacity>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    position: 'absolute',
+                    bottom: 0,
+                    alignItems: 'flex-start',
+                    backgroundColor: 'black',
+                    paddingHorizontal: 20,
+                  }}>
+                  {/* {totalPrice2} */}
+                  <View style={{flex: 1, marginLeft: 10}}>
+                    <Text style={styles.txt}>Total Price:</Text>
+                    <Text style={styles.txtcount}>
+                      £{products[0]?.data?.price}
+                    </Text>
+                  </View>
+
+                  <TouchableOpacity
+                    onPress={() =>
+                      props.navigation.navigate('checkoutScreen', {data})
+                    }
+                    style={styles.checkoutButton}>
+                    <Text style={styles.buttonText}>CHECKOUT</Text>
+                  </TouchableOpacity>
+                </View>
               )}
             </ScrollView>
           )}
@@ -479,44 +505,28 @@ const styles = StyleSheet.create({
     marginLeft: wp2(4),
   },
   imageWrap: {
-    width: wp2(52),
-    height: hp2(32),
-    borderRadius: wp2(4),
+    width: wp2(38),
+    height: hp2(18),
+    borderRadius: 5,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   button: {
-    width: wp2(12),
-    height: wp2(10),
-    backgroundColor: 'black',
+    width: wp2(8),
+    height: wp2(8),
+    marginVertical: 1,
+    backgroundColor: 'white',
     borderRadius: 100,
     borderWidth: 2,
     borderColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    marginHorizontal: wp2(1),
-
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
   detailsContainer: {
-    width: wp2(44),
-    height: hp2(32),
+    width: wp2(58),
+    height: hp2(18),
     paddingHorizontal: wp2(3),
-    paddingVertical: hp2(2),
+    paddingVertical: hp2(0.5),
+    justifyContent: 'space-between',
   },
   checkoutButton: {
     width: wp2(36),

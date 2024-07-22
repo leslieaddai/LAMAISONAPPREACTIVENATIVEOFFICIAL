@@ -1304,7 +1304,7 @@ export const BottomNavigationGuest = () => {
             </Text>
           ),
         }}
-        component={TestScreen}
+        component={BasketScreen}
       />
 
       <Tab.Screen

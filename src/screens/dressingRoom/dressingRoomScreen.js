@@ -161,7 +161,6 @@ export default function DressingRoomScreen(props) {
                 qty: 1,
                 size_id: sizeId?.size_id,
                 color_id: colorId?.id,
-
                 style_id: data?.style,
                 category_id: data?.category?.id,
                 piece_id: data?.piece?.id,
@@ -184,14 +183,12 @@ export default function DressingRoomScreen(props) {
                   dispatch({
                     type: types.AddToBasket,
                   });
-
                   setLoading(false);
                   successMessage('Success');
                 })
                 .catch(function (error) {
                   setLoading(false);
-
-                  errorMessage(errorHandler(error));
+                  console.log(errorMessage);
                   if (error.response.data.message === 'Unauthenticated.') {
                     dispatch({
                       type: types.Clearcart,
@@ -1110,12 +1107,23 @@ export default function DressingRoomScreen(props) {
                   flexDirection: 'column',
                   gap: 10,
                 }}>
-                <ContinueButton
-                  onPress={() => {
-                    AddBasket();
-                  }}
-                  text={'Buy now'}
-                />
+                {user?.token !== '' ? (
+                  <ContinueButton
+                    style={{width: '100%'}}
+                    onPress={() => {
+                      AddBasket();
+                    }}
+                    text={'Add to basket'}
+                  />
+                ) : (
+                  <ContinueButton
+                    style={{width: '100%'}}
+                    onPress={() => {
+                      AddBasketGuest();
+                    }}
+                    text={'Add to basket'}
+                  />
+                )}
                 {/* <ContinueButton
                   onPress={() =>
                     sizeId !== null

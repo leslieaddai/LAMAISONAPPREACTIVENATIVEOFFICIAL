@@ -7,6 +7,7 @@ import {
   Text,
   Platform,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
@@ -24,102 +25,115 @@ export default function AccountTypeScreen(props) {
   };
 
   return (
-    <ScrollView style={[{backgroundColor: '#FFFFFF'}]}>
-      <SafeAreaView style={[{marginHorizontal: 20, marginVertical: 40}]}>
-        <View>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Arrow color={'#000'} width={13} height={13} />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.header}>Account Type</Text>
-        <TouchableOpacity
-          onPress={() => {
-            handleAccountSelection('editor');
-            // props.navigation.navigate('createAccountScreen', {
-            //   user: 'editor',
-            //   data: props.route.params.data,
-            // });
-          }}
-          style={[
-            styles.box,
-            {
-              borderColor:
-                selectedAccount === 'editor' ? '#4D50E0' : 'transparent',
-              backgroundColor:
-                selectedAccount === 'editor' ? 'transparent' : '#F6F6F6',
-            },
-          ]}>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.editor2icon}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  tintColor: selectedAccount === 'editor' ? '#4D50E0' : 'black',
-                }}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={[styles.text]}>Editor</Text>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        bounces={false}
+        style={[{backgroundColor: '#FFFFFF'}]}>
+        <SafeAreaView style={[{marginHorizontal: 20, marginVertical: 40}]}>
+          <View>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Arrow color={'#000'} width={13} height={13} />
+            </TouchableOpacity>
           </View>
-          <RadioButton selected={selectedAccount === 'editor'} />
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            handleAccountSelection('brand');
-            // props.navigation.navigate('createAccountScreen', {
-            //   user: 'brand',
-            //   data: props.route.params.data,
-            // });
-          }}
-          style={[
-            styles.box,
-            {
-              borderColor:
-                selectedAccount === 'brand' ? '#4D50E0' : 'transparent',
-              backgroundColor:
-                selectedAccount === 'brand' ? 'transparent' : '#F6F6F6',
-            },
-          ]}>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
-            <View style={styles.iconWrap}>
-              <Image
-                source={IMAGES.brand2icon}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  tintColor: selectedAccount !== 'brand' ? 'black' : '#4D50E0',
-                }}
-                resizeMode="contain"
-              />
-            </View>
-            <Text style={[styles.text]}>Brand</Text>
-          </View>
-          <RadioButton selected={selectedAccount === 'brand'}></RadioButton>
-        </TouchableOpacity>
-
-        <ContinueButton
-          text={'Continue'}
-          onPress={() => {
-            if (selectedAccount == 'brand') {
-              props.navigation.navigate('createAccountScreen', {
-                user: 'brand',
-                data: props.route.params.data,
-              });
-            } else if (selectedAccount == 'editor') {
+          <Text style={styles.header}>Account Type</Text>
+          <TouchableOpacity
+            onPress={() => {
               handleAccountSelection('editor');
-              props.navigation.navigate('createAccountScreen', {
-                user: 'editor',
-                data: props.route.params.data,
-              });
-            }
-          }}
-          style={{width: '100%', marginTop: 10, fontFamily: 'Poppins-SemiBold'}}
-        />
-      </SafeAreaView>
-    </ScrollView>
+              // props.navigation.navigate('createAccountScreen', {
+              //   user: 'editor',
+              //   data: props.route.params.data,
+              // });
+            }}
+            style={[
+              styles.box,
+              {
+                borderColor:
+                  selectedAccount === 'editor' ? '#4D50E0' : 'transparent',
+                backgroundColor:
+                  selectedAccount === 'editor' ? 'transparent' : '#F6F6F6',
+              },
+            ]}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.editor2icon}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    tintColor:
+                      selectedAccount === 'editor' ? '#4D50E0' : 'black',
+                  }}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={[styles.text]}>Editor</Text>
+            </View>
+            <RadioButton selected={selectedAccount === 'editor'} />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              handleAccountSelection('brand');
+              // props.navigation.navigate('createAccountScreen', {
+              //   user: 'brand',
+              //   data: props.route.params.data,
+              // });
+            }}
+            style={[
+              styles.box,
+              {
+                borderColor:
+                  selectedAccount === 'brand' ? '#4D50E0' : 'transparent',
+                backgroundColor:
+                  selectedAccount === 'brand' ? 'transparent' : '#F6F6F6',
+              },
+            ]}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.brand2icon}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    tintColor:
+                      selectedAccount !== 'brand' ? 'black' : '#4D50E0',
+                  }}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={[styles.text]}>Brand</Text>
+            </View>
+            <RadioButton selected={selectedAccount === 'brand'}></RadioButton>
+          </TouchableOpacity>
+
+          <ContinueButton
+            text={'Continue'}
+            onPress={() => {
+              if (selectedAccount == 'brand') {
+                props.navigation.navigate('createAccountScreen', {
+                  user: 'brand',
+                  data: props.route.params.data,
+                });
+              } else if (selectedAccount == 'editor') {
+                handleAccountSelection('editor');
+                props.navigation.navigate('createAccountScreen', {
+                  user: 'editor',
+                  data: props.route.params.data,
+                });
+              }
+            }}
+            style={{
+              width: '100%',
+              marginTop: 10,
+              fontFamily: 'Poppins-SemiBold',
+            }}
+          />
+        </SafeAreaView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 

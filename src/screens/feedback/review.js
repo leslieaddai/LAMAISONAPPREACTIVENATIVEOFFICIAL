@@ -25,6 +25,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {SkypeIndicator} from 'react-native-indicators';
 import moment from 'moment';
 import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import ContinueButton from '../auth/componnets/ContinueBtn';
 
 export default function Review(props) {
   const dispatch = useDispatch();
@@ -73,11 +74,11 @@ export default function Review(props) {
         <View style={styles.container}>
           <NewHeaderComp
             title={'Review'}
-            settings={true}
+            movePreviousArrow={true}
             arrowNavigation={() => props.navigation.goBack()}
-            settingNavigation={() =>
-              props.navigation.navigate('addReview', {data: pid})
-            }
+            // settingNavigation={() =>
+            //   props.navigation.navigate('addReview', {data: pid})
+            // }
           />
           {/* <View style={styles.headWrap}>
             <TouchableOpacity
@@ -121,15 +122,30 @@ export default function Review(props) {
                       </>
                     );
                   })}
+                  <ContinueButton
+                    onPress={() =>
+                      props.navigation.navigate('addReview', {data: pid})
+                    }
+                    text={'Add Review'}
+                  />
                 </ScrollView>
               ) : (
                 <View
                   style={{
                     alignItems: 'center',
                     justifyContent: 'center',
+                    gap: 20,
                     flex: 1,
                   }}>
-                  <Text>Reviews Not Available</Text>
+                  <Text>No review yet</Text>
+                  <View style={{marginHorizontal: 20, width: '80%'}}>
+                    <ContinueButton
+                      onPress={() =>
+                        props.navigation.navigate('addReview', {data: pid})
+                      }
+                      text={'Add Review'}
+                    />
+                  </View>
                 </View>
               )}
             </>

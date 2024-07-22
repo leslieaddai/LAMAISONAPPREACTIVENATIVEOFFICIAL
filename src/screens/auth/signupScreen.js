@@ -7,6 +7,8 @@ import {
   TextInput,
   Platform,
   SafeAreaView,
+  KeyboardAvoidingView,
+  ScrollView,
   Image,
 } from 'react-native';
 import {COLORS, wp2, hp2, ICONS, IMAGES} from '../../theme';
@@ -148,15 +150,26 @@ export default function SignupScreen(props) {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
-      <SafeAreaView style={styles.container}>
-        <View style={{marginHorizontal: 20, marginTop: 10}}>
-          <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <Arrow color={'#000'} width={13} height={13} />
-          </TouchableOpacity>
-        </View>
-        <LogoComponent txt="Create New Account" />
-        <View style={styles.inputWrap}>
-          {/* <View style={[styles.inputBox]}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.select({ios: 0, android: 500})}>
+        {/* <KeyboardAwareScrollView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}
+          keyboardVerticalOffset={Platform.select({
+            ios: 0,
+            android: 500,
+          })}> */}
+        <ScrollView style={styles.container}>
+          <View style={{marginHorizontal: 20, marginTop: 10}}>
+            <TouchableOpacity onPress={() => props.navigation.goBack()}>
+              <Arrow color={'#000'} width={13} height={13} />
+            </TouchableOpacity>
+          </View>
+          <LogoComponent txt="Create New Account" />
+          <View style={styles.inputWrap}>
+            {/* <View style={[styles.inputBox]}>
             <TextInput
               style={styles.inputTxt}
               placeholder="First Name"
@@ -166,7 +179,7 @@ export default function SignupScreen(props) {
               }
             />
           </View> */}
-          {/* <View style={[styles.inputBox]}>
+            {/* <View style={[styles.inputBox]}>
             <TextInput
               style={styles.inputTxt}
               placeholder="Last Name"
@@ -174,7 +187,7 @@ export default function SignupScreen(props) {
               onChangeText={val => setLastName(val.replace(/\s+/g, ' ').trim())}
             />
           </View> */}
-          {/* <View style={styles.inputBox}>
+            {/* <View style={styles.inputBox}>
           <TextInput
             style={styles.inputTxt}
             placeholder="Email"
@@ -182,34 +195,34 @@ export default function SignupScreen(props) {
             onChangeText={val => setEmail(val.toLowerCase())}
           />
         </View> */}
-          <NewInputComp
-            handleOnChange={val =>
-              setFirstName(val.replace(/\s+/g, ' ').trim())
-            }
-            inputText={'First Name'}
-          />
-          <View style={{marginVertical: -20}}>
             <NewInputComp
               handleOnChange={val =>
-                setLastName(val.replace(/\s+/g, ' ').trim())
+                setFirstName(val.replace(/\s+/g, ' ').trim())
               }
-              inputText={'Last Name'}
+              inputText={'First Name'}
+            />
+            <View style={{marginVertical: -20}}>
+              <NewInputComp
+                handleOnChange={val =>
+                  setLastName(val.replace(/\s+/g, ' ').trim())
+                }
+                inputText={'Last Name'}
+              />
+            </View>
+            <NewInputComp
+              handleOnChange={val => setEmail(val.toLowerCase())}
+              inputText={'Email'}
             />
           </View>
-          <NewInputComp
-            handleOnChange={val => setEmail(val.toLowerCase())}
-            inputText={'Email'}
-          />
-        </View>
 
-        <TouchableOpacity
-          onPress={onContinue}
-          style={[styles.button, {marginTop: 10}]}>
-          <Text style={styles.buttonText}>Continue</Text>
-        </TouchableOpacity>
-        {/* <View style={styles.divider} /> */}
+          <TouchableOpacity
+            onPress={onContinue}
+            style={[styles.button, {marginTop: 10}]}>
+            <Text style={styles.buttonText}>Continue</Text>
+          </TouchableOpacity>
+          {/* <View style={styles.divider} /> */}
 
-        {/* <TouchableOpacity
+          {/* <TouchableOpacity
           onPress={() =>
             onGoogleButtonPress().then(res =>
               console.log('Signed in with Google!', res),
@@ -229,7 +242,7 @@ export default function SignupScreen(props) {
           />
           <Text style={styles.buttonTextBlack}>Continue with Google</Text>
         </TouchableOpacity> */}
-        {/* <TouchableOpacity
+          {/* <TouchableOpacity
         onPress={() => onFacebookButtonPress().then(() => console.log('Signed in with Facebook!'))}
         style={styles.button2}>
         <ICONS.AntDesign
@@ -240,7 +253,9 @@ export default function SignupScreen(props) {
         />
         <Text style={styles.button2Text}>continue with facebook</Text>
       </TouchableOpacity> */}
-      </SafeAreaView>
+        </ScrollView>
+        {/* </KeyboardAwareScrollView> */}
+      </KeyboardAvoidingView>
     </>
   );
 }

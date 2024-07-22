@@ -45,6 +45,7 @@ import ArrowDown from '../../assets/icons/arrow-down.svg';
 import ContinueButton from '../auth/componnets/ContinueBtn';
 import {totalPriceValue} from '../../components/basketComp';
 import NewHeaderComp from '../auth/componnets/NewHeaderComp';
+import OneSignal from 'react-native-onesignal';
 import {
   Elements,
   CardElement,
@@ -301,10 +302,11 @@ export default function CheckoutScreen(props) {
           .post(ShippingAvailability, obj)
           .then(async function (res) {
             setLoadingContinue(false);
-            if (res?.data?.status) {
+            if (res?.data?.status && user?.token !== '') {
               setContinueButton('confirm');
             } else {
               errorMessage(String(Object.values(res?.data['message'])[0]));
+              errorMessage('You need sign in to continue!');
             }
           })
           .catch(function (error) {
@@ -316,6 +318,13 @@ export default function CheckoutScreen(props) {
       }
     } else {
       errorMessage('Please fill all fields!');
+      dispatch({
+        type: types.Clearcart,
+      });
+      dispatch({
+        type: types.Logout,
+      });
+      OneSignal.removeExternalUserId();
     }
   };
 
@@ -1535,8 +1544,7 @@ export default function CheckoutScreen(props) {
                               <Text style={styles.text}>
                                 {item?.data?.name}
                               </Text>
-
-                              <View
+                              {/* <View
                                 style={{
                                   flexDirection: 'row',
                                   alignItems: 'center',
@@ -1545,7 +1553,7 @@ export default function CheckoutScreen(props) {
                                   style={{
                                     width: wp2(9),
                                     height: wp2(9),
-                                    backgroundColor: item?.colorId?.color_code,
+                                    backgroundColor: item?.color?.color_code,
                                     borderRadius: wp2(2),
                                     borderWidth: 1,
                                   }}></View>
@@ -1556,50 +1564,63 @@ export default function CheckoutScreen(props) {
                                     fontWeight: 'bold',
                                     marginLeft: wp2(2),
                                   }}>
-                                  SIZE : {item?.sizeId?.size?.size}
+                                  SIZE : {item?.size?.size}
                                 </Text>
-                              </View>
-                              <Text
+                              </View> */}
+                              {/* <Text
                                 style={{
                                   color: 'black',
                                   fontSize: rfv(12),
                                   fontWeight: 'bold',
                                 }}>
-                                Quantity: {item?.Quantity}
-                              </Text>
-
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  justifyContent: 'space-between',
-                                }}>
-                                <Text style={styles.text}>price</Text>
-                                <Text style={styles.text}>
-                                  £{item?.data?.price}
-                                </Text>
-                              </View>
-
-                              {continueButton === 'purchase' && (
+                                Quantity: {item?.qty}
+                              </Text> */}
+                              <View style={{marginTop: 20}}>
                                 <View
                                   style={{
                                     flexDirection: 'row',
                                     justifyContent: 'space-between',
                                   }}>
-                                  <Text style={styles.text}>Shipping</Text>
+                                  <Text style={styles.summaryText}>Price</Text>
                                   <Text style={styles.text}>
-                                    {item?.data?.product_region.map(
-                                      (item, index) => {
-                                        if (
-                                          stateChange?.region ===
-                                          item?.region_id
-                                        ) {
-                                          return '£' + item?.price;
-                                        }
-                                      },
-                                    )}
+                                    £{item?.data?.price}
                                   </Text>
                                 </View>
-                              )}
+
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                  }}>
+                                  <Text style={styles.summaryText}>
+                                    Shipping
+                                  </Text>
+                                  <Text style={styles.text}>{'£' + 25.0}</Text>
+                                </View>
+                                <View
+                                  style={{
+                                    borderWidth: 1,
+                                    borderColor: '#D4D4D4',
+                                    marginVertical: 10,
+                                  }}
+                                />
+                                <View
+                                  style={{
+                                    flexDirection: 'row',
+                                    justifyContent: 'space-between',
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: rfv(14),
+                                      fontFamily: 'Poppins-Regular',
+                                    }}>
+                                    Total
+                                  </Text>
+                                  <Text style={styles.text}>
+                                    £{Number(item?.data?.price) + 25.0}
+                                  </Text>
+                                </View>
+                              </View>
                             </View>
                           </View>
                         );
@@ -1747,41 +1768,27 @@ export default function CheckoutScreen(props) {
                           paddingLeft: wp2(39),
                           paddingRight: wp2(2),
                           marginVertical: hp2(1),
-                        }}>
-                        <Text style={styles.text}>Sub Total</Text>
-                        <Text style={styles.text}>
-                          £{Number(estimate).toFixed(3)}
-                        </Text>
-                      </View>
+                        }}></View>
 
-                      <View style={styles.inputBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          placeholder={'ADDRESS LINE 1'}
-                          placeholderTextColor={'grey'}
-                          value={address_1}
-                          onChangeText={val => updateState({address_1: val})}
-                        />
-                      </View>
-                      <View style={styles.inputBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          placeholder={'ADDRESS LINE 2'}
-                          placeholderTextColor={'grey'}
+                      <NewInputComp
+                        handleOnChange={val => updateState({address_1: val})}
+                        value={address_1}
+                        inputText={'Adress Line 1'}
+                      />
+                      <View style={{marginVertical: -20}}>
+                        <NewInputComp
+                          handleOnChange={val => updateState({address_2: val})}
                           value={address_2}
-                          onChangeText={val => updateState({address_2: val})}
+                          inputText={'Adress Line 2'}
                         />
                       </View>
-                      <View style={styles.inputBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          placeholder={'CITY'}
-                          placeholderTextColor={'grey'}
+                      <View style={{marginBottom: -10}}>
+                        <NewInputComp
+                          handleOnChange={val => updateState({city: val})}
                           value={city}
-                          onChangeText={val => updateState({city: val})}
+                          inputText={'City'}
                         />
                       </View>
-
                       <TouchableOpacity
                         onPress={() =>
                           isOpenedRegions
@@ -1793,15 +1800,14 @@ export default function CheckoutScreen(props) {
                           {
                             flexDirection: 'row',
                             alignItems: 'center',
-                            paddingHorizontal: wp2(2),
+                            paddingHorizontal: 20,
+
                             justifyContent: 'space-between',
                           },
                         ]}>
                         <Text
                           style={{
-                            color: 'black',
-                            fontWeight: '700',
-                            fontSize: rfv(13),
+                            fontSize: 16,
                           }}>
                           {selectedRegion}
                         </Text>
@@ -1811,51 +1817,54 @@ export default function CheckoutScreen(props) {
                               isOpenedRegions ? 'chevron-up' : 'chevron-down'
                             }
                             color={'#A1A1A1'}
-                            size={22}
+                            size={12}
                           />
                         </View>
                       </TouchableOpacity>
+                      <View style={{marginTop: -10}}>
+                        <TouchableOpacity
+                          disabled={
+                            selectedRegion === 'SELECT REGION' ? true : false
+                          }
+                          onPress={() =>
+                            isOpenedCountries
+                              ? setIsOpenedCountries(false)
+                              : setIsOpenedCountries(true)
+                          }
+                          style={[
+                            styles.inputBox,
+                            {
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              paddingHorizontal: 20,
+                              justifyContent: 'space-between',
+                            },
+                          ]}>
+                          <Text
+                            style={{
+                              fontSize: 16,
+                            }}>
+                            {selectedCountry}
+                          </Text>
+                          <View>
+                            <ICONS.FontAwesome
+                              name={
+                                isOpenedCountries
+                                  ? 'chevron-up'
+                                  : 'chevron-down'
+                              }
+                              color={'#A1A1A1'}
+                              size={12}
+                            />
+                          </View>
+                        </TouchableOpacity>
+                      </View>
 
-                      <TouchableOpacity
-                        disabled={
-                          selectedRegion === 'SELECT REGION' ? true : false
-                        }
-                        onPress={() =>
-                          isOpenedCountries
-                            ? setIsOpenedCountries(false)
-                            : setIsOpenedCountries(true)
-                        }
-                        style={[
-                          styles.inputBox,
-                          {
-                            flexDirection: 'row',
-                            alignItems: 'center',
-                            paddingHorizontal: wp2(2),
-                            justifyContent: 'space-between',
-                          },
-                        ]}>
-                        <Text style={styles.selectedTxt}>
-                          {selectedCountry}
-                        </Text>
-                        <View>
-                          <ICONS.FontAwesome
-                            name={
-                              isOpenedCountries ? 'chevron-up' : 'chevron-down'
-                            }
-                            color={'#A1A1A1'}
-                            size={22}
-                          />
-                        </View>
-                      </TouchableOpacity>
-
-                      <View style={styles.inputBox}>
-                        <TextInput
-                          style={styles.textInput}
-                          placeholder={'POSTCODE'}
-                          placeholderTextColor={'grey'}
+                      <View style={{marginTop: -20}}>
+                        <NewInputComp
                           value={postcode}
-                          onChangeText={val => updateState({postcode: val})}
-                          maxLength={10}
+                          handleOnChange={val => updateState({postcode: val})}
+                          inputText={'Postcode'}
                         />
                       </View>
                     </View>
@@ -2028,8 +2037,27 @@ export default function CheckoutScreen(props) {
                       }}
                     />
                   </TouchableOpacity> */}
-
                   <TouchableOpacity
+                    style={{marginHorizontal: 40, marginTop: 20}}
+                    disabled={loadingContinue}>
+                    <ContinueButton
+                      onPress={() => {
+                        continueButton == 'continue'
+                          ? onContinue()
+                          : continueButton == 'confirm'
+                          ? onConfirm()
+                          : createGuestOrder();
+                      }}
+                      text={
+                        continueButton == 'continue'
+                          ? 'Continue'
+                          : continueButton == 'confirm'
+                          ? 'Confirm'
+                          : 'Purchase'
+                      }
+                    />
+                  </TouchableOpacity>
+                  {/* <TouchableOpacity
                     disabled={loadingContinue}
                     onPress={() => {
                       continueButton == 'continue'
@@ -2050,7 +2078,7 @@ export default function CheckoutScreen(props) {
                           : 'PURCHASE'}
                       </Text>
                     )}
-                  </TouchableOpacity>
+                  </TouchableOpacity> */}
                 </KeyboardAwareScrollView>
               )}
             </>
@@ -2097,7 +2125,6 @@ const styles = StyleSheet.create({
     height: hp2(20),
     overflow: 'hidden',
     alignSelf: 'center',
-
   },
   checkoutWrap: {
     height: hp2(24),
@@ -2135,23 +2162,14 @@ const styles = StyleSheet.create({
   detailInputArea2: {
     width: wp2(92),
     alignSelf: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#D9D9D9',
     justifyContent: 'space-evenly',
   },
   inputBox: {
-    width: wp2(80),
+    width: '90%',
     height: hp2(5),
-    backgroundColor: 'white',
-    borderRadius: wp2(4),
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.3,
-    shadowRadius: 4.65,
-    elevation: 8,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: COLORS.gray300,
     marginVertical: hp2(1),
     alignSelf: 'center',
   },
@@ -2188,7 +2206,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   buttonText: {
-    color: '#000',
+    color: '#fff',
     fontFamily: 'Poppins-SemiBold',
     fontSize: rfv(13),
   },

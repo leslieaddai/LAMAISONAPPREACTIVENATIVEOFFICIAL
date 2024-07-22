@@ -10,6 +10,9 @@ import {
   ImageComponent,
   Image,
   ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
@@ -144,125 +147,122 @@ const CreateAccountScreen = props => {
       errorMessage('Please fill all details');
     }
   };
+
   return (
     <>
       <View style={{position: 'absolute', zIndex: 999}}>
         {loading && <LoaderComp />}
       </View>
-      <ScrollView style={styles.container}>
-        <SafeAreaView>
-          <View style={{marginHorizontal: 20}}>
-            <TouchableOpacity onPress={() => props.navigation.goBack()}>
-              <Arrow color={'#000'} width={13} height={13} />
-            </TouchableOpacity>
-          </View>
-        </SafeAreaView>
-        <LogoComponent
-          txt={
-            props.route.params.user == 'brand'
-              ? 'Create New Brand Account'
-              : 'Create New Editor Account'
-          }
-        />
-        <View style={{flex: 1, paddingHorizontal: 0}}>
-          {props.route.params.user == 'brand' && (
-            // <TextEditingComponent
-            //   onChangeText={val => updateState({BrandName: val})}
-            //   placeholder="Brand Name"
-            //   placeholderTextColor={'grey'}
-            // />
-            <View style={{marginBottom: -20}}>
-              <NewInputComp
-                inputText={'Brand Name'}
-                handleOnChange={val => updateState({BrandName: val})}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.select({ios: 0, android: 500})}>
+        {/* <KeyboardAwareScrollView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}
+          keyboardVerticalOffset={Platform.select({
+            ios: 0,
+            android: 500,
+          })}> */}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <ScrollView
+            contentContainerStyle={{flexGrow: 1}}
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+            keyboardDismissMode="on-drag">
+            <SafeAreaView style={styles.container}>
+              <View style={{marginHorizontal: 20}}>
+                <TouchableOpacity onPress={() => props.navigation.goBack()}>
+                  <Arrow color={'#000'} width={13} height={13} />
+                </TouchableOpacity>
+              </View>
+              <LogoComponent
+                txt={
+                  props.route.params.user == 'brand'
+                    ? 'Create New Brand Account'
+                    : 'Create New Editor Account'
+                }
               />
-            </View>
-          )}
-          {/* <TextEditingComponent
-            onChangeText={val => updateState({UserName: val})}
-            placeholder="Username"
-            placeholderTextColor={'grey'}
-          /> */}
-          <NewInputComp
-            inputText={'Username'}
-            handleOnChange={val => updateState({UserName: val})}
-          />
-          <View style={{marginHorizontal: 20}}>
-            <CustomDatePicker props={styles.inputBox} />
-          </View>
-          {/* <TextEditingComponent
-            secureTextEntry={true}
-            isPassword={true}
-            onChangeText={val => updateState({Newpassword: val})}
-            placeholder="Password"
-            placeholderTextColor={'grey'}
-          /> */}
-          {/* <TextEditingComponent
-            secureTextEntry={true}
-            isPassword={true}
-            onChangeText={val => updateState({ConfirmPass: val})}
-            placeholder="Confirm Password"
-            placeholderTextColor={'grey'}
-          /> */}
-          <View style={{marginVertical: -20}}>
-            <NewInputComp
-              inputText={'Password'}
-              setPassword={true}
-              handleOnChange={val => updateState({Newpassword: val})}
-            />
-          </View>
-          <NewInputComp
-            inputText={'Confirm Password'}
-            setPassword={true}
-            handleOnChange={val => updateState({ConfirmPass: val})}
-          />
-          <View style={{marginHorizontal: 20}}>
-            <PasswordValidationRow password={Newpassword} />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 15,
-              paddingRight: 20,
-              marginHorizontal: 20,
-              marginTop: 70,
-              marginBottom: 20,
-            }}>
-            <CheckBox
-              onTintColor="#D4D4D4"
-              tintColor="#D4D4D4"
-              onFillColor="#D4D4D4"
-              onCheckColor="white"
-              boxType="square"
-              value={checkBox}
-              onValueChange={setCheckBox}
-              tintColors={{true: 'black', false: 'black'}}
-              style={{
-                marginBottom: Platform.OS === 'android' ? hp2(-0.5) : hp2(0),
-                borderColor: '#D4D4D8', // Set the border color here
-                borderWidth: 1, // Optional: You can adjust the border width if needed
-                height: 22,
-                width: 22,
-                borderRadius: 2,
-              }}
-            />
-            <TouchableOpacity
-              onPress={() => props.navigation.navigate('termsScreen')}>
-              <Text style={styles.termsTxt}>
-                I've read and accept app Terms and Conditions
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={{marginHorizontal: 20}}>
-            <ContinueButton
-              text={'Create Account'}
-              style={{width: '100%', marginBottom: 50}}
-              onPress={onCreate}
-            />
-          </View>
-        </View>
-      </ScrollView>
+              <View style={{flex: 1, paddingHorizontal: 0}}>
+                {props.route.params.user == 'brand' && (
+                  <View style={{marginBottom: -20}}>
+                    <NewInputComp
+                      inputText={'Brand Name'}
+                      handleOnChange={val => updateState({BrandName: val})}
+                    />
+                  </View>
+                )}
+                <NewInputComp
+                  inputText={'Username'}
+                  handleOnChange={val => updateState({UserName: val})}
+                />
+                <View style={{marginHorizontal: 20}}>
+                  <CustomDatePicker props={styles.inputBox} />
+                </View>
+                <View style={{marginVertical: -20}}>
+                  <NewInputComp
+                    inputText={'Password'}
+                    setPassword={true}
+                    handleOnChange={val => updateState({Newpassword: val})}
+                  />
+                </View>
+                <NewInputComp
+                  inputText={'Confirm Password'}
+                  setPassword={true}
+                  handleOnChange={val => updateState({ConfirmPass: val})}
+                />
+                <View style={{marginHorizontal: 20}}>
+                  <PasswordValidationRow password={Newpassword} />
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 15,
+                    paddingRight: 20,
+                    marginHorizontal: 20,
+                    marginTop: 70,
+                    marginBottom: 20,
+                  }}>
+                  <CheckBox
+                    onTintColor="#D4D4D4"
+                    tintColor="#D4D4D4"
+                    onFillColor="#D4D4D4"
+                    onCheckColor="white"
+                    boxType="square"
+                    value={checkBox}
+                    onValueChange={setCheckBox}
+                    tintColors={{true: 'black', false: 'black'}}
+                    style={{
+                      marginBottom:
+                        Platform.OS === 'android' ? hp2(-0.5) : hp2(0),
+                      borderColor: '#D4D4D8',
+                      borderWidth: 1,
+                      height: 22,
+                      width: 22,
+                      borderRadius: 2,
+                    }}
+                  />
+                  <TouchableOpacity
+                    onPress={() => props.navigation.navigate('termsScreen')}>
+                    <Text style={styles.termsTxt}>
+                      I've read and accept app Terms and Conditions
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={{marginHorizontal: 20}}>
+                  <ContinueButton
+                    text={'Create Account'}
+                    style={{width: '100%', marginBottom: 50}}
+                    onPress={onCreate}
+                  />
+                </View>
+              </View>
+            </SafeAreaView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+        {/* </KeyboardAwareScrollView> */}
+      </KeyboardAvoidingView>
     </>
   );
 };

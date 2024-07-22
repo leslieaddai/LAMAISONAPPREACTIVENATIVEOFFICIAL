@@ -23,7 +23,7 @@ const styles = {
     height: hp2(10),
     // paddingBottom:100,
     // overflow: 'hidden',
-    marginTop: hp2(10),
+    marginTop: hp2(4),
     marginBottom: hp2(4),
     justifyContent: 'center',
     alignItems: 'center',

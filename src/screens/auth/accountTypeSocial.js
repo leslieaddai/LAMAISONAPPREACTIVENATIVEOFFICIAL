@@ -5,10 +5,16 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import {COLORS, IMAGES, hp2, wp2} from '../../theme';
 import {RFValue as rfv} from 'react-native-responsive-fontsize';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {GoogleRegister} from '../../config/Urls';
 import {errorMessage, successMessage} from '../../config/NotificationMessage';
 import {errorHandler} from '../../config/helperFunction';
@@ -52,33 +58,52 @@ const AccountTypeSocial = props => {
       <SafeAreaView
         style={{flex: 0, backgroundColor: COLORS.appBackground}}></SafeAreaView>
 
-      <SafeAreaView style={styles.container}>
-        <Text style={styles.accTypeText}>Account Type</Text>
-        <TouchableOpacity
-          onPress={() => creatAccount('editor')}
-          style={[styles.box, {marginTop: hp2(20), marginBottom: hp2(6)}]}>
-          <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.editoricon}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={{color: 'black'}}>Editor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => creatAccount('brand')}
-          style={styles.box}>
-          <View style={styles.iconWrap}>
-            <Image
-              source={IMAGES.brandicon}
-              style={{width: '100%', height: '100%'}}
-              resizeMode="contain"
-            />
-          </View>
-          <Text style={{color: 'black'}}>Brand</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.select({ios: 0, android: 500})}>
+        {/* <KeyboardAwareScrollView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}
+          keyboardVerticalOffset={Platform.select({
+            ios: 0,
+            android: 500,
+          })}> */}
+        <ScrollView
+          contentContainerStyle={{flexGrow: 1}}
+          showsVerticalScrollIndicator={false}
+          bounces={false}
+          keyboardDismissMode="on-drag">
+          <SafeAreaView style={styles.container}>
+            <Text style={styles.accTypeText}>Account Type</Text>
+            <TouchableOpacity
+              onPress={() => creatAccount('editor')}
+              style={[styles.box, {marginTop: hp2(20), marginBottom: hp2(6)}]}>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.editoricon}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={{color: 'black'}}>Editor</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => creatAccount('brand')}
+              style={styles.box}>
+              <View style={styles.iconWrap}>
+                <Image
+                  source={IMAGES.brandicon}
+                  style={{width: '100%', height: '100%'}}
+                  resizeMode="contain"
+                />
+              </View>
+              <Text style={{color: 'black'}}>Brand</Text>
+            </TouchableOpacity>
+          </SafeAreaView>
+        </ScrollView>
+        {/* </KeyboardAwareScrollView> */}
+      </KeyboardAvoidingView>
     </>
   );
 };

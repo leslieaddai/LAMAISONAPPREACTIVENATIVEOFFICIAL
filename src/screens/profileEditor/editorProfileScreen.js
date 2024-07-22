@@ -234,7 +234,9 @@ export default function EditorProfileScreen(props) {
   };
 
   return (
-    <ScrollView style={{height: '100%', backgroundColor: COLORS.appBackground}}>
+    <ScrollView
+      bounces={false}
+      style={{height: '100%', backgroundColor: COLORS.appBackground}}>
       {loading ? (
         <View style={{flex: 1}}>
           {/* <SkypeIndicator color={'black'} /> */}
