@@ -1,4 +1,5 @@
-export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
+export const API_BASED_URL = 'https://lamaisonadmin.com/api/v1/';
+// export const API_BASED_URL = 'https://lamaison.clickysoft.net/api/v1/';
 // export const API_BASED_URL = 'https://admin.la-maison-app.com/api/v1/';
 // export const API_BASED_URL = 'http://localhost:8000/api/v1/';
 // export const API_BASED_URL = 'http://10.0.2.2:8000/api/v1/';

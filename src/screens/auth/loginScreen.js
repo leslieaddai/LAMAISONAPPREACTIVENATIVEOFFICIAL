@@ -73,19 +73,22 @@ export default function LoginScreen(props) {
                 data: res?.data?.user?.stripe_account,
               });
             } else {
-              OneSignal.setExternalUserId(String(res?.data?.user?.id));
+              // OneSignal.setExternalUserId(String(res?.data?.user?.id));
+              console.log('Login Succssfull');
               AlertComp('Login Successfully');
-              dispatch({
-                type: types.CartCount,
-                payload: res.data.user.basket_count,
-              });
+              // dispatch({
+              //   type: types.CartCount,
+              //   payload: res.data.user.basket_count,
+              // });
               dispatch({
                 type: types.Login,
                 payload: res.data,
               });
+              props.navigation.navigate('bottomNavigation');
             }
           })
           .catch(function (error) {
+            console.log('error', error);
             setLoading(false);
             setError(errorHandler(error));
             setShowError(true);
@@ -148,7 +151,7 @@ export default function LoginScreen(props) {
   };
 
   const renderItem = ({item}) => (
-    <View style={{paddingHorizontal: 20, position: 'absolute', top: 80}}>
+    <View>
       <TouchableOpacity onPress={() => props.navigation.goBack()}>
         <Arrow color={'#000'} width={13} height={13} />
       </TouchableOpacity>
@@ -165,7 +168,7 @@ export default function LoginScreen(props) {
       <View>
         <View style={{marginBottom: -20}}>
           <NewInputComp
-            value={stateChange}
+            value={stateChange.UserName}
             handleOnChange={val => updateState({UserName: val})}
             inputText={'Username'}
           />

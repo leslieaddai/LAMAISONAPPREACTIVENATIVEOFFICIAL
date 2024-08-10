@@ -50,7 +50,7 @@ export default function LookbookScreen(props) {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          'https://lamaison.clickysoft.net/api/v1/collection/list',
+          'https://lamaisonadmin.com/api/v1/collection/list',
           {user_id: userId},
           {
             headers: {
