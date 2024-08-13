@@ -18,7 +18,7 @@ export const IMAGES = {
 
   temp: require('../assets/temp-logo-img.png'),
   logo: require('../assets/logo.png'),
-  randomProfile: require('../assets/profile.jpg'),
+  randomProfile: require('../assets/profile_jpg.jpg'),
   fts: require('../assets/FTS.png'),
   logosmall: require('../assets/logosmall.png'),
   profileicon: require('../assets/profileicon.png'),
@@ -63,7 +63,7 @@ export const IMAGES = {
   profileIcon3: require('../assets/profileIcon3.png'),
   notFoundImage: require('../assets/not_found_image.png'),
 
-  profile: require('../assets/profile.png'),
+  profile: require('../assets/profile_png.png'),
   notification: require('../assets/notification.png'),
   orders: require('../assets/orders.png'),
   policy: require('../assets/policy.png'),

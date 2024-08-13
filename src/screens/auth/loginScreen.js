@@ -73,18 +73,16 @@ export default function LoginScreen(props) {
                 data: res?.data?.user?.stripe_account,
               });
             } else {
-              // OneSignal.setExternalUserId(String(res?.data?.user?.id));
-              console.log('Login Succssfull');
+              OneSignal.setExternalUserId(String(res?.data?.user?.id));
               AlertComp('Login Successfully');
-              // dispatch({
-              //   type: types.CartCount,
-              //   payload: res.data.user.basket_count,
-              // });
+              dispatch({
+                type: types.CartCount,
+                payload: res.data.user.basket_count,
+              });
               dispatch({
                 type: types.Login,
                 payload: res.data,
               });
-              props.navigation.navigate('bottomNavigation');
             }
           })
           .catch(function (error) {

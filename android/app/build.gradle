@@ -112,7 +112,7 @@ android {
         applicationId "com.la_masion_app"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
+        versionCode 13
         versionName "2.0"
     }
 
